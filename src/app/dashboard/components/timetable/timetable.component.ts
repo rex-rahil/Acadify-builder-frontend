@@ -115,4 +115,31 @@ export class TimetableComponent implements OnInit {
       detail: "Timetable export feature coming soon!",
     });
   }
+
+  getTodayClassCount(): number {
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
+    const dayKey = today.toLowerCase() as keyof TimetableEntry;
+
+    return this.timetableData.filter((entry) => entry[dayKey]).length;
+  }
+
+  getNextClass(): string {
+    const now = new Date();
+    const currentTime = now.getHours() * 100 + now.getMinutes();
+    const today = now.toLocaleDateString("en-US", { weekday: "long" });
+    const dayKey = today.toLowerCase() as keyof TimetableEntry;
+
+    for (const entry of this.timetableData) {
+      const [startTime] = entry.timeSlot.split(" - ");
+      const [hours, minutes] = startTime.split(":").map(Number);
+      const slotTime = hours * 100 + minutes;
+
+      if (slotTime > currentTime && entry[dayKey]) {
+        const lecture = entry[dayKey] as Lecture;
+        return `${lecture.subjectCode} at ${startTime}`;
+      }
+    }
+
+    return "No more classes today";
+  }
 }
