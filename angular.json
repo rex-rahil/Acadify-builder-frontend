@@ -63,14 +63,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "oriental-college-admission:build:development"
+            "browserTarget": "oriental-college-admission:build:development"
           },
           "configurations": {
             "production": {
-              "buildTarget": "oriental-college-admission:build:production"
+              "browserTarget": "oriental-college-admission:build:production"
             },
             "development": {
-              "buildTarget": "oriental-college-admission:build:development"
+              "browserTarget": "oriental-college-admission:build:development"
             }
           },
           "defaultConfiguration": "development"
