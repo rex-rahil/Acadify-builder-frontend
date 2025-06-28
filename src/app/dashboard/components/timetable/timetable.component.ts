@@ -142,4 +142,8 @@ export class TimetableComponent implements OnInit {
 
     return "No more classes today";
   }
+
+  getCurrentDate(): Date {
+    return new Date();
+  }
 }

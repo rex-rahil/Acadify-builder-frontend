@@ -201,4 +201,8 @@ export class DashboardComponent implements OnInit {
       detail: message,
     });
   }
+
+  getCurrentDate(): Date {
+    return new Date();
+  }
 }

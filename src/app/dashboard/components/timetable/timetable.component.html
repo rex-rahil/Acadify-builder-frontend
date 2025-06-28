@@ -134,7 +134,7 @@
             <span><strong>Next Class:</strong> {{ getNextClass() }}</span>
           </div>
           <div class="last-updated">
-            Last updated: {{ new Date() | date: 'dd/MM/yyyy HH:mm' }}
+            Last updated: {{ getCurrentDate() | date: "dd/MM/yyyy HH:mm" }}
           </div>
         </div>
       </ng-template>

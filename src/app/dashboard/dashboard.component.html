@@ -27,7 +27,7 @@
           </div>
           <div class="stat-info">
             <span class="stat-number">{{
-              dashboardStats.currentSemester
+              dashboardStats?.currentSemester
             }}</span>
             <span class="stat-label">Current Semester</span>
           </div>
@@ -40,7 +40,7 @@
             <i class="pi pi-book"></i>
           </div>
           <div class="stat-info">
-            <span class="stat-number">{{ dashboardStats.totalSubjects }}</span>
+            <span class="stat-number">{{ dashboardStats?.totalSubjects }}</span>
             <span class="stat-label">Total Subjects</span>
           </div>
         </div>
@@ -58,24 +58,24 @@
             >
             </p-chart>
             <div class="attendance-percentage">
-              {{ dashboardStats.overallAttendance }}%
+              {{ dashboardStats?.overallAttendance }}%
             </div>
           </div>
           <div class="stat-info">
             <span class="stat-label">Overall Attendance</span>
             <span
               class="attendance-status"
-              [class.good]="dashboardStats.overallAttendance >= 75"
+              [class.good]="(dashboardStats?.overallAttendance || 0) >= 75"
               [class.warning]="
-                dashboardStats.overallAttendance >= 65 &&
-                dashboardStats.overallAttendance < 75
+                (dashboardStats?.overallAttendance || 0) >= 65 &&
+                (dashboardStats?.overallAttendance || 0) < 75
               "
-              [class.critical]="dashboardStats.overallAttendance < 65"
+              [class.critical]="(dashboardStats?.overallAttendance || 0) < 65"
             >
               {{
-                dashboardStats.overallAttendance >= 75
+                (dashboardStats?.overallAttendance || 0) >= 75
                   ? "Good"
-                  : dashboardStats.overallAttendance >= 65
+                  : (dashboardStats?.overallAttendance || 0) >= 65
                     ? "Warning"
                     : "Critical"
               }}
@@ -91,7 +91,7 @@
           </div>
           <div class="stat-info">
             <span class="stat-number">{{
-              dashboardStats.pendingAssignments
+              dashboardStats?.pendingAssignments
             }}</span>
             <span class="stat-label">Pending Assignments</span>
           </div>
@@ -104,7 +104,7 @@
             <i class="pi pi-bookmark"></i>
           </div>
           <div class="stat-info">
-            <span class="stat-number">{{ dashboardStats.upcomingExams }}</span>
+            <span class="stat-number">{{ dashboardStats?.upcomingExams }}</span>
             <span class="stat-label">Upcoming Exams</span>
           </div>
         </div>
@@ -117,8 +117,8 @@
           </div>
           <div class="stat-info">
             <span class="stat-number"
-              >{{ dashboardStats.earnedCredits }}/{{
-                dashboardStats.totalCredits
+              >{{ dashboardStats?.earnedCredits }}/{{
+                dashboardStats?.totalCredits
               }}</span
             >
             <span class="stat-label">Credits Earned</span>

@@ -1,0 +1,68 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>
+      <i class="pi pi-user"></i>
+      Student Profile
+    </h1>
+    <p>Manage your personal information and settings</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading profile...</p>
+  </div>
+
+  <div *ngIf="!loading" class="profile-content">
+    <p-card>
+      <ng-template pTemplate="header">
+        <h3>Personal Information</h3>
+      </ng-template>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              pInputText
+              formControlName="firstName"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              pInputText
+              formControlName="lastName"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" pInputText formControlName="email" />
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" pInputText formControlName="phone" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <p-button
+            type="submit"
+            label="Update Profile"
+            [disabled]="profileForm.invalid"
+            [loading]="saving"
+          >
+          </p-button>
+        </div>
+      </form>
+    </p-card>
+  </div>
+
+  <p-toast position="top-right"></p-toast>
+</div>

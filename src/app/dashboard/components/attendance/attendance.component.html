@@ -1,0 +1,43 @@
+<div class="attendance-container">
+  <div class="attendance-header">
+    <h1>
+      <i class="pi pi-check-circle"></i>
+      Attendance Tracking
+    </h1>
+    <p>Monitor your class attendance and progress</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading attendance data...</p>
+  </div>
+
+  <div *ngIf="!loading" class="attendance-content">
+    <p-card>
+      <ng-template pTemplate="header">
+        <h3>Subject-wise Attendance</h3>
+      </ng-template>
+
+      <div class="attendance-stats">
+        <div *ngFor="let stat of attendanceStats" class="stat-card">
+          <div class="stat-header">
+            <h4>{{ stat.subjectName }}</h4>
+            <p-tag
+              [value]="stat.status"
+              [severity]="getStatusSeverity(stat.status)"
+            >
+            </p-tag>
+          </div>
+          <div class="stat-percentage">{{ stat.attendancePercentage }}%</div>
+          <div class="stat-details">
+            <span
+              >{{ stat.attendedClasses }}/{{ stat.totalClasses }} classes</span
+            >
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <p-toast position="top-right"></p-toast>
+</div>

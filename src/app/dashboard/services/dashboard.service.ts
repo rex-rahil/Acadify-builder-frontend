@@ -61,10 +61,13 @@ export class DashboardService {
     studentId: string,
     semester?: number,
   ): Observable<TimetableEntry[]> {
-    const params = semester ? { semester: semester.toString() } : {};
+    const params: any = {};
+    if (semester) {
+      params.semester = semester.toString();
+    }
     return this.http.get<TimetableEntry[]>(
       `${this.apiUrl}/timetable/${studentId}`,
-      { params },
+      semester ? { params } : {},
     );
   }
 
@@ -73,10 +76,13 @@ export class DashboardService {
     studentId: string,
     semester?: number,
   ): Observable<AttendanceStats[]> {
-    const params = semester ? { semester: semester.toString() } : {};
+    const params: any = {};
+    if (semester) {
+      params.semester = semester.toString();
+    }
     return this.http.get<AttendanceStats[]>(
       `${this.apiUrl}/attendance/stats/${studentId}`,
-      { params },
+      semester ? { params } : {},
     );
   }
 
@@ -99,10 +105,13 @@ export class DashboardService {
 
   // Assignments
   getAssignments(studentId: string, status?: string): Observable<Assignment[]> {
-    const params = status ? { status } : {};
+    const params: any = {};
+    if (status) {
+      params.status = status;
+    }
     return this.http.get<Assignment[]>(
       `${this.apiUrl}/assignments/${studentId}`,
-      { params },
+      status ? { params } : {},
     );
   }
 
@@ -130,10 +139,14 @@ export class DashboardService {
 
   // Announcements
   getAnnouncements(category?: string): Observable<Announcement[]> {
-    const params = category ? { category } : {};
-    return this.http.get<Announcement[]>(`${this.apiUrl}/announcements`, {
-      params,
-    });
+    const params: any = {};
+    if (category) {
+      params.category = category;
+    }
+    return this.http.get<Announcement[]>(
+      `${this.apiUrl}/announcements`,
+      category ? { params } : {},
+    );
   }
 
   markAnnouncementRead(announcementId: string): Observable<any> {
