@@ -1,11 +1,29 @@
 .admission-stepper {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 
   .stepper-header {
     padding: 1rem 2rem;
     background: var(--surface-section);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
+  }
+
+  .content-layout {
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    gap: 0;
+    min-height: 600px;
+  }
+
+  .illustration-panel {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+    padding: 2rem;
+    border-right: 1px solid var(--surface-border);
+  }
+
+  .form-panel {
+    padding: 2rem;
+    background: var(--surface-card);
   }
 
   .step-content h3 {

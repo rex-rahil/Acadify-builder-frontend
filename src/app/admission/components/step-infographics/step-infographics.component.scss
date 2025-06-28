@@ -1,19 +1,19 @@
-.college-growth-illustration {
-  margin-bottom: 2rem;
+.college-illustration {
+  margin-bottom: 0;
 
   .illustration-container {
-    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+    background: linear-gradient(135deg, #f8feff 0%, #e8f6ff 100%);
     border-radius: var(--border-radius);
     padding: 2rem;
-    box-shadow: 0 6px 12px rgba(135, 206, 235, 0.15);
-    border: 2px solid rgba(135, 206, 235, 0.2);
+    box-shadow: 0 8px 24px rgba(135, 206, 235, 0.12);
+    border: 1px solid rgba(135, 206, 235, 0.15);
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2rem;
+    grid-template-columns: 350px 1fr;
+    gap: 2.5rem;
     align-items: center;
     position: relative;
     overflow: hidden;
-    border-left: 4px solid var(--primary-color);
+    min-height: 280px;
 
     &::before {
       content: "";
@@ -21,50 +21,42 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 4px;
       background: linear-gradient(
         90deg,
         var(--primary-color),
         #20b2aa,
-        #32cd32
+        #32cd32,
+        #ffd700
       );
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background: radial-gradient(
-        circle,
-        rgba(135, 206, 235, 0.1) 0%,
-        transparent 70%
-      );
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
     }
   }
 
-  .growth-icon {
+  .undraw-illustration {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 1.5rem;
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0.7) 100%
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.8) 100%
     );
-    border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(135, 206, 235, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(135, 206, 235, 0.15);
+    border: 1px solid rgba(135, 206, 235, 0.1);
+    height: 240px;
 
-    .growth-svg {
-      width: 280px;
-      height: 180px;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-      animation: float 4s ease-in-out infinite;
+    .illustration-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.02);
+      }
     }
   }
 
@@ -172,23 +164,18 @@
 
 /* Responsive design */
 @media screen and (max-width: 768px) {
-  .college-growth-illustration {
+  .college-illustration {
     .illustration-container {
       grid-template-columns: 1fr;
       text-align: center;
       gap: 1.5rem;
       padding: 1.5rem;
-
-      &::after {
-        display: none;
-      }
+      min-height: auto;
     }
 
-    .growth-icon {
-      .growth-svg {
-        width: 240px;
-        height: 150px;
-      }
+    .undraw-illustration {
+      height: 200px;
+      padding: 1rem;
     }
 
     .college-info {
@@ -207,18 +194,15 @@
 }
 
 @media screen and (max-width: 480px) {
-  .college-growth-illustration {
+  .college-illustration {
     .illustration-container {
       padding: 1rem;
+      gap: 1rem;
     }
 
-    .growth-icon {
-      padding: 0.5rem;
-
-      .growth-svg {
-        width: 200px;
-        height: 120px;
-      }
+    .undraw-illustration {
+      height: 160px;
+      padding: 0.75rem;
     }
 
     .college-info {
