@@ -1,0 +1,378 @@
+<div class="dashboard-container">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>
+        <i class="pi pi-home"></i>
+        Student Dashboard
+      </h1>
+      <p>Welcome back! Here's an overview of your academic progress.</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading" class="dashboard-content">
+    <!-- Statistics Cards -->
+    <div class="stats-grid" *ngIf="dashboardStats">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon primary">
+            <i class="pi pi-graduation-cap"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-number">{{
+              dashboardStats.currentSemester
+            }}</span>
+            <span class="stat-label">Current Semester</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon success">
+            <i class="pi pi-book"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-number">{{ dashboardStats.totalSubjects }}</span>
+            <span class="stat-label">Total Subjects</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card attendance-card">
+        <div class="stat-header">
+          <div class="attendance-chart">
+            <p-chart
+              type="doughnut"
+              [data]="attendanceChartData"
+              [options]="attendanceChartOptions"
+              width="60"
+              height="60"
+            >
+            </p-chart>
+            <div class="attendance-percentage">
+              {{ dashboardStats.overallAttendance }}%
+            </div>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Overall Attendance</span>
+            <span
+              class="attendance-status"
+              [class.good]="dashboardStats.overallAttendance >= 75"
+              [class.warning]="
+                dashboardStats.overallAttendance >= 65 &&
+                dashboardStats.overallAttendance < 75
+              "
+              [class.critical]="dashboardStats.overallAttendance < 65"
+            >
+              {{
+                dashboardStats.overallAttendance >= 75
+                  ? "Good"
+                  : dashboardStats.overallAttendance >= 65
+                    ? "Warning"
+                    : "Critical"
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon warning">
+            <i class="pi pi-file-edit"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-number">{{
+              dashboardStats.pendingAssignments
+            }}</span>
+            <span class="stat-label">Pending Assignments</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon info">
+            <i class="pi pi-bookmark"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-number">{{ dashboardStats.upcomingExams }}</span>
+            <span class="stat-label">Upcoming Exams</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon secondary">
+            <i class="pi pi-chart-bar"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-number"
+              >{{ dashboardStats.earnedCredits }}/{{
+                dashboardStats.totalCredits
+              }}</span
+            >
+            <span class="stat-label">Credits Earned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+      <!-- Recent Activities -->
+      <div class="activity-panel">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-clock"></i> Recent Activities</h3>
+              <p-button
+                icon="pi pi-refresh"
+                styleClass="p-button-text p-button-sm"
+                (onClick)="loadDashboardData()"
+              >
+              </p-button>
+            </div>
+          </ng-template>
+
+          <div class="activities-list">
+            <div
+              *ngFor="let activity of recentActivities"
+              class="activity-item"
+            >
+              <div class="activity-icon">
+                <i [class]="getActivityIcon(activity.type)"></i>
+              </div>
+              <div class="activity-content">
+                <h5>{{ activity.title }}</h5>
+                <p>{{ activity.description }}</p>
+                <span class="activity-date">{{
+                  formatDate(activity.date)
+                }}</span>
+              </div>
+              <div class="activity-status">
+                <p-tag
+                  [value]="activity.status"
+                  [severity]="getActivitySeverity(activity.status)"
+                >
+                </p-tag>
+              </div>
+            </div>
+
+            <div *ngIf="recentActivities.length === 0" class="no-activities">
+              <i class="pi pi-info-circle"></i>
+              <p>No recent activities</p>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions-panel">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-bolt"></i> Quick Actions</h3>
+            </div>
+          </ng-template>
+
+          <div class="quick-actions-grid">
+            <p-button
+              label="View Timetable"
+              icon="pi pi-calendar"
+              routerLink="/dashboard/timetable"
+              styleClass="p-button-outlined quick-action-btn"
+            >
+            </p-button>
+
+            <p-button
+              label="Check Attendance"
+              icon="pi pi-check-circle"
+              routerLink="/dashboard/attendance"
+              styleClass="p-button-outlined quick-action-btn"
+            >
+            </p-button>
+
+            <p-button
+              label="Library Books"
+              icon="pi pi-book"
+              routerLink="/library"
+              styleClass="p-button-outlined quick-action-btn"
+            >
+            </p-button>
+
+            <p-button
+              label="Update Profile"
+              icon="pi pi-user-edit"
+              routerLink="/dashboard/profile"
+              styleClass="p-button-outlined quick-action-btn"
+            >
+            </p-button>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Pending Assignments -->
+      <div class="assignments-panel">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-file-edit"></i> Pending Assignments</h3>
+              <p-badge
+                [value]="pendingAssignments.length"
+                severity="warning"
+              ></p-badge>
+            </div>
+          </ng-template>
+
+          <div class="assignments-list">
+            <div
+              *ngFor="let assignment of pendingAssignments"
+              class="assignment-item"
+            >
+              <div class="assignment-header">
+                <h5>{{ assignment.title }}</h5>
+                <p-chip
+                  [label]="assignment.subjectCode"
+                  styleClass="subject-chip"
+                ></p-chip>
+              </div>
+              <p class="assignment-subject">{{ assignment.subjectName }}</p>
+              <div class="assignment-footer">
+                <span class="due-date">
+                  <i class="pi pi-calendar"></i>
+                  Due: {{ formatDate(assignment.dueDate) }}
+                  <span
+                    class="days-left"
+                    [class.urgent]="getDaysUntil(assignment.dueDate) <= 2"
+                  >
+                    ({{ getDaysUntil(assignment.dueDate) }} days left)
+                  </span>
+                </span>
+                <p-button
+                  label="View"
+                  icon="pi pi-eye"
+                  styleClass="p-button-sm p-button-text"
+                >
+                </p-button>
+              </div>
+            </div>
+
+            <div *ngIf="pendingAssignments.length === 0" class="no-assignments">
+              <i class="pi pi-check-circle"></i>
+              <p>All assignments completed!</p>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Upcoming Exams -->
+      <div class="exams-panel">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-bookmark"></i> Upcoming Exams</h3>
+              <p-badge [value]="upcomingExams.length" severity="info"></p-badge>
+            </div>
+          </ng-template>
+
+          <div class="exams-list">
+            <div *ngFor="let exam of upcomingExams" class="exam-item">
+              <div class="exam-header">
+                <h5>{{ exam.title }}</h5>
+                <p-tag [value]="exam.type" severity="info"></p-tag>
+              </div>
+              <p class="exam-subject">{{ exam.subjectName }}</p>
+              <div class="exam-details">
+                <span
+                  ><i class="pi pi-calendar"></i>
+                  {{ formatDate(exam.date) }}</span
+                >
+                <span><i class="pi pi-clock"></i> {{ exam.time }}</span>
+                <span><i class="pi pi-map-marker"></i> {{ exam.room }}</span>
+              </div>
+              <div class="exam-footer">
+                <span class="days-until"
+                  >{{ getDaysUntil(exam.date) }} days to go</span
+                >
+                <p-button
+                  label="Syllabus"
+                  icon="pi pi-list"
+                  styleClass="p-button-sm p-button-outlined"
+                >
+                </p-button>
+              </div>
+            </div>
+
+            <div *ngIf="upcomingExams.length === 0" class="no-exams">
+              <i class="pi pi-info-circle"></i>
+              <p>No upcoming exams</p>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Announcements -->
+      <div class="announcements-panel">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-megaphone"></i> Announcements</h3>
+            </div>
+          </ng-template>
+
+          <div class="announcements-list">
+            <div
+              *ngFor="let announcement of announcements"
+              class="announcement-item"
+              (click)="markAnnouncementRead(announcement)"
+            >
+              <div class="announcement-header">
+                <h5>{{ announcement.title }}</h5>
+                <div class="announcement-meta">
+                  <span
+                    class="priority-dot"
+                    [style.background-color]="
+                      getPriorityColor(announcement.priority)
+                    "
+                  >
+                  </span>
+                  <p-chip
+                    [label]="announcement.category"
+                    styleClass="category-chip"
+                  ></p-chip>
+                </div>
+              </div>
+              <p class="announcement-content">
+                {{ announcement.content | slice: 0 : 100 }}...
+              </p>
+              <div class="announcement-footer">
+                <span class="published-by">{{ announcement.publishedBy }}</span>
+                <span class="published-date">{{
+                  formatDate(announcement.publishedDate)
+                }}</span>
+              </div>
+            </div>
+
+            <div *ngIf="announcements.length === 0" class="no-announcements">
+              <i class="pi pi-info-circle"></i>
+              <p>No new announcements</p>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Messages -->
+  <p-toast position="top-right"></p-toast>
+</div>
