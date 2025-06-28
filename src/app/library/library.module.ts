@@ -76,6 +76,8 @@ import { MessagesModule } from "primeng/messages";
     DataViewModule,
     RatingModule,
     ImageModule,
+    MessageModule,
+    MessagesModule,
   ],
 })
 export class LibraryModule {}
