@@ -27,24 +27,24 @@ export class SideNavComponent {
       route: "/dashboard",
     },
     {
+      label: "Timetable",
+      icon: "pi pi-calendar",
+      route: "/dashboard/timetable",
+    },
+    {
+      label: "Attendance",
+      icon: "pi pi-check-circle",
+      route: "/dashboard/attendance",
+    },
+    {
       label: "Library",
       icon: "pi pi-book",
       route: "/library",
     },
     {
-      label: "Academic Records",
-      icon: "pi pi-file-text",
-      route: "/academics",
-    },
-    {
-      label: "Fees & Payments",
-      icon: "pi pi-credit-card",
-      route: "/fees",
-    },
-    {
       label: "Profile",
       icon: "pi pi-user",
-      route: "/profile",
+      route: "/dashboard/profile",
     },
     {
       label: "Settings",
