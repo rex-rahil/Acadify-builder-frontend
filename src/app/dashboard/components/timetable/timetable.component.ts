@@ -50,10 +50,14 @@ export class TimetableComponent implements OnInit {
         },
         error: (error) => {
           console.error("Error loading timetable:", error);
+          const errorMessage =
+            error?.error?.message ||
+            error?.message ||
+            "Failed to load timetable";
           this.messageService.add({
             severity: "error",
             summary: "Error",
-            detail: "Failed to load timetable",
+            detail: errorMessage,
           });
           this.loading = false;
         },

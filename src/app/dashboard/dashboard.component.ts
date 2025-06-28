@@ -52,7 +52,11 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading dashboard stats:", error);
-        this.showError("Failed to load dashboard statistics");
+        const errorMessage =
+          error?.error?.message ||
+          error?.message ||
+          "Failed to load dashboard statistics";
+        this.showError(errorMessage);
       },
     });
 
@@ -63,6 +67,11 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading recent activities:", error);
+        const errorMessage =
+          error?.error?.message ||
+          error?.message ||
+          "Failed to load recent activities";
+        this.showError(errorMessage);
       },
     });
 
@@ -75,6 +84,11 @@ export class DashboardComponent implements OnInit {
         },
         error: (error) => {
           console.error("Error loading assignments:", error);
+          const errorMessage =
+            error?.error?.message ||
+            error?.message ||
+            "Failed to load assignments";
+          this.showError(errorMessage);
         },
       });
 
@@ -85,6 +99,9 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading exams:", error);
+        const errorMessage =
+          error?.error?.message || error?.message || "Failed to load exams";
+        this.showError(errorMessage);
       },
     });
 
@@ -96,6 +113,11 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading announcements:", error);
+        const errorMessage =
+          error?.error?.message ||
+          error?.message ||
+          "Failed to load announcements";
+        this.showError(errorMessage);
         this.loading = false;
       },
     });

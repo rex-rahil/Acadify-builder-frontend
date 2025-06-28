@@ -42,10 +42,14 @@ export class AttendanceComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading attendance:", error);
+        const errorMessage =
+          error?.error?.message ||
+          error?.message ||
+          "Failed to load attendance data";
         this.messageService.add({
           severity: "error",
           summary: "Error",
-          detail: "Failed to load attendance data",
+          detail: errorMessage,
         });
         this.loading = false;
       },

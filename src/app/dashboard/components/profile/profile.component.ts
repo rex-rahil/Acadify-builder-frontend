@@ -46,10 +46,14 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading profile:", error);
+        const errorMessage =
+          error?.error?.message ||
+          error?.message ||
+          "Failed to load profile data";
         this.messageService.add({
           severity: "error",
           summary: "Error",
-          detail: "Failed to load profile data",
+          detail: errorMessage,
         });
         this.loading = false;
       },
