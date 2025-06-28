@@ -271,7 +271,10 @@
       *ngFor="let reference of referencesArray.controls; let i = index"
       class="reference-card"
     >
-      <p-fieldset [legend]="'Reference ' + (i + 1)" [formGroup]="reference">
+      <p-fieldset
+        [legend]="'Reference ' + (i + 1)"
+        [formGroup]="$any(reference)"
+      >
         <div class="form-grid">
           <div class="form-field">
             <label [for]="'refName' + i">Name *</label>

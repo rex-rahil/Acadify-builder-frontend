@@ -123,7 +123,7 @@
         <p-checkbox
           inputId="eligibilityAgreement"
           formControlName="eligibilityAgreement"
-          binary="true"
+          [binary]="true"
           [class.p-invalid]="isFieldInvalid('eligibilityAgreement')"
         ></p-checkbox>
         <label for="eligibilityAgreement" class="agreement-label">

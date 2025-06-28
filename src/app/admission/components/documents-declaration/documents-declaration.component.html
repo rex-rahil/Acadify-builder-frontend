@@ -70,7 +70,7 @@
           <p-checkbox
             inputId="undertakingAgreement"
             formControlName="undertakingAgreement"
-            binary="true"
+            [binary]="true"
             [class.p-invalid]="isFieldInvalid('undertakingAgreement')"
           ></p-checkbox>
           <label for="undertakingAgreement" class="agreement-label">
@@ -148,7 +148,7 @@
     </div>
 
     <div class="declaration-note">
-      <p-message severity="info" [closable]="false">
+      <p-message severity="info">
         <p>
           By providing the signatures and date above, both the applicant and
           parent/guardian confirm that all information provided in this
