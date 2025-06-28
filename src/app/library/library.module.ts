@@ -37,6 +37,7 @@ import { RatingModule } from "primeng/rating";
 import { ImageModule } from "primeng/image";
 import { MessageModule } from "primeng/message";
 import { MessagesModule } from "primeng/messages";
+import { CheckboxModule } from "primeng/checkbox";
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { MessagesModule } from "primeng/messages";
     ImageModule,
     MessageModule,
     MessagesModule,
+    CheckboxModule,
   ],
 })
 export class LibraryModule {}
