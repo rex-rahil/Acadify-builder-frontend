@@ -1,0 +1,167 @@
+.academic-qualifications-form {
+  .form-section {
+    margin-bottom: 2rem;
+
+    h4 {
+      color: var(--primary-color);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+  }
+
+  .table-container {
+    background: var(--surface-card);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .p-datatable {
+      .p-datatable-thead > tr > th {
+        background: var(--primary-color);
+        color: var(--primary-color-text);
+        font-weight: 600;
+        padding: 1rem 0.75rem;
+        border: none;
+      }
+
+      .p-datatable-tbody > tr > td {
+        padding: 0.75rem;
+        border: 1px solid var(--surface-border);
+        vertical-align: top;
+
+        input,
+        p-inputnumber,
+        p-calendar {
+          width: 100%;
+          margin-bottom: 0.25rem;
+        }
+
+        strong {
+          color: var(--text-color);
+          font-weight: 600;
+        }
+
+        .semester-note {
+          display: block;
+          font-size: 0.875rem;
+          color: var(--text-color-secondary);
+          font-style: italic;
+        }
+      }
+
+      .p-datatable-tbody > tr:hover {
+        background: var(--surface-hover);
+      }
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .form-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+
+      &:not(.optional):after {
+        content: " *";
+        color: #e24c4c;
+      }
+
+      &.optional:after {
+        content: none;
+      }
+    }
+
+    input,
+    textarea,
+    p-inputnumber {
+      width: 100%;
+    }
+
+    .helper-text {
+      color: var(--text-color-secondary);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: block;
+      font-style: italic;
+    }
+  }
+
+  .error-message {
+    color: #e24c4c;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .academic-qualifications-form {
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .table-container {
+      .p-datatable-thead > tr > th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .p-datatable-tbody > tr > td {
+        padding: 0.5rem;
+
+        input,
+        p-inputnumber,
+        p-calendar {
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}
+
+/* Table input styling */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  .p-inputtext,
+  .p-inputnumber-input,
+  .p-calendar input {
+    border: 1px solid transparent;
+    box-shadow: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 1px var(--primary-color);
+    }
+
+    &.p-invalid {
+      border-color: #e24c4c;
+    }
+  }
+
+  .p-inputnumber {
+    width: 100%;
+
+    .p-inputnumber-input {
+      width: 100%;
+    }
+  }
+}

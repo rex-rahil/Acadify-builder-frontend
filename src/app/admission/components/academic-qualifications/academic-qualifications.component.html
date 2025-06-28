@@ -1,0 +1,186 @@
+<form [formGroup]="formGroup" class="academic-qualifications-form">
+  <!-- Academic Records Table -->
+  <div class="form-section">
+    <h4>Academic Records</h4>
+    <div class="table-container">
+      <p-table
+        [value]="qualificationsArray.controls"
+        styleClass="p-datatable-sm"
+        [scrollable]="true"
+        scrollDirection="horizontal"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="min-width: 150px">Examination</th>
+            <th style="min-width: 200px">Board/University</th>
+            <th style="min-width: 150px">Month & Year</th>
+            <th style="min-width: 100px">Marks (%)</th>
+            <th style="min-width: 120px">Class</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-qualification let-i="rowIndex">
+          <tr [formGroup]="qualification">
+            <td>
+              <strong>{{
+                getExamDisplayName(qualification.get("examName")?.value)
+              }}</strong>
+              <span
+                *ngIf="isDpharmSemester(qualification.get('examName')?.value)"
+                class="semester-note"
+                >(D.Pharm)</span
+              >
+            </td>
+            <td>
+              <input
+                pInputText
+                formControlName="boardUniversity"
+                [class.p-invalid]="isFieldInvalid('boardUniversity', i)"
+                placeholder="Enter board/university"
+              />
+              <small
+                class="error-message"
+                *ngIf="isFieldInvalid('boardUniversity', i)"
+              >
+                {{ getFieldError("boardUniversity", i) }}
+              </small>
+            </td>
+            <td>
+              <p-calendar
+                formControlName="monthYearPassing"
+                view="month"
+                dateFormat="mm/yy"
+                [yearRange]="'2000:2030'"
+                placeholder="MM/YY"
+                [class.p-invalid]="isFieldInvalid('monthYearPassing', i)"
+              ></p-calendar>
+              <small
+                class="error-message"
+                *ngIf="isFieldInvalid('monthYearPassing', i)"
+              >
+                {{ getFieldError("monthYearPassing", i) }}
+              </small>
+            </td>
+            <td>
+              <p-inputNumber
+                formControlName="marksPercentage"
+                mode="decimal"
+                [min]="0"
+                [max]="100"
+                suffix="%"
+                placeholder="0.00"
+                [class.p-invalid]="isFieldInvalid('marksPercentage', i)"
+              ></p-inputNumber>
+              <small
+                class="error-message"
+                *ngIf="isFieldInvalid('marksPercentage', i)"
+              >
+                {{ getFieldError("marksPercentage", i) }}
+              </small>
+            </td>
+            <td>
+              <input
+                pInputText
+                formControlName="class"
+                [class.p-invalid]="isFieldInvalid('class', i)"
+                placeholder="First/Second/Pass"
+              />
+              <small class="error-message" *ngIf="isFieldInvalid('class', i)">
+                {{ getFieldError("class", i) }}
+              </small>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Additional Academic Information -->
+  <div class="form-section">
+    <h4>Additional Academic Information</h4>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="mhtCetMarks" class="optional"
+          >MHT-CET Marks (Optional)</label
+        >
+        <p-inputNumber
+          inputId="mhtCetMarks"
+          formControlName="mhtCetMarks"
+          mode="decimal"
+          [min]="0"
+          [max]="200"
+          placeholder="Enter MHT-CET marks"
+        ></p-inputNumber>
+        <small class="helper-text"
+          >Enter your MHT-CET marks if applicable</small
+        >
+      </div>
+
+      <div class="form-field full-width">
+        <label for="extraCurricularAchievements" class="optional"
+          >Extra-Curricular Achievements (Optional)</label
+        >
+        <textarea
+          pInputTextarea
+          id="extraCurricularAchievements"
+          formControlName="extraCurricularAchievements"
+          rows="3"
+          placeholder="List your achievements in sports, cultural activities, competitions, etc."
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goals and Motivation -->
+  <div class="form-section">
+    <h4>Goals and Motivation</h4>
+    <div class="form-grid">
+      <div class="form-field full-width">
+        <label for="studentGoalSelf" class="optional"
+          >Student's Goal for Self (Optional)</label
+        >
+        <textarea
+          pInputTextarea
+          id="studentGoalSelf"
+          formControlName="studentGoalSelf"
+          rows="4"
+          placeholder="Describe your personal goals and aspirations in the field of pharmacy..."
+        ></textarea>
+        <small class="helper-text"
+          >Share your career aspirations and personal development goals</small
+        >
+      </div>
+
+      <div class="form-field full-width">
+        <label for="studentGoalInstitute" class="optional"
+          >Student's Goal for Institute (Optional)</label
+        >
+        <textarea
+          pInputTextarea
+          id="studentGoalInstitute"
+          formControlName="studentGoalInstitute"
+          rows="4"
+          placeholder="How do you plan to contribute to the institute's growth and reputation..."
+        ></textarea>
+        <small class="helper-text"
+          >Explain how you plan to contribute to the institute community</small
+        >
+      </div>
+
+      <div class="form-field full-width">
+        <label for="whyThisInstitute" class="optional"
+          >Why this Institute? (Optional)</label
+        >
+        <textarea
+          pInputTextarea
+          id="whyThisInstitute"
+          formControlName="whyThisInstitute"
+          rows="4"
+          placeholder="Why did you choose Oriental College of Pharmacy specifically..."
+        ></textarea>
+        <small class="helper-text"
+          >Tell us what attracted you to Oriental College of Pharmacy</small
+        >
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,128 @@
+.parent-guardian-form {
+  .form-section {
+    margin-bottom: 2rem;
+
+    h4 {
+      color: var(--primary-color);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+
+    .section-description {
+      color: var(--text-color-secondary);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      line-height: 1.5;
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .form-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+
+      &:not(.optional):after {
+        content: " *";
+        color: #e24c4c;
+      }
+
+      &.optional:after {
+        content: none;
+      }
+    }
+
+    input,
+    textarea,
+    p-inputnumber {
+      width: 100%;
+    }
+
+    .income-words {
+      background: var(--surface-section);
+      font-style: italic;
+      color: var(--text-color-secondary);
+    }
+  }
+
+  .error-message {
+    color: #e24c4c;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  .reference-card {
+    margin-bottom: 1.5rem;
+
+    .p-fieldset {
+      .p-fieldset-legend {
+        background: var(--primary-color);
+        color: var(--primary-color-text);
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+      }
+
+      .p-fieldset-content {
+        padding: 1.5rem;
+      }
+    }
+  }
+}
+
+/* PrimeNG Fieldset customization */
+:host ::ng-deep {
+  .p-fieldset {
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+
+    .p-fieldset-legend {
+      border: 1px solid var(--surface-border);
+      border-radius: var(--border-radius);
+      background: var(--surface-section);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .p-fieldset-content {
+      padding: 1.5rem;
+    }
+  }
+
+  .reference-card .p-fieldset .p-fieldset-legend {
+    background: var(--primary-color);
+    color: var(--primary-color-text);
+    border-color: var(--primary-color);
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .parent-guardian-form {
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .reference-card .p-fieldset .p-fieldset-content {
+      padding: 1rem;
+    }
+  }
+}

@@ -1,0 +1,143 @@
+<form [formGroup]="formGroup" class="category-eligibility-form">
+  <!-- Category Selection -->
+  <div class="form-section">
+    <h4>Category Selection</h4>
+    <div class="form-field">
+      <label>Select applicable categories:</label>
+      <div class="checkbox-grid">
+        <div *ngFor="let category of categories" class="checkbox-item">
+          <p-checkbox
+            [inputId]="category.value"
+            [value]="category.value"
+            formControlName="categories"
+            [label]="category.label"
+          ></p-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field" *ngIf="isOtherCategorySelected()">
+      <label for="otherCategorySpecify">Please specify Other category *</label>
+      <input
+        pInputText
+        id="otherCategorySpecify"
+        formControlName="otherCategorySpecify"
+        [class.p-invalid]="isFieldInvalid('otherCategorySpecify')"
+        placeholder="Specify the category"
+      />
+      <small
+        class="error-message"
+        *ngIf="isFieldInvalid('otherCategorySpecify')"
+      >
+        {{ getFieldError("otherCategorySpecify") }}
+      </small>
+    </div>
+  </div>
+
+  <!-- Health & Personal Information -->
+  <div class="form-section">
+    <h4>Health & Personal Information</h4>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Physically Handicapped? *</label>
+        <div class="radio-group">
+          <div
+            *ngFor="let option of physicallyHandicappedOptions"
+            class="radio-item"
+          >
+            <p-radioButton
+              [inputId]="'handicapped_' + option.value"
+              [value]="option.value"
+              formControlName="physicallyHandicapped"
+            ></p-radioButton>
+            <label [for]="'handicapped_' + option.value" class="radio-label">{{
+              option.label
+            }}</label>
+          </div>
+        </div>
+        <small
+          class="error-message"
+          *ngIf="isFieldInvalid('physicallyHandicapped')"
+        >
+          {{ getFieldError("physicallyHandicapped") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Marital Status *</label>
+        <div class="radio-group">
+          <div *ngFor="let status of maritalStatusOptions" class="radio-item">
+            <p-radioButton
+              [inputId]="'marital_' + status.value"
+              [value]="status.value"
+              formControlName="maritalStatus"
+            ></p-radioButton>
+            <label [for]="'marital_' + status.value" class="radio-label">{{
+              status.label
+            }}</label>
+          </div>
+        </div>
+        <small class="error-message" *ngIf="isFieldInvalid('maritalStatus')">
+          {{ getFieldError("maritalStatus") }}
+        </small>
+      </div>
+
+      <div class="form-field full-width">
+        <label for="majorIllness" class="optional"
+          >Major illness if any (Optional)</label
+        >
+        <textarea
+          pInputTextarea
+          id="majorIllness"
+          formControlName="majorIllness"
+          rows="3"
+          placeholder="Please describe any major illness or ongoing health conditions"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eligibility Declaration -->
+  <div class="form-section">
+    <h4>Eligibility Declaration</h4>
+    <div class="eligibility-panel">
+      <p-panel header="Important Notice" [toggleable]="true">
+        <p>
+          By checking the box below, you acknowledge that you have thoroughly
+          read and understood the eligibility requirements set forth by:
+        </p>
+        <ul>
+          <li>Government of Maharashtra</li>
+          <li>Common Entrance Test (CET) Cell</li>
+          <li>University regulations</li>
+          <li>Pharmacy Council of India (PCI) guidelines</li>
+        </ul>
+        <p>
+          <strong>Important:</strong> Providing false information or failing to
+          meet eligibility criteria may result in cancellation of admission at
+          any stage of the academic program.
+        </p>
+      </p-panel>
+
+      <div class="form-field agreement-field">
+        <p-checkbox
+          inputId="eligibilityAgreement"
+          formControlName="eligibilityAgreement"
+          binary="true"
+          [class.p-invalid]="isFieldInvalid('eligibilityAgreement')"
+        ></p-checkbox>
+        <label for="eligibilityAgreement" class="agreement-label">
+          I have read and understood the eligibility requirements of Government
+          of Maharashtra, CET Cell, University & PCI, and I confirm that I meet
+          all the specified criteria. *
+        </label>
+      </div>
+      <small
+        class="error-message"
+        *ngIf="isFieldInvalid('eligibilityAgreement')"
+      >
+        {{ getFieldError("eligibilityAgreement") }}
+      </small>
+    </div>
+  </div>
+</form>

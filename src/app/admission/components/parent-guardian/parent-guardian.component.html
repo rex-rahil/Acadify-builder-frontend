@@ -1,0 +1,344 @@
+<form [formGroup]="formGroup" class="parent-guardian-form">
+  <!-- Father/Husband Details -->
+  <div class="form-section">
+    <p-fieldset legend="Father / Husband Details" [formGroup]="fatherForm">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="fatherName">Name *</label>
+          <input
+            pInputText
+            id="fatherName"
+            formControlName="name"
+            [class.p-invalid]="isFieldInvalid('father', 'name')"
+          />
+          <small class="error-message" *ngIf="isFieldInvalid('father', 'name')">
+            {{ getFieldError("father", "name") }}
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="fatherOccupation" class="optional">Occupation</label>
+          <input
+            pInputText
+            id="fatherOccupation"
+            formControlName="occupation"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherDesignation" class="optional">Designation</label>
+          <input
+            pInputText
+            id="fatherDesignation"
+            formControlName="designation"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherPan" class="optional">PAN</label>
+          <input pInputText id="fatherPan" formControlName="pan" />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherAadhar" class="optional">Aadhar</label>
+          <input pInputText id="fatherAadhar" formControlName="aadhar" />
+        </div>
+
+        <div class="form-field full-width">
+          <label for="fatherOfficeAddress" class="optional"
+            >Office Address</label
+          >
+          <textarea
+            pInputTextarea
+            id="fatherOfficeAddress"
+            formControlName="officeAddress"
+            rows="2"
+          ></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="fatherCity" class="optional">City</label>
+          <input pInputText id="fatherCity" formControlName="city" />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherState" class="optional">State</label>
+          <input pInputText id="fatherState" formControlName="state" />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherPinCode" class="optional">Pin Code</label>
+          <input pInputText id="fatherPinCode" formControlName="pinCode" />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherIncomeFigure" class="optional"
+            >Approx Annual Income (₹)</label
+          >
+          <p-inputNumber
+            inputId="fatherIncomeFigure"
+            formControlName="annualIncomeFigure"
+            mode="currency"
+            currency="INR"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="0"
+            (onBlur)="formatIncomeWords('father')"
+          ></p-inputNumber>
+        </div>
+
+        <div class="form-field">
+          <label for="fatherIncomeWords" class="optional"
+            >Annual Income (In Words)</label
+          >
+          <input
+            pInputText
+            id="fatherIncomeWords"
+            formControlName="annualIncomeWords"
+            [readonly]="true"
+            class="income-words"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherTelNo" class="optional">Tel. No.</label>
+          <input pInputText id="fatherTelNo" formControlName="telNo" />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherCellNo" class="optional">Cell No.</label>
+          <input pInputText id="fatherCellNo" formControlName="cellNo" />
+        </div>
+
+        <div class="form-field">
+          <label for="fatherEmail" class="optional">Email</label>
+          <input
+            pInputText
+            id="fatherEmail"
+            formControlName="email"
+            type="email"
+            [class.p-invalid]="isFieldInvalid('father', 'email')"
+          />
+          <small
+            class="error-message"
+            *ngIf="isFieldInvalid('father', 'email')"
+          >
+            {{ getFieldError("father", "email") }}
+          </small>
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+
+  <!-- Mother Details -->
+  <div class="form-section">
+    <p-fieldset legend="Mother Details" [formGroup]="motherForm">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="motherName">Name *</label>
+          <input
+            pInputText
+            id="motherName"
+            formControlName="name"
+            [class.p-invalid]="isFieldInvalid('mother', 'name')"
+          />
+          <small class="error-message" *ngIf="isFieldInvalid('mother', 'name')">
+            {{ getFieldError("mother", "name") }}
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="motherOccupation" class="optional">Occupation</label>
+          <input
+            pInputText
+            id="motherOccupation"
+            formControlName="occupation"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="motherDesignation" class="optional">Designation</label>
+          <input
+            pInputText
+            id="motherDesignation"
+            formControlName="designation"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="motherPan" class="optional">PAN</label>
+          <input pInputText id="motherPan" formControlName="pan" />
+        </div>
+
+        <div class="form-field">
+          <label for="motherAadhar" class="optional">Aadhar</label>
+          <input pInputText id="motherAadhar" formControlName="aadhar" />
+        </div>
+
+        <div class="form-field full-width">
+          <label for="motherOfficeAddress" class="optional"
+            >Office Address</label
+          >
+          <textarea
+            pInputTextarea
+            id="motherOfficeAddress"
+            formControlName="officeAddress"
+            rows="2"
+          ></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="motherCity" class="optional">City</label>
+          <input pInputText id="motherCity" formControlName="city" />
+        </div>
+
+        <div class="form-field">
+          <label for="motherState" class="optional">State</label>
+          <input pInputText id="motherState" formControlName="state" />
+        </div>
+
+        <div class="form-field">
+          <label for="motherPinCode" class="optional">Pin Code</label>
+          <input pInputText id="motherPinCode" formControlName="pinCode" />
+        </div>
+
+        <div class="form-field">
+          <label for="motherIncomeFigure" class="optional"
+            >Approx Annual Income (₹)</label
+          >
+          <p-inputNumber
+            inputId="motherIncomeFigure"
+            formControlName="annualIncomeFigure"
+            mode="currency"
+            currency="INR"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="0"
+            (onBlur)="formatIncomeWords('mother')"
+          ></p-inputNumber>
+        </div>
+
+        <div class="form-field">
+          <label for="motherIncomeWords" class="optional"
+            >Annual Income (In Words)</label
+          >
+          <input
+            pInputText
+            id="motherIncomeWords"
+            formControlName="annualIncomeWords"
+            [readonly]="true"
+            class="income-words"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="motherTelNo" class="optional">Tel. No.</label>
+          <input pInputText id="motherTelNo" formControlName="telNo" />
+        </div>
+
+        <div class="form-field">
+          <label for="motherCellNo" class="optional">Cell No.</label>
+          <input pInputText id="motherCellNo" formControlName="cellNo" />
+        </div>
+
+        <div class="form-field">
+          <label for="motherEmail" class="optional">Email</label>
+          <input
+            pInputText
+            id="motherEmail"
+            formControlName="email"
+            type="email"
+            [class.p-invalid]="isFieldInvalid('mother', 'email')"
+          />
+          <small
+            class="error-message"
+            *ngIf="isFieldInvalid('mother', 'email')"
+          >
+            {{ getFieldError("mother", "email") }}
+          </small>
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+
+  <!-- References -->
+  <div class="form-section">
+    <h4>References</h4>
+    <p class="section-description">
+      Please provide details of two references who can vouch for your character
+      and academic capabilities.
+    </p>
+
+    <div
+      *ngFor="let reference of referencesArray.controls; let i = index"
+      class="reference-card"
+    >
+      <p-fieldset [legend]="'Reference ' + (i + 1)" [formGroup]="reference">
+        <div class="form-grid">
+          <div class="form-field">
+            <label [for]="'refName' + i">Name *</label>
+            <input
+              pInputText
+              [id]="'refName' + i"
+              formControlName="name"
+              [class.p-invalid]="isReferenceFieldInvalid(i, 'name')"
+            />
+            <small
+              class="error-message"
+              *ngIf="isReferenceFieldInvalid(i, 'name')"
+            >
+              {{ getReferenceFieldError(i, "name") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label [for]="'refCellNo' + i">Cell No. *</label>
+            <input
+              pInputText
+              [id]="'refCellNo' + i"
+              formControlName="cellNo"
+              [class.p-invalid]="isReferenceFieldInvalid(i, 'cellNo')"
+            />
+            <small
+              class="error-message"
+              *ngIf="isReferenceFieldInvalid(i, 'cellNo')"
+            >
+              {{ getReferenceFieldError(i, "cellNo") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label [for]="'refProfession' + i">Profession *</label>
+            <input
+              pInputText
+              [id]="'refProfession' + i"
+              formControlName="profession"
+              [class.p-invalid]="isReferenceFieldInvalid(i, 'profession')"
+            />
+            <small
+              class="error-message"
+              *ngIf="isReferenceFieldInvalid(i, 'profession')"
+            >
+              {{ getReferenceFieldError(i, "profession") }}
+            </small>
+          </div>
+
+          <div class="form-field full-width">
+            <label [for]="'refAddress' + i">Address *</label>
+            <textarea
+              pInputTextarea
+              [id]="'refAddress' + i"
+              formControlName="address"
+              rows="2"
+              [class.p-invalid]="isReferenceFieldInvalid(i, 'address')"
+            ></textarea>
+            <small
+              class="error-message"
+              *ngIf="isReferenceFieldInvalid(i, 'address')"
+            >
+              {{ getReferenceFieldError(i, "address") }}
+            </small>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+  </div>
+</form>

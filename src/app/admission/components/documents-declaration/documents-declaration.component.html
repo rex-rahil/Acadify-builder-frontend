@@ -1,0 +1,161 @@
+<form [formGroup]="formGroup" class="documents-declaration-form">
+  <!-- Document Upload Section -->
+  <div class="form-section">
+    <h4>Document Upload</h4>
+    <p class="section-description">
+      Please upload all required documents in PDF, JPG, or PNG format. Maximum
+      file size: 5MB per document.
+    </p>
+
+    <div class="documents-grid">
+      <div
+        *ngFor="let document of documentsList"
+        class="document-upload-card"
+        [class.required]="document.required"
+      >
+        <div class="document-header">
+          <h5>
+            {{ document.label }}
+            <span *ngIf="document.required" class="required-indicator">*</span>
+          </h5>
+          <p class="document-description">{{ document.description }}</p>
+        </div>
+
+        <div class="upload-area">
+          <p-fileUpload
+            *ngIf="!isFileUploaded(document.key)"
+            mode="basic"
+            [chooseLabel]="'Choose File'"
+            chooseIcon="pi pi-upload"
+            [accept]="allowedTypes.join(',')"
+            [maxFileSize]="maxFileSize"
+            (onSelect)="onFileSelect($event, document.key)"
+            [auto]="false"
+            styleClass="custom-file-upload"
+          ></p-fileUpload>
+
+          <div *ngIf="isFileUploaded(document.key)" class="uploaded-file">
+            <div class="file-info">
+              <i class="pi pi-file"></i>
+              <span class="file-name">{{
+                getUploadedFileName(document.key)
+              }}</span>
+            </div>
+            <p-button
+              icon="pi pi-times"
+              styleClass="p-button-rounded p-button-danger p-button-text"
+              (onClick)="onFileRemove(document.key)"
+              pTooltip="Remove file"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Undertaking and Declaration -->
+  <div class="form-section">
+    <h4>Undertaking and Declaration</h4>
+
+    <div class="undertaking-panel">
+      <p-scrollPanel [style]="{ width: '100%', height: '300px' }">
+        <div class="undertaking-content">
+          <h5>UNDERTAKING</h5>
+          <pre>{{ undertakingText }}</pre>
+        </div>
+      </p-scrollPanel>
+
+      <div class="agreement-section">
+        <div class="form-field agreement-field">
+          <p-checkbox
+            inputId="undertakingAgreement"
+            formControlName="undertakingAgreement"
+            binary="true"
+            [class.p-invalid]="isFieldInvalid('undertakingAgreement')"
+          ></p-checkbox>
+          <label for="undertakingAgreement" class="agreement-label">
+            I have read and understood the above undertaking and agree to abide
+            by all the rules and regulations mentioned therein. *
+          </label>
+        </div>
+        <small
+          class="error-message"
+          *ngIf="isFieldInvalid('undertakingAgreement')"
+        >
+          {{ getFieldError("undertakingAgreement") }}
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signatures and Declaration -->
+  <div class="form-section">
+    <h4>Signatures and Declaration</h4>
+
+    <div class="signature-grid">
+      <div class="form-field">
+        <label for="applicantSignature">Applicant's Signature *</label>
+        <input
+          pInputText
+          id="applicantSignature"
+          formControlName="applicantSignature"
+          placeholder="Type your full name as signature"
+          [class.p-invalid]="isFieldInvalid('applicantSignature')"
+        />
+        <small class="helper-text"
+          >Type your full name which will serve as your digital signature</small
+        >
+        <small
+          class="error-message"
+          *ngIf="isFieldInvalid('applicantSignature')"
+        >
+          {{ getFieldError("applicantSignature") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="parentSignature">Parent/Guardian Signature *</label>
+        <input
+          pInputText
+          id="parentSignature"
+          formControlName="parentSignature"
+          placeholder="Type parent/guardian full name as signature"
+          [class.p-invalid]="isFieldInvalid('parentSignature')"
+        />
+        <small class="helper-text"
+          >Parent/Guardian should type their full name as digital
+          signature</small
+        >
+        <small class="error-message" *ngIf="isFieldInvalid('parentSignature')">
+          {{ getFieldError("parentSignature") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="declarationDate">Declaration Date *</label>
+        <p-calendar
+          inputId="declarationDate"
+          formControlName="declarationDate"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [class.p-invalid]="isFieldInvalid('declarationDate')"
+          placeholder="DD/MM/YYYY"
+        ></p-calendar>
+        <small class="error-message" *ngIf="isFieldInvalid('declarationDate')">
+          {{ getFieldError("declarationDate") }}
+        </small>
+      </div>
+    </div>
+
+    <div class="declaration-note">
+      <p-message severity="info" [closable]="false">
+        <p>
+          By providing the signatures and date above, both the applicant and
+          parent/guardian confirm that all information provided in this
+          application is accurate and complete. This serves as a legal
+          declaration for the admission process.
+        </p>
+      </p-message>
+    </div>
+  </div>
+</form>

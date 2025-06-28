@@ -1,0 +1,261 @@
+.documents-declaration-form {
+  .form-section {
+    margin-bottom: 2rem;
+
+    h4 {
+      color: var(--primary-color);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+
+    .section-description {
+      color: var(--text-color-secondary);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      line-height: 1.5;
+    }
+  }
+
+  .documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .document-upload-card {
+    border: 2px dashed var(--surface-border);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: var(--primary-color);
+      background: var(--surface-hover);
+    }
+
+    &.required {
+      border-color: var(--primary-color);
+      background: rgba(135, 206, 235, 0.05);
+    }
+
+    .document-header {
+      margin-bottom: 1rem;
+
+      h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin: 0 0 0.5rem 0;
+
+        .required-indicator {
+          color: #e24c4c;
+        }
+      }
+
+      .document-description {
+        font-size: 0.875rem;
+        color: var(--text-color-secondary);
+        margin: 0;
+        line-height: 1.4;
+      }
+    }
+
+    .upload-area {
+      .uploaded-file {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        background: var(--surface-section);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--surface-border);
+
+        .file-info {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .pi-file {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+          }
+
+          .file-name {
+            font-weight: 500;
+            color: var(--text-color);
+          }
+        }
+      }
+    }
+  }
+
+  .undertaking-panel {
+    .p-scrollpanel {
+      border: 1px solid var(--surface-border);
+      border-radius: var(--border-radius);
+      background: var(--surface-card);
+      margin-bottom: 1.5rem;
+
+      .undertaking-content {
+        padding: 1.5rem;
+
+        h5 {
+          color: var(--primary-color);
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+          text-align: center;
+        }
+
+        pre {
+          white-space: pre-wrap;
+          font-family: inherit;
+          font-size: 0.9rem;
+          line-height: 1.6;
+          color: var(--text-color);
+          margin: 0;
+        }
+      }
+    }
+
+    .agreement-section {
+      .agreement-field {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: var(--surface-section);
+        border-radius: var(--border-radius);
+        border: 2px solid var(--surface-border);
+
+        &.p-invalid {
+          border-color: #e24c4c;
+        }
+
+        .agreement-label {
+          font-weight: 500;
+          line-height: 1.5;
+          cursor: pointer;
+          margin: 0;
+
+          &:after {
+            content: none;
+          }
+        }
+
+        p-checkbox {
+          flex-shrink: 0;
+          margin-top: 0.125rem;
+        }
+      }
+    }
+  }
+
+  .signature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+
+      &:after {
+        content: " *";
+        color: #e24c4c;
+      }
+    }
+
+    input,
+    p-calendar {
+      width: 100%;
+    }
+
+    .helper-text {
+      color: var(--text-color-secondary);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: block;
+      font-style: italic;
+    }
+  }
+
+  .error-message {
+    color: #e24c4c;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  .declaration-note {
+    margin-top: 1.5rem;
+
+    p-message {
+      p {
+        margin: 0;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+/* Custom file upload styling */
+:host ::ng-deep {
+  .custom-file-upload {
+    width: 100%;
+
+    .p-fileupload-choose {
+      width: 100%;
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.75rem 1rem;
+      border-radius: var(--border-radius);
+      transition: all 0.2s;
+
+      &:hover {
+        background: #6bb6e0;
+        border-color: #6bb6e0;
+      }
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .documents-declaration-form {
+    .documents-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .signature-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .document-upload-card {
+      padding: 1rem;
+    }
+
+    .undertaking-panel .p-scrollpanel {
+      height: 250px !important;
+    }
+
+    .agreement-section .agreement-field {
+      flex-direction: column;
+      gap: 0.5rem;
+
+      p-checkbox {
+        margin-top: 0;
+      }
+    }
+  }
+}
