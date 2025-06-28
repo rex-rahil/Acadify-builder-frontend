@@ -8,7 +8,12 @@ import { Component, Input } from "@angular/core";
 export class StepInfographicsComponent {
   @Input() stepIndex: number = 0;
 
-  getStepInfo() {
+  getStepInfo(): {
+    title: string;
+    description: string;
+    achievements: string[];
+    icon: string;
+  } {
     const stepInfos = [
       {
         title: "Excellence in Education",
