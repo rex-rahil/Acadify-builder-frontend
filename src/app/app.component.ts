@@ -19,4 +19,15 @@ export class AppComponent {
   isLibraryRoute(): boolean {
     return this.router.url.includes("/library");
   }
+
+  isDashboardRoute(): boolean {
+    return this.router.url.includes("/dashboard");
+  }
+
+  isStudentPortalRoute(): boolean {
+    return (
+      this.router.url.includes("/dashboard") ||
+      this.router.url.includes("/library")
+    );
+  }
 }

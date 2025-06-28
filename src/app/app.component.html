@@ -1,6 +1,6 @@
 <div class="app-container">
-  <!-- Top Navigation Bar (for library and other pages) -->
-  <div class="top-nav" *ngIf="isLibraryRoute()">
+  <!-- Top Navigation Bar (for student portal pages) -->
+  <div class="top-nav" *ngIf="isStudentPortalRoute()">
     <p-button
       icon="pi pi-bars"
       styleClass="p-button-text menu-button"
@@ -33,9 +33,9 @@
   </div>
 
   <!-- Main Content -->
-  <div class="main-content" [class.with-top-nav]="isLibraryRoute()">
+  <div class="main-content" [class.with-top-nav]="isStudentPortalRoute()">
     <!-- Admission Header (only for admission routes) -->
-    <div class="college-header" *ngIf="!isLibraryRoute()">
+    <div class="college-header" *ngIf="!isStudentPortalRoute()">
       <h1>Oriental College of Pharmacy</h1>
       <h2>B.Pharm Admission Application</h2>
     </div>

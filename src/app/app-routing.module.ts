@@ -4,7 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "/admission",
+    redirectTo: "/dashboard",
     pathMatch: "full",
   },
   {
@@ -13,13 +13,18 @@ const routes: Routes = [
       import("./admission/admission.module").then((m) => m.AdmissionModule),
   },
   {
+    path: "dashboard",
+    loadChildren: () =>
+      import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
+  },
+  {
     path: "library",
     loadChildren: () =>
       import("./library/library.module").then((m) => m.LibraryModule),
   },
   {
     path: "**",
-    redirectTo: "/admission",
+    redirectTo: "/dashboard",
   },
 ];
 
