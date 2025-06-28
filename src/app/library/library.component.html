@@ -1,0 +1,269 @@
+<div class="library-container">
+  <!-- Header Section -->
+  <div class="library-header">
+    <div class="header-content">
+      <h1>
+        <i class="pi pi-book"></i>
+        Library Management System
+      </h1>
+      <p>Oriental College of Pharmacy - Digital Library</p>
+    </div>
+
+    <!-- Library Statistics -->
+    <div class="stats-cards" *ngIf="libraryStats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-book"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ libraryStats.totalBooks }}</span>
+          <span class="stat-label">Total Books</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon available">
+          <i class="pi pi-check-circle"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ libraryStats.availableBooks }}</span>
+          <span class="stat-label">Available</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon issued">
+          <i class="pi pi-send"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ libraryStats.issuedBooks }}</span>
+          <span class="stat-label">Issued</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon reserved">
+          <i class="pi pi-clock"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ libraryStats.reservedBooks }}</span>
+          <span class="stat-label">Reserved</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="library-content">
+    <p-tabView [(activeIndex)]="activeTab">
+      <!-- Browse Books Tab -->
+      <p-tabPanel header="Browse Books" leftIcon="pi pi-search">
+        <div class="books-section">
+          <!-- Search and Filter Toolbar -->
+          <p-toolbar styleClass="search-toolbar">
+            <ng-template pTemplate="start">
+              <div class="search-controls">
+                <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Search by title, author, or ISBN..."
+                    [(ngModel)]="searchQuery"
+                    (input)="onSearch()"
+                    class="search-input"
+                  />
+                </span>
+                <p-dropdown
+                  [options]="subjects"
+                  [(ngModel)]="selectedSubject"
+                  placeholder="Filter by Subject"
+                  [showClear]="true"
+                  (onChange)="onSubjectFilter()"
+                  styleClass="subject-filter"
+                ></p-dropdown>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="end">
+              <p-button
+                icon="pi pi-filter-slash"
+                label="Clear Filters"
+                styleClass="p-button-outlined"
+                (onClick)="clearFilters()"
+              ></p-button>
+            </ng-template>
+          </p-toolbar>
+
+          <!-- Books List -->
+          <app-book-list
+            [books]="filteredBooks"
+            [loading]="loading"
+            (issueBook)="openIssueDialog($event)"
+            (reserveBook)="openReserveDialog($event)"
+          ></app-book-list>
+        </div>
+      </p-tabPanel>
+
+      <!-- My Issues Tab -->
+      <p-tabPanel header="My Issues" leftIcon="pi pi-send">
+        <div class="my-issues-section">
+          <h3>Currently Issued Books</h3>
+          <p-divider></p-divider>
+
+          <div *ngIf="myIssues.length === 0" class="empty-state">
+            <i class="pi pi-info-circle"></i>
+            <h4>No Books Currently Issued</h4>
+            <p>You don't have any books issued at the moment.</p>
+          </div>
+
+          <div *ngIf="myIssues.length > 0" class="issues-grid">
+            <p-card *ngFor="let issue of myIssues" styleClass="issue-card">
+              <ng-template pTemplate="header">
+                <div class="issue-header">
+                  <h4>{{ issue.bookTitle }}</h4>
+                  <p-tag
+                    [value]="issue.status"
+                    [severity]="getStatusSeverity(issue.status)"
+                  ></p-tag>
+                </div>
+              </ng-template>
+
+              <div class="issue-details">
+                <div class="detail-row">
+                  <span class="label">Issue Date:</span>
+                  <span class="value">{{
+                    issue.issueDate | date: "dd/MM/yyyy"
+                  }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Due Date:</span>
+                  <span
+                    class="value"
+                    [class.overdue]="isOverdue(issue.dueDate)"
+                  >
+                    {{ issue.dueDate | date: "dd/MM/yyyy" }}
+                    <span *ngIf="isOverdue(issue.dueDate)" class="overdue-text">
+                      ({{ Math.abs(getDaysUntilDue(issue.dueDate)) }} days
+                      overdue)
+                    </span>
+                    <span *ngIf="!isOverdue(issue.dueDate)" class="due-text">
+                      ({{ getDaysUntilDue(issue.dueDate) }} days remaining)
+                    </span>
+                  </span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Renewals:</span>
+                  <span class="value">{{ issue.renewalCount }}/3</span>
+                </div>
+                <div
+                  class="detail-row"
+                  *ngIf="issue.fineAmount && issue.fineAmount > 0"
+                >
+                  <span class="label">Fine:</span>
+                  <span class="value fine-amount">₹{{ issue.fineAmount }}</span>
+                </div>
+              </div>
+
+              <ng-template pTemplate="footer">
+                <div class="issue-actions">
+                  <p-button
+                    label="Renew"
+                    icon="pi pi-refresh"
+                    styleClass="p-button-sm p-button-outlined"
+                    [disabled]="
+                      issue.renewalCount >= 3 || isOverdue(issue.dueDate)
+                    "
+                    (onClick)="renewBook(issue)"
+                  ></p-button>
+                </div>
+              </ng-template>
+            </p-card>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- My Reservations Tab -->
+      <p-tabPanel header="My Reservations" leftIcon="pi pi-clock">
+        <div class="my-reservations-section">
+          <h3>Book Reservations</h3>
+          <p-divider></p-divider>
+
+          <div *ngIf="myReservations.length === 0" class="empty-state">
+            <i class="pi pi-info-circle"></i>
+            <h4>No Active Reservations</h4>
+            <p>You don't have any book reservations at the moment.</p>
+          </div>
+
+          <div *ngIf="myReservations.length > 0" class="reservations-grid">
+            <p-card
+              *ngFor="let reservation of myReservations"
+              styleClass="reservation-card"
+            >
+              <ng-template pTemplate="header">
+                <div class="reservation-header">
+                  <h4>{{ reservation.bookTitle }}</h4>
+                  <p-tag
+                    [value]="reservation.status"
+                    [severity]="getStatusSeverity(reservation.status)"
+                  ></p-tag>
+                </div>
+              </ng-template>
+
+              <div class="reservation-details">
+                <div class="detail-row">
+                  <span class="label">Reserved Date:</span>
+                  <span class="value">{{
+                    reservation.reservationDate | date: "dd/MM/yyyy"
+                  }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Expires On:</span>
+                  <span class="value">{{
+                    reservation.expiryDate | date: "dd/MM/yyyy"
+                  }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Position in Queue:</span>
+                  <span class="value">#{{ reservation.position }}</span>
+                </div>
+              </div>
+
+              <ng-template pTemplate="footer">
+                <div class="reservation-actions">
+                  <p-button
+                    label="Cancel"
+                    icon="pi pi-times"
+                    styleClass="p-button-sm p-button-outlined p-button-danger"
+                    [disabled]="reservation.status !== 'active'"
+                    (onClick)="cancelReservation(reservation)"
+                  ></p-button>
+                </div>
+              </ng-template>
+            </p-card>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+
+  <!-- Issue Book Dialog -->
+  <app-issue-book
+    [visible]="showIssueDialog"
+    [book]="selectedBook"
+    [studentId]="currentStudentId"
+    (visibleChange)="showIssueDialog = $event"
+    (bookIssued)="onBookIssued()"
+  ></app-issue-book>
+
+  <!-- Reserve Book Dialog -->
+  <app-reserve-book
+    [visible]="showReserveDialog"
+    [book]="selectedBook"
+    [studentId]="currentStudentId"
+    (visibleChange)="showReserveDialog = $event"
+    (bookReserved)="onBookReserved()"
+  ></app-reserve-book>
+
+  <!-- Toast Messages -->
+  <p-toast position="top-right"></p-toast>
+
+  <!-- Confirmation Dialog -->
+  <p-confirmDialog></p-confirmDialog>
+</div>

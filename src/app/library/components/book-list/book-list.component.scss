@@ -1,0 +1,381 @@
+.book-list-container {
+  .layout-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+
+    .layout-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .book-count {
+      color: var(--text-color-secondary);
+      font-size: 0.95rem;
+    }
+  }
+
+  .loading-container {
+    text-align: center;
+    padding: 3rem;
+
+    p {
+      margin-top: 1rem;
+      color: var(--text-color-secondary);
+    }
+  }
+
+  .no-books {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-color-secondary);
+
+    i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #87ceeb;
+    }
+
+    h3 {
+      color: var(--text-color);
+      margin: 0 0 0.5rem 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // Grid View Styles
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+
+    :host ::ng-deep .book-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .p-card-header {
+        padding: 0;
+        position: relative;
+
+        .book-image {
+          position: relative;
+          height: 200px;
+          overflow: hidden;
+          background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+          }
+
+          &:hover img {
+            transform: scale(1.05);
+          }
+
+          .availability-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+          }
+        }
+      }
+
+      .p-card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .book-content {
+          flex: 1;
+
+          .book-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0 0 0.5rem 0;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          .book-author {
+            color: var(--text-color-secondary);
+            font-style: italic;
+            margin: 0 0 1rem 0;
+          }
+
+          .book-details {
+            margin-bottom: 1rem;
+
+            .detail-item {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 0.5rem;
+              font-size: 0.9rem;
+
+              .label {
+                font-weight: 500;
+                color: var(--text-color-secondary);
+                min-width: 70px;
+              }
+
+              .value {
+                color: var(--text-color);
+                text-align: right;
+              }
+
+              :host ::ng-deep .subject-chip {
+                background: #87ceeb;
+                color: white;
+              }
+            }
+          }
+
+          .book-description {
+            margin-bottom: 1rem;
+
+            p {
+              font-size: 0.9rem;
+              color: var(--text-color-secondary);
+              line-height: 1.4;
+              margin: 0;
+            }
+          }
+
+          .book-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+
+            :host ::ng-deep .tag-chip {
+              background: var(--surface-100);
+              color: var(--text-color-secondary);
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+
+      .p-card-footer {
+        .book-actions {
+          display: flex;
+          gap: 0.5rem;
+          justify-content: stretch;
+
+          :host ::ng-deep .p-button {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+
+  // List View Styles
+  .books-list {
+    :host ::ng-deep .p-dataview-content {
+      background: transparent;
+      border: none;
+      padding: 0;
+
+      .p-dataview-list {
+        .book-list-item {
+          display: flex;
+          align-items: flex-start;
+          padding: 1.5rem;
+          border: 1px solid var(--surface-border);
+          border-radius: var(--border-radius);
+          background: var(--surface-card);
+          margin-bottom: 1rem;
+          transition: all 0.2s ease;
+
+          &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+
+          .book-image-small {
+            width: 80px;
+            height: 120px;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .book-info {
+            flex: 1;
+            min-width: 0;
+
+            .book-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              margin-bottom: 0.5rem;
+
+              h4 {
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--text-color);
+              }
+            }
+
+            .author {
+              color: var(--text-color-secondary);
+              font-style: italic;
+              margin: 0 0 1rem 0;
+            }
+
+            .book-meta {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 1rem;
+              margin-bottom: 1rem;
+
+              .meta-item {
+                display: flex;
+                align-items: center;
+                font-size: 0.9rem;
+                color: var(--text-color-secondary);
+
+                i {
+                  margin-right: 0.5rem;
+                  color: #87ceeb;
+                }
+              }
+            }
+
+            .availability-info {
+              .available-count {
+                font-size: 0.9rem;
+                color: var(--text-color-secondary);
+              }
+            }
+          }
+
+          .book-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mobile responsiveness
+@media screen and (max-width: 768px) {
+  .book-list-container {
+    .layout-controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+
+      .layout-buttons {
+        justify-content: center;
+      }
+
+      .book-count {
+        text-align: center;
+      }
+    }
+
+    .books-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .books-list {
+      :host ::ng-deep .p-dataview-content {
+        .p-dataview-list {
+          .book-list-item {
+            flex-direction: column;
+            text-align: center;
+
+            .book-image-small {
+              margin: 0 auto 1rem auto;
+            }
+
+            .book-info {
+              .book-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+              }
+
+              .book-meta {
+                justify-content: center;
+              }
+            }
+
+            .book-actions {
+              margin: 1rem 0 0 0;
+              flex-direction: row;
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .book-list-container {
+    .books-grid {
+      :host ::ng-deep .book-card {
+        .book-actions {
+          flex-direction: column;
+        }
+      }
+    }
+
+    .books-list {
+      :host ::ng-deep .p-dataview-content {
+        .p-dataview-list {
+          .book-list-item {
+            padding: 1rem;
+
+            .book-meta {
+              flex-direction: column;
+              align-items: center;
+              gap: 0.5rem;
+            }
+
+            .book-actions {
+              flex-direction: column;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,363 @@
+.library-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+
+  .library-header {
+    margin-bottom: 2rem;
+
+    .header-content {
+      text-align: center;
+      margin-bottom: 2rem;
+
+      h1 {
+        color: var(--primary-color);
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+
+        i {
+          margin-right: 1rem;
+          color: #87ceeb;
+        }
+      }
+
+      p {
+        color: var(--text-color-secondary);
+        font-size: 1.1rem;
+        margin: 0;
+      }
+    }
+
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+
+      .stat-card {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+          font-size: 2rem;
+          width: 3rem;
+          height: 3rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 1rem;
+          background: #87ceeb;
+          color: white;
+
+          &.available {
+            background: #10b981;
+          }
+
+          &.issued {
+            background: #f59e0b;
+          }
+
+          &.reserved {
+            background: #8b5cf6;
+          }
+        }
+
+        .stat-info {
+          flex: 1;
+
+          .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+          }
+
+          .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+        }
+      }
+    }
+  }
+
+  .library-content {
+    :host ::ng-deep .p-tabview {
+      .p-tabview-nav {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+
+        .p-tabview-nav-link {
+          border: none;
+          background: transparent;
+          color: var(--text-color);
+          font-weight: 500;
+          padding: 1rem 1.5rem;
+          transition: all 0.2s;
+
+          &:hover {
+            background: var(--surface-hover);
+          }
+
+          &.p-highlight {
+            background: #87ceeb;
+            color: white;
+          }
+        }
+      }
+
+      .p-tabview-panels {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-top: none;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        padding: 2rem;
+      }
+    }
+
+    .books-section {
+      :host ::ng-deep .search-toolbar {
+        margin-bottom: 2rem;
+        border-radius: var(--border-radius);
+
+        .p-toolbar-group-start {
+          .search-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+
+            .search-input {
+              width: 400px;
+            }
+
+            .subject-filter {
+              min-width: 200px;
+            }
+          }
+        }
+      }
+    }
+
+    .my-issues-section,
+    .my-reservations-section {
+      h3 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 1rem 0;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-color-secondary);
+
+        i {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+          color: #87ceeb;
+        }
+
+        h4 {
+          color: var(--text-color);
+          margin: 0 0 0.5rem 0;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+
+      .issues-grid,
+      .reservations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+
+        :host ::ng-deep .p-card {
+          .p-card-header {
+            .issue-header,
+            .reservation-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 1rem;
+
+              h4 {
+                margin: 0;
+                color: var(--text-color);
+                font-size: 1.1rem;
+                font-weight: 600;
+              }
+            }
+          }
+
+          .p-card-content {
+            .issue-details,
+            .reservation-details {
+              .detail-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.75rem;
+
+                &:last-child {
+                  margin-bottom: 0;
+                }
+
+                .label {
+                  font-weight: 500;
+                  color: var(--text-color-secondary);
+                }
+
+                .value {
+                  color: var(--text-color);
+                  font-weight: 500;
+
+                  &.overdue {
+                    color: #ef4444;
+                  }
+
+                  .overdue-text {
+                    color: #ef4444;
+                    font-size: 0.85rem;
+                  }
+
+                  .due-text {
+                    color: #10b981;
+                    font-size: 0.85rem;
+                  }
+
+                  &.fine-amount {
+                    color: #ef4444;
+                    font-weight: 600;
+                  }
+                }
+              }
+            }
+          }
+
+          .p-card-footer {
+            .issue-actions,
+            .reservation-actions {
+              display: flex;
+              gap: 0.5rem;
+              justify-content: flex-end;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mobile responsiveness
+@media screen and (max-width: 768px) {
+  .library-container {
+    padding: 0.5rem;
+
+    .library-header {
+      .header-content {
+        h1 {
+          font-size: 2rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+      }
+
+      .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+
+        .stat-card {
+          padding: 1rem;
+
+          .stat-icon {
+            font-size: 1.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+
+          .stat-info {
+            .stat-number {
+              font-size: 1.5rem;
+            }
+
+            .stat-label {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+    }
+
+    .library-content {
+      :host ::ng-deep .p-tabview-panels {
+        padding: 1rem;
+      }
+
+      .books-section {
+        :host ::ng-deep .search-toolbar {
+          .p-toolbar-group-start {
+            .search-controls {
+              flex-direction: column;
+              align-items: stretch;
+
+              .search-input {
+                width: 100%;
+              }
+
+              .subject-filter {
+                min-width: auto;
+              }
+            }
+          }
+
+          .p-toolbar-group-end {
+            margin-top: 1rem;
+          }
+        }
+      }
+
+      .my-issues-section,
+      .my-reservations-section {
+        .issues-grid,
+        .reservations-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .library-container {
+    .library-header {
+      .stats-cards {
+        grid-template-columns: 1fr;
+
+        .stat-card {
+          .stat-icon {
+            margin-right: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+}

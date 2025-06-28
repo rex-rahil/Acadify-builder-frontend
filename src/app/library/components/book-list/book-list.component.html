@@ -1,0 +1,203 @@
+<div class="book-list-container">
+  <!-- Layout Toggle -->
+  <div class="layout-controls">
+    <div class="layout-buttons">
+      <p-button
+        icon="pi pi-th-large"
+        [outlined]="layout !== 'grid'"
+        (onClick)="layout = 'grid'"
+        pTooltip="Grid View"
+        tooltipPosition="top"
+      ></p-button>
+      <p-button
+        icon="pi pi-list"
+        [outlined]="layout !== 'list'"
+        (onClick)="layout = 'list'"
+        pTooltip="List View"
+        tooltipPosition="top"
+      ></p-button>
+    </div>
+    <span class="book-count">{{ books.length }} books found</span>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressBar mode="indeterminate"></p-progressBar>
+    <p>Loading books...</p>
+  </div>
+
+  <!-- No Books Found -->
+  <div *ngIf="!loading && books.length === 0" class="no-books">
+    <i class="pi pi-search"></i>
+    <h3>No Books Found</h3>
+    <p>Try adjusting your search criteria or filters.</p>
+  </div>
+
+  <!-- Grid View -->
+  <div
+    *ngIf="!loading && books.length > 0 && layout === 'grid'"
+    class="books-grid"
+  >
+    <p-card *ngFor="let book of books" styleClass="book-card">
+      <ng-template pTemplate="header">
+        <div class="book-image">
+          <img [src]="getBookImage(book)" [alt]="book.title" />
+          <div class="availability-badge">
+            <p-tag
+              [value]="getAvailabilityStatus(book)"
+              [severity]="getAvailabilitySeverity(book)"
+            ></p-tag>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="book-content">
+        <h3 class="book-title">{{ book.title }}</h3>
+        <p class="book-author">by {{ book.author }}</p>
+
+        <div class="book-details">
+          <div class="detail-item">
+            <span class="label">Subject:</span>
+            <p-chip [label]="book.subject" styleClass="subject-chip"></p-chip>
+          </div>
+          <div class="detail-item">
+            <span class="label">Publisher:</span>
+            <span class="value">{{ book.publisher }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Edition:</span>
+            <span class="value"
+              >{{ book.edition }} ({{ book.publishedYear }})</span
+            >
+          </div>
+          <div class="detail-item">
+            <span class="label">ISBN:</span>
+            <span class="value">{{ book.isbn }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Available:</span>
+            <span class="value">
+              {{ book.availableCopies }}/{{ book.totalCopies }} copies
+            </span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Location:</span>
+            <span class="value"
+              >{{ book.location.section }} - {{ book.location.shelf }}</span
+            >
+          </div>
+        </div>
+
+        <div class="book-description" *ngIf="book.description">
+          <p>
+            {{ book.description | slice: 0 : 150
+            }}<span *ngIf="book.description.length > 150">...</span>
+          </p>
+        </div>
+
+        <div class="book-tags" *ngIf="book.tags && book.tags.length > 0">
+          <p-chip
+            *ngFor="let tag of book.tags.slice(0, 3)"
+            [label]="tag"
+            styleClass="tag-chip"
+          ></p-chip>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="book-actions">
+          <p-button
+            *ngIf="book.availableCopies > 0"
+            label="Issue Book"
+            icon="pi pi-send"
+            styleClass="p-button-sm"
+            (onClick)="onIssueBook(book)"
+          ></p-button>
+          <p-button
+            *ngIf="book.availableCopies === 0"
+            label="Reserve"
+            icon="pi pi-clock"
+            styleClass="p-button-sm p-button-warning"
+            (onClick)="onReserveBook(book)"
+          ></p-button>
+          <p-button
+            label="Details"
+            icon="pi pi-info-circle"
+            styleClass="p-button-sm p-button-outlined"
+          ></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <!-- List View -->
+  <div
+    *ngIf="!loading && books.length > 0 && layout === 'list'"
+    class="books-list"
+  >
+    <p-dataView [value]="books" layout="list">
+      <ng-template let-book pTemplate="listItem">
+        <div class="book-list-item">
+          <div class="book-image-small">
+            <img [src]="getBookImage(book)" [alt]="book.title" />
+          </div>
+
+          <div class="book-info">
+            <div class="book-header">
+              <h4>{{ book.title }}</h4>
+              <p-tag
+                [value]="getAvailabilityStatus(book)"
+                [severity]="getAvailabilitySeverity(book)"
+              ></p-tag>
+            </div>
+
+            <p class="author">by {{ book.author }}</p>
+
+            <div class="book-meta">
+              <span class="meta-item">
+                <i class="pi pi-bookmark"></i>
+                {{ book.subject }}
+              </span>
+              <span class="meta-item">
+                <i class="pi pi-building"></i>
+                {{ book.publisher }}
+              </span>
+              <span class="meta-item">
+                <i class="pi pi-calendar"></i>
+                {{ book.publishedYear }}
+              </span>
+              <span class="meta-item">
+                <i class="pi pi-map-marker"></i>
+                {{ book.location.section }} - {{ book.location.shelf }}
+              </span>
+            </div>
+
+            <div class="availability-info">
+              <span class="available-count">
+                {{ book.availableCopies }}/{{ book.totalCopies }} copies
+                available
+              </span>
+            </div>
+          </div>
+
+          <div class="book-actions">
+            <p-button
+              *ngIf="book.availableCopies > 0"
+              label="Issue"
+              icon="pi pi-send"
+              styleClass="p-button-sm"
+              (onClick)="onIssueBook(book)"
+            ></p-button>
+            <p-button
+              *ngIf="book.availableCopies === 0"
+              label="Reserve"
+              icon="pi pi-clock"
+              styleClass="p-button-sm p-button-warning"
+              (onClick)="onReserveBook(book)"
+            ></p-button>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+</div>
