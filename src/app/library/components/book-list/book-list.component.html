@@ -135,12 +135,11 @@
     *ngIf="!loading && books.length > 0 && layout === 'list'"
     class="books-list"
   >
-    <p-dataView [value]="books" layout="list">
-      <ng-template let-book pTemplate="listItem">
-        <div class="book-list-item">
-          <div class="book-image-small">
-            <img [src]="getBookImage(book)" [alt]="book.title" />
-          </div>
+    <div class="book-list-items">
+      <div *ngFor="let book of books" class="book-list-item">
+        <div class="book-image-small">
+          <img [src]="getBookImage(book)" [alt]="book.title" />
+        </div>
 
           <div class="book-info">
             <div class="book-header">
