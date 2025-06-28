@@ -33,8 +33,8 @@ import { AvatarModule } from "primeng/avatar";
 import { PanelModule } from "primeng/panel";
 import { FieldsetModule } from "primeng/fieldset";
 import { DataViewModule } from "primeng/dataview";
-import { RatingModule } from "primeng/rating";
-import { ImageModule } from "primeng/image";
+import { MessageModule } from "primeng/message";
+import { MessagesModule } from "primeng/messages";
 
 @NgModule({
   declarations: [
