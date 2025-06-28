@@ -60,6 +60,13 @@ export class SideNavComponent {
 
   constructor(private router: Router) {}
 
+  getInitials(name: string): string {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("");
+  }
+
   onHide() {
     this.visible = false;
     this.visibleChange.emit(this.visible);

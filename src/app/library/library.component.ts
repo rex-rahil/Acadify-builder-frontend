@@ -250,4 +250,8 @@ export class LibraryComponent implements OnInit {
     const diffTime = due.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
+
+  getAbsoluteDays(days: number): number {
+    return Math.abs(days);
+  }
 }

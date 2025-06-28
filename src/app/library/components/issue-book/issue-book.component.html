@@ -17,14 +17,7 @@
 
       <div class="book-details-grid">
         <div class="book-image">
-          <img
-            [src]="
-              book.coverImage ||
-              'https://via.placeholder.com/150x200/87ceeb/ffffff?text=' +
-                encodeURIComponent(book.title.substring(0, 15))
-            "
-            [alt]="book.title"
-          />
+          <img [src]="getBookImageUrl(book)" [alt]="book.title" />
         </div>
 
         <div class="book-info">
@@ -76,7 +69,9 @@
             <i class="pi pi-calendar-plus"></i>
             <span>Issue Date</span>
           </div>
-          <div class="detail-value">{{ new Date() | date: "fullDate" }}</div>
+          <div class="detail-value">
+            {{ getCurrentDate() | date: "fullDate" }}
+          </div>
         </div>
 
         <div class="detail-card">
@@ -126,7 +121,7 @@
         <div class="form-field checkbox-field">
           <p-checkbox
             formControlName="acknowledgement"
-            [binary]="true"
+            binary="true"
             inputId="acknowledgement"
           ></p-checkbox>
           <label for="acknowledgement" class="checkbox-label">

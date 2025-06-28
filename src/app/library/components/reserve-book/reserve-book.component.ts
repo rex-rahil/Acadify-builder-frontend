@@ -104,4 +104,15 @@ export class ReserveBookComponent implements OnInit {
       { label: "Both", value: "both" },
     ];
   }
+
+  getCurrentDate(): Date {
+    return new Date();
+  }
+
+  getBookImageUrl(book: any): string {
+    return (
+      book.coverImage ||
+      `https://via.placeholder.com/150x200/87ceeb/ffffff?text=${encodeURIComponent(book.title.substring(0, 15))}`
+    );
+  }
 }

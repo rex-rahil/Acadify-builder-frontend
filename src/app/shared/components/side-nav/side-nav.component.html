@@ -20,7 +20,7 @@
     <!-- Student Info -->
     <div class="student-info">
       <p-avatar
-        [label]="studentName.split(' ').map(n => n[0]).join('')"
+        [label]="getInitials(studentName)"
         styleClass="student-avatar"
         size="large"
       >
@@ -39,9 +39,13 @@
         <ul class="menu-list">
           <li *ngFor="let item of menuItems.slice(0, 2)" class="menu-item">
             <a
-              (click)="item.route ? navigateTo(item.route) : item.command!()"
-              [routerLink]="item.route"
-              routerLinkActive="active"
+              (click)="
+                item.route
+                  ? navigateTo(item.route)
+                  : item.command
+                    ? item.command()
+                    : null
+              "
               class="menu-link"
               pRipple
             >

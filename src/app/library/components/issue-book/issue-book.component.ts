@@ -72,4 +72,15 @@ export class IssueBookComponent implements OnInit {
     dueDate.setDate(dueDate.getDate() + 14); // 14 days from today
     return dueDate;
   }
+
+  getCurrentDate(): Date {
+    return new Date();
+  }
+
+  getBookImageUrl(book: any): string {
+    return (
+      book.coverImage ||
+      `https://via.placeholder.com/150x200/87ceeb/ffffff?text=${encodeURIComponent(book.title.substring(0, 15))}`
+    );
+  }
 }
