@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { MessageService } from "primeng/api";
-import { MenuItem } from "primeng/api";
+import { MessageService, MenuItem } from "primeng/api";
 import { FormService } from "./services/form.service";
 
 @Component({
