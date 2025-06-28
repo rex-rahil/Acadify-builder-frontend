@@ -1,18 +1,19 @@
-.step-infographics {
+.college-growth-illustration {
   margin-bottom: 2rem;
 
-  .infographic-card {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  .illustration-container {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
     border-radius: var(--border-radius);
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--surface-border);
+    box-shadow: 0 6px 12px rgba(135, 206, 235, 0.15);
+    border: 2px solid rgba(135, 206, 235, 0.2);
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 300px 1fr;
     gap: 2rem;
     align-items: center;
     position: relative;
     overflow: hidden;
+    border-left: 4px solid var(--primary-color);
 
     &::before {
       content: "";
@@ -20,73 +21,121 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-color), #20b2aa);
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        var(--primary-color),
+        #20b2aa,
+        #32cd32
+      );
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(
+        circle,
+        rgba(135, 206, 235, 0.1) 0%,
+        transparent 70%
+      );
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
     }
   }
 
-  .step-icon {
-    .icon {
-      width: 120px;
-      height: 120px;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-      animation: float 3s ease-in-out infinite;
+  .growth-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.7) 100%
+    );
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(135, 206, 235, 0.2);
+
+    .growth-svg {
+      width: 280px;
+      height: 180px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+      animation: float 4s ease-in-out infinite;
     }
   }
 
-  .step-info {
+  .college-info {
     flex: 1;
+    padding-left: 1rem;
 
     h3 {
       color: var(--primary-color);
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
+      text-shadow: 0 2px 4px rgba(135, 206, 235, 0.2);
+
+      &::before {
+        content: "🏛️";
+        font-size: 1.5rem;
+      }
     }
 
     p {
       color: var(--text-color);
-      font-size: 1rem;
-      line-height: 1.6;
-      margin: 0 0 1.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin: 0 0 2rem 0;
+      font-weight: 400;
     }
 
-    .tips-section {
+    .achievements-section {
+      background: rgba(255, 255, 255, 0.7);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary-color);
+      box-shadow: 0 2px 8px rgba(135, 206, 235, 0.1);
+
       h4 {
-        color: var(--text-color);
-        font-size: 1rem;
-        font-weight: 500;
-        margin: 0 0 0.75rem 0;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 1rem 0;
         display: flex;
         align-items: center;
         gap: 0.5rem;
 
-        .pi-lightbulb {
+        .pi-trophy {
           color: #ffd700;
+          font-size: 1.2rem;
         }
       }
 
       ul {
         margin: 0;
-        padding-left: 1.25rem;
+        padding-left: 1.5rem;
         list-style: none;
 
         li {
-          color: var(--text-color-secondary);
-          font-size: 0.9rem;
-          margin-bottom: 0.5rem;
+          color: var(--text-color);
+          font-size: 1rem;
+          margin-bottom: 0.75rem;
           position: relative;
-          line-height: 1.4;
+          line-height: 1.5;
+          font-weight: 500;
 
           &::before {
-            content: "✓";
+            content: "🏆";
             position: absolute;
-            left: -1.25rem;
-            color: var(--primary-color);
-            font-weight: bold;
+            left: -1.5rem;
+            font-size: 1rem;
           }
 
           &:last-child {
@@ -96,112 +145,61 @@
       }
     }
   }
-
-  .progress-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-
-    .progress-circle {
-      position: relative;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: conic-gradient(
-        var(--primary-color) calc(var(--progress, 20) * 1%),
-        #e9ecef 0
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 46px;
-        height: 46px;
-        background: white;
-        border-radius: 50%;
-      }
-
-      .step-number {
-        position: relative;
-        z-index: 1;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--primary-color);
-      }
-
-      .total-steps {
-        position: relative;
-        z-index: 1;
-        font-size: 0.875rem;
-        color: var(--text-color-secondary);
-      }
-    }
-
-    .progress-text {
-      font-size: 0.875rem;
-      color: var(--text-color-secondary);
-      font-weight: 500;
-    }
-  }
 }
 
 /* Animations */
 @keyframes float {
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0px) scale(1);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px) scale(1.02);
   }
 }
 
-/* Step-specific progress colors */
-.step-infographics {
-  &[data-step="0"] .progress-circle {
-    --progress: 20;
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
   }
-  &[data-step="1"] .progress-circle {
-    --progress: 40;
-  }
-  &[data-step="2"] .progress-circle {
-    --progress: 60;
-  }
-  &[data-step="3"] .progress-circle {
-    --progress: 80;
-  }
-  &[data-step="4"] .progress-circle {
-    --progress: 100;
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
   }
 }
 
 /* Responsive design */
 @media screen and (max-width: 768px) {
-  .step-infographics {
-    .infographic-card {
+  .college-growth-illustration {
+    .illustration-container {
       grid-template-columns: 1fr;
       text-align: center;
       gap: 1.5rem;
       padding: 1.5rem;
+
+      &::after {
+        display: none;
+      }
     }
 
-    .step-icon .icon {
-      width: 100px;
-      height: 100px;
+    .growth-icon {
+      .growth-svg {
+        width: 240px;
+        height: 150px;
+      }
     }
 
-    .step-info {
+    .college-info {
+      padding-left: 0;
+
       h3 {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         justify-content: center;
       }
 
-      .tips-section ul {
+      .achievements-section ul {
         text-align: left;
       }
     }
@@ -209,31 +207,43 @@
 }
 
 @media screen and (max-width: 480px) {
-  .step-infographics {
-    .infographic-card {
+  .college-growth-illustration {
+    .illustration-container {
       padding: 1rem;
     }
 
-    .step-icon .icon {
-      width: 80px;
-      height: 80px;
+    .growth-icon {
+      padding: 0.5rem;
+
+      .growth-svg {
+        width: 200px;
+        height: 120px;
+      }
     }
 
-    .progress-section .progress-circle {
-      width: 50px;
-      height: 50px;
+    .college-info {
+      h3 {
+        font-size: 1.25rem;
 
-      &::before {
-        width: 38px;
-        height: 38px;
+        &::before {
+          font-size: 1.2rem;
+        }
       }
 
-      .step-number {
+      p {
         font-size: 1rem;
       }
 
-      .total-steps {
-        font-size: 0.75rem;
+      .achievements-section {
+        padding: 1rem;
+
+        h4 {
+          font-size: 1rem;
+        }
+
+        ul li {
+          font-size: 0.9rem;
+        }
       }
     }
   }

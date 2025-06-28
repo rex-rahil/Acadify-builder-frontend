@@ -11,58 +11,59 @@ export class StepInfographicsComponent {
   getStepInfo() {
     const stepInfos = [
       {
-        title: "Personal Information",
+        title: "Excellence in Education",
         description:
-          "Provide your basic personal details, contact information, and identification documents.",
-        tips: [
-          "Keep your documents ready",
-          "Use your official name",
-          "Double-check contact details",
+          "Join Oriental College of Pharmacy - Where academic excellence meets innovative learning. Our state-of-the-art facilities and experienced faculty ensure quality pharmaceutical education.",
+        achievements: [
+          "50+ Years of Academic Excellence",
+          "98% Placement Record",
+          "Modern Laboratory Facilities",
         ],
-        icon: "person",
+        icon: "excellence",
       },
       {
-        title: "Category & Eligibility",
+        title: "Growing Community",
         description:
-          "Select your category and confirm eligibility criteria for B.Pharm admission.",
-        tips: [
-          "Check eligibility requirements",
-          "Select correct category",
-          "Read guidelines carefully",
+          "Be part of our thriving academic community. Oriental College has nurtured thousands of successful pharmacists who are now leaders in the pharmaceutical industry.",
+        achievements: [
+          "5000+ Alumni Network",
+          "Industry Partnerships",
+          "Research Publications",
         ],
-        icon: "category",
+        icon: "community",
       },
       {
-        title: "Academic Records",
+        title: "Innovation & Research",
         description:
-          "Enter your educational qualifications and academic achievements.",
-        tips: [
-          "Have mark sheets ready",
-          "Calculate percentages accurately",
-          "Include all semesters",
+          "Our college is at the forefront of pharmaceutical research and innovation. Students engage in cutting-edge research projects and industry collaborations.",
+        achievements: [
+          "Advanced Research Labs",
+          "Patent Applications",
+          "Industry Collaborations",
         ],
-        icon: "academic",
+        icon: "innovation",
       },
       {
-        title: "Family Information",
-        description: "Provide parent/guardian details and reference contacts.",
-        tips: [
-          "Get parent consent",
-          "Verify contact numbers",
-          "Choose reliable references",
+        title: "Campus Life & Growth",
+        description:
+          "Experience holistic development with our vibrant campus life. From academics to extracurriculars, we foster an environment for complete personal growth.",
+        achievements: [
+          "Modern Campus Infrastructure",
+          "Student Activities & Clubs",
+          "Sports & Cultural Events",
         ],
-        icon: "family",
+        icon: "campus",
       },
       {
-        title: "Documents & Declaration",
+        title: "Future Success",
         description:
-          "Upload required documents and complete the admission declaration.",
-        tips: [
-          "Scan documents clearly",
-          "Check file formats",
-          "Read undertaking carefully",
+          "Complete your journey with us and step into a successful pharmaceutical career. Our placement support and industry connections ensure bright career prospects.",
+        achievements: [
+          "100% Placement Assistance",
+          "Career Guidance Program",
+          "Industry Mentorship",
         ],
-        icon: "documents",
+        icon: "success",
       },
     ];
 
