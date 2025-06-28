@@ -1,0 +1,113 @@
+.personal-details-form {
+  .form-section {
+    margin-bottom: 2rem;
+
+    h4 {
+      color: var(--primary-color);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+
+    h5 {
+      color: var(--text-color);
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin: 1.5rem 0 1rem 0;
+      grid-column: 1 / -1;
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .radio-group {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .radio-label {
+      cursor: pointer;
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+
+  .form-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+
+      &:after {
+        content: " *";
+        color: #e24c4c;
+      }
+    }
+
+    input,
+    textarea,
+    p-dropdown,
+    p-calendar {
+      width: 100%;
+    }
+
+    p-checkbox {
+      .p-checkbox-label {
+        margin-left: 0.5rem;
+        font-weight: normal;
+
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+
+  .error-message {
+    color: #e24c4c;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+}
+
+/* Remove asterisk from optional fields */
+.form-field {
+  &.optional label:after,
+  label.optional:after {
+    content: none;
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .personal-details-form {
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .radio-group {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+}

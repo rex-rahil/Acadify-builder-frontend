@@ -1,0 +1,313 @@
+<form [formGroup]="formGroup" class="personal-details-form">
+  <!-- Basic Information -->
+  <div class="form-section">
+    <h4>Basic Information</h4>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="lastName">Last Name *</label>
+        <input
+          pInputText
+          id="lastName"
+          formControlName="lastName"
+          [class.p-invalid]="isFieldInvalid('lastName')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('lastName')">
+          {{ getFieldError("lastName") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="firstName">First Name *</label>
+        <input
+          pInputText
+          id="firstName"
+          formControlName="firstName"
+          [class.p-invalid]="isFieldInvalid('firstName')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('firstName')">
+          {{ getFieldError("firstName") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="fatherHusbandName">Father/Husband's Name *</label>
+        <input
+          pInputText
+          id="fatherHusbandName"
+          formControlName="fatherHusbandName"
+          [class.p-invalid]="isFieldInvalid('fatherHusbandName')"
+        />
+        <small
+          class="error-message"
+          *ngIf="isFieldInvalid('fatherHusbandName')"
+        >
+          {{ getFieldError("fatherHusbandName") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="dateOfBirth">Date of Birth *</label>
+        <p-calendar
+          inputId="dateOfBirth"
+          formControlName="dateOfBirth"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [class.p-invalid]="isFieldInvalid('dateOfBirth')"
+          placeholder="DD/MM/YYYY"
+        ></p-calendar>
+        <small class="error-message" *ngIf="isFieldInvalid('dateOfBirth')">
+          {{ getFieldError("dateOfBirth") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="bloodGroup">Blood Group</label>
+        <p-dropdown
+          inputId="bloodGroup"
+          formControlName="bloodGroup"
+          [options]="bloodGroups"
+          placeholder="Select Blood Group"
+          optionLabel="label"
+          optionValue="value"
+        ></p-dropdown>
+      </div>
+
+      <div class="form-field">
+        <label>Gender *</label>
+        <div class="radio-group">
+          <div *ngFor="let gender of genders" class="radio-item">
+            <p-radioButton
+              [inputId]="gender.value"
+              [value]="gender.value"
+              formControlName="gender"
+            ></p-radioButton>
+            <label [for]="gender.value" class="radio-label">{{
+              gender.label
+            }}</label>
+          </div>
+        </div>
+        <small class="error-message" *ngIf="isFieldInvalid('gender')">
+          {{ getFieldError("gender") }}
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Identity Information -->
+  <div class="form-section">
+    <h4>Identity Information</h4>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="panCardNo">PAN Card No.</label>
+        <input
+          pInputText
+          id="panCardNo"
+          formControlName="panCardNo"
+          placeholder="ABCDE1234F"
+          [class.p-invalid]="isFieldInvalid('panCardNo')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('panCardNo')">
+          {{ getFieldError("panCardNo") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="aadharCardNo">Aadhar Card No.</label>
+        <input
+          pInputText
+          id="aadharCardNo"
+          formControlName="aadharCardNo"
+          placeholder="123456789012"
+          [class.p-invalid]="isFieldInvalid('aadharCardNo')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('aadharCardNo')">
+          {{ getFieldError("aadharCardNo") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="nationality">Nationality *</label>
+        <input
+          pInputText
+          id="nationality"
+          formControlName="nationality"
+          [class.p-invalid]="isFieldInvalid('nationality')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('nationality')">
+          {{ getFieldError("nationality") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="domicile">Domicile *</label>
+        <input
+          pInputText
+          id="domicile"
+          formControlName="domicile"
+          [class.p-invalid]="isFieldInvalid('domicile')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('domicile')">
+          {{ getFieldError("domicile") }}
+        </small>
+      </div>
+
+      <div class="form-field full-width">
+        <label for="identificationMark">Identification Mark on Body</label>
+        <textarea
+          pInputTextarea
+          id="identificationMark"
+          formControlName="identificationMark"
+          rows="2"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address Information -->
+  <div class="form-section">
+    <h4>Residential Address</h4>
+    <div class="form-grid">
+      <div class="form-field full-width">
+        <label for="residentialAddress">Address *</label>
+        <textarea
+          pInputTextarea
+          id="residentialAddress"
+          formControlName="residentialAddress"
+          rows="2"
+          [class.p-invalid]="isFieldInvalid('residentialAddress')"
+        ></textarea>
+        <small
+          class="error-message"
+          *ngIf="isFieldInvalid('residentialAddress')"
+        >
+          {{ getFieldError("residentialAddress") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="residentialCity">City *</label>
+        <input
+          pInputText
+          id="residentialCity"
+          formControlName="residentialCity"
+          [class.p-invalid]="isFieldInvalid('residentialCity')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('residentialCity')">
+          {{ getFieldError("residentialCity") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="residentialState">State *</label>
+        <input
+          pInputText
+          id="residentialState"
+          formControlName="residentialState"
+          [class.p-invalid]="isFieldInvalid('residentialState')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('residentialState')">
+          {{ getFieldError("residentialState") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="residentialPinCode">Pin Code *</label>
+        <input
+          pInputText
+          id="residentialPinCode"
+          formControlName="residentialPinCode"
+          [class.p-invalid]="isFieldInvalid('residentialPinCode')"
+        />
+        <small
+          class="error-message"
+          *ngIf="isFieldInvalid('residentialPinCode')"
+        >
+          {{ getFieldError("residentialPinCode") }}
+        </small>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <p-checkbox
+        inputId="sameAsResidential"
+        formControlName="sameAsResidential"
+        binary="true"
+        label="Same as Residential Address"
+      ></p-checkbox>
+    </div>
+
+    <div class="form-grid" *ngIf="!formGroup.get('sameAsResidential')?.value">
+      <h5>Permanent Address</h5>
+      <div class="form-field full-width">
+        <label for="permanentAddress">Address</label>
+        <textarea
+          pInputTextarea
+          id="permanentAddress"
+          formControlName="permanentAddress"
+          rows="2"
+        ></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="permanentCity">City</label>
+        <input pInputText id="permanentCity" formControlName="permanentCity" />
+      </div>
+
+      <div class="form-field">
+        <label for="permanentState">State</label>
+        <input
+          pInputText
+          id="permanentState"
+          formControlName="permanentState"
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="permanentPinCode">Pin Code</label>
+        <input
+          pInputText
+          id="permanentPinCode"
+          formControlName="permanentPinCode"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Information -->
+  <div class="form-section">
+    <h4>Contact Information</h4>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="telNo">Tel. No.</label>
+        <input pInputText id="telNo" formControlName="telNo" />
+      </div>
+
+      <div class="form-field">
+        <label for="cellNo">Cell No. *</label>
+        <input
+          pInputText
+          id="cellNo"
+          formControlName="cellNo"
+          [class.p-invalid]="isFieldInvalid('cellNo')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('cellNo')">
+          {{ getFieldError("cellNo") }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="email">E-mail *</label>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          type="email"
+          [class.p-invalid]="isFieldInvalid('email')"
+        />
+        <small class="error-message" *ngIf="isFieldInvalid('email')">
+          {{ getFieldError("email") }}
+        </small>
+      </div>
+    </div>
+  </div>
+</form>
