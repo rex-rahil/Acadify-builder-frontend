@@ -33,7 +33,6 @@ import { MessagesModule } from "primeng/messages";
 import { CheckboxModule } from "primeng/checkbox";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { KnobModule } from "primeng/knob";
-import { ChartModule } from "primeng/chart";
 import { TimelineModule } from "primeng/timeline";
 import { ImageModule } from "primeng/image";
 import { FileUploadModule } from "primeng/fileupload";
@@ -76,7 +75,6 @@ import { FileUploadModule } from "primeng/fileupload";
     CheckboxModule,
     ProgressSpinnerModule,
     KnobModule,
-    ChartModule,
     TimelineModule,
     ImageModule,
     FileUploadModule,

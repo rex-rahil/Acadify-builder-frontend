@@ -7,6 +7,7 @@ import {
   listApplications,
 } from "./routes/admissions";
 import libraryRoutes from "./routes/library";
+import dashboardRoutes from "./routes/dashboard";
 
 export function createServer() {
   const app = express();
@@ -33,6 +34,9 @@ export function createServer() {
 
   // Library routes
   app.use("/api/library", libraryRoutes);
+
+  // Dashboard routes
+  app.use("/api/dashboard", dashboardRoutes);
 
   // Health check
   app.get("/health", (req, res) => {

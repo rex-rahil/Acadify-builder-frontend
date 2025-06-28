@@ -49,16 +49,10 @@
       <div class="stat-card attendance-card">
         <div class="stat-header">
           <div class="attendance-chart">
-            <p-chart
-              type="doughnut"
-              [data]="attendanceChartData"
-              [options]="attendanceChartOptions"
-              width="60"
-              height="60"
-            >
-            </p-chart>
-            <div class="attendance-percentage">
-              {{ dashboardStats?.overallAttendance }}%
+            <div class="attendance-circle">
+              <div class="attendance-percentage">
+                {{ dashboardStats?.overallAttendance }}%
+              </div>
             </div>
           </div>
           <div class="stat-info">
@@ -228,7 +222,7 @@
             <div class="card-header">
               <h3><i class="pi pi-file-edit"></i> Pending Assignments</h3>
               <p-badge
-                [value]="pendingAssignments.length"
+                [value]="pendingAssignments.length.toString()"
                 severity="warning"
               ></p-badge>
             </div>
@@ -281,7 +275,10 @@
           <ng-template pTemplate="header">
             <div class="card-header">
               <h3><i class="pi pi-bookmark"></i> Upcoming Exams</h3>
-              <p-badge [value]="upcomingExams.length" severity="info"></p-badge>
+              <p-badge
+                [value]="upcomingExams.length.toString()"
+                severity="info"
+              ></p-badge>
             </div>
           </ng-template>
 

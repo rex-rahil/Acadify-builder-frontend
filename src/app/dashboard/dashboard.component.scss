@@ -117,14 +117,35 @@
               width: 80px;
               height: 80px;
 
-              .attendance-percentage {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-weight: 700;
-                font-size: 1rem;
-                color: var(--text-color);
+              .attendance-circle {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: conic-gradient(
+                  #87ceeb 0deg 295deg,
+                  #e5e5e5 295deg 360deg
+                );
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+
+                &::before {
+                  content: "";
+                  position: absolute;
+                  width: 60px;
+                  height: 60px;
+                  background: var(--surface-card);
+                  border-radius: 50%;
+                }
+
+                .attendance-percentage {
+                  position: relative;
+                  z-index: 1;
+                  font-weight: 700;
+                  font-size: 1rem;
+                  color: var(--text-color);
+                }
               }
             }
 
