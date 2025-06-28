@@ -1,0 +1,243 @@
+<p-dialog
+  header="Reserve Book"
+  [(visible)]="visible"
+  (onHide)="onHide()"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="reserve-book-dialog"
+  [style]="{ width: '650px' }"
+>
+  <div class="dialog-content" *ngIf="book">
+    <!-- Book Information -->
+    <div class="book-info-section">
+      <h4><i class="pi pi-book"></i> Book Details</h4>
+      <p-divider></p-divider>
+
+      <div class="book-details-grid">
+        <div class="book-image">
+          <img
+            [src]="
+              book.coverImage ||
+              'https://via.placeholder.com/150x200/87ceeb/ffffff?text=' +
+                encodeURIComponent(book.title.substring(0, 15))
+            "
+            [alt]="book.title"
+          />
+        </div>
+
+        <div class="book-info">
+          <h5>{{ book.title }}</h5>
+          <p class="author">by {{ book.author }}</p>
+
+          <div class="availability-status">
+            <p-tag
+              value="Not Available"
+              severity="danger"
+              icon="pi pi-times-circle"
+            ></p-tag>
+            <span class="status-text">
+              All {{ book.totalCopies }} copies are currently issued
+            </span>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Subject:</span>
+              <span class="value">{{ book.subject }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">ISBN:</span>
+              <span class="value">{{ book.isbn }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Publisher:</span>
+              <span class="value">{{ book.publisher }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Location:</span>
+              <span class="value"
+                >{{ book.location.section }} - {{ book.location.shelf }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reservation Information -->
+    <div class="reservation-info-section">
+      <h4><i class="pi pi-clock"></i> Reservation Information</h4>
+      <p-divider></p-divider>
+
+      <div class="reservation-details">
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-calendar-plus"></i>
+            <span>Reservation Date</span>
+          </div>
+          <div class="detail-value">{{ new Date() | date: "shortDate" }}</div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-calendar-times"></i>
+            <span>Expires On</span>
+          </div>
+          <div class="detail-value">
+            {{ getExpiryDate() | date: "shortDate" }}
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-hourglass"></i>
+            <span>Estimated Wait</span>
+          </div>
+          <div class="detail-value">{{ getEstimatedWaitTime() }}</div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-users"></i>
+            <span>Total Copies</span>
+          </div>
+          <div class="detail-value">{{ book.totalCopies }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reservation Form -->
+    <form [formGroup]="reserveForm" (ngSubmit)="onSubmit()">
+      <div class="form-section">
+        <h4><i class="pi pi-cog"></i> Reservation Settings</h4>
+        <p-divider></p-divider>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="priority">Priority Level</label>
+            <p-dropdown
+              id="priority"
+              formControlName="priority"
+              [options]="getPriorityOptions()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select priority"
+              [style]="{ width: '100%' }"
+            ></p-dropdown>
+            <small class="field-help">
+              Higher priority reservations are processed first
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="notification">Notification Method</label>
+            <p-dropdown
+              id="notification"
+              formControlName="notificationMethod"
+              [options]="getNotificationOptions()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select notification method"
+              [style]="{ width: '100%' }"
+            ></p-dropdown>
+            <small class="field-help">
+              How would you like to be notified when the book is available?
+            </small>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="studentNote">Special Instructions (Optional)</label>
+          <textarea
+            id="studentNote"
+            pInputTextarea
+            formControlName="studentNote"
+            placeholder="Any special requests or academic requirements..."
+            [rows]="3"
+            [autoResize]="true"
+          ></textarea>
+          <small class="field-help">
+            Mention if this book is needed for exams, projects, or assignments
+          </small>
+        </div>
+
+        <div class="form-field checkbox-field">
+          <p-checkbox
+            formControlName="acknowledgement"
+            [binary]="true"
+            inputId="acknowledgement"
+          ></p-checkbox>
+          <label for="acknowledgement" class="checkbox-label">
+            I understand and agree to the reservation terms:
+            <ul>
+              <li>
+                I will be notified when the book becomes available via my
+                selected method
+              </li>
+              <li>
+                I have 48 hours to collect the book once notified, or the
+                reservation will be cancelled
+              </li>
+              <li>
+                The reservation will automatically expire after 30 days if the
+                book doesn't become available
+              </li>
+              <li>I can cancel this reservation at any time from my account</li>
+            </ul>
+          </label>
+        </div>
+
+        <div class="form-messages">
+          <p-message
+            *ngIf="
+              reserveForm.get('acknowledgement')?.invalid &&
+              reserveForm.get('acknowledgement')?.touched
+            "
+            severity="error"
+            text="You must acknowledge the reservation terms"
+          ></p-message>
+        </div>
+
+        <div class="info-panel">
+          <p-panel header="What happens next?" [toggleable]="true">
+            <ol>
+              <li>Your reservation will be added to the queue for this book</li>
+              <li>
+                You will be notified when a copy becomes available (in order of
+                priority and reservation date)
+              </li>
+              <li>
+                You'll have 48 hours to visit the library and issue the book
+              </li>
+              <li>
+                If you don't collect within 48 hours, the book will be offered
+                to the next person in queue
+              </li>
+            </ol>
+          </p-panel>
+        </div>
+      </div>
+
+      <!-- Dialog Footer -->
+      <div class="dialog-footer">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          styleClass="p-button-outlined p-button-secondary"
+          (onClick)="onHide()"
+          [disabled]="loading"
+        ></p-button>
+        <p-button
+          label="Reserve Book"
+          icon="pi pi-clock"
+          type="submit"
+          [disabled]="reserveForm.invalid"
+          [loading]="loading"
+          styleClass="p-button-warning"
+        ></p-button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

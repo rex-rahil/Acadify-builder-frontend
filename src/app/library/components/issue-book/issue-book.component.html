@@ -1,0 +1,178 @@
+<p-dialog
+  header="Issue Book"
+  [(visible)]="visible"
+  (onHide)="onHide()"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="issue-book-dialog"
+  [style]="{ width: '600px' }"
+>
+  <div class="dialog-content" *ngIf="book">
+    <!-- Book Information -->
+    <div class="book-info-section">
+      <h4><i class="pi pi-book"></i> Book Details</h4>
+      <p-divider></p-divider>
+
+      <div class="book-details-grid">
+        <div class="book-image">
+          <img
+            [src]="
+              book.coverImage ||
+              'https://via.placeholder.com/150x200/87ceeb/ffffff?text=' +
+                encodeURIComponent(book.title.substring(0, 15))
+            "
+            [alt]="book.title"
+          />
+        </div>
+
+        <div class="book-info">
+          <h5>{{ book.title }}</h5>
+          <p class="author">by {{ book.author }}</p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Subject:</span>
+              <span class="value">{{ book.subject }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">ISBN:</span>
+              <span class="value">{{ book.isbn }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Publisher:</span>
+              <span class="value">{{ book.publisher }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Edition:</span>
+              <span class="value"
+                >{{ book.edition }} ({{ book.publishedYear }})</span
+              >
+            </div>
+            <div class="info-item">
+              <span class="label">Location:</span>
+              <span class="value"
+                >{{ book.location.section }} - {{ book.location.shelf }}</span
+              >
+            </div>
+            <div class="info-item">
+              <span class="label">Available:</span>
+              <span class="value">{{ book.availableCopies }} copies</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue Information -->
+    <div class="issue-info-section">
+      <h4><i class="pi pi-calendar"></i> Issue Information</h4>
+      <p-divider></p-divider>
+
+      <div class="issue-details">
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-calendar-plus"></i>
+            <span>Issue Date</span>
+          </div>
+          <div class="detail-value">{{ new Date() | date: "fullDate" }}</div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-calendar-times"></i>
+            <span>Due Date</span>
+          </div>
+          <div class="detail-value">{{ getDueDate() | date: "fullDate" }}</div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-clock"></i>
+            <span>Loan Period</span>
+          </div>
+          <div class="detail-value">14 days</div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="pi pi-refresh"></i>
+            <span>Renewals Allowed</span>
+          </div>
+          <div class="detail-value">Up to 3 times</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue Form -->
+    <form [formGroup]="issueForm" (ngSubmit)="onSubmit()">
+      <div class="form-section">
+        <h4><i class="pi pi-comment"></i> Additional Information</h4>
+        <p-divider></p-divider>
+
+        <div class="form-field">
+          <label for="studentNote">Student Note (Optional)</label>
+          <textarea
+            id="studentNote"
+            pInputTextarea
+            formControlName="studentNote"
+            placeholder="Any special notes or comments..."
+            [rows]="3"
+            [autoResize]="true"
+          ></textarea>
+        </div>
+
+        <div class="form-field checkbox-field">
+          <p-checkbox
+            formControlName="acknowledgement"
+            [binary]="true"
+            inputId="acknowledgement"
+          ></p-checkbox>
+          <label for="acknowledgement" class="checkbox-label">
+            I acknowledge that I have read and agree to the library terms and
+            conditions. I understand that:
+            <ul>
+              <li>Books must be returned on or before the due date</li>
+              <li>Late returns may incur fines</li>
+              <li>Lost or damaged books must be replaced or paid for</li>
+              <li>
+                Books can be renewed up to 3 times if no reservations exist
+              </li>
+            </ul>
+          </label>
+        </div>
+
+        <div class="form-messages">
+          <p-message
+            *ngIf="
+              issueForm.get('acknowledgement')?.invalid &&
+              issueForm.get('acknowledgement')?.touched
+            "
+            severity="error"
+            text="You must acknowledge the terms and conditions"
+          ></p-message>
+        </div>
+      </div>
+
+      <!-- Dialog Footer -->
+      <div class="dialog-footer">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          styleClass="p-button-outlined p-button-secondary"
+          (onClick)="onHide()"
+          [disabled]="loading"
+        ></p-button>
+        <p-button
+          label="Issue Book"
+          icon="pi pi-send"
+          type="submit"
+          [disabled]="issueForm.invalid"
+          [loading]="loading"
+          styleClass="p-button-success"
+        ></p-button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

@@ -1,0 +1,318 @@
+:host ::ng-deep .reserve-book-dialog {
+  .p-dialog-content {
+    padding: 0;
+  }
+}
+
+.dialog-content {
+  .book-info-section,
+  .reservation-info-section,
+  .form-section {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--surface-border);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    h4 {
+      display: flex;
+      align-items: center;
+      margin: 0 0 1rem 0;
+      color: var(--primary-color);
+      font-size: 1.1rem;
+      font-weight: 600;
+
+      i {
+        margin-right: 0.5rem;
+        color: #87ceeb;
+      }
+    }
+  }
+
+  .book-details-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+
+    .book-image {
+      img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--surface-border);
+      }
+    }
+
+    .book-info {
+      h5 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
+      .author {
+        margin: 0 0 1rem 0;
+        color: var(--text-color-secondary);
+        font-style: italic;
+      }
+
+      .availability-status {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+
+        .status-text {
+          color: var(--text-color-secondary);
+          font-size: 0.9rem;
+        }
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+
+        .info-item {
+          display: flex;
+          flex-direction: column;
+
+          .label {
+            font-size: 0.85rem;
+            color: var(--text-color-secondary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+          }
+
+          .value {
+            color: var(--text-color);
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .reservation-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+
+    .detail-card {
+      background: var(--surface-50);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      text-align: center;
+
+      .detail-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+        color: var(--text-color-secondary);
+        font-weight: 500;
+        font-size: 0.9rem;
+
+        i {
+          margin-right: 0.5rem;
+          color: #87ceeb;
+        }
+      }
+
+      .detail-value {
+        color: var(--text-color);
+        font-weight: 600;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-field {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .field-help {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--text-color-secondary);
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+
+    :host ::ng-deep {
+      .p-inputtextarea,
+      .p-dropdown {
+        width: 100%;
+      }
+    }
+
+    &.checkbox-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+
+      .checkbox-label {
+        flex: 1;
+        margin: 0;
+        line-height: 1.5;
+        font-size: 0.95rem;
+        color: var(--text-color);
+
+        ul {
+          margin: 0.5rem 0 0 1rem;
+          padding: 0;
+
+          li {
+            margin-bottom: 0.25rem;
+            color: var(--text-color-secondary);
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+
+  .form-messages {
+    margin-bottom: 1rem;
+  }
+
+  .info-panel {
+    margin-top: 1.5rem;
+
+    :host ::ng-deep .p-panel {
+      .p-panel-header {
+        background: var(--surface-100);
+        border-color: var(--surface-border);
+
+        .p-panel-title {
+          color: var(--primary-color);
+          font-weight: 600;
+        }
+      }
+
+      .p-panel-content {
+        ol {
+          margin: 0;
+          padding-left: 1.25rem;
+
+          li {
+            margin-bottom: 0.5rem;
+            color: var(--text-color-secondary);
+            line-height: 1.4;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--surface-50);
+    border-top: 1px solid var(--surface-border);
+  }
+}
+
+// Mobile responsiveness
+@media screen and (max-width: 768px) {
+  :host ::ng-deep .reserve-book-dialog {
+    width: 95vw !important;
+    max-width: 500px !important;
+  }
+
+  .dialog-content {
+    .book-details-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      text-align: center;
+
+      .book-image {
+        justify-self: center;
+
+        img {
+          width: 120px;
+        }
+      }
+
+      .book-info {
+        .availability-status {
+          justify-content: center;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+
+    .reservation-details {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .dialog-footer {
+      flex-direction: column;
+
+      :host ::ng-deep .p-button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dialog-content {
+    .book-info-section,
+    .reservation-info-section,
+    .form-section {
+      padding: 1rem;
+    }
+
+    .reservation-details {
+      grid-template-columns: 1fr;
+    }
+
+    .dialog-footer {
+      padding: 1rem;
+    }
+
+    .form-field {
+      &.checkbox-field {
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .checkbox-label {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
