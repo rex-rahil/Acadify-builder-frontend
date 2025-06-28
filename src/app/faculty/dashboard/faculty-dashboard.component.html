@@ -1,0 +1,339 @@
+<div class="faculty-dashboard">
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h1 class="welcome-title">
+        {{ greeting }}, {{ facultyProfile?.name || "Faculty" }}!
+      </h1>
+      <p class="current-time">
+        {{ currentTime | date: "EEEE, MMMM d, y" }} •
+        {{ currentTime | date: "h:mm:ss a" }}
+      </p>
+    </div>
+    <div class="quick-actions">
+      <p-button
+        label="Mark Attendance"
+        icon="pi pi-check"
+        styleClass="p-button-success"
+        (onClick)="markAttendance()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Refresh"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+        (onClick)="refreshData()"
+        [loading]="loading"
+      >
+      </p-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <p-card>
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error Loading Dashboard</h3>
+        <p>{{ error }}</p>
+        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="dashboard-content">
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <p-card class="stat-card subjects-card">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-book"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ dashboardStats?.totalSubjects || 0 }}</h3>
+            <p>Total Subjects</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card classes-card">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-calendar"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ dashboardStats?.todayClasses || 0 }}</h3>
+            <p>Today's Classes</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card attendance-card">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-chart-line"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ dashboardStats?.attendancePercentage || 0 }}%</h3>
+            <p>Attendance Rate</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card leave-card">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-calendar-times"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ dashboardStats?.leaveBalance || 0 }}</h3>
+            <p>Leave Balance</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Current Status Section -->
+    <div class="status-section">
+      <div class="current-class" *ngIf="getCurrentClass() as currentClass">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-clock"></i> Current Class</h3>
+              <p-tag
+                severity="success"
+                value="LIVE"
+                icon="pi pi-circle-fill"
+              ></p-tag>
+            </div>
+          </ng-template>
+          <div class="class-info">
+            <h4>{{ currentClass.subjectName }}</h4>
+            <p><strong>Code:</strong> {{ currentClass.subjectCode }}</p>
+            <p>
+              <strong>Time:</strong> {{ currentClass.startTime }} -
+              {{ currentClass.endTime }}
+            </p>
+            <p><strong>Room:</strong> {{ currentClass.roomNumber }}</p>
+            <p><strong>Semester:</strong> {{ currentClass.semester }}</p>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="next-class" *ngIf="getNextClass() as nextClass">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-clock"></i> Next Class</h3>
+              <p-tag severity="info" value="UPCOMING"></p-tag>
+            </div>
+          </ng-template>
+          <div class="class-info">
+            <h4>{{ nextClass.subjectName }}</h4>
+            <p><strong>Code:</strong> {{ nextClass.subjectCode }}</p>
+            <p>
+              <strong>Time:</strong> {{ nextClass.startTime }} -
+              {{ nextClass.endTime }}
+            </p>
+            <p><strong>Room:</strong> {{ nextClass.roomNumber }}</p>
+            <p><strong>Semester:</strong> {{ nextClass.semester }}</p>
+          </div>
+        </p-card>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Today's Schedule -->
+      <div class="schedule-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-calendar"></i> Today's Schedule</h3>
+              <p-button
+                icon="pi pi-external-link"
+                styleClass="p-button-text p-button-sm"
+                (onClick)="navigateToSchedule()"
+                pTooltip="View Full Schedule"
+              >
+              </p-button>
+            </div>
+          </ng-template>
+
+          <div *ngIf="todaySchedule.length > 0" class="schedule-list">
+            <div *ngFor="let schedule of todaySchedule" class="schedule-item">
+              <div class="schedule-time">
+                <span class="time">{{ schedule.startTime }}</span>
+                <span class="duration">{{ schedule.endTime }}</span>
+              </div>
+              <div class="schedule-details">
+                <h4>{{ schedule.subjectName }}</h4>
+                <p class="schedule-meta">
+                  <span class="room"
+                    ><i class="pi pi-map-marker"></i>
+                    {{ schedule.roomNumber }}</span
+                  >
+                  <span class="semester"
+                    ><i class="pi pi-users"></i> Semester
+                    {{ schedule.semester }}</span
+                  >
+                  <span class="type">
+                    <i [class]="getClassTypeIcon(schedule.type)"></i>
+                    {{ schedule.type | titlecase }}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="todaySchedule.length === 0" class="empty-state">
+            <i class="pi pi-calendar-times"></i>
+            <p>No classes scheduled for today</p>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="activities-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-list"></i> Upcoming Classes</h3>
+              <p-button
+                icon="pi pi-external-link"
+                styleClass="p-button-text p-button-sm"
+                (onClick)="navigateToCourses()"
+                pTooltip="View All Classes"
+              >
+              </p-button>
+            </div>
+          </ng-template>
+
+          <div *ngIf="upcomingClasses.length > 0" class="activities-list">
+            <div
+              *ngFor="let classSession of upcomingClasses"
+              class="activity-item"
+            >
+              <div class="activity-icon">
+                <i [class]="getClassTypeIcon(classSession.subjectName)"></i>
+              </div>
+              <div class="activity-details">
+                <h4>{{ classSession.subjectName }}</h4>
+                <p>
+                  {{ classSession.date | date: "MMM d" }} •
+                  {{ classSession.startTime }} - {{ classSession.endTime }}
+                </p>
+                <p class="activity-meta">
+                  Room {{ classSession.roomNumber }} •
+                  {{ classSession.studentCount }} students
+                </p>
+              </div>
+              <div class="activity-status">
+                <p-chip
+                  [label]="
+                    classSession.attendanceMarked ? 'Completed' : 'Pending'
+                  "
+                  [styleClass]="
+                    classSession.attendanceMarked
+                      ? 'success-chip'
+                      : 'warning-chip'
+                  "
+                >
+                </p-chip>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="upcomingClasses.length === 0" class="empty-state">
+            <i class="pi pi-calendar-plus"></i>
+            <p>No upcoming classes</p>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Recent Leaves -->
+      <div class="leaves-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3>
+                <i class="pi pi-calendar-times"></i> Recent Leave Requests
+              </h3>
+              <p-button
+                icon="pi pi-external-link"
+                styleClass="p-button-text p-button-sm"
+                (onClick)="navigateToLeaves()"
+                pTooltip="View All Leaves"
+              >
+              </p-button>
+            </div>
+          </ng-template>
+
+          <div *ngIf="recentLeaves.length > 0" class="leaves-list">
+            <div *ngFor="let leave of recentLeaves" class="leave-item">
+              <div class="leave-details">
+                <h4>{{ leave.leaveType | titlecase }} Leave</h4>
+                <p>
+                  {{ leave.startDate | date: "MMM d" }} -
+                  {{ leave.endDate | date: "MMM d, y" }}
+                </p>
+                <p class="leave-reason">{{ leave.reason }}</p>
+              </div>
+              <div class="leave-status">
+                <p-tag
+                  [value]="leave.status | titlecase"
+                  [severity]="getLeaveStatusSeverity(leave.status)"
+                >
+                </p-tag>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="recentLeaves.length === 0" class="empty-state">
+            <i class="pi pi-check-circle"></i>
+            <p>No pending leave requests</p>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Faculty Profile Summary -->
+      <div class="profile-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-user"></i> Profile Summary</h3>
+            </div>
+          </ng-template>
+
+          <div *ngIf="facultyProfile" class="profile-summary">
+            <div class="profile-avatar">
+              <p-avatar
+                [image]="facultyProfile.avatar"
+                [label]="facultyProfile.name?.charAt(0)"
+                size="large"
+                shape="circle"
+              >
+              </p-avatar>
+            </div>
+            <div class="profile-info">
+              <h4>{{ facultyProfile.name }}</h4>
+              <p class="profile-designation">
+                {{ facultyProfile.designation }}
+              </p>
+              <p class="profile-department">{{ facultyProfile.department }}</p>
+              <p class="profile-id">ID: {{ facultyProfile.employeeId }}</p>
+              <div *ngIf="facultyProfile.isHOD" class="hod-badge">
+                <p-chip label="HOD" styleClass="hod-chip"></p-chip>
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>
