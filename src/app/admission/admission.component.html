@@ -16,68 +16,69 @@
         <h3>{{ getStepTitle() }}</h3>
         <p-divider></p-divider>
 
-            <!-- Personal Details Step -->
-            <app-personal-details
-              *ngIf="activeIndex === 0"
-              [formGroup]="personalDetailsForm"
-            ></app-personal-details>
+        <!-- Personal Details Step -->
+        <app-personal-details
+          *ngIf="activeIndex === 0"
+          [formGroup]="personalDetailsForm"
+        ></app-personal-details>
 
-            <!-- Category & Eligibility Step -->
-            <app-category-eligibility
-              *ngIf="activeIndex === 1"
-              [formGroup]="categoryEligibilityForm"
-            ></app-category-eligibility>
+        <!-- Category & Eligibility Step -->
+        <app-category-eligibility
+          *ngIf="activeIndex === 1"
+          [formGroup]="categoryEligibilityForm"
+        ></app-category-eligibility>
 
-            <!-- Academic Qualifications Step -->
-            <app-academic-qualifications
-              *ngIf="activeIndex === 2"
-              [formGroup]="academicQualificationsForm"
-            ></app-academic-qualifications>
+        <!-- Academic Qualifications Step -->
+        <app-academic-qualifications
+          *ngIf="activeIndex === 2"
+          [formGroup]="academicQualificationsForm"
+        ></app-academic-qualifications>
 
-            <!-- Parent/Guardian Details Step -->
-            <app-parent-guardian
-              *ngIf="activeIndex === 3"
-              [formGroup]="parentGuardianForm"
-            ></app-parent-guardian>
+        <!-- Parent/Guardian Details Step -->
+        <app-parent-guardian
+          *ngIf="activeIndex === 3"
+          [formGroup]="parentGuardianForm"
+        ></app-parent-guardian>
 
-            <!-- Documents & Declaration Step -->
-            <app-documents-declaration
-              *ngIf="activeIndex === 4"
-              [formGroup]="documentsDeclarationForm"
-            ></app-documents-declaration>
+        <!-- Documents & Declaration Step -->
+        <app-documents-declaration
+          *ngIf="activeIndex === 4"
+          [formGroup]="documentsDeclarationForm"
+        ></app-documents-declaration>
 
-            <!-- Step Navigation -->
-            <div class="step-actions">
-              <p-button
-                label="Previous"
-                icon="pi pi-angle-left"
-                [disabled]="isFirstStep()"
-                (onClick)="previousStep()"
-                styleClass="p-button-secondary"
-              ></p-button>
+        <!-- Step Navigation -->
+        <div class="step-actions">
+          <p-button
+            label="Previous"
+            icon="pi pi-angle-left"
+            [disabled]="isFirstStep()"
+            (onClick)="previousStep()"
+            styleClass="p-button-secondary"
+          ></p-button>
 
-              <div class="next-actions">
-                <p-button
-                  *ngIf="!isLastStep()"
-                  label="Next"
-                  icon="pi pi-angle-right"
-                  iconPos="right"
-                  [disabled]="!canProceed()"
-                  (onClick)="nextStep()"
-                ></p-button>
+          <div class="next-actions">
+            <p-button
+              *ngIf="!isLastStep()"
+              label="Next"
+              icon="pi pi-angle-right"
+              iconPos="right"
+              [disabled]="!canProceed()"
+              (onClick)="nextStep()"
+            ></p-button>
 
-                <p-button
-                  *ngIf="isLastStep()"
-                  label="Submit Application"
-                  icon="pi pi-check"
-                  iconPos="right"
-                  [disabled]="!canProceed() || isSubmitting"
-                  [loading]="isSubmitting"
-                  (onClick)="submitApplication()"
-                  styleClass="p-button-success"
-                ></p-button>
-              </div>
+            <p-button
+              *ngIf="isLastStep()"
+              label="Submit Application"
+              icon="pi pi-check"
+              iconPos="right"
+              [disabled]="!canProceed() || isSubmitting"
+              [loading]="isSubmitting"
+              (onClick)="submitApplication()"
+              styleClass="p-button-success"
+            ></p-button>
+          </div>
         </div>
+      </div>
     </ng-template>
   </p-card>
 </div>
