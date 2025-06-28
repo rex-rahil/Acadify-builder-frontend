@@ -1,0 +1,92 @@
+<p-sidebar
+  [(visible)]="visible"
+  position="left"
+  [modal]="true"
+  styleClass="side-nav-sidebar"
+>
+  <ng-template pTemplate="header">
+    <div class="nav-header">
+      <div class="college-logo">
+        <i class="pi pi-graduation-cap"></i>
+      </div>
+      <div class="college-info">
+        <h3>Oriental College</h3>
+        <span>of Pharmacy</span>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="nav-content">
+    <!-- Student Info -->
+    <div class="student-info">
+      <p-avatar
+        [label]="studentName.split(' ').map(n => n[0]).join('')"
+        styleClass="student-avatar"
+        size="large"
+      >
+      </p-avatar>
+      <div class="student-details">
+        <h4>{{ studentName }}</h4>
+        <span class="student-id">ID: {{ studentId }}</span>
+        <span class="student-status">B.Pharm Student</span>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <div class="nav-menu">
+      <div class="menu-section">
+        <h5>Main</h5>
+        <ul class="menu-list">
+          <li *ngFor="let item of menuItems.slice(0, 2)" class="menu-item">
+            <a
+              (click)="item.route ? navigateTo(item.route) : item.command!()"
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              class="menu-link"
+              pRipple
+            >
+              <i [class]="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h5>Academic</h5>
+        <ul class="menu-list">
+          <li *ngFor="let item of menuItems.slice(2, 4)" class="menu-item">
+            <a
+              (click)="item.route ? navigateTo(item.route) : item.command!()"
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              class="menu-link"
+              pRipple
+            >
+              <i [class]="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h5>Account</h5>
+        <ul class="menu-list">
+          <li *ngFor="let item of menuItems.slice(4)" class="menu-item">
+            <a
+              (click)="item.route ? navigateTo(item.route) : item.command!()"
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              class="menu-link"
+              pRipple
+            >
+              <i [class]="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</p-sidebar>
