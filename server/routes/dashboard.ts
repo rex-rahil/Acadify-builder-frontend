@@ -78,6 +78,117 @@ const mockAnnouncements = [
   },
 ];
 
+// Mock timetable data
+const mockTimetable = [
+  {
+    timeSlot: "09:00 - 10:00",
+    monday: {
+      id: "1",
+      subjectCode: "PC401",
+      subjectName: "Pharmaceutical Analysis",
+      faculty: "Dr. Smith",
+      startTime: "09:00",
+      endTime: "10:00",
+      day: "Monday",
+      room: "Lab 1",
+      type: "practical",
+      semester: 4,
+      batch: "B.Pharm IV",
+    },
+    tuesday: {
+      id: "2",
+      subjectCode: "PC402",
+      subjectName: "Pharmacology",
+      faculty: "Dr. Johnson",
+      startTime: "09:00",
+      endTime: "10:00",
+      day: "Tuesday",
+      room: "Room 201",
+      type: "lecture",
+      semester: 4,
+      batch: "B.Pharm IV",
+    },
+  },
+  {
+    timeSlot: "10:00 - 11:00",
+    wednesday: {
+      id: "3",
+      subjectCode: "PC403",
+      subjectName: "Pharmaceutical Chemistry",
+      faculty: "Dr. Brown",
+      startTime: "10:00",
+      endTime: "11:00",
+      day: "Wednesday",
+      room: "Room 202",
+      type: "lecture",
+      semester: 4,
+      batch: "B.Pharm IV",
+    },
+  },
+];
+
+// Mock attendance data
+const mockAttendanceStats = [
+  {
+    subjectCode: "PC401",
+    subjectName: "Pharmaceutical Analysis",
+    totalClasses: 20,
+    attendedClasses: 18,
+    attendancePercentage: 90,
+    requiredAttendance: 75,
+    shortfall: 0,
+    status: "good",
+  },
+  {
+    subjectCode: "PC402",
+    subjectName: "Pharmacology",
+    totalClasses: 25,
+    attendedClasses: 20,
+    attendancePercentage: 80,
+    requiredAttendance: 75,
+    shortfall: 0,
+    status: "good",
+  },
+  {
+    subjectCode: "PC403",
+    subjectName: "Pharmaceutical Chemistry",
+    totalClasses: 22,
+    attendedClasses: 15,
+    attendancePercentage: 68,
+    requiredAttendance: 75,
+    shortfall: 2,
+    status: "warning",
+  },
+];
+
+// Mock student profile
+const mockStudentProfile = {
+  id: "OCP2024001",
+  firstName: "John",
+  lastName: "Doe",
+  email: "john.doe@ocp.edu",
+  phone: "+91 9876543210",
+  rollNumber: "OCP2024001",
+  course: "B.Pharm",
+  semester: 4,
+  batch: "2021-2025",
+  joiningDate: new Date("2021-09-01"),
+  bloodGroup: "B+",
+  address: {
+    street: "123 College Street",
+    city: "Mumbai",
+    state: "Maharashtra",
+    pincode: "400001",
+  },
+  parentGuardian: {
+    name: "Robert Doe",
+    relation: "Father",
+    phone: "+91 9876543211",
+    email: "robert.doe@email.com",
+  },
+  status: "active",
+};
+
 // GET /api/dashboard/stats/:studentId
 router.get("/stats/:studentId", (req: Request, res: Response) => {
   res.json(mockDashboardStats);
@@ -108,6 +219,27 @@ router.get("/exams/:studentId", (req: Request, res: Response) => {
 // GET /api/dashboard/announcements
 router.get("/announcements", (req: Request, res: Response) => {
   res.json(mockAnnouncements);
+});
+
+// GET /api/dashboard/timetable/:studentId
+router.get("/timetable/:studentId", (req: Request, res: Response) => {
+  res.json(mockTimetable);
+});
+
+// GET /api/dashboard/attendance/stats/:studentId
+router.get("/attendance/stats/:studentId", (req: Request, res: Response) => {
+  res.json(mockAttendanceStats);
+});
+
+// GET /api/dashboard/profile/:studentId
+router.get("/profile/:studentId", (req: Request, res: Response) => {
+  res.json(mockStudentProfile);
+});
+
+// PUT /api/dashboard/profile/:studentId
+router.put("/profile/:studentId", (req: Request, res: Response) => {
+  const updatedProfile = { ...mockStudentProfile, ...req.body };
+  res.json(updatedProfile);
 });
 
 export default router;
