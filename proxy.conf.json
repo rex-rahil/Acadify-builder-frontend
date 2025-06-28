@@ -1,7 +1,11 @@
 {
   "/api/*": {
     "target": "http://localhost:3000",
-    "secure": true,
-    "changeOrigin": true
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "onError": function(err, req, res) {
+      console.log("Proxy error:", err);
+    }
   }
 }
