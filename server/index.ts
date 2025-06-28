@@ -6,6 +6,7 @@ import {
   getApplicationStatus,
   listApplications,
 } from "./routes/admissions";
+import libraryRoutes from "./routes/library";
 
 export function createServer() {
   const app = express();
@@ -29,6 +30,9 @@ export function createServer() {
   app.post("/api/admissions", handleAdmissionSubmission);
   app.get("/api/admissions/:applicationId", getApplicationStatus);
   app.get("/api/admin/applications", listApplications);
+
+  // Library routes
+  app.use("/api/library", libraryRoutes);
 
   // Health check
   app.get("/health", (req, res) => {
