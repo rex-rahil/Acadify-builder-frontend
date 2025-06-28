@@ -25,9 +25,8 @@ export class AdmissionIllustrationsComponent {
           "Use your official name as per certificates",
           "Double-check all contact information",
         ],
-        imageUrl:
-          "https://img.freepik.com/free-vector/people-filling-out-forms_23-2148098286.jpg?w=900&t=st=1735408800~exp=1735412400~hmac=example",
-        altText: "Person filling out forms - Personal Details",
+        imageUrl: "https://storyset.com/illustration/college-project/amico",
+        altText: "College project illustration - Personal Details",
       },
       {
         title: "Eligibility & Categories",
