@@ -13,6 +13,11 @@ const routes: Routes = [
       import("./admission/admission.module").then((m) => m.AdmissionModule),
   },
   {
+    path: "library",
+    loadChildren: () =>
+      import("./library/library.module").then((m) => m.LibraryModule),
+  },
+  {
     path: "**",
     redirectTo: "/admission",
   },

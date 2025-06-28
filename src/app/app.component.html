@@ -1,10 +1,50 @@
-<div class="admission-container">
-  <div class="college-header">
-    <h1>Oriental College of Pharmacy</h1>
-    <h2>B.Pharm Admission Application</h2>
+<div class="app-container">
+  <!-- Top Navigation Bar (for library and other pages) -->
+  <div class="top-nav" *ngIf="isLibraryRoute()">
+    <p-button
+      icon="pi pi-bars"
+      styleClass="p-button-text menu-button"
+      (onClick)="toggleSideNav()"
+      pTooltip="Open Menu"
+      tooltipPosition="bottom"
+    ></p-button>
+
+    <div class="nav-title">
+      <h2>Oriental College of Pharmacy</h2>
+      <span>Student Portal</span>
+    </div>
+
+    <div class="nav-actions">
+      <p-button
+        icon="pi pi-bell"
+        styleClass="p-button-text p-button-rounded"
+        badge="3"
+        badgeClass="p-badge-danger"
+        pTooltip="Notifications"
+        tooltipPosition="bottom"
+      ></p-button>
+      <p-button
+        icon="pi pi-user"
+        styleClass="p-button-text p-button-rounded"
+        pTooltip="Profile"
+        tooltipPosition="bottom"
+      ></p-button>
+    </div>
   </div>
 
-  <router-outlet></router-outlet>
+  <!-- Main Content -->
+  <div class="main-content" [class.with-top-nav]="isLibraryRoute()">
+    <!-- Admission Header (only for admission routes) -->
+    <div class="college-header" *ngIf="!isLibraryRoute()">
+      <h1>Oriental College of Pharmacy</h1>
+      <h2>B.Pharm Admission Application</h2>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Side Navigation -->
+  <app-side-nav [(visible)]="sideNavVisible"></app-side-nav>
 
   <p-toast position="top-right"></p-toast>
 </div>
