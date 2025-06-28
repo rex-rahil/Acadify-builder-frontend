@@ -1,0 +1,351 @@
+<div class="course-management">
+  <div class="page-header">
+    <h1><i class="pi pi-book"></i> Course Management</h1>
+    <div class="header-actions">
+      <p-button
+        label="Refresh"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+        (onClick)="refreshData()"
+        [loading]="loading"
+      >
+      </p-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading course data...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <p-card>
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error Loading Courses</h3>
+        <p>{{ error }}</p>
+        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="course-content">
+    <!-- Subject Cards -->
+    <div class="subjects-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-book"></i> My Subjects</h3>
+          </div>
+        </ng-template>
+
+        <div *ngIf="subjects.length > 0" class="subjects-grid">
+          <div *ngFor="let subject of subjects" class="subject-card">
+            <div class="subject-info">
+              <div class="subject-icon">
+                <i [class]="getSubjectTypeIcon(subject.type)"></i>
+              </div>
+              <div class="subject-details">
+                <h4>{{ subject.name }}</h4>
+                <p class="subject-code">{{ subject.code }}</p>
+                <p class="subject-meta">
+                  Semester {{ subject.semester }} •
+                  {{ subject.credits }} Credits
+                </p>
+                <p-tag
+                  [value]="subject.type | titlecase"
+                  [severity]="getSubjectTypeSeverity(subject.type)"
+                >
+                </p-tag>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="subjects.length === 0" class="empty-state">
+          <i class="pi pi-book"></i>
+          <p>No subjects assigned</p>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Weekly Schedule -->
+    <div class="schedule-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-calendar"></i> Weekly Schedule</h3>
+          </div>
+        </ng-template>
+
+        <div class="schedule-grid">
+          <div
+            *ngFor="let day of [1, 2, 3, 4, 5, 6]; let i = index"
+            class="day-column"
+          >
+            <div class="day-header">
+              <h4>{{ getDayName(day) }}</h4>
+            </div>
+            <div class="day-classes">
+              <div
+                *ngFor="let scheduleItem of getScheduleForDay(day)"
+                class="class-item"
+              >
+                <div class="class-time">
+                  {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
+                </div>
+                <div class="class-details">
+                  <h5>{{ scheduleItem.subjectName }}</h5>
+                  <p>{{ scheduleItem.subjectCode }}</p>
+                  <p class="class-meta">
+                    <span
+                      ><i class="pi pi-map-marker"></i>
+                      {{ scheduleItem.roomNumber }}</span
+                    >
+                    <span
+                      ><i class="pi pi-users"></i> Sem
+                      {{ scheduleItem.semester }}</span
+                    >
+                  </p>
+                  <p-chip
+                    [label]="scheduleItem.type | titlecase"
+                    [styleClass]="
+                      getSubjectTypeSeverity(scheduleItem.type) + '-chip'
+                    "
+                  >
+                  </p-chip>
+                </div>
+              </div>
+              <div
+                *ngIf="getScheduleForDay(day).length === 0"
+                class="no-classes"
+              >
+                <p>No classes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Class Sessions -->
+    <div class="sessions-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-list"></i> Class Sessions</h3>
+            <div class="filters">
+              <p-calendar
+                [(ngModel)]="filterDate"
+                (onSelect)="onDateFilterChange()"
+                [showIcon]="true"
+                placeholder="Select Date"
+              >
+              </p-calendar>
+              <p-dropdown
+                [options]="subjects"
+                [(ngModel)]="selectedSubjectFilter"
+                (onChange)="onSubjectFilterChange()"
+                optionLabel="name"
+                placeholder="All Subjects"
+                [showClear]="true"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="classSessions.length > 0">
+          <p-table [value]="classSessions" [paginator]="true" [rows]="10">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Subject</th>
+                <th>Date & Time</th>
+                <th>Room</th>
+                <th>Students</th>
+                <th>Attendance</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-session>
+              <tr>
+                <td>
+                  <div class="subject-info">
+                    <h5>{{ session.subjectName }}</h5>
+                    <p>Semester {{ session.semester }}</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="datetime-info">
+                    <p class="date">{{ session.date | date: "MMM d, y" }}</p>
+                    <p class="time">
+                      {{ session.startTime }} - {{ session.endTime }}
+                    </p>
+                  </div>
+                </td>
+                <td>
+                  <p-chip [label]="session.roomNumber"></p-chip>
+                </td>
+                <td>
+                  <div class="student-count">
+                    <i class="pi pi-users"></i>
+                    {{ session.studentCount }}
+                  </div>
+                </td>
+                <td>
+                  <div
+                    *ngIf="session.attendanceMarked"
+                    class="attendance-summary"
+                  >
+                    <span class="present"
+                      >{{ session.presentCount }} Present</span
+                    >
+                    <span class="absent">{{ session.absentCount }} Absent</span>
+                  </div>
+                  <span *ngIf="!session.attendanceMarked" class="not-marked">
+                    Not Marked
+                  </span>
+                </td>
+                <td>
+                  <p-tag
+                    [value]="getSessionStatusText(session)"
+                    [severity]="getSessionStatusSeverity(session)"
+                  >
+                  </p-tag>
+                </td>
+                <td>
+                  <p-button
+                    [label]="
+                      session.attendanceMarked ? 'View' : 'Mark Attendance'
+                    "
+                    [icon]="
+                      session.attendanceMarked ? 'pi pi-eye' : 'pi pi-check'
+                    "
+                    [styleClass]="
+                      session.attendanceMarked
+                        ? 'p-button-info p-button-sm'
+                        : 'p-button-success p-button-sm'
+                    "
+                    (onClick)="openAttendanceDialog(session)"
+                  >
+                  </p-button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div *ngIf="classSessions.length === 0" class="empty-state">
+          <i class="pi pi-calendar-times"></i>
+          <p>No class sessions found for the selected criteria</p>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Attendance Dialog -->
+  <p-dialog
+    header="Student Attendance"
+    [(visible)]="showAttendanceDialog"
+    [modal]="true"
+    [closable]="true"
+    [resizable]="true"
+    [maximizable]="true"
+    styleClass="attendance-dialog"
+    (onHide)="closeAttendanceDialog()"
+  >
+    <div *ngIf="selectedSession" class="attendance-content">
+      <div class="session-info">
+        <h4>{{ selectedSession.subjectName }}</h4>
+        <p>
+          {{ selectedSession.date | date: "EEEE, MMMM d, y" }} •
+          {{ selectedSession.startTime }} - {{ selectedSession.endTime }} • Room
+          {{ selectedSession.roomNumber }}
+        </p>
+      </div>
+
+      <div class="attendance-summary">
+        <div class="summary-stats">
+          <p-chip
+            [label]="'Present: ' + getPresentCount()"
+            styleClass="present-chip"
+          >
+          </p-chip>
+          <p-chip
+            [label]="'Absent: ' + getAbsentCount()"
+            styleClass="absent-chip"
+          >
+          </p-chip>
+          <p-chip
+            [label]="'Total: ' + studentAttendance.length"
+            styleClass="total-chip"
+          >
+          </p-chip>
+        </div>
+        <div class="bulk-actions">
+          <p-button
+            label="Mark All Present"
+            icon="pi pi-check"
+            styleClass="p-button-success p-button-sm"
+            (onClick)="markAllPresent()"
+          >
+          </p-button>
+          <p-button
+            label="Mark All Absent"
+            icon="pi pi-times"
+            styleClass="p-button-danger p-button-sm"
+            (onClick)="markAllAbsent()"
+          >
+          </p-button>
+        </div>
+      </div>
+
+      <div class="students-list">
+        <div *ngFor="let student of studentAttendance" class="student-item">
+          <div class="student-info">
+            <p-avatar
+              [label]="student.studentName.charAt(0)"
+              size="normal"
+              shape="circle"
+            >
+            </p-avatar>
+            <div class="student-details">
+              <h5>{{ student.studentName }}</h5>
+              <p>{{ student.rollNumber }}</p>
+            </div>
+          </div>
+          <div class="attendance-controls">
+            <p-button
+              [icon]="getAttendanceStatusIcon(student.status)"
+              [label]="student.status | titlecase"
+              [styleClass]="'p-button-sm status-' + student.status"
+              (onClick)="toggleStudentAttendance(student)"
+            >
+            </p-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="closeAttendanceDialog()"
+        >
+        </p-button>
+        <p-button
+          label="Save Attendance"
+          icon="pi pi-check"
+          styleClass="p-button-success"
+          (onClick)="saveAttendance()"
+          [loading]="attendanceLoading"
+          [disabled]="selectedSession?.attendanceMarked"
+        >
+        </p-button>
+      </div>
+    </div>
+  </p-dialog>
+</div>
