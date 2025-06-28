@@ -1,0 +1,175 @@
+<div class="timetable-container">
+  <!-- Timetable Header -->
+  <div class="timetable-header">
+    <div class="header-content">
+      <h1>
+        <i class="pi pi-calendar"></i>
+        Lecture Timetable
+      </h1>
+      <p>View your weekly class schedule and timings</p>
+    </div>
+
+    <div class="header-controls">
+      <div class="semester-selector">
+        <label for="semester">Semester:</label>
+        <p-dropdown
+          id="semester"
+          [options]="semesters"
+          [(ngModel)]="selectedSemester"
+          (onChange)="onSemesterChange()"
+          [style]="{ width: '100px' }"
+        >
+          <ng-template let-semester pTemplate="item">
+            {{ semester }}
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <p-button
+        label="Export"
+        icon="pi pi-download"
+        styleClass="p-button-outlined"
+        (onClick)="exportTimetable()"
+      ></p-button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading timetable...</p>
+  </div>
+
+  <!-- Timetable Content -->
+  <div *ngIf="!loading" class="timetable-content">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="timetable-card-header">
+          <h3>Semester {{ selectedSemester }} - Weekly Schedule</h3>
+          <div class="legend">
+            <span class="legend-item lecture-type">
+              <span class="legend-color"></span>
+              Lecture
+            </span>
+            <span class="legend-item practical-type">
+              <span class="legend-color"></span>
+              Practical
+            </span>
+            <span class="legend-item tutorial-type">
+              <span class="legend-color"></span>
+              Tutorial
+            </span>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="timetable-grid">
+        <div class="timetable-table">
+          <!-- Header Row -->
+          <div class="table-header">
+            <div class="time-header">Time</div>
+            <div
+              *ngFor="let day of days"
+              class="day-header"
+              [class]="getCurrentDayClass(day)"
+            >
+              {{ day }}
+            </div>
+          </div>
+
+          <!-- Time Slot Rows -->
+          <div
+            *ngFor="let timeSlot of timeSlots"
+            class="table-row"
+            [class]="getCurrentTimeSlotClass(timeSlot)"
+          >
+            <div class="time-slot">
+              {{ timeSlot }}
+            </div>
+
+            <div
+              *ngFor="let day of days"
+              class="lecture-cell"
+              [class]="getCurrentDayClass(day)"
+            >
+              <div
+                *ngIf="getLectureForSlot(timeSlot, day) as lecture"
+                class="lecture-card"
+                [class]="getLectureTypeClass(lecture.type)"
+              >
+                <div class="lecture-subject">
+                  <strong>{{ lecture.subjectCode }}</strong>
+                  <span class="subject-name">{{ lecture.subjectName }}</span>
+                </div>
+                <div class="lecture-details">
+                  <span class="faculty">
+                    <i class="pi pi-user"></i>
+                    {{ lecture.faculty }}
+                  </span>
+                  <span class="room">
+                    <i class="pi pi-map-marker"></i>
+                    {{ lecture.room }}
+                  </span>
+                </div>
+                <div class="lecture-type-badge">
+                  {{ lecture.type | titlecase }}
+                </div>
+              </div>
+
+              <div *ngIf="!getLectureForSlot(timeSlot, day)" class="free-slot">
+                <span>Free</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="timetable-footer">
+          <div class="schedule-summary">
+            <span
+              ><strong>Total Classes Today:</strong>
+              {{ getTodayClassCount() }}</span
+            >
+            <span><strong>Next Class:</strong> {{ getNextClass() }}</span>
+          </div>
+          <div class="last-updated">
+            Last updated: {{ new Date() | date: 'dd/MM/yyyy HH:mm' }}
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Additional Information -->
+    <div class="additional-info">
+      <div class="info-cards">
+        <p-card styleClass="info-card">
+          <ng-template pTemplate="header">
+            <h4><i class="pi pi-info-circle"></i> Schedule Notes</h4>
+          </ng-template>
+          <ul>
+            <li>Classes start promptly at the scheduled time</li>
+            <li>Practical sessions require lab coats and safety equipment</li>
+            <li>Tutorial sessions are interactive - come prepared</li>
+            <li>Check for any schedule changes on the notice board</li>
+          </ul>
+        </p-card>
+
+        <p-card styleClass="info-card">
+          <ng-template pTemplate="header">
+            <h4><i class="pi pi-clock"></i> Timing Guidelines</h4>
+          </ng-template>
+          <ul>
+            <li>Arrive 10 minutes before class begins</li>
+            <li>Lunch break: 01:15 PM - 02:00 PM</li>
+            <li>Tea break: 11:00 AM - 11:15 AM & 04:00 PM - 04:15 PM</li>
+            <li>Saturday classes end at 01:15 PM</li>
+          </ul>
+        </p-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Messages -->
+  <p-toast position="top-right"></p-toast>
+</div>
