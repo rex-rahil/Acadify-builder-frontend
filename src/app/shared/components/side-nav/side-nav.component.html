@@ -61,9 +61,13 @@
         <ul class="menu-list">
           <li *ngFor="let item of menuItems.slice(2, 4)" class="menu-item">
             <a
-              (click)="item.route ? navigateTo(item.route) : item.command!()"
-              [routerLink]="item.route"
-              routerLinkActive="active"
+              (click)="
+                item.route
+                  ? navigateTo(item.route)
+                  : item.command
+                    ? item.command()
+                    : null
+              "
               class="menu-link"
               pRipple
             >
@@ -79,9 +83,13 @@
         <ul class="menu-list">
           <li *ngFor="let item of menuItems.slice(4)" class="menu-item">
             <a
-              (click)="item.route ? navigateTo(item.route) : item.command!()"
-              [routerLink]="item.route"
-              routerLinkActive="active"
+              (click)="
+                item.route
+                  ? navigateTo(item.route)
+                  : item.command
+                    ? item.command()
+                    : null
+              "
               class="menu-link"
               pRipple
             >
