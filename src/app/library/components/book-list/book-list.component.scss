@@ -193,99 +193,96 @@
 
   // List View Styles
   .books-list {
-    :host ::ng-deep .p-dataview-content {
-      background: transparent;
-      border: none;
-      padding: 0;
+    .book-list-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
 
-      .p-dataview-list {
-        .book-list-item {
-          display: flex;
-          align-items: flex-start;
-          padding: 1.5rem;
-          border: 1px solid var(--surface-border);
+      .book-list-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1.5rem;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--border-radius);
+        background: var(--surface-card);
+        transition: all 0.2s ease;
+
+        &:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-image-small {
+          width: 80px;
+          height: 120px;
+          margin-right: 1.5rem;
+          flex-shrink: 0;
           border-radius: var(--border-radius);
-          background: var(--surface-card);
-          margin-bottom: 1rem;
-          transition: all 0.2s ease;
+          overflow: hidden;
+          background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
 
-          &:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
+        }
 
-          .book-image-small {
-            width: 80px;
-            height: 120px;
-            margin-right: 1.5rem;
-            flex-shrink: 0;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+        .book-info {
+          flex: 1;
+          min-width: 0;
 
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-            }
-          }
-
-          .book-info {
-            flex: 1;
-            min-width: 0;
-
-            .book-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: flex-start;
-              margin-bottom: 0.5rem;
-
-              h4 {
-                margin: 0;
-                font-size: 1.1rem;
-                font-weight: 600;
-                color: var(--text-color);
-              }
-            }
-
-            .author {
-              color: var(--text-color-secondary);
-              font-style: italic;
-              margin: 0 0 1rem 0;
-            }
-
-            .book-meta {
-              display: flex;
-              flex-wrap: wrap;
-              gap: 1rem;
-              margin-bottom: 1rem;
-
-              .meta-item {
-                display: flex;
-                align-items: center;
-                font-size: 0.9rem;
-                color: var(--text-color-secondary);
-
-                i {
-                  margin-right: 0.5rem;
-                  color: #87ceeb;
-                }
-              }
-            }
-
-            .availability-info {
-              .available-count {
-                font-size: 0.9rem;
-                color: var(--text-color-secondary);
-              }
-            }
-          }
-
-          .book-actions {
+          .book-header {
             display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-left: 1rem;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+
+            h4 {
+              margin: 0;
+              font-size: 1.1rem;
+              font-weight: 600;
+              color: var(--text-color);
+            }
           }
+
+          .author {
+            color: var(--text-color-secondary);
+            font-style: italic;
+            margin: 0 0 1rem 0;
+          }
+
+          .book-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+
+            .meta-item {
+              display: flex;
+              align-items: center;
+              font-size: 0.9rem;
+              color: var(--text-color-secondary);
+
+              i {
+                margin-right: 0.5rem;
+                color: #87ceeb;
+              }
+            }
+          }
+
+          .availability-info {
+            .available-count {
+              font-size: 0.9rem;
+              color: var(--text-color-secondary);
+            }
+          }
+        }
+
+        .book-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-left: 1rem;
         }
       }
     }
@@ -314,33 +311,31 @@
     }
 
     .books-list {
-      :host ::ng-deep .p-dataview-content {
-        .p-dataview-list {
-          .book-list-item {
-            flex-direction: column;
-            text-align: center;
+      .book-list-items {
+        .book-list-item {
+          flex-direction: column;
+          text-align: center;
 
-            .book-image-small {
-              margin: 0 auto 1rem auto;
+          .book-image-small {
+            margin: 0 auto 1rem auto;
+          }
+
+          .book-info {
+            .book-header {
+              flex-direction: column;
+              align-items: center;
+              gap: 0.5rem;
             }
 
-            .book-info {
-              .book-header {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-              }
-
-              .book-meta {
-                justify-content: center;
-              }
-            }
-
-            .book-actions {
-              margin: 1rem 0 0 0;
-              flex-direction: row;
+            .book-meta {
               justify-content: center;
             }
+          }
+
+          .book-actions {
+            margin: 1rem 0 0 0;
+            flex-direction: row;
+            justify-content: center;
           }
         }
       }
@@ -359,20 +354,18 @@
     }
 
     .books-list {
-      :host ::ng-deep .p-dataview-content {
-        .p-dataview-list {
-          .book-list-item {
-            padding: 1rem;
+      .book-list-items {
+        .book-list-item {
+          padding: 1rem;
 
-            .book-meta {
-              flex-direction: column;
-              align-items: center;
-              gap: 0.5rem;
-            }
+          .book-meta {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+          }
 
-            .book-actions {
-              flex-direction: column;
-            }
+          .book-actions {
+            flex-direction: column;
           }
         }
       }
