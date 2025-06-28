@@ -1,0 +1,452 @@
+<div class="step-infographics">
+  <div class="infographic-card">
+    <!-- Step Icon -->
+    <div class="step-icon">
+      <ng-container [ngSwitch]="stepIndex">
+        <!-- Personal Details Icon -->
+        <svg
+          *ngSwitchCase="0"
+          class="icon"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient
+              id="personalGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" style="stop-color: #87ceeb; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #4a90e2; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <!-- ID Card Background -->
+          <rect
+            x="30"
+            y="50"
+            width="140"
+            height="100"
+            rx="10"
+            fill="url(#personalGrad)"
+            stroke="#fff"
+            stroke-width="2"
+          />
+          <!-- Person Icon -->
+          <circle cx="70" cy="90" r="15" fill="#fff" />
+          <path d="M55 115 Q70 105 85 115 L85 125 L55 125 Z" fill="#fff" />
+          <!-- ID Lines -->
+          <line
+            x1="100"
+            y1="75"
+            x2="150"
+            y2="75"
+            stroke="#fff"
+            stroke-width="2"
+          />
+          <line
+            x1="100"
+            y1="85"
+            x2="145"
+            y2="85"
+            stroke="#fff"
+            stroke-width="2"
+          />
+          <line
+            x1="100"
+            y1="95"
+            x2="140"
+            y2="95"
+            stroke="#fff"
+            stroke-width="2"
+          />
+          <!-- Document corners -->
+          <circle cx="45" cy="65" r="3" fill="#FFD700" />
+          <circle cx="155" cy="65" r="3" fill="#FFD700" />
+        </svg>
+
+        <!-- Category & Eligibility Icon -->
+        <svg
+          *ngSwitchCase="1"
+          class="icon"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient
+              id="categoryGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" style="stop-color: #87ceeb; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #20b2aa; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <!-- Scale of Justice -->
+          <circle cx="100" cy="40" r="8" fill="url(#categoryGrad)" />
+          <line
+            x1="100"
+            y1="48"
+            x2="100"
+            y2="160"
+            stroke="url(#categoryGrad)"
+            stroke-width="4"
+          />
+          <!-- Left Scale -->
+          <line
+            x1="60"
+            y1="80"
+            x2="100"
+            y2="60"
+            stroke="url(#categoryGrad)"
+            stroke-width="3"
+          />
+          <rect
+            x="45"
+            y="75"
+            width="30"
+            height="20"
+            rx="5"
+            fill="#FFD700"
+            stroke="url(#categoryGrad)"
+            stroke-width="2"
+          />
+          <!-- Right Scale -->
+          <line
+            x1="140"
+            y1="80"
+            x2="100"
+            y2="60"
+            stroke="url(#categoryGrad)"
+            stroke-width="3"
+          />
+          <rect
+            x="125"
+            y="75"
+            width="30"
+            height="20"
+            rx="5"
+            fill="#FFD700"
+            stroke="url(#categoryGrad)"
+            stroke-width="2"
+          />
+          <!-- Base -->
+          <rect
+            x="85"
+            y="155"
+            width="30"
+            height="10"
+            rx="5"
+            fill="url(#categoryGrad)"
+          />
+          <!-- Category symbols -->
+          <text
+            x="60"
+            y="130"
+            font-family="Arial"
+            font-size="12"
+            fill="url(#categoryGrad)"
+            text-anchor="middle"
+          >
+            SC
+          </text>
+          <text
+            x="100"
+            y="130"
+            font-family="Arial"
+            font-size="12"
+            fill="url(#categoryGrad)"
+            text-anchor="middle"
+          >
+            ST
+          </text>
+          <text
+            x="140"
+            y="130"
+            font-family="Arial"
+            font-size="12"
+            fill="url(#categoryGrad)"
+            text-anchor="middle"
+          >
+            OBC
+          </text>
+        </svg>
+
+        <!-- Academic Qualifications Icon -->
+        <svg
+          *ngSwitchCase="2"
+          class="icon"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient
+              id="academicGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" style="stop-color: #87ceeb; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #9370db; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <!-- Graduation Cap -->
+          <polygon
+            points="50,80 150,80 120,60 80,60"
+            fill="url(#academicGrad)"
+          />
+          <rect
+            x="95"
+            y="60"
+            width="10"
+            height="15"
+            fill="url(#academicGrad)"
+          />
+          <circle cx="100" cy="75" r="3" fill="#FFD700" />
+          <!-- Books Stack -->
+          <rect x="40" y="120" width="120" height="8" fill="#FF6B6B" rx="2" />
+          <rect x="45" y="128" width="110" height="8" fill="#4ECDC4" rx="2" />
+          <rect x="50" y="136" width="100" height="8" fill="#45B7D1" rx="2" />
+          <!-- Certificate -->
+          <rect
+            x="60"
+            y="95"
+            width="80"
+            height="15"
+            fill="#fff"
+            stroke="url(#academicGrad)"
+            stroke-width="2"
+            rx="3"
+          />
+          <line
+            x1="70"
+            y1="102"
+            x2="130"
+            y2="102"
+            stroke="url(#academicGrad)"
+            stroke-width="1"
+          />
+          <!-- Stars -->
+          <polygon
+            points="30,50 32,56 38,56 33,60 35,66 30,62 25,66 27,60 22,56 28,56"
+            fill="#FFD700"
+          />
+          <polygon
+            points="170,110 172,116 178,116 173,120 175,126 170,122 165,126 167,120 162,116 168,116"
+            fill="#FFD700"
+          />
+        </svg>
+
+        <!-- Parent/Guardian Details Icon -->
+        <svg
+          *ngSwitchCase="3"
+          class="icon"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="familyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color: #87ceeb; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #ff69b4; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <!-- House -->
+          <polygon points="100,40 60,80 140,80" fill="url(#familyGrad)" />
+          <rect
+            x="70"
+            y="80"
+            width="60"
+            height="50"
+            fill="#fff"
+            stroke="url(#familyGrad)"
+            stroke-width="2"
+          />
+          <rect x="85" y="95" width="15" height="20" fill="url(#familyGrad)" />
+          <rect x="110" y="95" width="10" height="10" fill="url(#familyGrad)" />
+          <!-- Family figures -->
+          <circle cx="80" cy="150" r="8" fill="url(#familyGrad)" />
+          <rect
+            x="75"
+            y="158"
+            width="10"
+            height="15"
+            fill="url(#familyGrad)"
+            rx="2"
+          />
+          <circle cx="100" cy="150" r="8" fill="url(#familyGrad)" />
+          <rect
+            x="95"
+            y="158"
+            width="10"
+            height="15"
+            fill="url(#familyGrad)"
+            rx="2"
+          />
+          <circle cx="120" cy="150" r="6" fill="url(#familyGrad)" />
+          <rect
+            x="117"
+            y="156"
+            width="6"
+            height="12"
+            fill="url(#familyGrad)"
+            rx="1"
+          />
+          <!-- Hearts -->
+          <path
+            d="M50,60 C50,55 55,50 60,55 C65,50 70,55 70,60 C70,65 60,75 60,75 C60,75 50,65 50,60"
+            fill="#FF69B4"
+          />
+          <path
+            d="M130,160 C130,157 132,155 135,157 C138,155 140,157 140,160 C140,163 135,168 135,168 C135,168 130,163 130,160"
+            fill="#FF69B4"
+          />
+        </svg>
+
+        <!-- Documents & Declaration Icon -->
+        <svg
+          *ngSwitchCase="4"
+          class="icon"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="docGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color: #87ceeb; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #32cd32; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <!-- Document stack -->
+          <rect
+            x="50"
+            y="50"
+            width="100"
+            height="120"
+            fill="#fff"
+            stroke="url(#docGrad)"
+            stroke-width="3"
+            rx="5"
+          />
+          <rect
+            x="45"
+            y="55"
+            width="100"
+            height="120"
+            fill="#f8f9fa"
+            stroke="url(#docGrad)"
+            stroke-width="2"
+            rx="5"
+          />
+          <rect
+            x="40"
+            y="60"
+            width="100"
+            height="120"
+            fill="#fff"
+            stroke="url(#docGrad)"
+            stroke-width="2"
+            rx="5"
+          />
+          <!-- Document lines -->
+          <line
+            x1="55"
+            y1="80"
+            x2="120"
+            y2="80"
+            stroke="url(#docGrad)"
+            stroke-width="2"
+          />
+          <line
+            x1="55"
+            y1="90"
+            x2="115"
+            y2="90"
+            stroke="url(#docGrad)"
+            stroke-width="2"
+          />
+          <line
+            x1="55"
+            y1="100"
+            x2="125"
+            y2="100"
+            stroke="url(#docGrad)"
+            stroke-width="2"
+          />
+          <!-- Upload arrow -->
+          <polygon
+            points="100,30 110,40 95,40 95,50 105,50 105,40 90,40"
+            fill="url(#docGrad)"
+          />
+          <!-- Checkmark -->
+          <circle cx="150" cy="140" r="15" fill="#32CD32" />
+          <polyline
+            points="143,140 148,145 157,135"
+            fill="none"
+            stroke="#fff"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <!-- Seal -->
+          <circle
+            cx="120"
+            cy="160"
+            r="8"
+            fill="#FFD700"
+            stroke="url(#docGrad)"
+            stroke-width="1"
+          />
+          <text
+            x="120"
+            y="165"
+            font-family="Arial"
+            font-size="8"
+            fill="url(#docGrad)"
+            text-anchor="middle"
+          >
+            ✓
+          </text>
+        </svg>
+      </ng-container>
+    </div>
+
+    <!-- Step Information -->
+    <div class="step-info">
+      <h3>{{ getStepInfo().title }}</h3>
+      <p>{{ getStepInfo().description }}</p>
+
+      <div class="tips-section">
+        <h4><i class="pi pi-lightbulb"></i> Helpful Tips:</h4>
+        <ul>
+          <li *ngFor="let tip of getStepInfo().tips">{{ tip }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-section">
+      <div class="progress-circle">
+        <span class="step-number">{{ stepIndex + 1 }}</span>
+        <span class="total-steps">/ 5</span>
+      </div>
+      <div class="progress-text">Step {{ stepIndex + 1 }} of 5</div>
+    </div>
+  </div>
+</div>

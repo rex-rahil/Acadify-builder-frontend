@@ -12,6 +12,9 @@
     </ng-template>
 
     <ng-template pTemplate="content">
+      <!-- Step Infographics -->
+      <app-step-infographics [stepIndex]="activeIndex"></app-step-infographics>
+
       <div class="step-content">
         <h3>{{ getStepTitle() }}</h3>
         <p-divider></p-divider>
