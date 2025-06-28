@@ -1,0 +1,40 @@
+<div class="admission-illustration">
+  <div class="illustration-card">
+    <!-- Main Illustration -->
+    <div class="image-container">
+      <img
+        [src]="getStepInfo().imageUrl"
+        [alt]="getStepInfo().altText"
+        class="main-illustration"
+        (error)="onImageError($event)"
+      />
+    </div>
+
+    <!-- Step Information -->
+    <div class="step-info">
+      <h3>{{ getStepInfo().title }}</h3>
+      <p class="description">{{ getStepInfo().description }}</p>
+
+      <div class="tips-section">
+        <h4><i class="pi pi-lightbulb"></i> Helpful Tips:</h4>
+        <ul class="tips-list">
+          <li *ngFor="let tip of getStepInfo().tips">
+            <i class="pi pi-check-circle"></i>
+            {{ tip }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-info">
+      <div class="progress-badge">Step {{ stepIndex + 1 }} of 5</div>
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width.%]="((stepIndex + 1) / 5) * 100"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
