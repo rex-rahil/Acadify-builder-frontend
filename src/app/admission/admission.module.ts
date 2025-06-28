@@ -11,7 +11,6 @@ import { CategoryEligibilityComponent } from "./components/category-eligibility/
 import { AcademicQualificationsComponent } from "./components/academic-qualifications/academic-qualifications.component";
 import { ParentGuardianComponent } from "./components/parent-guardian/parent-guardian.component";
 import { DocumentsDeclarationComponent } from "./components/documents-declaration/documents-declaration.component";
-import { StepInfographicsComponent } from "./components/step-infographics/step-infographics.component";
 
 // PrimeNG modules
 import { StepsModule } from "primeng/steps";
@@ -42,7 +41,6 @@ import { MessagesModule } from "primeng/messages";
     AcademicQualificationsComponent,
     ParentGuardianComponent,
     DocumentsDeclarationComponent,
-    StepInfographicsComponent,
   ],
   imports: [
     CommonModule,

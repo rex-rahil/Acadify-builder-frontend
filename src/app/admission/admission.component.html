@@ -12,19 +12,9 @@
     </ng-template>
 
     <ng-template pTemplate="content">
-      <div class="content-layout">
-        <!-- Left Side: Illustration -->
-        <div class="illustration-panel">
-          <app-step-infographics
-            [stepIndex]="activeIndex"
-          ></app-step-infographics>
-        </div>
-
-        <!-- Right Side: Form Content -->
-        <div class="form-panel">
-          <div class="step-content">
-            <h3>{{ getStepTitle() }}</h3>
-            <p-divider></p-divider>
+      <div class="step-content">
+        <h3>{{ getStepTitle() }}</h3>
+        <p-divider></p-divider>
 
             <!-- Personal Details Step -->
             <app-personal-details
@@ -87,10 +77,7 @@
                   styleClass="p-button-success"
                 ></p-button>
               </div>
-            </div>
-          </div>
         </div>
-      </div>
     </ng-template>
   </p-card>
 </div>
