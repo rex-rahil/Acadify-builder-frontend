@@ -1,5 +1,5 @@
 .admission-stepper {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
 
   .stepper-header {
@@ -8,27 +8,9 @@
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
 
-  .content-layout {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 0;
-    min-height: 600px;
-  }
-
-  .form-panel {
-    padding: 2rem;
-    background: var(--surface-card);
-    border-right: 1px solid var(--surface-border);
-  }
-
-  .illustration-panel {
-    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
-    padding: 2rem;
-    display: flex;
-    align-items: center;
-  }
-
   .step-content {
+    padding: 2rem;
+
     h3 {
       color: var(--primary-color);
       font-size: 1.5rem;
@@ -87,35 +69,13 @@
 }
 
 /* Responsive adjustments */
-@media screen and (max-width: 1024px) {
-  .admission-stepper {
-    .content-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .form-panel {
-      border-right: none;
-      border-bottom: 1px solid var(--surface-border);
-      padding: 1.5rem;
-    }
-
-    .illustration-panel {
-      padding: 1.5rem;
-    }
-  }
-}
-
 @media screen and (max-width: 768px) {
   .admission-stepper {
     .stepper-header {
       padding: 1rem;
     }
 
-    .form-panel {
-      padding: 1rem;
-    }
-
-    .illustration-panel {
+    .step-content {
       padding: 1rem;
     }
 
