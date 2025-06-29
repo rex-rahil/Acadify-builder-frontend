@@ -1,0 +1,535 @@
+.leave-management {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fbff 0%, #e6f3ff 100%);
+  min-height: calc(100vh - 4rem);
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    .header-info {
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0 0 0.5rem 0;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        i {
+          margin-right: 0.5rem;
+        }
+      }
+
+      p {
+        color: #7f8c8d;
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .hod-chip {
+          background: linear-gradient(135deg, #e74c3c, #c0392b);
+          color: white;
+        }
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .loading-container,
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    text-align: center;
+
+    .error-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .error-icon {
+        font-size: 3rem;
+        color: #e74c3c;
+      }
+
+      h3 {
+        color: #2c3e50;
+        margin: 0;
+      }
+
+      p {
+        color: #7f8c8d;
+        margin: 0;
+      }
+    }
+  }
+
+  .leave-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #34495e, #2c3e50);
+      color: white;
+      margin: -1rem -1rem 1rem -1rem;
+
+      h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+
+        i {
+          margin-right: 0.5rem;
+        }
+      }
+
+      .filters {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        ::ng-deep .p-dropdown {
+          .p-inputtext {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            min-width: 150px;
+
+            &::placeholder {
+              color: rgba(255, 255, 255, 0.7);
+            }
+          }
+
+          .p-dropdown-trigger {
+            color: white;
+          }
+        }
+      }
+
+      .pending-chip {
+        background: #fff3cd;
+        color: #856404;
+      }
+    }
+
+    .balance-section {
+      .balance-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+
+        .balance-card {
+          background: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s ease;
+          border-left: 4px solid;
+
+          &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+          }
+
+          &.casual {
+            border-left-color: #3498db;
+          }
+
+          &.sick {
+            border-left-color: #f39c12;
+          }
+
+          &.earned {
+            border-left-color: #27ae60;
+          }
+
+          &.maternity {
+            border-left-color: #9b59b6;
+          }
+
+          .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            h4 {
+              margin: 0;
+              color: #2c3e50;
+              font-size: 1.1rem;
+              font-weight: 600;
+            }
+          }
+
+          .balance-details {
+            .balance-item {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 0.75rem;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+
+              .label {
+                color: #7f8c8d;
+                font-size: 0.9rem;
+              }
+
+              .value {
+                font-weight: 600;
+                color: #2c3e50;
+
+                &.used {
+                  color: #e74c3c;
+                }
+
+                &.remaining {
+                  color: #27ae60;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .no-balance {
+        text-align: center;
+        padding: 2rem;
+        color: #95a5a6;
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .approvals-section {
+      .approval-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .approval-item {
+          background: #f8f9fa;
+          border-radius: 8px;
+          padding: 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-left: 4px solid #f39c12;
+
+          .request-info {
+            flex: 1;
+
+            .faculty-details {
+              margin-bottom: 1rem;
+
+              h4 {
+                margin: 0 0 0.25rem 0;
+                color: #2c3e50;
+                font-size: 1.1rem;
+              }
+
+              p {
+                margin: 0;
+                color: #3498db;
+                font-weight: 600;
+                font-size: 0.9rem;
+              }
+            }
+
+            .leave-details {
+              p {
+                margin: 0.25rem 0;
+                color: #7f8c8d;
+                font-size: 0.85rem;
+
+                strong {
+                  color: #34495e;
+                }
+              }
+            }
+          }
+
+          .approval-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+
+    .requests-section {
+      .duration-cell {
+        .dates {
+          margin: 0 0 0.25rem 0;
+          color: #2c3e50;
+          font-weight: 600;
+        }
+
+        .days {
+          margin: 0;
+          color: #7f8c8d;
+          font-size: 0.85rem;
+        }
+      }
+
+      .reason-cell {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #34495e;
+      }
+
+      .approval-info {
+        p {
+          margin: 0 0 0.25rem 0;
+          color: #2c3e50;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        .approval-date {
+          color: #7f8c8d !important;
+          font-weight: normal !important;
+          font-size: 0.8rem !important;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #95a5a6;
+
+      i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      p {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+// Apply Leave Dialog Styles
+::ng-deep .apply-leave-dialog {
+  width: 90vw;
+  max-width: 600px;
+
+  .p-dialog-content {
+    padding: 0;
+  }
+
+  .leave-form {
+    padding: 1.5rem;
+
+    .form-section {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      .w-100 {
+        width: 100%;
+      }
+
+      .form-text {
+        color: #7f8c8d;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+      }
+
+      ::ng-deep .p-dropdown,
+      ::ng-deep .p-calendar,
+      ::ng-deep .p-inputtextarea {
+        width: 100%;
+      }
+
+      ::ng-deep .p-fileupload {
+        .p-fileupload-content {
+          border: 2px dashed #dee2e6;
+          border-radius: 8px;
+          padding: 2rem;
+          text-align: center;
+          color: #7f8c8d;
+        }
+      }
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .duration-info {
+      background: #e3f2fd;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+
+      p {
+        margin: 0;
+        color: #1976d2;
+        font-weight: 600;
+      }
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #dee2e6;
+    }
+  }
+}
+
+// Progress Bar Colors
+::ng-deep .p-progressbar {
+  &.success .p-progressbar-value {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+  }
+
+  &.warning .p-progressbar-value {
+    background: linear-gradient(90deg, #f39c12, #f7dc6f);
+  }
+
+  &.danger .p-progressbar-value {
+    background: linear-gradient(90deg, #e74c3c, #ec7063);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .leave-management {
+    padding: 1rem;
+
+    .page-header {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+
+      .header-info {
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        p {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+      }
+
+      .header-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    .balance-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .card-header .filters {
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+
+      ::ng-deep .p-dropdown .p-inputtext {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+
+    .approval-item {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+      text-align: center;
+
+      .approval-actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  }
+
+  ::ng-deep .apply-leave-dialog {
+    width: 95vw;
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .leave-management {
+    padding: 0.5rem;
+
+    .page-header {
+      padding: 1rem;
+
+      .header-info h1 {
+        font-size: 1.25rem;
+      }
+
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+
+    .approval-actions {
+      flex-direction: column !important;
+    }
+  }
+}
