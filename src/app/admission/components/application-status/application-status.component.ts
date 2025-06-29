@@ -42,7 +42,7 @@ export class ApplicationStatusComponent implements OnInit {
     private admissionStatusService: AdmissionStatusService,
     private formService: FormService,
     private messageService: MessageService,
-    private router: Router,
+    public router: Router,
   ) {}
 
   async ngOnInit() {
