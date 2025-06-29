@@ -129,7 +129,6 @@ import { LeaveManagementComponent } from "./leaves/leave-management.component";
     RatingModule,
     KnobModule,
     ColorPickerModule,
-    EditorModule,
     ImageModule,
     GalleriaModule,
     CarouselModule,
