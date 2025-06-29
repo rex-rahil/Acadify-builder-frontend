@@ -49,7 +49,7 @@ import { InputNumberModule } from "primeng/inputnumber";
 import { RatingModule } from "primeng/rating";
 import { KnobModule } from "primeng/knob";
 import { ColorPickerModule } from "primeng/colorpicker";
-import { EditorModule } from "primeng/editor";
+
 import { ImageModule } from "primeng/image";
 import { GalleriaModule } from "primeng/galleria";
 import { CarouselModule } from "primeng/carousel";
