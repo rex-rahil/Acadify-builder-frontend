@@ -9,7 +9,10 @@
       "department": "Computer Science",
       "designation": "Associate Professor",
       "joiningDate": "2020-06-15",
-      "qualifications": ["PhD Computer Science", "M.Tech Software Engineering"],
+      "qualifications": [
+        "PhD Computer Science",
+        "M.Tech Software Engineering"
+      ],
       "avatar": null,
       "isHOD": true
     },
@@ -22,7 +25,10 @@
       "department": "Computer Science",
       "designation": "Assistant Professor",
       "joiningDate": "2019-08-20",
-      "qualifications": ["M.Tech Computer Science", "B.Tech CSE"],
+      "qualifications": [
+        "M.Tech Computer Science",
+        "B.Tech CSE"
+      ],
       "avatar": null,
       "isHOD": false
     },
@@ -35,7 +41,10 @@
       "department": "Computer Science",
       "designation": "Assistant Professor",
       "joiningDate": "2021-03-10",
-      "qualifications": ["PhD Information Technology", "M.Sc Computer Science"],
+      "qualifications": [
+        "PhD Information Technology",
+        "M.Sc Computer Science"
+      ],
       "avatar": null,
       "isHOD": false
     }
@@ -288,7 +297,7 @@
       "checkInTime": "08:45:00",
       "checkOutTime": "16:45:00",
       "status": "present",
-      "workingHours": 8.0,
+      "workingHours": 8,
       "remarks": null
     },
     {
@@ -310,6 +319,13 @@
       "status": "on-leave",
       "workingHours": 0,
       "remarks": "Casual leave"
+    },
+    {
+      "id": "att_1751213218856",
+      "facultyId": "faculty_001",
+      "date": "2025-06-29",
+      "checkInTime": "21:36:58",
+      "status": "present"
     }
   ],
   "leaveRequests": [
@@ -343,7 +359,9 @@
       "approvedBy": null,
       "approvedDate": null,
       "rejectionReason": null,
-      "documents": ["medical_certificate.pdf"]
+      "documents": [
+        "medical_certificate.pdf"
+      ]
     },
     {
       "id": "leave_003",
@@ -468,26 +486,74 @@
     {
       "id": "balance_faculty_001",
       "facultyId": "faculty_001",
-      "casual": { "total": 12, "used": 4, "remaining": 8 },
-      "sick": { "total": 12, "used": 2, "remaining": 10 },
-      "earned": { "total": 20, "used": 5, "remaining": 15 },
-      "maternity": { "total": 90, "used": 0, "remaining": 90 }
+      "casual": {
+        "total": 12,
+        "used": 4,
+        "remaining": 8
+      },
+      "sick": {
+        "total": 12,
+        "used": 2,
+        "remaining": 10
+      },
+      "earned": {
+        "total": 20,
+        "used": 5,
+        "remaining": 15
+      },
+      "maternity": {
+        "total": 90,
+        "used": 0,
+        "remaining": 90
+      }
     },
     {
       "id": "balance_faculty_002",
       "facultyId": "faculty_002",
-      "casual": { "total": 12, "used": 2, "remaining": 10 },
-      "sick": { "total": 12, "used": 0, "remaining": 12 },
-      "earned": { "total": 20, "used": 3, "remaining": 17 },
-      "maternity": { "total": 90, "used": 0, "remaining": 90 }
+      "casual": {
+        "total": 12,
+        "used": 2,
+        "remaining": 10
+      },
+      "sick": {
+        "total": 12,
+        "used": 0,
+        "remaining": 12
+      },
+      "earned": {
+        "total": 20,
+        "used": 3,
+        "remaining": 17
+      },
+      "maternity": {
+        "total": 90,
+        "used": 0,
+        "remaining": 90
+      }
     },
     {
       "id": "balance_faculty_003",
       "facultyId": "faculty_003",
-      "casual": { "total": 12, "used": 3, "remaining": 9 },
-      "sick": { "total": 12, "used": 1, "remaining": 11 },
-      "earned": { "total": 20, "used": 2, "remaining": 18 },
-      "maternity": { "total": 90, "used": 0, "remaining": 90 }
+      "casual": {
+        "total": 12,
+        "used": 3,
+        "remaining": 9
+      },
+      "sick": {
+        "total": 12,
+        "used": 1,
+        "remaining": 11
+      },
+      "earned": {
+        "total": 20,
+        "used": 2,
+        "remaining": 18
+      },
+      "maternity": {
+        "total": 90,
+        "used": 0,
+        "remaining": 90
+      }
     }
   ],
   "workloadSummaries": [
@@ -756,12 +822,14 @@
           "numberOfInstallments": 2,
           "firstInstallmentAmount": 65000,
           "subsequentInstallmentAmount": 60000,
-          "installmentDates": ["2025-01-15", "2025-06-15"],
+          "installmentDates": [
+            "2025-01-15",
+            "2025-06-15"
+          ],
           "processingFee": 1000
         },
         {
           "id": "installment_002",
-          "planName": "Four Installments",
           "planName": "Four Installments",
           "numberOfInstallments": 4,
           "firstInstallmentAmount": 35000,
