@@ -164,27 +164,36 @@ export class FacultyService {
     facultyId: string,
     status?: string,
   ): Observable<LeaveRequest[]> {
-    let params = new HttpParams();
+    let url = `${this.apiUrl}/leaveRequests?facultyId=${facultyId}`;
     if (status) {
-      params = params.set("status", status);
+      url += `&status=${status}`;
     }
     return this.http
-      .get<LeaveRequest[]>(`${this.apiUrl}/leaves/${facultyId}`, { params })
+      .get<LeaveRequest[]>(url)
       .pipe(catchError(this.handleError));
   }
 
   getLeaveBalance(facultyId: string): Observable<LeaveBalance> {
     return this.http
-      .get<LeaveBalance>(`${this.apiUrl}/leaves/balance/${facultyId}`)
-      .pipe(catchError(this.handleError));
+      .get<any[]>(`${this.apiUrl}/leaveBalances?facultyId=${facultyId}`)
+      .pipe(
+        map((balances: any[]) => balances[0] || {}),
+        catchError(this.handleError),
+      );
   }
 
   applyLeave(
     facultyId: string,
     leaveRequest: Partial<LeaveRequest>,
   ): Observable<LeaveRequest> {
+    const newLeave = {
+      id: `leave_${Date.now()}`,
+      facultyId,
+      facultyName: "Current Faculty", // This would be fetched from profile
+      ...leaveRequest,
+    };
     return this.http
-      .post<LeaveRequest>(`${this.apiUrl}/leaves/${facultyId}`, leaveRequest)
+      .post<LeaveRequest>(`${this.apiUrl}/leaveRequests`, newLeave)
       .pipe(catchError(this.handleError));
   }
 
@@ -193,7 +202,7 @@ export class FacultyService {
     updateData: Partial<LeaveRequest>,
   ): Observable<LeaveRequest> {
     return this.http
-      .put<LeaveRequest>(`${this.apiUrl}/leaves/request/${leaveId}`, updateData)
+      .put<LeaveRequest>(`${this.apiUrl}/leaveRequests/${leaveId}`, updateData)
       .pipe(catchError(this.handleError));
   }
 
