@@ -8,6 +8,7 @@ import {
 } from "./routes/admissions";
 import libraryRoutes from "./routes/library";
 import dashboardRoutes from "./routes/dashboard";
+import facultyRoutes from "./routes/faculty";
 
 export function createServer() {
   const app = express();
