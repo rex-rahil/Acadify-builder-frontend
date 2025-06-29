@@ -536,10 +536,12 @@
       "id": "app_001",
       "applicationId": "ADM2024001",
       "studentId": "student_001",
-      "status": "submitted",
+      "status": "payment_pending",
       "submittedDate": "2024-12-28T10:00:00Z",
+      "reviewedDate": "2024-12-29T14:00:00Z",
+      "reviewedBy": "Officer_001",
       "resubmissionCount": 0,
-      "lastUpdated": "2024-12-28T10:00:00Z",
+      "lastUpdated": "2024-12-29T14:00:00Z",
       "documents": [
         {
           "id": "doc_001",
@@ -547,7 +549,7 @@
           "documentType": "Academic Transcripts",
           "fileName": "transcripts.pdf",
           "uploadDate": "2024-12-28T10:00:00Z",
-          "status": "pending",
+          "status": "approved",
           "isRequired": true
         },
         {
@@ -556,7 +558,7 @@
           "documentType": "Identity Proof",
           "fileName": "id_proof.pdf",
           "uploadDate": "2024-12-28T10:00:00Z",
-          "status": "pending",
+          "status": "approved",
           "isRequired": true
         }
       ]
@@ -608,6 +610,31 @@
       "reviewedBy": "Officer_001",
       "resubmissionCount": 0,
       "lastUpdated": "2024-12-25T14:00:00Z",
+      "documents": []
+    },
+    {
+      "id": "app_006",
+      "applicationId": "ADM2024006",
+      "studentId": "student_006",
+      "status": "rejected",
+      "submittedDate": "2024-12-20T12:00:00Z",
+      "reviewedDate": "2024-12-22T16:00:00Z",
+      "reviewedBy": "Officer_002",
+      "rejectionReason": "Missing required documents: Birth Certificate and Caste Certificate. Academic scores do not meet minimum eligibility criteria.",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-22T16:00:00Z",
+      "documents": []
+    },
+    {
+      "id": "app_007",
+      "applicationId": "ADM2024007",
+      "studentId": "student_007",
+      "status": "enrolled",
+      "submittedDate": "2024-12-15T09:00:00Z",
+      "reviewedDate": "2024-12-17T11:00:00Z",
+      "reviewedBy": "Officer_001",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-20T14:00:00Z",
       "documents": []
     }
   ],
