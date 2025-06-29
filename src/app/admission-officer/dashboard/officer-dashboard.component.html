@@ -274,17 +274,7 @@
               <div class="stat-label">Avg Review Time</div>
             </div>
             <div class="stat-item">
-              <div class="stat-number">
-                {{
-                  overview?.pendingReview && overview?.totalApplications
-                    ? (
-                        ((overview.pendingReview || 0) /
-                          (overview.totalApplications || 1)) *
-                        100
-                      ).toFixed(1)
-                    : 0
-                }}%
-              </div>
+              <div class="stat-number">{{ getPendingRate().toFixed(1) }}%</div>
               <div class="stat-label">Pending Rate</div>
             </div>
           </div>
