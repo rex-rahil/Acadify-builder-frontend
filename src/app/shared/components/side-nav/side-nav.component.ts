@@ -134,6 +134,7 @@ export class SideNavComponent {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
+    // Always close sidebar after navigation on mobile
     this.onHide();
   }
 
