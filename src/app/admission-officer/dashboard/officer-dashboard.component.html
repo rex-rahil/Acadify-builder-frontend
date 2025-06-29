@@ -313,7 +313,9 @@
               <p-progressBar
                 [value]="
                   overview?.totalApplications && overview?.approved
-                    ? (overview.approved / overview.totalApplications) * 100
+                    ? ((overview.approved || 0) /
+                        (overview.totalApplications || 1)) *
+                      100
                     : 0
                 "
                 [style]="{ height: '8px' }"
