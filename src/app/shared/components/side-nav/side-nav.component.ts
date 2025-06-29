@@ -22,15 +22,45 @@ export class SideNavComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
 
-  studentName = "John Doe"; // This would come from auth service
-  studentId = "OCP2024001"; // This would come from auth service
+  studentName = "Dr. Sarah Johnson"; // This would come from auth service
+  studentId = "FAC001"; // This would come from auth service
 
   menuSections: MenuSection[] = [
+    {
+      label: "Faculty Portal",
+      items: [
+        {
+          label: "Faculty Dashboard",
+          icon: "pi pi-th-large",
+          route: "/faculty",
+        },
+        {
+          label: "My Courses",
+          icon: "pi pi-book",
+          route: "/faculty/courses",
+        },
+        {
+          label: "Faculty Assignment",
+          icon: "pi pi-users",
+          route: "/faculty/assignment",
+        },
+        {
+          label: "My Attendance",
+          icon: "pi pi-clock",
+          route: "/faculty/attendance",
+        },
+        {
+          label: "Leave Management",
+          icon: "pi pi-calendar-times",
+          route: "/faculty/leaves",
+        },
+      ],
+    },
     {
       label: "Student Portal",
       items: [
         {
-          label: "Dashboard",
+          label: "Student Dashboard",
           icon: "pi pi-home",
           route: "/dashboard",
         },
@@ -52,46 +82,6 @@ export class SideNavComponent {
       ],
     },
     {
-      label: "Faculty Portal",
-      items: [
-        {
-          label: "Faculty Dashboard",
-          icon: "pi pi-desktop",
-          route: "/faculty",
-        },
-        {
-          label: "Courses",
-          icon: "pi pi-book",
-          route: "/faculty/courses",
-        },
-        {
-          label: "Assignment (HOD)",
-          icon: "pi pi-users",
-          route: "/faculty/assignment",
-        },
-        {
-          label: "Faculty Attendance",
-          icon: "pi pi-clock",
-          route: "/faculty/attendance",
-        },
-        {
-          label: "Leave Management",
-          icon: "pi pi-calendar-times",
-          route: "/faculty/leaves",
-        },
-      ],
-    },
-    {
-      label: "Academic",
-      items: [
-        {
-          label: "Library",
-          icon: "pi pi-book",
-          route: "/library",
-        },
-      ],
-    },
-    {
       label: "Administration",
       items: [
         {
@@ -99,15 +89,40 @@ export class SideNavComponent {
           icon: "pi pi-file-check",
           route: "/admission-officer",
         },
+        {
+          label: "Library Management",
+          icon: "pi pi-database",
+          route: "/library",
+        },
       ],
     },
     {
-      label: "System",
+      label: "Quick Actions",
+      items: [
+        {
+          label: "Fee Payment",
+          icon: "pi pi-credit-card",
+          route: "/admission/payment",
+        },
+        {
+          label: "Application Status",
+          icon: "pi pi-info-circle",
+          route: "/admission/status",
+        },
+      ],
+    },
+    {
+      label: "Account",
       items: [
         {
           label: "Settings",
           icon: "pi pi-cog",
           route: "/settings",
+        },
+        {
+          label: "Help & Support",
+          icon: "pi pi-question-circle",
+          route: "/help",
         },
         {
           label: "Logout",
