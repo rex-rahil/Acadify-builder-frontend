@@ -1,0 +1,327 @@
+<div class="officer-dashboard">
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h1 class="welcome-title">{{ greeting }}, Admission Officer!</h1>
+      <p class="current-time">
+        {{ currentTime | date: "EEEE, MMMM d, y" }} •
+        {{ currentTime | date: "h:mm:ss a" }}
+      </p>
+    </div>
+    <div class="quick-actions">
+      <p-button
+        label="Review Applications"
+        icon="pi pi-file-check"
+        styleClass="p-button-primary"
+        (onClick)="navigateToReview()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Manage Payments"
+        icon="pi pi-credit-card"
+        styleClass="p-button-outlined"
+        (onClick)="navigateToPayments()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Refresh"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+        (onClick)="refreshData()"
+        [loading]="loading"
+      >
+      </p-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <p-card>
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error Loading Dashboard</h3>
+        <p>{{ error }}</p>
+        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="dashboard-content">
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <p-card class="stat-card total-applications">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-file"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ overview?.totalApplications || 0 }}</h3>
+            <p>Total Applications</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card pending-review">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-clock"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ overview?.pendingReview || 0 }}</h3>
+            <p>Pending Review</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card approved">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-check-circle"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ overview?.approved || 0 }}</h3>
+            <p>Approved</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card rejected">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-times-circle"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ overview?.rejected || 0 }}</h3>
+            <p>Rejected</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card payment-pending">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-credit-card"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ overview?.paymentPending || 0 }}</h3>
+            <p>Payment Pending</p>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card class="stat-card enrolled">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-graduation-cap"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ overview?.enrolled || 0 }}</h3>
+            <p>Enrolled</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Recent Applications -->
+      <div class="applications-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-file"></i> Recent Applications</h3>
+              <p-button
+                icon="pi pi-external-link"
+                styleClass="p-button-text p-button-sm"
+                (onClick)="navigateToReview()"
+                pTooltip="View All Applications"
+              >
+              </p-button>
+            </div>
+          </ng-template>
+
+          <div *ngIf="recentApplications.length > 0" class="applications-list">
+            <div
+              *ngFor="let application of recentApplications"
+              class="application-item"
+            >
+              <div class="application-info">
+                <div class="application-header">
+                  <h4>Application #{{ application.id }}</h4>
+                  <p-tag
+                    [value]="application.status | titlecase"
+                    [severity]="getStatusSeverity(application.status)"
+                  >
+                  </p-tag>
+                </div>
+                <div class="application-details">
+                  <p>
+                    <strong>Student ID:</strong> {{ application.studentId }}
+                  </p>
+                  <p>
+                    <strong>Submitted:</strong>
+                    {{ application.submittedDate | date: "MMM d, y" }}
+                  </p>
+                  <p *ngIf="application.rejectionReason">
+                    <strong>Reason:</strong> {{ application.rejectionReason }}
+                  </p>
+                </div>
+              </div>
+              <div class="application-actions">
+                <p-button
+                  icon="pi pi-eye"
+                  styleClass="p-button-text p-button-sm"
+                  pTooltip="View Details"
+                  (onClick)="viewApplication(application.id)"
+                >
+                </p-button>
+                <p-button
+                  *ngIf="application.status === 'submitted'"
+                  icon="pi pi-check"
+                  styleClass="p-button-text p-button-sm p-button-success"
+                  pTooltip="Quick Approve"
+                  (onClick)="quickApprove(application.id)"
+                >
+                </p-button>
+                <p-button
+                  *ngIf="application.status === 'submitted'"
+                  icon="pi pi-times"
+                  styleClass="p-button-text p-button-sm p-button-danger"
+                  pTooltip="Quick Reject"
+                  (onClick)="showRejectDialog(application.id)"
+                >
+                </p-button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="recentApplications.length === 0" class="empty-state">
+            <i class="pi pi-file"></i>
+            <p>No recent applications</p>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Notifications -->
+      <div class="notifications-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-bell"></i> Recent Notifications</h3>
+            </div>
+          </ng-template>
+
+          <div *ngIf="notifications.length > 0" class="notifications-list">
+            <div
+              *ngFor="let notification of notifications"
+              class="notification-item"
+              [class.unread]="!notification.isRead"
+            >
+              <div class="notification-icon">
+                <i
+                  [class]="getNotificationIcon(notification.type)"
+                  [class.read-icon]="notification.isRead"
+                ></i>
+              </div>
+              <div class="notification-content">
+                <h5>{{ notification.title }}</h5>
+                <p>{{ notification.message }}</p>
+                <span class="notification-time">{{
+                  getTimeAgo(notification.createdDate)
+                }}</span>
+              </div>
+              <div class="notification-status">
+                <p-tag
+                  [value]="notification.type | titlecase"
+                  [severity]="getNotificationSeverity(notification.type)"
+                >
+                </p-tag>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="notifications.length === 0" class="empty-state">
+            <i class="pi pi-bell"></i>
+            <p>No recent notifications</p>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="quick-stats-section">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3><i class="pi pi-chart-bar"></i> Today's Summary</h3>
+            </div>
+          </ng-template>
+
+          <div class="quick-stats">
+            <div class="stat-item">
+              <div class="stat-number">
+                {{ overview?.todaySubmissions || 0 }}
+              </div>
+              <div class="stat-label">New Submissions</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ overview?.avgReviewTime || 0 }}h</div>
+              <div class="stat-label">Avg Review Time</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">
+                {{
+                  overview?.pendingReview && overview?.totalApplications
+                    ? (
+                        (overview.pendingReview / overview.totalApplications) *
+                        100
+                      ).toFixed(1)
+                    : 0
+                }}%
+              </div>
+              <div class="stat-label">Pending Rate</div>
+            </div>
+          </div>
+
+          <p-divider></p-divider>
+
+          <div class="progress-indicators">
+            <div class="progress-item">
+              <label>Review Progress</label>
+              <p-progressBar
+                [value]="
+                  overview?.totalApplications && overview?.pendingReview
+                    ? ((overview.totalApplications - overview.pendingReview) /
+                        overview.totalApplications) *
+                      100
+                    : 0
+                "
+                [style]="{ height: '8px' }"
+                styleClass="progress-success"
+              >
+              </p-progressBar>
+            </div>
+            <div class="progress-item">
+              <label>Approval Rate</label>
+              <p-progressBar
+                [value]="
+                  overview?.totalApplications && overview?.approved
+                    ? (overview.approved / overview.totalApplications) * 100
+                    : 0
+                "
+                [style]="{ height: '8px' }"
+                styleClass="progress-info"
+              >
+              </p-progressBar>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>
