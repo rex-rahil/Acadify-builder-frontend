@@ -39,6 +39,9 @@ export function createServer() {
   // Dashboard routes
   app.use("/api/dashboard", dashboardRoutes);
 
+  // Faculty routes
+  app.use("/api/faculty", facultyRoutes);
+
   // Health check
   app.get("/health", (req, res) => {
     res.json({
