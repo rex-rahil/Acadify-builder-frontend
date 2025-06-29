@@ -45,10 +45,16 @@ export class AdmissionComponent implements OnInit {
     if (this.isEditMode) {
       this.loadExistingData();
     } else {
-      this.loadSavedData();
-    }
+    this.loadSavedData();
   }
 
+  loadExistingData() {
+    // In a real application, this would load data from the rejected application
+    // For now, we'll load any saved form data
+    this.loadSavedData();
+  }
+
+  initializeSteps() {
   initializeSteps() {
     this.steps = [
       {
@@ -205,16 +211,40 @@ export class AdmissionComponent implements OnInit {
     this.isSubmitting = true;
 
     try {
-      const result = await this.formService.submitApplication();
+      if (this.isEditMode && this.editApplicationId) {
+        // Resubmit application
+        await this.admissionStatusService.resubmitApplication(
+          this.editApplicationId,
+          this.formService.getFormData()
+        ).toPromise();
 
-      this.messageService.add({
-        severity: "success",
-        summary: "Application Submitted",
-        detail: `Your application has been submitted successfully. Application ID: ${result.applicationId}`,
-        life: 10000,
-      });
+        this.messageService.add({
+          severity: "success",
+          summary: "Application Resubmitted",
+          detail: "Your application has been resubmitted successfully for review.",
+          life: 10000,
+        });
 
-      // Optionally reset forms or redirect
+        // Redirect to status page
+        setTimeout(() => {
+          this.router.navigate(["/admission/status"]);
+        }, 2000);
+      } else {
+        // New application submission
+        const result = await this.formService.submitApplication();
+
+        this.messageService.add({
+          severity: "success",
+          summary: "Application Submitted",
+          detail: `Your application has been submitted successfully. Application ID: ${result.applicationId}`,
+          life: 10000,
+        });
+
+        // Redirect to status page
+        setTimeout(() => {
+          this.router.navigate(["/admission/status"]);
+        }, 2000);
+      }
     } catch (error) {
       this.messageService.add({
         severity: "error",
