@@ -28,6 +28,13 @@ const routes: Routes = [
       import("./faculty/faculty.module").then((m) => m.FacultyModule),
   },
   {
+    path: "admission-officer",
+    loadChildren: () =>
+      import("./admission-officer/admission-officer.module").then(
+        (m) => m.AdmissionOfficerModule,
+      ),
+  },
+  {
     path: "**",
     redirectTo: "/dashboard",
   },
