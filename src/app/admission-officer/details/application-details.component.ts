@@ -3,21 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-application-details",
-  template: `
-    <div class="application-details">
-      <h2>Application Details</h2>
-      <p>Application ID: {{ applicationId }}</p>
-      <p>This component will show detailed application review interface.</p>
-    </div>
-  `,
-  styles: [
-    `
-      .application-details {
-        padding: 2rem;
-        text-align: center;
-      }
-    `,
-  ],
+  templateUrl: "./application-details.component.html",
+  styleUrls: ["./application-details.component.scss"],
 })
 export class ApplicationDetailsComponent implements OnInit {
   applicationId: string = "";
