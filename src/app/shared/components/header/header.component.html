@@ -1,0 +1,30 @@
+<header class="app-header" [class.no-menu]="!showMenuButton">
+  <div class="header-content">
+    <!-- Menu Button (only show when sidebar is enabled) -->
+    <button
+      *ngIf="showMenuButton"
+      class="menu-button"
+      (click)="toggleSidebar()"
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-bars"
+      [outlined]="true"
+      severity="secondary"
+      size="small"
+    ></button>
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <h1>{{ getPageTitle() }}</h1>
+    </div>
+
+    <!-- College Info -->
+    <div class="college-info">
+      <div class="college-name">
+        <i class="pi pi-graduation-cap"></i>
+        <span>Oriental College</span>
+      </div>
+    </div>
+  </div>
+</header>

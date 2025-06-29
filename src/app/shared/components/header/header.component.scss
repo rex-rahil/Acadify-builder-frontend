@@ -1,0 +1,111 @@
+.app-header {
+  background: linear-gradient(135deg, #87ceeb 0%, #4682b4 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .menu-button {
+      margin-right: 1rem;
+      flex-shrink: 0;
+
+      ::ng-deep .p-button {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: white;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+
+    .page-title {
+      flex: 1;
+      text-align: center;
+
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .college-info {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+
+      .college-name {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+
+        i {
+          font-size: 1.25rem;
+          margin-right: 0.5rem;
+        }
+
+        span {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  // When no menu button is shown, center the title differently
+  &.no-menu {
+    .header-content {
+      .page-title {
+        text-align: left;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+// Mobile responsiveness
+@media screen and (max-width: 768px) {
+  .app-header {
+    .header-content {
+      padding: 0.75rem 1rem;
+
+      .page-title h1 {
+        font-size: 1.25rem;
+      }
+
+      .college-info {
+        .college-name span {
+          display: none; // Hide text on mobile, keep only icon
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .app-header {
+    .header-content {
+      padding: 0.5rem 1rem;
+
+      .page-title h1 {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
