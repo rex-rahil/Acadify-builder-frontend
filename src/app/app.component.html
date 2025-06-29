@@ -1,50 +1,14 @@
 <div class="app-container">
-  <!-- Top Navigation Bar (for student portal pages) -->
-  <div class="top-nav" *ngIf="isStudentPortalRoute()">
-    <p-button
-      icon="pi pi-bars"
-      styleClass="p-button-text menu-button"
-      (onClick)="toggleSideNav()"
-      pTooltip="Open Menu"
-      tooltipPosition="bottom"
-    ></p-button>
-
-    <div class="nav-title">
-      <h2>Oriental College of Pharmacy</h2>
-      <span>Student Portal</span>
-    </div>
-
-    <div class="nav-actions">
-      <p-button
-        icon="pi pi-bell"
-        styleClass="p-button-text p-button-rounded"
-        badge="3"
-        badgeClass="p-badge-danger"
-        pTooltip="Notifications"
-        tooltipPosition="bottom"
-      ></p-button>
-      <p-button
-        icon="pi pi-user"
-        styleClass="p-button-text p-button-rounded"
-        pTooltip="Profile"
-        tooltipPosition="bottom"
-      ></p-button>
-    </div>
-  </div>
+  <!-- Header with menu button and page title -->
+  <app-header></app-header>
 
   <!-- Main Content -->
-  <div class="main-content" [class.with-top-nav]="isStudentPortalRoute()">
-    <!-- Admission Header (only for admission routes) -->
-    <div class="college-header" *ngIf="!isStudentPortalRoute()">
-      <h1>Oriental College of Pharmacy</h1>
-      <h2>B.Pharm Admission Application</h2>
-    </div>
-
+  <div class="main-content">
     <router-outlet></router-outlet>
   </div>
 
   <!-- Side Navigation -->
-  <app-side-nav [(visible)]="sideNavVisible"></app-side-nav>
+  <app-side-nav [(visible)]="sidebarVisible"></app-side-nav>
 
   <p-toast position="top-right"></p-toast>
 </div>

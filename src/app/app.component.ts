@@ -1,33 +1,35 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import { Subject } from "rxjs";
+import { takeUntil, filter } from "rxjs/operators";
+import { SidebarService } from "./shared/services/sidebar.service";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
-  title = "Oriental College of Pharmacy - B.Pharm Admission";
-  sideNavVisible = false;
+export class AppComponent implements OnInit, OnDestroy {
+  title = "Oriental College of Pharmacy";
+  private destroy$ = new Subject<void>();
+  sidebarVisible = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private sidebarService: SidebarService,
+  ) {}
 
-  toggleSideNav() {
-    this.sideNavVisible = !this.sideNavVisible;
+  ngOnInit() {
+    // Subscribe to sidebar visibility changes
+    this.sidebarService.sidebarVisible$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((visible) => {
+        this.sidebarVisible = visible;
+      });
   }
 
-  isLibraryRoute(): boolean {
-    return this.router.url.includes("/library");
-  }
-
-  isDashboardRoute(): boolean {
-    return this.router.url.includes("/dashboard");
-  }
-
-  isStudentPortalRoute(): boolean {
-    return (
-      this.router.url.includes("/dashboard") ||
-      this.router.url.includes("/library")
-    );
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
