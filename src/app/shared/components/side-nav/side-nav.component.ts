@@ -8,6 +8,11 @@ interface MenuItem {
   command?: () => void;
 }
 
+interface MenuSection {
+  label: string;
+  items: MenuItem[];
+}
+
 @Component({
   selector: "app-side-nav",
   templateUrl: "./side-nav.component.html",
@@ -20,41 +25,86 @@ export class SideNavComponent {
   studentName = "John Doe"; // This would come from auth service
   studentId = "OCP2024001"; // This would come from auth service
 
-  menuItems: MenuItem[] = [
+  menuSections: MenuSection[] = [
     {
-      label: "Dashboard",
-      icon: "pi pi-home",
-      route: "/dashboard",
+      label: "Student Portal",
+      items: [
+        {
+          label: "Dashboard",
+          icon: "pi pi-home",
+          route: "/dashboard",
+        },
+        {
+          label: "Timetable",
+          icon: "pi pi-calendar",
+          route: "/dashboard/timetable",
+        },
+        {
+          label: "Attendance",
+          icon: "pi pi-check-circle",
+          route: "/dashboard/attendance",
+        },
+        {
+          label: "Profile",
+          icon: "pi pi-user",
+          route: "/dashboard/profile",
+        },
+      ],
     },
     {
-      label: "Timetable",
-      icon: "pi pi-calendar",
-      route: "/dashboard/timetable",
+      label: "Faculty Portal",
+      items: [
+        {
+          label: "Faculty Dashboard",
+          icon: "pi pi-desktop",
+          route: "/faculty",
+        },
+        {
+          label: "Courses",
+          icon: "pi pi-book",
+          route: "/faculty/courses",
+        },
+        {
+          label: "Assignment (HOD)",
+          icon: "pi pi-users",
+          route: "/faculty/assignment",
+        },
+        {
+          label: "Faculty Attendance",
+          icon: "pi pi-clock",
+          route: "/faculty/attendance",
+        },
+        {
+          label: "Leave Management",
+          icon: "pi pi-calendar-times",
+          route: "/faculty/leaves",
+        },
+      ],
     },
     {
-      label: "Attendance",
-      icon: "pi pi-check-circle",
-      route: "/dashboard/attendance",
+      label: "Academic",
+      items: [
+        {
+          label: "Library",
+          icon: "pi pi-book",
+          route: "/library",
+        },
+      ],
     },
     {
-      label: "Library",
-      icon: "pi pi-book",
-      route: "/library",
-    },
-    {
-      label: "Profile",
-      icon: "pi pi-user",
-      route: "/dashboard/profile",
-    },
-    {
-      label: "Settings",
-      icon: "pi pi-cog",
-      route: "/settings",
-    },
-    {
-      label: "Logout",
-      icon: "pi pi-sign-out",
-      command: () => this.logout(),
+      label: "System",
+      items: [
+        {
+          label: "Settings",
+          icon: "pi pi-cog",
+          route: "/settings",
+        },
+        {
+          label: "Logout",
+          icon: "pi pi-sign-out",
+          command: () => this.logout(),
+        },
+      ],
     },
   ];
 
