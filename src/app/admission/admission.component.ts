@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService, MenuItem } from "primeng/api";
 import { FormService } from "./services/form.service";
+import { AdmissionStatusService } from "./services/admission-status.service";
 
 @Component({
   selector: "app-admission",
@@ -19,15 +21,32 @@ export class AdmissionComponent implements OnInit {
   documentsDeclarationForm!: FormGroup;
 
   isSubmitting = false;
+  isEditMode = false;
+  editApplicationId: string | null = null;
 
   constructor(
     private formService: FormService,
     private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private admissionStatusService: AdmissionStatusService,
   ) {}
 
   ngOnInit() {
+    // Check if in edit mode
+    this.route.queryParams.subscribe((params) => {
+      this.isEditMode = params["edit"] === "true";
+      this.editApplicationId = params["applicationId"] || null;
+    });
+
     this.initializeSteps();
     this.initializeForms();
+
+    if (this.isEditMode) {
+      this.loadExistingData();
+    } else {
+      this.loadSavedData();
+    }
   }
 
   initializeSteps() {
