@@ -244,7 +244,7 @@ export class FacultyAttendanceComponent implements OnInit {
     return date.toTimeString().slice(0, 8);
   }
 
-  private calculateWorkingHours(): number {
+  calculateWorkingHours(): number {
     const diff = this.checkOutTime.getTime() - this.checkInTime.getTime();
     return Math.round((diff / (1000 * 60 * 60)) * 100) / 100;
   }
