@@ -69,9 +69,10 @@ export class LeaveManagementComponent implements OnInit {
 
   private async loadFacultyProfile(): Promise<void> {
     try {
-      this.facultyProfile = await this.facultyService
-        .getFacultyProfile(this.facultyId)
-        .toPromise();
+      this.facultyProfile =
+        (await this.facultyService
+          .getFacultyProfile(this.facultyId)
+          .toPromise()) || null;
 
       // If user is HOD, load pending approvals
       if (this.facultyProfile?.isHOD) {
