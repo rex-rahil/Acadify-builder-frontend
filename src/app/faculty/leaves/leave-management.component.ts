@@ -107,9 +107,10 @@ export class LeaveManagementComponent implements OnInit {
 
     try {
       const departmentId = "dept_001"; // This would come from faculty profile
-      this.pendingApprovals = await this.facultyService
-        .getPendingLeaveRequests(departmentId)
-        .toPromise();
+      this.pendingApprovals =
+        (await this.facultyService
+          .getPendingLeaveRequests(departmentId)
+          .toPromise()) || [];
     } catch (error: any) {
       console.error("Failed to load pending approvals:", error);
     }
