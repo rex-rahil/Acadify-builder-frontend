@@ -57,17 +57,13 @@ export class FacultyService {
   // Subject and Schedule APIs
   getFacultySubjects(facultyId: string): Observable<Subject[]> {
     return this.http
-      .get<Subject[]>(`${this.apiUrl}/subjects/${facultyId}`)
+      .get<Subject[]>(`${this.apiUrl}/subjects?assignedFacultyId=${facultyId}`)
       .pipe(catchError(this.handleError));
   }
 
   getFacultySchedule(facultyId: string, date?: string): Observable<Schedule[]> {
-    let params = new HttpParams();
-    if (date) {
-      params = params.set("date", date);
-    }
     return this.http
-      .get<Schedule[]>(`${this.apiUrl}/schedule/${facultyId}`, { params })
+      .get<Schedule[]>(`${this.apiUrl}/schedules?facultyId=${facultyId}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -76,15 +72,15 @@ export class FacultyService {
     subjectId?: string,
     date?: string,
   ): Observable<ClassSession[]> {
-    let params = new HttpParams();
+    let url = `${this.apiUrl}/classSessions?facultyId=${facultyId}`;
     if (subjectId) {
-      params = params.set("subjectId", subjectId);
+      url += `&subjectId=${subjectId}`;
     }
     if (date) {
-      params = params.set("date", date);
+      url += `&date=${date}`;
     }
     return this.http
-      .get<ClassSession[]>(`${this.apiUrl}/classes/${facultyId}`, { params })
+      .get<ClassSession[]>(url)
       .pipe(catchError(this.handleError));
   }
 
