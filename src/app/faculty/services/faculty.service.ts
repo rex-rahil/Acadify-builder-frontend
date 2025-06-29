@@ -29,8 +29,11 @@ export class FacultyService {
   // Dashboard APIs
   getDashboardStats(facultyId: string): Observable<FacultyDashboardStats> {
     return this.http
-      .get<FacultyDashboardStats>(`${this.apiUrl}/dashboard/stats/${facultyId}`)
-      .pipe(catchError(this.handleError));
+      .get<any[]>(`${this.apiUrl}/dashboardStats?facultyId=${facultyId}`)
+      .pipe(
+        map((stats: any[]) => stats[0] || {}),
+        catchError(this.handleError),
+      );
   }
 
   getFacultyProfile(facultyId: string): Observable<FacultyProfile> {
