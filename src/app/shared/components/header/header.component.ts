@@ -26,9 +26,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         filter((event) => event instanceof NavigationEnd),
         takeUntil(this.destroy$),
       )
-      .subscribe((event: NavigationEnd) => {
-        this.currentRoute = event.url;
-        this.updateMenuButtonVisibility();
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.currentRoute = event.url;
+          this.updateMenuButtonVisibility();
+        }
       });
 
     // Set initial state
