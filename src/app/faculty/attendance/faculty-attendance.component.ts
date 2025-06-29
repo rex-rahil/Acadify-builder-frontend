@@ -250,6 +250,10 @@ export class FacultyAttendanceComponent implements OnInit {
     return Math.round((diff / (1000 * 60 * 60)) * 100) / 100;
   }
 
+  getCurrentDate(): Date {
+    return new Date();
+  }
+
   getDayName(dayIndex: number): string {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return days[dayIndex];
