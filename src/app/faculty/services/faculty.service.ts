@@ -211,29 +211,34 @@ export class FacultyService {
     return this.http
       .get<
         FacultyProfile[]
-      >(`${this.apiUrl}/hod/department/${departmentId}/faculty`)
+      >(`${this.apiUrl}/facultyProfiles?department=Computer Science`)
       .pipe(catchError(this.handleError));
   }
 
   getDepartmentSubjects(departmentId: string): Observable<Subject[]> {
     return this.http
-      .get<Subject[]>(`${this.apiUrl}/hod/department/${departmentId}/subjects`)
+      .get<Subject[]>(`${this.apiUrl}/subjects?departmentId=${departmentId}`)
       .pipe(catchError(this.handleError));
   }
 
   getFacultyAssignments(departmentId: string): Observable<FacultyAssignment[]> {
     return this.http
-      .get<
-        FacultyAssignment[]
-      >(`${this.apiUrl}/hod/department/${departmentId}/assignments`)
+      .get<FacultyAssignment[]>(`${this.apiUrl}/facultyAssignments`)
       .pipe(catchError(this.handleError));
   }
 
   assignFacultyToSubject(
     assignment: Partial<FacultyAssignment>,
   ): Observable<FacultyAssignment> {
+    const newAssignment = {
+      id: `assign_${Date.now()}`,
+      ...assignment,
+    };
     return this.http
-      .post<FacultyAssignment>(`${this.apiUrl}/hod/assignments`, assignment)
+      .post<FacultyAssignment>(
+        `${this.apiUrl}/facultyAssignments`,
+        newAssignment,
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -243,7 +248,7 @@ export class FacultyService {
   ): Observable<FacultyAssignment> {
     return this.http
       .put<FacultyAssignment>(
-        `${this.apiUrl}/hod/assignments/${assignmentId}`,
+        `${this.apiUrl}/facultyAssignments/${assignmentId}`,
         updateData,
       )
       .pipe(catchError(this.handleError));
@@ -251,7 +256,7 @@ export class FacultyService {
 
   removeFacultyAssignment(assignmentId: string): Observable<any> {
     return this.http
-      .delete(`${this.apiUrl}/hod/assignments/${assignmentId}`)
+      .delete(`${this.apiUrl}/facultyAssignments/${assignmentId}`)
       .pipe(catchError(this.handleError));
   }
 
