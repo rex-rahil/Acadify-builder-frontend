@@ -66,9 +66,10 @@ export class FacultyAttendanceComponent implements OnInit {
 
   private async loadFacultyProfile(): Promise<void> {
     try {
-      this.facultyProfile = await this.facultyService
-        .getFacultyProfile(this.facultyId)
-        .toPromise();
+      this.facultyProfile =
+        (await this.facultyService
+          .getFacultyProfile(this.facultyId)
+          .toPromise()) || null;
     } catch (error: any) {
       // Profile loading error is not critical
       console.error("Failed to load faculty profile:", error);
