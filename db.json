@@ -1,0 +1,575 @@
+{
+  "facultyProfiles": [
+    {
+      "id": "faculty_001",
+      "employeeId": "EMP001",
+      "name": "Dr. Sarah Johnson",
+      "email": "sarah.johnson@college.edu",
+      "phone": "+1234567890",
+      "department": "Computer Science",
+      "designation": "Associate Professor",
+      "joiningDate": "2020-06-15",
+      "qualifications": ["PhD Computer Science", "M.Tech Software Engineering"],
+      "avatar": null,
+      "isHOD": true
+    },
+    {
+      "id": "faculty_002",
+      "employeeId": "EMP002",
+      "name": "Prof. Michael Smith",
+      "email": "michael.smith@college.edu",
+      "phone": "+1234567891",
+      "department": "Computer Science",
+      "designation": "Assistant Professor",
+      "joiningDate": "2019-08-20",
+      "qualifications": ["M.Tech Computer Science", "B.Tech CSE"],
+      "avatar": null,
+      "isHOD": false
+    },
+    {
+      "id": "faculty_003",
+      "employeeId": "EMP003",
+      "name": "Dr. Emily Davis",
+      "email": "emily.davis@college.edu",
+      "phone": "+1234567892",
+      "department": "Computer Science",
+      "designation": "Assistant Professor",
+      "joiningDate": "2021-03-10",
+      "qualifications": ["PhD Information Technology", "M.Sc Computer Science"],
+      "avatar": null,
+      "isHOD": false
+    }
+  ],
+  "departments": [
+    {
+      "id": "dept_001",
+      "name": "Computer Science",
+      "code": "CS",
+      "hodId": "faculty_001",
+      "facultyCount": 3,
+      "subjectCount": 8
+    },
+    {
+      "id": "dept_002",
+      "name": "Information Technology",
+      "code": "IT",
+      "hodId": "faculty_002",
+      "facultyCount": 2,
+      "subjectCount": 6
+    }
+  ],
+  "subjects": [
+    {
+      "id": "subject_001",
+      "name": "Data Structures and Algorithms",
+      "code": "CS201",
+      "departmentId": "dept_001",
+      "semester": 3,
+      "credits": 4,
+      "type": "theory",
+      "assignedFacultyId": "faculty_001",
+      "assignedFacultyName": "Dr. Sarah Johnson"
+    },
+    {
+      "id": "subject_002",
+      "name": "Database Management Systems",
+      "code": "CS301",
+      "departmentId": "dept_001",
+      "semester": 5,
+      "credits": 3,
+      "type": "theory",
+      "assignedFacultyId": "faculty_002",
+      "assignedFacultyName": "Prof. Michael Smith"
+    },
+    {
+      "id": "subject_003",
+      "name": "Operating Systems Lab",
+      "code": "CS302L",
+      "departmentId": "dept_001",
+      "semester": 5,
+      "credits": 2,
+      "type": "lab",
+      "assignedFacultyId": "faculty_003",
+      "assignedFacultyName": "Dr. Emily Davis"
+    },
+    {
+      "id": "subject_004",
+      "name": "Computer Networks",
+      "code": "CS401",
+      "departmentId": "dept_001",
+      "semester": 7,
+      "credits": 3,
+      "type": "theory",
+      "assignedFacultyId": null,
+      "assignedFacultyName": null
+    },
+    {
+      "id": "subject_005",
+      "name": "Software Engineering",
+      "code": "CS501",
+      "departmentId": "dept_001",
+      "semester": 6,
+      "credits": 4,
+      "type": "theory",
+      "assignedFacultyId": "faculty_001",
+      "assignedFacultyName": "Dr. Sarah Johnson"
+    },
+    {
+      "id": "subject_006",
+      "name": "Web Development Lab",
+      "code": "CS503L",
+      "departmentId": "dept_001",
+      "semester": 6,
+      "credits": 2,
+      "type": "lab",
+      "assignedFacultyId": null,
+      "assignedFacultyName": null
+    }
+  ],
+  "schedules": [
+    {
+      "id": "schedule_001",
+      "subjectId": "subject_001",
+      "subjectName": "Data Structures and Algorithms",
+      "subjectCode": "CS201",
+      "dayOfWeek": 1,
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "roomNumber": "A101",
+      "semester": 3,
+      "type": "lecture",
+      "studentCount": 60,
+      "facultyId": "faculty_001"
+    },
+    {
+      "id": "schedule_002",
+      "subjectId": "subject_001",
+      "subjectName": "Data Structures and Algorithms",
+      "subjectCode": "CS201",
+      "dayOfWeek": 3,
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "roomNumber": "A101",
+      "semester": 3,
+      "type": "lecture",
+      "studentCount": 60,
+      "facultyId": "faculty_001"
+    },
+    {
+      "id": "schedule_003",
+      "subjectId": "subject_002",
+      "subjectName": "Database Management Systems",
+      "subjectCode": "CS301",
+      "dayOfWeek": 2,
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "roomNumber": "B201",
+      "semester": 5,
+      "type": "lecture",
+      "studentCount": 45,
+      "facultyId": "faculty_002"
+    },
+    {
+      "id": "schedule_004",
+      "subjectId": "subject_003",
+      "subjectName": "Operating Systems Lab",
+      "subjectCode": "CS302L",
+      "dayOfWeek": 4,
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "roomNumber": "Lab-1",
+      "semester": 5,
+      "type": "lab",
+      "studentCount": 30,
+      "facultyId": "faculty_003"
+    },
+    {
+      "id": "schedule_005",
+      "subjectId": "subject_005",
+      "subjectName": "Software Engineering",
+      "subjectCode": "CS501",
+      "dayOfWeek": 5,
+      "startTime": "13:00",
+      "endTime": "14:00",
+      "roomNumber": "A201",
+      "semester": 6,
+      "type": "lecture",
+      "studentCount": 35,
+      "facultyId": "faculty_001"
+    }
+  ],
+  "classSessions": [
+    {
+      "id": "session_001",
+      "subjectId": "subject_001",
+      "subjectName": "Data Structures and Algorithms",
+      "date": "2024-12-28",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "roomNumber": "A101",
+      "semester": 3,
+      "attendanceMarked": true,
+      "studentCount": 60,
+      "presentCount": 55,
+      "absentCount": 5,
+      "facultyId": "faculty_001"
+    },
+    {
+      "id": "session_002",
+      "subjectId": "subject_001",
+      "subjectName": "Data Structures and Algorithms",
+      "date": "2024-12-30",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "roomNumber": "A101",
+      "semester": 3,
+      "attendanceMarked": false,
+      "studentCount": 60,
+      "presentCount": null,
+      "absentCount": null,
+      "facultyId": "faculty_001"
+    },
+    {
+      "id": "session_003",
+      "subjectId": "subject_002",
+      "subjectName": "Database Management Systems",
+      "date": "2024-12-29",
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "roomNumber": "B201",
+      "semester": 5,
+      "attendanceMarked": true,
+      "studentCount": 45,
+      "presentCount": 42,
+      "absentCount": 3,
+      "facultyId": "faculty_002"
+    },
+    {
+      "id": "session_004",
+      "subjectId": "subject_003",
+      "subjectName": "Operating Systems Lab",
+      "date": "2024-12-28",
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "roomNumber": "Lab-1",
+      "semester": 5,
+      "attendanceMarked": false,
+      "studentCount": 30,
+      "presentCount": null,
+      "absentCount": null,
+      "facultyId": "faculty_003"
+    }
+  ],
+  "facultyAttendance": [
+    {
+      "id": "att_001",
+      "facultyId": "faculty_001",
+      "date": "2024-12-28",
+      "checkInTime": "08:30:00",
+      "checkOutTime": "17:00:00",
+      "status": "present",
+      "workingHours": 8.5,
+      "remarks": null
+    },
+    {
+      "id": "att_002",
+      "facultyId": "faculty_001",
+      "date": "2024-12-27",
+      "checkInTime": "09:15:00",
+      "checkOutTime": "17:30:00",
+      "status": "late",
+      "workingHours": 8.25,
+      "remarks": "Traffic delay"
+    },
+    {
+      "id": "att_003",
+      "facultyId": "faculty_002",
+      "date": "2024-12-28",
+      "checkInTime": "08:45:00",
+      "checkOutTime": "16:45:00",
+      "status": "present",
+      "workingHours": 8.0,
+      "remarks": null
+    },
+    {
+      "id": "att_004",
+      "facultyId": "faculty_003",
+      "date": "2024-12-28",
+      "checkInTime": "09:00:00",
+      "checkOutTime": "17:15:00",
+      "status": "present",
+      "workingHours": 8.25,
+      "remarks": null
+    },
+    {
+      "id": "att_005",
+      "facultyId": "faculty_001",
+      "date": "2024-12-26",
+      "checkInTime": null,
+      "checkOutTime": null,
+      "status": "on-leave",
+      "workingHours": 0,
+      "remarks": "Casual leave"
+    }
+  ],
+  "leaveRequests": [
+    {
+      "id": "leave_001",
+      "facultyId": "faculty_001",
+      "facultyName": "Dr. Sarah Johnson",
+      "leaveType": "casual",
+      "startDate": "2024-12-26",
+      "endDate": "2024-12-26",
+      "duration": 1,
+      "reason": "Personal work",
+      "status": "approved",
+      "appliedDate": "2024-12-20T10:00:00Z",
+      "approvedBy": "Dean Office",
+      "approvedDate": "2024-12-21T14:30:00Z",
+      "rejectionReason": null,
+      "documents": []
+    },
+    {
+      "id": "leave_002",
+      "facultyId": "faculty_001",
+      "facultyName": "Dr. Sarah Johnson",
+      "leaveType": "sick",
+      "startDate": "2025-01-10",
+      "endDate": "2025-01-12",
+      "duration": 3,
+      "reason": "Medical treatment",
+      "status": "pending",
+      "appliedDate": "2025-01-08T09:00:00Z",
+      "approvedBy": null,
+      "approvedDate": null,
+      "rejectionReason": null,
+      "documents": ["medical_certificate.pdf"]
+    },
+    {
+      "id": "leave_003",
+      "facultyId": "faculty_002",
+      "facultyName": "Prof. Michael Smith",
+      "leaveType": "earned",
+      "startDate": "2025-01-15",
+      "endDate": "2025-01-17",
+      "duration": 3,
+      "reason": "Family function",
+      "status": "pending",
+      "appliedDate": "2025-01-10T11:00:00Z",
+      "approvedBy": null,
+      "approvedDate": null,
+      "rejectionReason": null,
+      "documents": []
+    },
+    {
+      "id": "leave_004",
+      "facultyId": "faculty_003",
+      "facultyName": "Dr. Emily Davis",
+      "leaveType": "casual",
+      "startDate": "2024-12-31",
+      "endDate": "2025-01-02",
+      "duration": 3,
+      "reason": "New Year vacation",
+      "status": "approved",
+      "appliedDate": "2024-12-25T14:00:00Z",
+      "approvedBy": "Dr. Sarah Johnson",
+      "approvedDate": "2024-12-26T09:30:00Z",
+      "rejectionReason": null,
+      "documents": []
+    }
+  ],
+  "facultyAssignments": [
+    {
+      "id": "assign_001",
+      "facultyId": "faculty_001",
+      "facultyName": "Dr. Sarah Johnson",
+      "subjectId": "subject_001",
+      "subjectName": "Data Structures and Algorithms",
+      "subjectCode": "CS201",
+      "semester": 3,
+      "assignedDate": "2024-01-01T00:00:00Z",
+      "assignedBy": "faculty_001",
+      "workload": 4,
+      "status": "active"
+    },
+    {
+      "id": "assign_002",
+      "facultyId": "faculty_002",
+      "facultyName": "Prof. Michael Smith",
+      "subjectId": "subject_002",
+      "subjectName": "Database Management Systems",
+      "subjectCode": "CS301",
+      "semester": 5,
+      "assignedDate": "2024-01-01T00:00:00Z",
+      "assignedBy": "faculty_001",
+      "workload": 3,
+      "status": "active"
+    },
+    {
+      "id": "assign_003",
+      "facultyId": "faculty_003",
+      "facultyName": "Dr. Emily Davis",
+      "subjectId": "subject_003",
+      "subjectName": "Operating Systems Lab",
+      "subjectCode": "CS302L",
+      "semester": 5,
+      "assignedDate": "2024-01-01T00:00:00Z",
+      "assignedBy": "faculty_001",
+      "workload": 4,
+      "status": "active"
+    },
+    {
+      "id": "assign_004",
+      "facultyId": "faculty_001",
+      "facultyName": "Dr. Sarah Johnson",
+      "subjectId": "subject_005",
+      "subjectName": "Software Engineering",
+      "subjectCode": "CS501",
+      "semester": 6,
+      "assignedDate": "2024-01-01T00:00:00Z",
+      "assignedBy": "faculty_001",
+      "workload": 4,
+      "status": "active"
+    }
+  ],
+  "dashboardStats": [
+    {
+      "id": "stats_faculty_001",
+      "facultyId": "faculty_001",
+      "totalSubjects": 2,
+      "totalClasses": 6,
+      "todayClasses": 1,
+      "attendancePercentage": 95.5,
+      "leaveBalance": 8,
+      "pendingLeaves": 1
+    },
+    {
+      "id": "stats_faculty_002",
+      "facultyId": "faculty_002",
+      "totalSubjects": 1,
+      "totalClasses": 3,
+      "todayClasses": 0,
+      "attendancePercentage": 98.2,
+      "leaveBalance": 12,
+      "pendingLeaves": 1
+    },
+    {
+      "id": "stats_faculty_003",
+      "facultyId": "faculty_003",
+      "totalSubjects": 1,
+      "totalClasses": 2,
+      "todayClasses": 0,
+      "attendancePercentage": 96.8,
+      "leaveBalance": 10,
+      "pendingLeaves": 0
+    }
+  ],
+  "leaveBalances": [
+    {
+      "id": "balance_faculty_001",
+      "facultyId": "faculty_001",
+      "casual": { "total": 12, "used": 4, "remaining": 8 },
+      "sick": { "total": 12, "used": 2, "remaining": 10 },
+      "earned": { "total": 20, "used": 5, "remaining": 15 },
+      "maternity": { "total": 90, "used": 0, "remaining": 90 }
+    },
+    {
+      "id": "balance_faculty_002",
+      "facultyId": "faculty_002",
+      "casual": { "total": 12, "used": 2, "remaining": 10 },
+      "sick": { "total": 12, "used": 0, "remaining": 12 },
+      "earned": { "total": 20, "used": 3, "remaining": 17 },
+      "maternity": { "total": 90, "used": 0, "remaining": 90 }
+    },
+    {
+      "id": "balance_faculty_003",
+      "facultyId": "faculty_003",
+      "casual": { "total": 12, "used": 3, "remaining": 9 },
+      "sick": { "total": 12, "used": 1, "remaining": 11 },
+      "earned": { "total": 20, "used": 2, "remaining": 18 },
+      "maternity": { "total": 90, "used": 0, "remaining": 90 }
+    }
+  ],
+  "workloadSummaries": [
+    {
+      "id": "workload_dept_001",
+      "departmentId": "dept_001",
+      "summaries": [
+        {
+          "facultyId": "faculty_001",
+          "facultyName": "Dr. Sarah Johnson",
+          "totalSubjects": 2,
+          "totalHours": 8,
+          "theoryHours": 8,
+          "practicalHours": 0,
+          "labHours": 0,
+          "maxWorkload": 18,
+          "workloadPercentage": 44.4
+        },
+        {
+          "facultyId": "faculty_002",
+          "facultyName": "Prof. Michael Smith",
+          "totalSubjects": 1,
+          "totalHours": 3,
+          "theoryHours": 3,
+          "practicalHours": 0,
+          "labHours": 0,
+          "maxWorkload": 18,
+          "workloadPercentage": 16.7
+        },
+        {
+          "facultyId": "faculty_003",
+          "facultyName": "Dr. Emily Davis",
+          "totalSubjects": 1,
+          "totalHours": 4,
+          "theoryHours": 0,
+          "practicalHours": 0,
+          "labHours": 4,
+          "maxWorkload": 18,
+          "workloadPercentage": 22.2
+        }
+      ]
+    }
+  ],
+  "attendanceStats": [
+    {
+      "id": "attendanceStats_faculty_001",
+      "facultyId": "faculty_001",
+      "month": "12",
+      "year": "2024",
+      "totalDays": 22,
+      "presentDays": 20,
+      "absentDays": 0,
+      "halfDays": 1,
+      "leaveDays": 1,
+      "attendancePercentage": 95.5,
+      "averageWorkingHours": 8.2
+    },
+    {
+      "id": "attendanceStats_faculty_002",
+      "facultyId": "faculty_002",
+      "month": "12",
+      "year": "2024",
+      "totalDays": 22,
+      "presentDays": 21,
+      "absentDays": 0,
+      "halfDays": 1,
+      "leaveDays": 0,
+      "attendancePercentage": 98.2,
+      "averageWorkingHours": 8.1
+    },
+    {
+      "id": "attendanceStats_faculty_003",
+      "facultyId": "faculty_003",
+      "month": "12",
+      "year": "2024",
+      "totalDays": 22,
+      "presentDays": 21,
+      "absentDays": 1,
+      "halfDays": 0,
+      "leaveDays": 0,
+      "attendancePercentage": 96.8,
+      "averageWorkingHours": 8.3
+    }
+  ]
+}
