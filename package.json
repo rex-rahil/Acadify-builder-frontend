@@ -11,7 +11,7 @@
     "serve:ssr": "node dist/oriental-college-admission/server/main.js",
     "build:ssr": "ng build && ng run oriental-college-admission:server",
     "prerender": "ng run oriental-college-admission:prerender",
-    "dev": "concurrently \"ng serve\" \"npm run server:dev\" \"npm run json-server\"",
+    "dev": "concurrently \"ng serve --proxy-config proxy.conf.json\" \"npm run server:dev\" \"npm run json-server\"",
     "server:dev": "tsx watch server/index.ts",
     "server:build": "tsc -p server/tsconfig.json",
     "server:start": "node dist/server/index.js",
