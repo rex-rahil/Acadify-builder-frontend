@@ -45,7 +45,7 @@ export class AdmissionStatusService {
     try {
       const status = await this.getStudentApplicationStatus().toPromise();
       const studentData: StudentApplicationData = {
-        applicationStatus: status,
+        applicationStatus: status || null,
         hasActiveApplication: !!status,
         isAdmitted: status?.status === "enrolled",
         hasPaidMinimumFees:

@@ -58,8 +58,8 @@ export class ApplicationStatusComponent implements OnInit {
         this.admissionStatusService.getStudentNotifications().toPromise(),
       ]);
 
-      this.applicationStatus = status;
-      this.notifications = notifications.sort(
+      this.applicationStatus = status || null;
+      this.notifications = (notifications || []).sort(
         (a, b) =>
           new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
       );
@@ -74,9 +74,10 @@ export class ApplicationStatusComponent implements OnInit {
           "enrolled",
         ].includes(status.status)
       ) {
-        this.paymentDetails = await this.admissionStatusService
+        const paymentResult = await this.admissionStatusService
           .getPaymentDetails(status.applicationId)
           .toPromise();
+        this.paymentDetails = paymentResult || null;
       }
 
       this.loading = false;

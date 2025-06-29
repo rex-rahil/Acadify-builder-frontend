@@ -78,19 +78,22 @@ export class FeePaymentComponent implements OnInit {
         this.admissionStatusService.getFeeStructure().toPromise(),
       ]);
 
-      this.applicationStatus = application;
-      this.paymentDetails = payment;
-      this.feeStructure = feeStructures;
+      this.applicationStatus = application || null;
+      this.paymentDetails = payment || null;
+      this.feeStructure = feeStructures || [];
 
       // Set default fee structure (first one or B.Pharm)
-      this.selectedFeeStructure =
-        feeStructures.find((f) => f.programName === "B.Pharm") ||
-        feeStructures[0];
+      if (feeStructures && feeStructures.length > 0) {
+        this.selectedFeeStructure =
+          feeStructures.find((f) => f.programName === "B.Pharm") ||
+          feeStructures[0];
+      }
 
       // Check if application is eligible for payment
       if (
-        application.status !== "payment_pending" &&
-        application.status !== "approved"
+        !application ||
+        (application.status !== "payment_pending" &&
+          application.status !== "approved")
       ) {
         this.showError("Application is not eligible for payment");
         this.router.navigate(["/admission/status"]);
