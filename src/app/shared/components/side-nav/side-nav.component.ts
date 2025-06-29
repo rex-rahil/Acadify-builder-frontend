@@ -108,7 +108,7 @@ export class SideNavComponent {
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   getInitials(name: string): string {
     return name
