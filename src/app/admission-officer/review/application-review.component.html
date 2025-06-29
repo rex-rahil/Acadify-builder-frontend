@@ -1,0 +1,167 @@
+<div class="application-review">
+  <div class="page-header">
+    <h1><i class="pi pi-file-check"></i> Application Review</h1>
+    <div class="header-actions">
+      <p-button
+        label="Refresh"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+        (onClick)="refreshData()"
+        [loading]="loading"
+      >
+      </p-button>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <p-card>
+      <div class="filters-content">
+        <div class="filter-item">
+          <label>Status Filter</label>
+          <p-dropdown
+            [options]="statusOptions"
+            [(ngModel)]="selectedStatus"
+            optionLabel="label"
+            optionValue="value"
+            (onChange)="applyFilters()"
+          >
+          </p-dropdown>
+        </div>
+        <div class="filter-item">
+          <label>Search Applications</label>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="searchTerm"
+            placeholder="Search by Application ID or Student ID"
+            (input)="applyFilters()"
+          />
+        </div>
+        <div class="filter-results">
+          <p>
+            Showing {{ filteredApplications.length }} of
+            {{ applications.length }} applications
+          </p>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading applications...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <p-card>
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error Loading Applications</h3>
+        <p>{{ error }}</p>
+        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="applications-section">
+    <p-card>
+      <div *ngIf="filteredApplications.length > 0">
+        <p-table
+          [value]="filteredApplications"
+          [paginator]="true"
+          [rows]="10"
+          [responsive]="true"
+          [sortField]="'submittedDate'"
+          [sortOrder]="-1"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="applicationId">
+                Application ID <p-sortIcon field="applicationId"></p-sortIcon>
+              </th>
+              <th pSortableColumn="studentId">
+                Student ID <p-sortIcon field="studentId"></p-sortIcon>
+              </th>
+              <th pSortableColumn="submittedDate">
+                Submitted Date <p-sortIcon field="submittedDate"></p-sortIcon>
+              </th>
+              <th pSortableColumn="status">
+                Status <p-sortIcon field="status"></p-sortIcon>
+              </th>
+              <th>Reviewed By</th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-application>
+            <tr>
+              <td>
+                <div class="application-id">
+                  <strong>{{ application.applicationId }}</strong>
+                  <span
+                    *ngIf="application.resubmissionCount > 0"
+                    class="resubmission-badge"
+                  >
+                    Resubmission #{{ application.resubmissionCount }}
+                  </span>
+                </div>
+              </td>
+              <td>{{ application.studentId }}</td>
+              <td>{{ application.submittedDate | date: "MMM d, y h:mm a" }}</td>
+              <td>
+                <p-tag
+                  [value]="application.status | titlecase"
+                  [severity]="getStatusSeverity(application.status)"
+                >
+                </p-tag>
+              </td>
+              <td>
+                <div *ngIf="application.reviewedBy; else noReviewer">
+                  <p>{{ application.reviewedBy }}</p>
+                  <small>{{
+                    application.reviewedDate | date: "MMM d, y"
+                  }}</small>
+                </div>
+                <ng-template #noReviewer>
+                  <span class="text-muted">Not reviewed</span>
+                </ng-template>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <p-button
+                    icon="pi pi-eye"
+                    styleClass="p-button-text p-button-sm"
+                    pTooltip="View Details"
+                    (onClick)="viewApplication(application.id)"
+                  >
+                  </p-button>
+                  <p-button
+                    *ngIf="application.status === 'submitted'"
+                    icon="pi pi-check"
+                    styleClass="p-button-text p-button-sm p-button-success"
+                    pTooltip="Quick Approve"
+                    (onClick)="quickApprove(application.id)"
+                  >
+                  </p-button>
+                  <p-button
+                    *ngIf="application.status === 'submitted'"
+                    icon="pi pi-times"
+                    styleClass="p-button-text p-button-sm p-button-danger"
+                    pTooltip="Quick Reject"
+                    (onClick)="showRejectDialog(application.id)"
+                  >
+                  </p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div *ngIf="filteredApplications.length === 0" class="empty-state">
+        <i class="pi pi-file"></i>
+        <p>No applications found matching your criteria</p>
+      </div>
+    </p-card>
+  </div>
+</div>
