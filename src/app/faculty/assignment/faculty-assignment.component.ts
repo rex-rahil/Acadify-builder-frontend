@@ -170,7 +170,7 @@ export class FacultyAssignmentComponent implements OnInit {
     }
   }
 
-  private calculateSubjectWorkload(subject: Subject): number {
+  calculateSubjectWorkload(subject: Subject): number {
     // Calculate workload based on subject type and credits
     const baseHours = subject.credits * 2; // 2 hours per credit
     switch (subject.type) {
