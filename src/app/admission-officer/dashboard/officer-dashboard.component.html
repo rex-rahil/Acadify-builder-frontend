@@ -285,14 +285,7 @@
             <div class="progress-item">
               <label>Review Progress</label>
               <p-progressBar
-                [value]="
-                  overview?.totalApplications && overview?.pendingReview
-                    ? (((overview.totalApplications || 0) -
-                        (overview.pendingReview || 0)) /
-                        (overview.totalApplications || 1)) *
-                      100
-                    : 0
-                "
+                [value]="getReviewProgress()"
                 [style]="{ height: '8px' }"
                 styleClass="progress-success"
               >
