@@ -136,11 +136,27 @@ export class FacultyService {
     classSessionId: string,
     attendanceList: StudentAttendance[],
   ): Observable<any> {
+    // Update the class session to mark attendance as completed
     return this.http
-      .post(`${this.apiUrl}/classes/${classSessionId}/attendance`, {
-        attendanceList,
-      })
-      .pipe(catchError(this.handleError));
+      .get<ClassSession>(`${this.apiUrl}/classSessions/${classSessionId}`)
+      .pipe(
+        switchMap((session: ClassSession) => {
+          const updatedSession = {
+            ...session,
+            attendanceMarked: true,
+            presentCount: attendanceList.filter(
+              (s) => s.status === "present" || s.status === "late",
+            ).length,
+            absentCount: attendanceList.filter((s) => s.status === "absent")
+              .length,
+          };
+          return this.http.put(
+            `${this.apiUrl}/classSessions/${classSessionId}`,
+            updatedSession,
+          );
+        }),
+        catchError(this.handleError),
+      );
   }
 
   // Leave Management APIs
