@@ -531,6 +531,215 @@
       ]
     }
   ],
+  "applicationStatuses": [
+    {
+      "id": "app_001",
+      "applicationId": "ADM2024001",
+      "studentId": "student_001",
+      "status": "submitted",
+      "submittedDate": "2024-12-28T10:00:00Z",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-28T10:00:00Z",
+      "documents": [
+        {
+          "id": "doc_001",
+          "applicationId": "ADM2024001",
+          "documentType": "Academic Transcripts",
+          "fileName": "transcripts.pdf",
+          "uploadDate": "2024-12-28T10:00:00Z",
+          "status": "pending",
+          "isRequired": true
+        },
+        {
+          "id": "doc_002",
+          "applicationId": "ADM2024001",
+          "documentType": "Identity Proof",
+          "fileName": "id_proof.pdf",
+          "uploadDate": "2024-12-28T10:00:00Z",
+          "status": "pending",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "id": "app_002",
+      "applicationId": "ADM2024002",
+      "studentId": "student_002",
+      "status": "under_review",
+      "submittedDate": "2024-12-27T14:30:00Z",
+      "reviewedDate": "2024-12-28T09:00:00Z",
+      "reviewedBy": "Officer_001",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-28T09:00:00Z",
+      "documents": []
+    },
+    {
+      "id": "app_003",
+      "applicationId": "ADM2024003",
+      "studentId": "student_003",
+      "status": "approved",
+      "submittedDate": "2024-12-26T11:15:00Z",
+      "reviewedDate": "2024-12-27T16:20:00Z",
+      "reviewedBy": "Officer_001",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-27T16:20:00Z",
+      "documents": []
+    },
+    {
+      "id": "app_004",
+      "applicationId": "ADM2024004",
+      "studentId": "student_004",
+      "status": "rejected",
+      "submittedDate": "2024-12-25T13:45:00Z",
+      "reviewedDate": "2024-12-26T10:30:00Z",
+      "reviewedBy": "Officer_002",
+      "rejectionReason": "Incomplete academic transcripts and missing eligibility documents",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-26T10:30:00Z",
+      "documents": []
+    },
+    {
+      "id": "app_005",
+      "applicationId": "ADM2024005",
+      "studentId": "student_005",
+      "status": "payment_pending",
+      "submittedDate": "2024-12-24T16:00:00Z",
+      "reviewedDate": "2024-12-25T14:00:00Z",
+      "reviewedBy": "Officer_001",
+      "resubmissionCount": 0,
+      "lastUpdated": "2024-12-25T14:00:00Z",
+      "documents": []
+    }
+  ],
+  "applicationOverview": [
+    {
+      "id": "overview_001",
+      "totalApplications": 156,
+      "pendingReview": 23,
+      "approved": 78,
+      "rejected": 15,
+      "paymentPending": 28,
+      "enrolled": 12,
+      "todaySubmissions": 8,
+      "avgReviewTime": 4.5
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif_001",
+      "recipientId": "officer_001",
+      "recipientType": "officer",
+      "title": "New Application Submitted",
+      "message": "Application ADM2024001 has been submitted by student_001",
+      "type": "application_submitted",
+      "isRead": false,
+      "createdDate": "2024-12-28T10:00:00Z",
+      "applicationId": "ADM2024001"
+    },
+    {
+      "id": "notif_002",
+      "recipientId": "student_001",
+      "recipientType": "student",
+      "title": "Application Under Review",
+      "message": "Your application ADM2024001 is currently under review",
+      "type": "application_submitted",
+      "isRead": true,
+      "createdDate": "2024-12-28T10:30:00Z",
+      "applicationId": "ADM2024001"
+    },
+    {
+      "id": "notif_003",
+      "recipientId": "student_004",
+      "recipientType": "student",
+      "title": "Application Rejected",
+      "message": "Your application ADM2024004 has been rejected. Please check the details and resubmit.",
+      "type": "application_rejected",
+      "isRead": false,
+      "createdDate": "2024-12-26T10:30:00Z",
+      "applicationId": "ADM2024004"
+    }
+  ],
+  "paymentDetails": [
+    {
+      "id": "payment_001",
+      "applicationId": "ADM2024005",
+      "amount": 125000,
+      "currency": "INR",
+      "status": "pending",
+      "dueDate": "2025-01-15T23:59:59Z"
+    },
+    {
+      "id": "payment_002",
+      "applicationId": "ADM2024003",
+      "amount": 125000,
+      "currency": "INR",
+      "paymentMethod": "UPI",
+      "transactionId": "TXN123456789",
+      "paymentDate": "2024-12-27T18:30:00Z",
+      "status": "completed",
+      "dueDate": "2025-01-15T23:59:59Z"
+    }
+  ],
+  "feeStructure": [
+    {
+      "id": "fee_001",
+      "programName": "B.Pharm",
+      "academicYear": "2024-25",
+      "tuitionFee": 85000,
+      "admissionFee": 15000,
+      "laboratoryFee": 12000,
+      "libraryFee": 3000,
+      "developmentFee": 10000,
+      "totalFee": 125000,
+      "paymentDeadline": "2025-01-15T23:59:59Z",
+      "installmentOptions": [
+        {
+          "id": "installment_001",
+          "planName": "Two Installments",
+          "numberOfInstallments": 2,
+          "firstInstallmentAmount": 65000,
+          "subsequentInstallmentAmount": 60000,
+          "installmentDates": ["2025-01-15", "2025-06-15"],
+          "processingFee": 1000
+        },
+        {
+          "id": "installment_002",
+          "planName": "Four Installments",
+          "planName": "Four Installments",
+          "numberOfInstallments": 4,
+          "firstInstallmentAmount": 35000,
+          "subsequentInstallmentAmount": 30000,
+          "installmentDates": [
+            "2025-01-15",
+            "2025-04-15",
+            "2025-07-15",
+            "2025-10-15"
+          ],
+          "processingFee": 2000
+        }
+      ]
+    }
+  ],
+  "applicationReviews": [
+    {
+      "id": "review_001",
+      "applicationId": "ADM2024003",
+      "reviewerId": "Officer_001",
+      "reviewerName": "Dr. Priya Sharma",
+      "reviewDate": "2024-12-27T16:20:00Z",
+      "overallStatus": "approved",
+      "documentReviews": [
+        {
+          "documentId": "doc_001",
+          "documentType": "Academic Transcripts",
+          "status": "approved",
+          "comments": "All documents are complete and meet requirements"
+        }
+      ],
+      "generalComments": "Excellent academic record. All requirements met.",
+      "nextSteps": "Proceed to fee payment"
+    }
+  ],
   "attendanceStats": [
     {
       "id": "attendanceStats_faculty_001",
