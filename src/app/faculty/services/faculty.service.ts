@@ -22,7 +22,7 @@ import {
   providedIn: "root",
 })
 export class FacultyService {
-  private apiUrl = "/api/faculty";
+  private apiUrl = "http://localhost:3001";
 
   constructor(private http: HttpClient) {}
 
