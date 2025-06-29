@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Router } from "@angular/router";
-import { AdmissionStatusService } from "../../admission/services/admission-status.service";
 
 interface MenuItem {
   label: string;
@@ -119,10 +118,7 @@ export class SideNavComponent {
     },
   ];
 
-  constructor(
-    public router: Router,
-    private admissionStatusService: AdmissionStatusService,
-  ) {}
+  constructor(public router: Router) {}
 
   getInitials(name: string): string {
     return name
