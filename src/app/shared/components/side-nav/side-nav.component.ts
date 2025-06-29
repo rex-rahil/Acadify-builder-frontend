@@ -92,6 +92,16 @@ export class SideNavComponent {
       ],
     },
     {
+      label: "Administration",
+      items: [
+        {
+          label: "Admission Officer",
+          icon: "pi pi-file-check",
+          route: "/admission-officer",
+        },
+      ],
+    },
+    {
       label: "System",
       items: [
         {
