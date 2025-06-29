@@ -278,7 +278,8 @@
                 {{
                   overview?.pendingReview && overview?.totalApplications
                     ? (
-                        (overview.pendingReview / overview.totalApplications) *
+                        ((overview.pendingReview || 0) /
+                          (overview.totalApplications || 1)) *
                         100
                       ).toFixed(1)
                     : 0
