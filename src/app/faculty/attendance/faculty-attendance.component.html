@@ -1,0 +1,422 @@
+<div class="faculty-attendance">
+  <div class="page-header">
+    <div class="header-info">
+      <h1><i class="pi pi-clock"></i> Faculty Attendance</h1>
+      <p *ngIf="facultyProfile">
+        {{ facultyProfile.name }} - {{ facultyProfile.employeeId }}
+      </p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Mark Attendance"
+        icon="pi pi-check"
+        styleClass="p-button-success"
+        (onClick)="openQuickMarkDialog()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Export"
+        icon="pi pi-download"
+        styleClass="p-button-outlined"
+        (onClick)="exportAttendance()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Refresh"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+        (onClick)="refreshData()"
+        [loading]="loading"
+      >
+      </p-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading attendance data...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <p-card>
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error Loading Attendance</h3>
+        <p>{{ error }}</p>
+        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="attendance-content">
+    <!-- Attendance Statistics -->
+    <div class="stats-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-chart-line"></i> Attendance Statistics</h3>
+            <div class="month-selector">
+              <p-dropdown
+                [options]="months"
+                [(ngModel)]="selectedMonth"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onMonthYearChange()"
+              >
+              </p-dropdown>
+              <p-dropdown
+                [options]="years"
+                [(ngModel)]="selectedYear"
+                (onChange)="onMonthYearChange()"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="attendanceStats" class="stats-grid">
+          <div class="stat-card total-days">
+            <div class="stat-icon">
+              <i class="pi pi-calendar"></i>
+            </div>
+            <div class="stat-details">
+              <h3>{{ attendanceStats.totalDays }}</h3>
+              <p>Total Days</p>
+            </div>
+          </div>
+
+          <div class="stat-card present-days">
+            <div class="stat-icon">
+              <i class="pi pi-check-circle"></i>
+            </div>
+            <div class="stat-details">
+              <h3>{{ attendanceStats.presentDays }}</h3>
+              <p>Present Days</p>
+            </div>
+          </div>
+
+          <div class="stat-card absent-days">
+            <div class="stat-icon">
+              <i class="pi pi-times-circle"></i>
+            </div>
+            <div class="stat-details">
+              <h3>{{ attendanceStats.absentDays }}</h3>
+              <p>Absent Days</p>
+            </div>
+          </div>
+
+          <div class="stat-card attendance-percentage">
+            <div class="stat-icon">
+              <i class="pi pi-chart-pie"></i>
+            </div>
+            <div class="stat-details">
+              <h3>{{ attendanceStats.attendancePercentage }}%</h3>
+              <p>Attendance Rate</p>
+              <p-progressBar
+                [value]="attendanceStats.attendancePercentage"
+                [style]="{ height: '6px', marginTop: '8px' }"
+                [styleClass]="
+                  getStatsColor(attendanceStats.attendancePercentage)
+                "
+              >
+              </p-progressBar>
+            </div>
+          </div>
+
+          <div class="stat-card avg-hours">
+            <div class="stat-icon">
+              <i class="pi pi-clock"></i>
+            </div>
+            <div class="stat-details">
+              <h3>{{ attendanceStats.averageWorkingHours }}h</h3>
+              <p>Avg Working Hours</p>
+            </div>
+          </div>
+
+          <div class="stat-card leave-days">
+            <div class="stat-icon">
+              <i class="pi pi-calendar-times"></i>
+            </div>
+            <div class="stat-details">
+              <h3>{{ attendanceStats.leaveDays }}</h3>
+              <p>Leave Days</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!attendanceStats" class="no-stats">
+          <p>No attendance statistics available for the selected period</p>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Calendar View -->
+    <div class="calendar-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-calendar"></i> Attendance Calendar</h3>
+            <div class="calendar-title">
+              {{ monthNames[selectedMonth - 1] }} {{ selectedYear }}
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <div
+              *ngFor="
+                let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+              "
+              class="day-header"
+            >
+              {{ day }}
+            </div>
+          </div>
+          <div class="calendar-grid">
+            <div
+              *ngFor="let dayData of calendarData"
+              class="calendar-day"
+              [class.today]="dayData?.isToday"
+              [class.weekend]="dayData?.isWeekend"
+              [class.empty]="!dayData"
+            >
+              <div *ngIf="dayData" class="day-content">
+                <div class="day-number">{{ dayData.day }}</div>
+                <div
+                  *ngIf="dayData.attendance"
+                  class="attendance-indicator"
+                  [class]="getAttendanceStatusClass(dayData.attendance.status)"
+                  [pTooltip]="dayData.attendance.status | titlecase"
+                >
+                  <i
+                    [class]="getAttendanceStatusIcon(dayData.attendance.status)"
+                  ></i>
+                </div>
+                <div
+                  *ngIf="!dayData.attendance && !dayData.isWeekend"
+                  class="no-attendance"
+                >
+                  <i class="pi pi-question"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-legend">
+          <div class="legend-item">
+            <span class="legend-color status-present"></span>
+            <span>Present</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color status-absent"></span>
+            <span>Absent</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color status-half-day"></span>
+            <span>Half Day</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color status-late"></span>
+            <span>Late</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color status-leave"></span>
+            <span>On Leave</span>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Attendance Records Table -->
+    <div class="records-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-list"></i> Attendance Records</h3>
+          </div>
+        </ng-template>
+
+        <div *ngIf="attendanceRecords.length > 0">
+          <p-table
+            [value]="attendanceRecords"
+            [paginator]="true"
+            [rows]="15"
+            [responsive]="true"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Date</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Working Hours</th>
+                <th>Status</th>
+                <th>Remarks</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record>
+              <tr>
+                <td>
+                  <div class="date-cell">
+                    {{ record.date | date: "EEE, MMM d, y" }}
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    {{ record.checkInTime || "-" }}
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    {{ record.checkOutTime || "-" }}
+                  </div>
+                </td>
+                <td>
+                  <div class="hours-cell">
+                    <span *ngIf="record.workingHours"
+                      >{{ record.workingHours }}h</span
+                    >
+                    <span *ngIf="!record.workingHours">-</span>
+                  </div>
+                </td>
+                <td>
+                  <p-tag
+                    [value]="record.status | titlecase"
+                    [severity]="getAttendanceStatusColor(record.status)"
+                    [icon]="getAttendanceStatusIcon(record.status)"
+                  >
+                  </p-tag>
+                </td>
+                <td>
+                  <div class="remarks-cell">
+                    {{ record.remarks || "-" }}
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div *ngIf="attendanceRecords.length === 0" class="empty-state">
+          <i class="pi pi-calendar-times"></i>
+          <p>No attendance records found for the selected period</p>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Quick Mark Attendance Dialog -->
+  <p-dialog
+    header="Mark Attendance"
+    [(visible)]="showQuickMarkDialog"
+    [modal]="true"
+    [closable]="true"
+    [resizable]="false"
+    styleClass="quick-mark-dialog"
+    (onHide)="closeQuickMarkDialog()"
+  >
+    <div class="quick-mark-form">
+      <div class="form-section">
+        <label>Date</label>
+        <p-calendar
+          [ngModel]="new Date()"
+          [disabled]="true"
+          [showIcon]="true"
+          dateFormat="dd/mm/yy"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="form-section">
+        <label for="checkIn">Check In Time *</label>
+        <p-calendar
+          id="checkIn"
+          [(ngModel)]="checkInTime"
+          [timeOnly]="true"
+          [showIcon]="true"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="form-section">
+        <label for="checkOut">Check Out Time *</label>
+        <p-calendar
+          id="checkOut"
+          [(ngModel)]="checkOutTime"
+          [timeOnly]="true"
+          [showIcon]="true"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="form-section">
+        <label>Attendance Status *</label>
+        <div class="status-options">
+          <p-radioButton
+            name="status"
+            value="present"
+            [(ngModel)]="attendanceStatus"
+            inputId="present"
+          >
+          </p-radioButton>
+          <label for="present">Present</label>
+
+          <p-radioButton
+            name="status"
+            value="half-day"
+            [(ngModel)]="attendanceStatus"
+            inputId="halfday"
+          >
+          </p-radioButton>
+          <label for="halfday">Half Day</label>
+
+          <p-radioButton
+            name="status"
+            value="late"
+            [(ngModel)]="attendanceStatus"
+            inputId="late"
+          >
+          </p-radioButton>
+          <label for="late">Late</label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label for="remarks">Remarks</label>
+        <textarea
+          id="remarks"
+          pInputTextarea
+          [(ngModel)]="remarks"
+          rows="3"
+          placeholder="Optional remarks..."
+        ></textarea>
+      </div>
+
+      <div class="working-hours-info">
+        <p><strong>Working Hours:</strong> {{ calculateWorkingHours() }}h</p>
+      </div>
+
+      <div class="dialog-actions">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="closeQuickMarkDialog()"
+        >
+        </p-button>
+        <p-button
+          label="Mark Attendance"
+          icon="pi pi-check"
+          styleClass="p-button-success"
+          (onClick)="markAttendance()"
+          [loading]="quickMarkLoading"
+        >
+        </p-button>
+      </div>
+    </div>
+  </p-dialog>
+</div>
