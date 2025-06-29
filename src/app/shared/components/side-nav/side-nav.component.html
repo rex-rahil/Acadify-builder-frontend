@@ -34,10 +34,10 @@
 
     <!-- Navigation Menu -->
     <div class="nav-menu">
-      <div class="menu-section">
-        <h5>Main</h5>
+      <div *ngFor="let section of menuSections" class="menu-section">
+        <h5>{{ section.label }}</h5>
         <ul class="menu-list">
-          <li *ngFor="let item of menuItems.slice(0, 2)" class="menu-item">
+          <li *ngFor="let item of section.items" class="menu-item">
             <a
               (click)="
                 item.route
@@ -47,50 +47,7 @@
                     : null
               "
               class="menu-link"
-              pRipple
-            >
-              <i [class]="item.icon"></i>
-              <span>{{ item.label }}</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="menu-section">
-        <h5>Academic</h5>
-        <ul class="menu-list">
-          <li *ngFor="let item of menuItems.slice(2, 4)" class="menu-item">
-            <a
-              (click)="
-                item.route
-                  ? navigateTo(item.route)
-                  : item.command
-                    ? item.command()
-                    : null
-              "
-              class="menu-link"
-              pRipple
-            >
-              <i [class]="item.icon"></i>
-              <span>{{ item.label }}</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="menu-section">
-        <h5>Account</h5>
-        <ul class="menu-list">
-          <li *ngFor="let item of menuItems.slice(4)" class="menu-item">
-            <a
-              (click)="
-                item.route
-                  ? navigateTo(item.route)
-                  : item.command
-                    ? item.command()
-                    : null
-              "
-              class="menu-link"
+              [class.active]="item.route && router.isActive(item.route, false)"
               pRipple
             >
               <i [class]="item.icon"></i>
