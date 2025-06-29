@@ -38,7 +38,7 @@ export class FacultyService {
 
   getFacultyProfile(facultyId: string): Observable<FacultyProfile> {
     return this.http
-      .get<FacultyProfile>(`${this.apiUrl}/profile/${facultyId}`)
+      .get<FacultyProfile>(`${this.apiUrl}/facultyProfiles/${facultyId}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -47,7 +47,10 @@ export class FacultyService {
     profile: Partial<FacultyProfile>,
   ): Observable<FacultyProfile> {
     return this.http
-      .put<FacultyProfile>(`${this.apiUrl}/profile/${facultyId}`, profile)
+      .put<FacultyProfile>(
+        `${this.apiUrl}/facultyProfiles/${facultyId}`,
+        profile,
+      )
       .pipe(catchError(this.handleError));
   }
 
