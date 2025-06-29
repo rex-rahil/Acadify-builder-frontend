@@ -23,6 +23,11 @@ const routes: Routes = [
       import("./library/library.module").then((m) => m.LibraryModule),
   },
   {
+    path: "faculty",
+    loadChildren: () =>
+      import("./faculty/faculty.module").then((m) => m.FacultyModule),
+  },
+  {
     path: "**",
     redirectTo: "/dashboard",
   },
