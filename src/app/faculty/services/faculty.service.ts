@@ -263,16 +263,17 @@ export class FacultyService {
   getWorkloadSummary(departmentId: string): Observable<WorkloadSummary[]> {
     return this.http
       .get<
-        WorkloadSummary[]
-      >(`${this.apiUrl}/hod/department/${departmentId}/workload`)
-      .pipe(catchError(this.handleError));
+        any[]
+      >(`${this.apiUrl}/workloadSummaries?departmentId=${departmentId}`)
+      .pipe(
+        map((summaries: any[]) => summaries[0]?.summaries || []),
+        catchError(this.handleError),
+      );
   }
 
   getPendingLeaveRequests(departmentId: string): Observable<LeaveRequest[]> {
     return this.http
-      .get<
-        LeaveRequest[]
-      >(`${this.apiUrl}/hod/department/${departmentId}/leaves/pending`)
+      .get<LeaveRequest[]>(`${this.apiUrl}/leaveRequests?status=pending`)
       .pipe(catchError(this.handleError));
   }
 
@@ -281,10 +282,22 @@ export class FacultyService {
     remarks?: string,
   ): Observable<LeaveRequest> {
     return this.http
-      .put<LeaveRequest>(`${this.apiUrl}/hod/leaves/${leaveId}/approve`, {
-        remarks,
-      })
-      .pipe(catchError(this.handleError));
+      .get<LeaveRequest>(`${this.apiUrl}/leaveRequests/${leaveId}`)
+      .pipe(
+        switchMap((leave: LeaveRequest) => {
+          const updatedLeave = {
+            ...leave,
+            status: "approved" as const,
+            approvedBy: "HOD",
+            approvedDate: new Date().toISOString(),
+          };
+          return this.http.put<LeaveRequest>(
+            `${this.apiUrl}/leaveRequests/${leaveId}`,
+            updatedLeave,
+          );
+        }),
+        catchError(this.handleError),
+      );
   }
 
   rejectLeaveRequest(
@@ -292,10 +305,23 @@ export class FacultyService {
     reason: string,
   ): Observable<LeaveRequest> {
     return this.http
-      .put<LeaveRequest>(`${this.apiUrl}/hod/leaves/${leaveId}/reject`, {
-        reason,
-      })
-      .pipe(catchError(this.handleError));
+      .get<LeaveRequest>(`${this.apiUrl}/leaveRequests/${leaveId}`)
+      .pipe(
+        switchMap((leave: LeaveRequest) => {
+          const updatedLeave = {
+            ...leave,
+            status: "rejected" as const,
+            approvedBy: "HOD",
+            approvedDate: new Date().toISOString(),
+            rejectionReason: reason,
+          };
+          return this.http.put<LeaveRequest>(
+            `${this.apiUrl}/leaveRequests/${leaveId}`,
+            updatedLeave,
+          );
+        }),
+        catchError(this.handleError),
+      );
   }
 
   // Department APIs
