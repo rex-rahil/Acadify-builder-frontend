@@ -10,9 +10,10 @@ import { AvatarModule } from "primeng/avatar";
 import { RippleModule } from "primeng/ripple";
 
 import { SideNavComponent } from "./components/side-nav/side-nav.component";
+import { HeaderComponent } from "./components/header/header.component";
 
 @NgModule({
-  declarations: [SideNavComponent],
+  declarations: [SideNavComponent, HeaderComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -22,6 +23,6 @@ import { SideNavComponent } from "./components/side-nav/side-nav.component";
     AvatarModule,
     RippleModule,
   ],
-  exports: [SideNavComponent],
+  exports: [SideNavComponent, HeaderComponent],
 })
 export class SharedModule {}
