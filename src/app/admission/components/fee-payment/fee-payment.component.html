@@ -1,0 +1,353 @@
+<div class="fee-payment-container">
+  <!-- Header -->
+  <div class="payment-header">
+    <div class="header-content">
+      <h1>
+        <i class="pi pi-credit-card"></i>
+        Fee Payment
+      </h1>
+      <p class="subtitle">
+        Complete your admission by paying the required fees
+      </p>
+    </div>
+    <p-button
+      label="Back to Status"
+      icon="pi pi-arrow-left"
+      (onClick)="goBackToStatus()"
+      severity="secondary"
+      [outlined]="true"
+    ></p-button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading payment information...</p>
+  </div>
+
+  <!-- Payment Content -->
+  <div *ngIf="!loading" class="payment-content">
+    <!-- Application Info -->
+    <p-card styleClass="application-info-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h3>
+            <i class="pi pi-file-o"></i>
+            Application Details
+          </h3>
+        </div>
+      </ng-template>
+
+      <div class="application-info">
+        <div class="info-row">
+          <label>Application ID:</label>
+          <span>{{ applicationStatus?.applicationId }}</span>
+        </div>
+        <div class="info-row">
+          <label>Student ID:</label>
+          <span>{{ applicationStatus?.studentId }}</span>
+        </div>
+        <div class="info-row">
+          <label>Status:</label>
+          <p-tag
+            [value]="applicationStatus?.status.replace('_', ' ').toUpperCase()"
+            severity="success"
+          ></p-tag>
+        </div>
+        <div class="info-row" *ngIf="paymentDetails">
+          <label>Payment Due Date:</label>
+          <span>{{ formatDate(paymentDetails.dueDate) }}</span>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Fee Structure -->
+    <p-card styleClass="fee-structure-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h3>
+            <i class="pi pi-calculator"></i>
+            Fee Structure
+          </h3>
+        </div>
+      </ng-template>
+
+      <div class="fee-structure" *ngIf="selectedFeeStructure">
+        <div class="program-info">
+          <h4>{{ selectedFeeStructure.programName }}</h4>
+          <p>Academic Year: {{ selectedFeeStructure.academicYear }}</p>
+        </div>
+
+        <div class="fee-breakdown">
+          <div class="fee-item">
+            <span>Tuition Fee</span>
+            <span>{{ formatCurrency(selectedFeeStructure.tuitionFee) }}</span>
+          </div>
+          <div class="fee-item">
+            <span>Admission Fee</span>
+            <span>{{ formatCurrency(selectedFeeStructure.admissionFee) }}</span>
+          </div>
+          <div class="fee-item">
+            <span>Laboratory Fee</span>
+            <span>{{
+              formatCurrency(selectedFeeStructure.laboratoryFee)
+            }}</span>
+          </div>
+          <div class="fee-item">
+            <span>Library Fee</span>
+            <span>{{ formatCurrency(selectedFeeStructure.libraryFee) }}</span>
+          </div>
+          <div class="fee-item">
+            <span>Development Fee</span>
+            <span>{{
+              formatCurrency(selectedFeeStructure.developmentFee)
+            }}</span>
+          </div>
+          <div class="fee-item total">
+            <span><strong>Total Fee</strong></span>
+            <span
+              ><strong>{{
+                formatCurrency(selectedFeeStructure.totalFee)
+              }}</strong></span
+            >
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Payment Form -->
+    <p-card styleClass="payment-form-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h3>
+            <i class="pi pi-wallet"></i>
+            Payment Options
+          </h3>
+        </div>
+      </ng-template>
+
+      <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+        <!-- Payment Method Selection -->
+        <div class="form-group">
+          <label for="paymentMethod">Select Payment Method *</label>
+          <div class="payment-methods">
+            <div
+              *ngFor="let method of paymentMethods"
+              class="payment-method"
+              [class.selected]="
+                paymentForm.get('paymentMethod')?.value === method.value
+              "
+              (click)="
+                paymentForm.patchValue({ paymentMethod: method.value });
+                onPaymentMethodChange()
+              "
+            >
+              <i [class]="'pi ' + method.icon"></i>
+              <span>{{ method.label }}</span>
+            </div>
+          </div>
+          <small
+            class="error-message"
+            *ngIf="
+              paymentForm.get('paymentMethod')?.invalid &&
+              paymentForm.get('paymentMethod')?.touched
+            "
+          >
+            Please select a payment method
+          </small>
+        </div>
+
+        <!-- Installment Options -->
+        <div
+          class="form-group"
+          *ngIf="showInstallmentOptions && selectedFeeStructure"
+        >
+          <label for="installmentPlan">Payment Plan (Optional)</label>
+          <p-dropdown
+            id="installmentPlan"
+            formControlName="installmentPlan"
+            [options]="selectedFeeStructure.installmentOptions"
+            optionLabel="planName"
+            optionValue="id"
+            placeholder="Pay full amount"
+            (onChange)="onInstallmentPlanChange()"
+            styleClass="w-full"
+          ></p-dropdown>
+
+          <div class="installment-info" *ngIf="selectedInstallmentPlan">
+            <div class="installment-details">
+              <h5>{{ selectedInstallmentPlan.planName }}</h5>
+              <p>
+                {{ selectedInstallmentPlan.numberOfInstallments }} installments
+              </p>
+              <div class="installment-breakdown">
+                <div class="installment-item">
+                  <span>First Installment (Due Now):</span>
+                  <span>{{
+                    formatCurrency(
+                      selectedInstallmentPlan.firstInstallmentAmount
+                    )
+                  }}</span>
+                </div>
+                <div class="installment-item">
+                  <span>Subsequent Installments:</span>
+                  <span>{{
+                    formatCurrency(
+                      selectedInstallmentPlan.subsequentInstallmentAmount
+                    )
+                  }}</span>
+                </div>
+                <div class="installment-item">
+                  <span>Processing Fee:</span>
+                  <span>{{
+                    formatCurrency(selectedInstallmentPlan.processingFee)
+                  }}</span>
+                </div>
+                <div class="installment-item total">
+                  <span><strong>Total with Processing Fee:</strong></span>
+                  <span
+                    ><strong>{{
+                      formatCurrency(getTotalFeeWithProcessing())
+                    }}</strong></span
+                  >
+                </div>
+              </div>
+
+              <div class="payment-schedule">
+                <h6>Payment Schedule:</h6>
+                <div
+                  *ngFor="
+                    let date of selectedInstallmentPlan.installmentDates;
+                    let i = index
+                  "
+                  class="schedule-item"
+                >
+                  <span
+                    >{{ i === 0 ? "First" : "Installment " + (i + 1) }}:</span
+                  >
+                  <span>{{ formatDate(date) }}</span>
+                  <span>
+                    {{
+                      i === 0
+                        ? formatCurrency(
+                            selectedInstallmentPlan.firstInstallmentAmount
+                          )
+                        : formatCurrency(
+                            selectedInstallmentPlan.subsequentInstallmentAmount
+                          )
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="payment-summary">
+          <h4>Payment Summary</h4>
+          <div class="summary-item">
+            <span>Amount to Pay Now:</span>
+            <span class="amount">{{ formatCurrency(getPaymentAmount()) }}</span>
+          </div>
+          <div class="summary-item" *ngIf="selectedInstallmentPlan">
+            <span>Remaining Amount:</span>
+            <span>{{
+              formatCurrency(
+                selectedFeeStructure!.totalFee -
+                  selectedInstallmentPlan.firstInstallmentAmount
+              )
+            }}</span>
+          </div>
+        </div>
+
+        <!-- Terms Agreement -->
+        <div class="form-group">
+          <p-checkbox
+            formControlName="agreeToTerms"
+            inputId="agreeToTerms"
+            binary="true"
+          ></p-checkbox>
+          <label for="agreeToTerms" class="terms-label">
+            I agree to the
+            <a href="#" class="terms-link">Terms and Conditions</a>
+            and
+            <a href="#" class="terms-link">Fee Payment Policy</a>
+          </label>
+          <small
+            class="error-message"
+            *ngIf="
+              paymentForm.get('agreeToTerms')?.invalid &&
+              paymentForm.get('agreeToTerms')?.touched
+            "
+          >
+            Please accept the terms and conditions
+          </small>
+        </div>
+
+        <!-- Payment Button -->
+        <div class="payment-actions">
+          <p-button
+            type="submit"
+            label="Proceed to Payment"
+            icon="pi pi-credit-card"
+            [loading]="processing"
+            [disabled]="paymentForm.invalid"
+            size="large"
+            styleClass="payment-button"
+          ></p-button>
+
+          <div class="payment-info">
+            <p>
+              <i class="pi pi-shield"></i>
+              Your payment is secured with 256-bit SSL encryption
+            </p>
+          </div>
+        </div>
+      </form>
+    </p-card>
+
+    <!-- Important Notes -->
+    <p-card styleClass="notes-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h3>
+            <i class="pi pi-info-circle"></i>
+            Important Information
+          </h3>
+        </div>
+      </ng-template>
+
+      <div class="important-notes">
+        <div class="note-item">
+          <i class="pi pi-exclamation-triangle"></i>
+          <p>
+            Payment must be completed before the due date to secure your
+            admission.
+          </p>
+        </div>
+        <div class="note-item">
+          <i class="pi pi-refresh"></i>
+          <p>
+            Fees paid are non-refundable. Please review your selection
+            carefully.
+          </p>
+        </div>
+        <div class="note-item">
+          <i class="pi pi-phone"></i>
+          <p>
+            For payment issues, contact our admission office at +91-XXX-XXX-XXXX
+          </p>
+        </div>
+        <div class="note-item">
+          <i class="pi pi-clock"></i>
+          <p>
+            Payment processing may take 2-3 business days for bank transfers.
+          </p>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
+
+<p-toast></p-toast>

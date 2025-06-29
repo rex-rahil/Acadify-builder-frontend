@@ -1,0 +1,482 @@
+.fee-payment-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Header
+.payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: white;
+
+  .header-content {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      i {
+        color: #87ceeb;
+      }
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin: 0.5rem 0 0 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .header-content h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+// Loading State
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: white;
+
+  p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+// Payment Content
+.payment-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  // Card Styles
+  ::ng-deep {
+    .p-card {
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border: none;
+      overflow: hidden;
+
+      .p-card-header {
+        background: linear-gradient(135deg, #87ceeb, #4a90e2);
+        color: white;
+        border-bottom: none;
+        padding: 1.5rem;
+      }
+
+      .p-card-body {
+        padding: 2rem;
+      }
+
+      .p-card-content {
+        padding: 0;
+      }
+    }
+
+    // Specific card styles
+    .fee-structure-card .p-card-header {
+      background: linear-gradient(135deg, #4ecdc4, #44a08d);
+    }
+
+    .payment-form-card .p-card-header {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+    .notes-card .p-card-header {
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      color: #333;
+    }
+  }
+}
+
+// Application Info Card
+.application-info-card {
+  .application-info {
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      label {
+        font-weight: 500;
+        color: #333;
+      }
+
+      span {
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  }
+}
+
+// Fee Structure Card
+.fee-structure-card {
+  .fee-structure {
+    .program-info {
+      margin-bottom: 2rem;
+      text-align: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 0.5rem;
+
+      h4 {
+        margin: 0 0 0.5rem 0;
+        color: #333;
+        font-size: 1.5rem;
+      }
+
+      p {
+        margin: 0;
+        color: #666;
+      }
+    }
+
+    .fee-breakdown {
+      .fee-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 0;
+        border-bottom: 1px solid #e9ecef;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.total {
+          border-top: 2px solid #4a90e2;
+          margin-top: 1rem;
+          font-size: 1.1rem;
+          background: #f8f9fa;
+          padding: 1rem;
+          border-radius: 0.5rem;
+        }
+
+        span:last-child {
+          color: #4a90e2;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// Payment Form Card
+.payment-form-card {
+  .form-group {
+    margin-bottom: 2rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .error-message {
+      color: #dc3545;
+      display: block;
+      margin-top: 0.25rem;
+    }
+  }
+
+  // Payment Methods
+  .payment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .payment-method {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      border: 2px solid #e9ecef;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+
+      &:hover {
+        border-color: #4a90e2;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+      }
+
+      &.selected {
+        border-color: #4a90e2;
+        background: #e3f2fd;
+        color: #4a90e2;
+      }
+
+      i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+        text-align: center;
+      }
+    }
+  }
+
+  // Installment Info
+  .installment-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    border-left: 4px solid #4a90e2;
+
+    .installment-details {
+      h5 {
+        margin: 0 0 0.5rem 0;
+        color: #333;
+      }
+
+      p {
+        margin: 0 0 1rem 0;
+        color: #666;
+      }
+
+      .installment-breakdown {
+        .installment-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 0.5rem 0;
+          border-bottom: 1px solid #e9ecef;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          &.total {
+            border-top: 1px solid #4a90e2;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .payment-schedule {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e9ecef;
+
+        h6 {
+          margin: 0 0 1rem 0;
+          color: #333;
+        }
+
+        .schedule-item {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 1rem;
+          padding: 0.5rem 0;
+          border-bottom: 1px solid #f0f0f0;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          span:first-child {
+            font-weight: 500;
+          }
+
+          span:last-child {
+            color: #4a90e2;
+            font-weight: 500;
+            text-align: right;
+          }
+
+          @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+            gap: 0.25rem;
+          }
+        }
+      }
+    }
+  }
+
+  // Payment Summary
+  .payment-summary {
+    background: #e3f2fd;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+
+    h4 {
+      margin: 0 0 1rem 0;
+      color: #1976d2;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+
+      &:first-of-type {
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-bottom: 1px solid #bbdefb;
+        padding-bottom: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .amount {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1976d2;
+      }
+    }
+  }
+
+  // Terms Agreement
+  .terms-label {
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+
+    .terms-link {
+      color: #4a90e2;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // Payment Actions
+  .payment-actions {
+    text-align: center;
+    margin-top: 2rem;
+
+    .payment-button {
+      width: 100%;
+      max-width: 300px;
+      height: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+
+      ::ng-deep .p-button {
+        background: linear-gradient(135deg, #4a90e2, #357abd);
+        border: none;
+      }
+    }
+
+    .payment-info {
+      margin-top: 1rem;
+
+      p {
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        i {
+          color: #28a745;
+        }
+      }
+    }
+  }
+}
+
+// Notes Card
+.notes-card {
+  .important-notes {
+    .note-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      i {
+        color: #ff9800;
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+        flex-shrink: 0;
+      }
+
+      p {
+        margin: 0;
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+// Card Headers
+.card-header {
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .fee-payment-container {
+    padding: 1rem;
+
+    .payment-content {
+      gap: 1rem;
+    }
+
+    ::ng-deep .p-card .p-card-body {
+      padding: 1rem;
+    }
+
+    .payment-methods {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
