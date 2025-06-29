@@ -1,0 +1,561 @@
+<div class="leave-management">
+  <div class="page-header">
+    <div class="header-info">
+      <h1><i class="pi pi-calendar-times"></i> Leave Management</h1>
+      <p *ngIf="facultyProfile">
+        {{ facultyProfile.name }}
+        <span *ngIf="facultyProfile.isHOD" class="hod-badge">
+          <p-chip label="HOD" styleClass="hod-chip"></p-chip>
+        </span>
+      </p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Apply Leave"
+        icon="pi pi-plus"
+        styleClass="p-button-success"
+        (onClick)="openApplyDialog()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Export"
+        icon="pi pi-download"
+        styleClass="p-button-outlined"
+        (onClick)="exportLeaves()"
+        [disabled]="loading"
+      >
+      </p-button>
+      <p-button
+        label="Refresh"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+        (onClick)="refreshData()"
+        [loading]="loading"
+      >
+      </p-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Loading leave data...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <p-card>
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error Loading Leaves</h3>
+        <p>{{ error }}</p>
+        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="leave-content">
+    <!-- Leave Balance -->
+    <div class="balance-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-wallet"></i> Leave Balance</h3>
+          </div>
+        </ng-template>
+
+        <div *ngIf="leaveBalance" class="balance-grid">
+          <div class="balance-card casual">
+            <div class="balance-header">
+              <h4>Casual Leave</h4>
+              <p-tag
+                [value]="
+                  leaveBalance.casual.remaining +
+                  ' / ' +
+                  leaveBalance.casual.total
+                "
+                [severity]="
+                  getBalanceStatusColor(
+                    leaveBalance.casual.remaining,
+                    leaveBalance.casual.total
+                  )
+                "
+              >
+              </p-tag>
+            </div>
+            <div class="balance-details">
+              <div class="balance-item">
+                <span class="label">Total:</span>
+                <span class="value">{{ leaveBalance.casual.total }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Used:</span>
+                <span class="value used">{{ leaveBalance.casual.used }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Remaining:</span>
+                <span class="value remaining">{{
+                  leaveBalance.casual.remaining
+                }}</span>
+              </div>
+            </div>
+            <p-progressBar
+              [value]="
+                (leaveBalance.casual.remaining / leaveBalance.casual.total) *
+                100
+              "
+              [style]="{ height: '8px', marginTop: '1rem' }"
+              [styleClass]="
+                getBalanceStatusColor(
+                  leaveBalance.casual.remaining,
+                  leaveBalance.casual.total
+                )
+              "
+            >
+            </p-progressBar>
+          </div>
+
+          <div class="balance-card sick">
+            <div class="balance-header">
+              <h4>Sick Leave</h4>
+              <p-tag
+                [value]="
+                  leaveBalance.sick.remaining + ' / ' + leaveBalance.sick.total
+                "
+                [severity]="
+                  getBalanceStatusColor(
+                    leaveBalance.sick.remaining,
+                    leaveBalance.sick.total
+                  )
+                "
+              >
+              </p-tag>
+            </div>
+            <div class="balance-details">
+              <div class="balance-item">
+                <span class="label">Total:</span>
+                <span class="value">{{ leaveBalance.sick.total }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Used:</span>
+                <span class="value used">{{ leaveBalance.sick.used }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Remaining:</span>
+                <span class="value remaining">{{
+                  leaveBalance.sick.remaining
+                }}</span>
+              </div>
+            </div>
+            <p-progressBar
+              [value]="
+                (leaveBalance.sick.remaining / leaveBalance.sick.total) * 100
+              "
+              [style]="{ height: '8px', marginTop: '1rem' }"
+              [styleClass]="
+                getBalanceStatusColor(
+                  leaveBalance.sick.remaining,
+                  leaveBalance.sick.total
+                )
+              "
+            >
+            </p-progressBar>
+          </div>
+
+          <div class="balance-card earned">
+            <div class="balance-header">
+              <h4>Earned Leave</h4>
+              <p-tag
+                [value]="
+                  leaveBalance.earned.remaining +
+                  ' / ' +
+                  leaveBalance.earned.total
+                "
+                [severity]="
+                  getBalanceStatusColor(
+                    leaveBalance.earned.remaining,
+                    leaveBalance.earned.total
+                  )
+                "
+              >
+              </p-tag>
+            </div>
+            <div class="balance-details">
+              <div class="balance-item">
+                <span class="label">Total:</span>
+                <span class="value">{{ leaveBalance.earned.total }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Used:</span>
+                <span class="value used">{{ leaveBalance.earned.used }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Remaining:</span>
+                <span class="value remaining">{{
+                  leaveBalance.earned.remaining
+                }}</span>
+              </div>
+            </div>
+            <p-progressBar
+              [value]="
+                (leaveBalance.earned.remaining / leaveBalance.earned.total) *
+                100
+              "
+              [style]="{ height: '8px', marginTop: '1rem' }"
+              [styleClass]="
+                getBalanceStatusColor(
+                  leaveBalance.earned.remaining,
+                  leaveBalance.earned.total
+                )
+              "
+            >
+            </p-progressBar>
+          </div>
+
+          <div class="balance-card maternity">
+            <div class="balance-header">
+              <h4>Maternity Leave</h4>
+              <p-tag
+                [value]="
+                  leaveBalance.maternity.remaining +
+                  ' / ' +
+                  leaveBalance.maternity.total
+                "
+                [severity]="
+                  getBalanceStatusColor(
+                    leaveBalance.maternity.remaining,
+                    leaveBalance.maternity.total
+                  )
+                "
+              >
+              </p-tag>
+            </div>
+            <div class="balance-details">
+              <div class="balance-item">
+                <span class="label">Total:</span>
+                <span class="value">{{ leaveBalance.maternity.total }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Used:</span>
+                <span class="value used">{{
+                  leaveBalance.maternity.used
+                }}</span>
+              </div>
+              <div class="balance-item">
+                <span class="label">Remaining:</span>
+                <span class="value remaining">{{
+                  leaveBalance.maternity.remaining
+                }}</span>
+              </div>
+            </div>
+            <p-progressBar
+              [value]="
+                (leaveBalance.maternity.remaining /
+                  leaveBalance.maternity.total) *
+                100
+              "
+              [style]="{ height: '8px', marginTop: '1rem' }"
+              [styleClass]="
+                getBalanceStatusColor(
+                  leaveBalance.maternity.remaining,
+                  leaveBalance.maternity.total
+                )
+              "
+            >
+            </p-progressBar>
+          </div>
+        </div>
+
+        <div *ngIf="!leaveBalance" class="no-balance">
+          <p>Leave balance information not available</p>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- HOD Pending Approvals (only visible to HOD) -->
+    <div
+      *ngIf="facultyProfile?.isHOD && pendingApprovals.length > 0"
+      class="approvals-section"
+    >
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-exclamation-circle"></i> Pending Approvals</h3>
+            <p-chip
+              [label]="pendingApprovals.length + ' pending'"
+              styleClass="pending-chip"
+            >
+            </p-chip>
+          </div>
+        </ng-template>
+
+        <div class="approval-list">
+          <div *ngFor="let request of pendingApprovals" class="approval-item">
+            <div class="request-info">
+              <div class="faculty-details">
+                <h4>{{ request.facultyName }}</h4>
+                <p>{{ request.leaveType | titlecase }} Leave</p>
+              </div>
+              <div class="leave-details">
+                <p>
+                  <strong>Duration:</strong>
+                  {{ request.startDate | date: "MMM d" }} -
+                  {{ request.endDate | date: "MMM d, y" }} ({{
+                    request.duration
+                  }}
+                  days)
+                </p>
+                <p><strong>Reason:</strong> {{ request.reason }}</p>
+                <p>
+                  <strong>Applied:</strong>
+                  {{ request.appliedDate | date: "MMM d, y" }}
+                </p>
+              </div>
+            </div>
+            <div class="approval-actions">
+              <p-button
+                label="Approve"
+                icon="pi pi-check"
+                styleClass="p-button-success p-button-sm"
+                (onClick)="approveLeave(request)"
+              >
+              </p-button>
+              <p-button
+                label="Reject"
+                icon="pi pi-times"
+                styleClass="p-button-danger p-button-sm"
+                (onClick)="rejectLeave(request, 'Rejected by HOD')"
+              >
+              </p-button>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Leave Requests -->
+    <div class="requests-section">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3><i class="pi pi-list"></i> My Leave Requests</h3>
+            <div class="filters">
+              <p-dropdown
+                [options]="statusOptions"
+                [(ngModel)]="selectedStatus"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Filter by Status"
+              >
+              </p-dropdown>
+              <p-dropdown
+                [options]="years"
+                [(ngModel)]="selectedYear"
+                placeholder="Select Year"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="getFilteredRequests().length > 0">
+          <p-table
+            [value]="getFilteredRequests()"
+            [paginator]="true"
+            [rows]="10"
+            [responsive]="true"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Type</th>
+                <th>Duration</th>
+                <th>Reason</th>
+                <th>Applied Date</th>
+                <th>Status</th>
+                <th>Approved By</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-request>
+              <tr>
+                <td>
+                  <p-tag
+                    [value]="request.leaveType | titlecase"
+                    [severity]="getLeaveTypeColor(request.leaveType)"
+                  >
+                  </p-tag>
+                </td>
+                <td>
+                  <div class="duration-cell">
+                    <p class="dates">
+                      {{ request.startDate | date: "MMM d" }} -
+                      {{ request.endDate | date: "MMM d, y" }}
+                    </p>
+                    <p class="days">{{ request.duration }} days</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="reason-cell">
+                    {{ request.reason }}
+                  </div>
+                </td>
+                <td>
+                  {{ request.appliedDate | date: "MMM d, y" }}
+                </td>
+                <td>
+                  <p-tag
+                    [value]="request.status | titlecase"
+                    [severity]="getLeaveStatusSeverity(request.status)"
+                  >
+                  </p-tag>
+                </td>
+                <td>
+                  <div *ngIf="request.approvedBy" class="approval-info">
+                    <p>{{ request.approvedBy }}</p>
+                    <p class="approval-date">
+                      {{ request.approvedDate | date: "MMM d, y" }}
+                    </p>
+                  </div>
+                  <span *ngIf="!request.approvedBy">-</span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <p-button
+                      *ngIf="request.documents && request.documents.length > 0"
+                      icon="pi pi-paperclip"
+                      pTooltip="View Documents"
+                      styleClass="p-button-text p-button-sm"
+                      (onClick)="downloadDocument(request.documents[0])"
+                    >
+                    </p-button>
+                    <p-button
+                      *ngIf="request.status === 'pending'"
+                      icon="pi pi-pencil"
+                      pTooltip="Edit Request"
+                      styleClass="p-button-text p-button-sm"
+                      [disabled]="true"
+                    >
+                    </p-button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div *ngIf="getFilteredRequests().length === 0" class="empty-state">
+          <i class="pi pi-calendar-times"></i>
+          <p>No leave requests found for the selected criteria</p>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Apply Leave Dialog -->
+  <p-dialog
+    header="Apply for Leave"
+    [(visible)]="showApplyDialog"
+    [modal]="true"
+    [closable]="true"
+    [resizable]="true"
+    styleClass="apply-leave-dialog"
+    (onHide)="closeApplyDialog()"
+  >
+    <form [formGroup]="leaveForm" class="leave-form">
+      <div class="form-section">
+        <label for="leaveType">Leave Type *</label>
+        <p-dropdown
+          id="leaveType"
+          [options]="leaveTypes"
+          formControlName="leaveType"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select leave type"
+          styleClass="w-100"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="form-row">
+        <div class="form-section">
+          <label for="startDate">Start Date *</label>
+          <p-calendar
+            id="startDate"
+            formControlName="startDate"
+            [showIcon]="true"
+            dateFormat="dd/mm/yy"
+            [minDate]="new Date()"
+          >
+          </p-calendar>
+        </div>
+        <div class="form-section">
+          <label for="endDate">End Date *</label>
+          <p-calendar
+            id="endDate"
+            formControlName="endDate"
+            [showIcon]="true"
+            dateFormat="dd/mm/yy"
+            [minDate]="leaveForm.get('startDate')?.value"
+          >
+          </p-calendar>
+        </div>
+      </div>
+
+      <div class="duration-info" *ngIf="calculateLeaveDuration() > 0">
+        <p><strong>Duration:</strong> {{ calculateLeaveDuration() }} day(s)</p>
+      </div>
+
+      <div class="form-section">
+        <label for="reason">Reason *</label>
+        <textarea
+          id="reason"
+          pInputTextarea
+          formControlName="reason"
+          rows="4"
+          placeholder="Please provide a detailed reason for your leave..."
+        ></textarea>
+        <small class="form-text">Minimum 10 characters required</small>
+      </div>
+
+      <div class="form-section">
+        <label for="documents">Supporting Documents (Optional)</label>
+        <p-fileUpload
+          name="documents"
+          [multiple]="false"
+          accept=".pdf,.jpg,.jpeg,.png"
+          [maxFileSize]="5000000"
+          (onSelect)="onFileSelect($event)"
+          [auto]="false"
+          [showUploadButton]="false"
+          [showCancelButton]="false"
+        >
+          <ng-template pTemplate="content">
+            <p>
+              Drag and drop files here or click to select (PDF, JPG, PNG - Max
+              5MB)
+            </p>
+          </ng-template>
+        </p-fileUpload>
+      </div>
+
+      <div class="dialog-actions">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="closeApplyDialog()"
+        >
+        </p-button>
+        <p-button
+          label="Submit Application"
+          icon="pi pi-check"
+          styleClass="p-button-success"
+          (onClick)="applyLeave()"
+          [loading]="applyLoading"
+          [disabled]="leaveForm.invalid"
+        >
+        </p-button>
+      </div>
+    </form>
+  </p-dialog>
+</div>
