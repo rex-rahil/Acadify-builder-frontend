@@ -297,8 +297,9 @@
               <p-progressBar
                 [value]="
                   overview?.totalApplications && overview?.pendingReview
-                    ? ((overview.totalApplications - overview.pendingReview) /
-                        overview.totalApplications) *
+                    ? (((overview.totalApplications || 0) -
+                        (overview.pendingReview || 0)) /
+                        (overview.totalApplications || 1)) *
                       100
                     : 0
                 "
