@@ -149,6 +149,11 @@
 
       .current-class,
       .next-class {
+        ::ng-deep .p-card-header {
+          padding: 0;
+          border-bottom: none;
+        }
+
         .card-header {
           display: flex;
           justify-content: space-between;
@@ -156,7 +161,7 @@
           padding: 1rem 1.5rem;
           background: linear-gradient(135deg, #3498db, #2980b9);
           color: white;
-          margin: 0 0 1rem 0;
+          border-radius: 8px 8px 0 0;
 
           h3 {
             margin: 0;
@@ -193,6 +198,11 @@
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 1.5rem;
 
+      ::ng-deep .p-card-header {
+        padding: 0;
+        border-bottom: none;
+      }
+
       .card-header {
         display: flex;
         justify-content: space-between;
@@ -200,7 +210,7 @@
         padding: 1rem 1.5rem;
         background: linear-gradient(135deg, #34495e, #2c3e50);
         color: white;
-        margin: 0 0 1rem 0;
+        border-radius: 8px 8px 0 0;
 
         h3 {
           margin: 0;
