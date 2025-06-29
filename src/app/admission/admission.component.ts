@@ -45,7 +45,8 @@ export class AdmissionComponent implements OnInit {
     if (this.isEditMode) {
       this.loadExistingData();
     } else {
-    this.loadSavedData();
+      this.loadSavedData();
+    }
   }
 
   loadExistingData() {
@@ -54,7 +55,6 @@ export class AdmissionComponent implements OnInit {
     this.loadSavedData();
   }
 
-  initializeSteps() {
   initializeSteps() {
     this.steps = [
       {
@@ -213,15 +213,18 @@ export class AdmissionComponent implements OnInit {
     try {
       if (this.isEditMode && this.editApplicationId) {
         // Resubmit application
-        await this.admissionStatusService.resubmitApplication(
-          this.editApplicationId,
-          this.formService.getFormData()
-        ).toPromise();
+        await this.admissionStatusService
+          .resubmitApplication(
+            this.editApplicationId,
+            this.formService.getFormData(),
+          )
+          .toPromise();
 
         this.messageService.add({
           severity: "success",
           summary: "Application Resubmitted",
-          detail: "Your application has been resubmitted successfully for review.",
+          detail:
+            "Your application has been resubmitted successfully for review.",
           life: 10000,
         });
 
