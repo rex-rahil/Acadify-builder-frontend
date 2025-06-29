@@ -294,13 +294,7 @@
             <div class="progress-item">
               <label>Approval Rate</label>
               <p-progressBar
-                [value]="
-                  overview?.totalApplications && overview?.approved
-                    ? ((overview.approved || 0) /
-                        (overview.totalApplications || 1)) *
-                      100
-                    : 0
-                "
+                [value]="getApprovalRate()"
                 [style]="{ height: '8px' }"
                 styleClass="progress-info"
               >
