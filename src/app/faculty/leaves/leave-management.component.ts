@@ -317,6 +317,10 @@ export class LeaveManagementComponent implements OnInit {
     }
   }
 
+  getCurrentDate(): Date {
+    return new Date();
+  }
+
   private extractErrorMessage(error: any): string {
     if (error?.message) {
       return error.message;
