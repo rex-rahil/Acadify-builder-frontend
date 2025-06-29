@@ -90,17 +90,10 @@ export class FacultyService {
     startDate?: string,
     endDate?: string,
   ): Observable<FacultyAttendance[]> {
-    let params = new HttpParams();
-    if (startDate) {
-      params = params.set("startDate", startDate);
-    }
-    if (endDate) {
-      params = params.set("endDate", endDate);
-    }
     return this.http
       .get<
         FacultyAttendance[]
-      >(`${this.apiUrl}/attendance/${facultyId}`, { params })
+      >(`${this.apiUrl}/facultyAttendance?facultyId=${facultyId}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -109,28 +102,32 @@ export class FacultyService {
     month?: string,
     year?: string,
   ): Observable<AttendanceStats> {
-    let params = new HttpParams();
+    let url = `${this.apiUrl}/attendanceStats?facultyId=${facultyId}`;
     if (month) {
-      params = params.set("month", month);
+      url += `&month=${month}`;
     }
     if (year) {
-      params = params.set("year", year);
+      url += `&year=${year}`;
     }
-    return this.http
-      .get<AttendanceStats>(`${this.apiUrl}/attendance/stats/${facultyId}`, {
-        params,
-      })
-      .pipe(catchError(this.handleError));
+    return this.http.get<any[]>(url).pipe(
+      map((stats: any[]) => stats[0] || {}),
+      catchError(this.handleError),
+    );
   }
 
   markAttendance(
     facultyId: string,
     attendanceData: Partial<FacultyAttendance>,
   ): Observable<FacultyAttendance> {
+    const newAttendance = {
+      id: `att_${Date.now()}`,
+      facultyId,
+      ...attendanceData,
+    };
     return this.http
       .post<FacultyAttendance>(
-        `${this.apiUrl}/attendance/${facultyId}`,
-        attendanceData,
+        `${this.apiUrl}/facultyAttendance`,
+        newAttendance,
       )
       .pipe(catchError(this.handleError));
   }
