@@ -84,9 +84,9 @@ export class AdmissionOfficerService {
       )
       .pipe(
         map((application: ApplicationStatus) => {
-          const updatedApplication = {
+          const updatedApplication: ApplicationStatus = {
             ...application,
-            status,
+            status: status as ApplicationStatus["status"],
             reviewedDate: new Date().toISOString(),
             reviewedBy: "Officer_001", // This would come from auth
             rejectionReason: rejectionReason || undefined,
