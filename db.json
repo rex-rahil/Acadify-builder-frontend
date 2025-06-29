@@ -667,29 +667,40 @@
       "id": "notif_002",
       "recipientId": "student_001",
       "recipientType": "student",
-      "title": "Application Under Review",
-      "message": "Your application ADM2024001 is currently under review",
-      "type": "application_submitted",
-      "isRead": true,
-      "createdDate": "2024-12-28T10:30:00Z",
+      "title": "Application Approved - Payment Required",
+      "message": "Congratulations! Your application ADM2024001 has been approved. Please proceed with fee payment to confirm your admission.",
+      "type": "application_approved",
+      "isRead": false,
+      "createdDate": "2024-12-29T14:00:00Z",
       "applicationId": "ADM2024001"
     },
     {
       "id": "notif_003",
-      "recipientId": "student_004",
+      "recipientId": "student_006",
       "recipientType": "student",
       "title": "Application Rejected",
-      "message": "Your application ADM2024004 has been rejected. Please check the details and resubmit.",
+      "message": "Your application ADM2024006 has been rejected. Please check the details and resubmit with required documents.",
       "type": "application_rejected",
       "isRead": false,
-      "createdDate": "2024-12-26T10:30:00Z",
-      "applicationId": "ADM2024004"
+      "createdDate": "2024-12-22T16:00:00Z",
+      "applicationId": "ADM2024006"
+    },
+    {
+      "id": "notif_004",
+      "recipientId": "student_007",
+      "recipientType": "student",
+      "title": "Welcome! Admission Confirmed",
+      "message": "Your payment has been processed successfully. Welcome to Oriental College! You can now access your student dashboard.",
+      "type": "application_approved",
+      "isRead": true,
+      "createdDate": "2024-12-20T14:30:00Z",
+      "applicationId": "ADM2024007"
     }
   ],
   "paymentDetails": [
     {
       "id": "payment_001",
-      "applicationId": "ADM2024005",
+      "applicationId": "ADM2024001",
       "amount": 125000,
       "currency": "INR",
       "status": "pending",
@@ -697,12 +708,31 @@
     },
     {
       "id": "payment_002",
+      "applicationId": "ADM2024005",
+      "amount": 125000,
+      "currency": "INR",
+      "status": "pending",
+      "dueDate": "2025-01-15T23:59:59Z"
+    },
+    {
+      "id": "payment_003",
       "applicationId": "ADM2024003",
       "amount": 125000,
       "currency": "INR",
       "paymentMethod": "UPI",
       "transactionId": "TXN123456789",
       "paymentDate": "2024-12-27T18:30:00Z",
+      "status": "completed",
+      "dueDate": "2025-01-15T23:59:59Z"
+    },
+    {
+      "id": "payment_004",
+      "applicationId": "ADM2024007",
+      "amount": 125000,
+      "currency": "INR",
+      "paymentMethod": "credit_card",
+      "transactionId": "TXN987654321",
+      "paymentDate": "2024-12-20T14:00:00Z",
       "status": "completed",
       "dueDate": "2025-01-15T23:59:59Z"
     }
