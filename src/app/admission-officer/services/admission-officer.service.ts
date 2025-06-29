@@ -166,9 +166,9 @@ export class AdmissionOfficerService {
       .get<PaymentDetails>(`${this.apiUrl}/paymentDetails/${paymentId}`)
       .pipe(
         map((payment: PaymentDetails) => {
-          const updatedPayment = {
+          const updatedPayment: PaymentDetails = {
             ...payment,
-            status,
+            status: status as PaymentDetails["status"],
             transactionId: transactionId || payment.transactionId,
             paymentDate:
               status === "completed"
