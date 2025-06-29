@@ -12,6 +12,10 @@ import { AcademicQualificationsComponent } from "./components/academic-qualifica
 import { ParentGuardianComponent } from "./components/parent-guardian/parent-guardian.component";
 import { DocumentsDeclarationComponent } from "./components/documents-declaration/documents-declaration.component";
 
+// New components
+import { ApplicationStatusComponent } from "./components/application-status/application-status.component";
+import { FeePaymentComponent } from "./components/fee-payment/fee-payment.component";
+
 // PrimeNG modules
 import { StepsModule } from "primeng/steps";
 import { CardModule } from "primeng/card";
@@ -32,6 +36,9 @@ import { DividerModule } from "primeng/divider";
 import { PanelModule } from "primeng/panel";
 import { MessageModule } from "primeng/message";
 import { MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { TagModule } from "primeng/tag";
 
 @NgModule({
   declarations: [
@@ -41,6 +48,8 @@ import { MessagesModule } from "primeng/messages";
     AcademicQualificationsComponent,
     ParentGuardianComponent,
     DocumentsDeclarationComponent,
+    ApplicationStatusComponent,
+    FeePaymentComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +76,9 @@ import { MessagesModule } from "primeng/messages";
     PanelModule,
     MessageModule,
     MessagesModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    TagModule,
   ],
 })
 export class AdmissionModule {}
