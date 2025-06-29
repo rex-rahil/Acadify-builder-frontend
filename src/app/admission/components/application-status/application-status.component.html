@@ -188,7 +188,9 @@
     <!-- Document Status -->
     <p-card
       styleClass="documents-card"
-      *ngIf="applicationStatus?.documents?.length > 0"
+      *ngIf="
+        applicationStatus?.documents && applicationStatus.documents.length > 0
+      "
     >
       <ng-template pTemplate="header">
         <div class="card-header">
