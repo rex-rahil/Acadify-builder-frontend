@@ -181,6 +181,33 @@ export class OfficerDashboardComponent implements OnInit {
     return `${Math.floor(diffInMinutes / 1440)}d ago`;
   }
 
+  getPendingRate(): number {
+    if (!this.overview?.pendingReview || !this.overview?.totalApplications) {
+      return 0;
+    }
+    return (
+      (this.overview.pendingReview / this.overview.totalApplications) * 100
+    );
+  }
+
+  getReviewProgress(): number {
+    if (!this.overview?.totalApplications || !this.overview?.pendingReview) {
+      return 0;
+    }
+    return (
+      ((this.overview.totalApplications - this.overview.pendingReview) /
+        this.overview.totalApplications) *
+      100
+    );
+  }
+
+  getApprovalRate(): number {
+    if (!this.overview?.approved || !this.overview?.totalApplications) {
+      return 0;
+    }
+    return (this.overview.approved / this.overview.totalApplications) * 100;
+  }
+
   refreshData(): void {
     this.loadDashboardData();
   }
