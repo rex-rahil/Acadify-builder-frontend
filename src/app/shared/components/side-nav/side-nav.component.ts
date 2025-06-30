@@ -85,6 +85,26 @@ export class SideNavComponent {
       label: "Administration",
       items: [
         {
+          label: "Admin Dashboard",
+          icon: "pi pi-shield",
+          route: "/admin",
+        },
+        {
+          label: "User Management",
+          icon: "pi pi-users",
+          route: "/admin/users",
+        },
+        {
+          label: "Course Management",
+          icon: "pi pi-book",
+          route: "/admin/courses",
+        },
+        {
+          label: "Subject Allocation",
+          icon: "pi pi-sitemap",
+          route: "/admin/subjects",
+        },
+        {
           label: "Admission Officer",
           icon: "pi pi-file-check",
           route: "/admission-officer",
