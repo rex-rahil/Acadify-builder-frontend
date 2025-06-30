@@ -1,0 +1,150 @@
+<p-dialog
+  [header]="course ? 'Edit Course' : 'Add New Course'"
+  [(visible)]="visible"
+  (onHide)="onCancel()"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="course-form-dialog"
+  [style]="{ width: '600px' }"
+>
+  <form [formGroup]="courseForm" (ngSubmit)="onSave()">
+    <div class="form-grid">
+      <div class="form-section">
+        <h3>Course Information</h3>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Course Name *</label>
+            <input
+              pInputText
+              id="name"
+              formControlName="name"
+              placeholder="Enter course name"
+              [class.ng-invalid]="
+                courseForm.get('name')?.invalid &&
+                courseForm.get('name')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('name')">
+              {{ getFieldError("name") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="code">Course Code *</label>
+            <input
+              pInputText
+              id="code"
+              formControlName="code"
+              placeholder="e.g., BCS, BBA"
+              [class.ng-invalid]="
+                courseForm.get('code')?.invalid &&
+                courseForm.get('code')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('code')">
+              {{ getFieldError("code") }}
+            </small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="department">Department *</label>
+            <p-dropdown
+              id="department"
+              formControlName="department"
+              [options]="departments"
+              placeholder="Select department"
+              [class.ng-invalid]="
+                courseForm.get('department')?.invalid &&
+                courseForm.get('department')?.touched
+              "
+            ></p-dropdown>
+            <small class="field-error" *ngIf="getFieldError('department')">
+              {{ getFieldError("department") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="duration">Duration (Semesters) *</label>
+            <input
+              pInputText
+              id="duration"
+              type="number"
+              formControlName="duration"
+              placeholder="Enter duration"
+              min="1"
+              max="12"
+              [class.ng-invalid]="
+                courseForm.get('duration')?.invalid &&
+                courseForm.get('duration')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('duration')">
+              {{ getFieldError("duration") }}
+            </small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="status">Status *</label>
+            <p-dropdown
+              id="status"
+              formControlName="status"
+              [options]="[
+                { label: 'Active', value: 'active' },
+                { label: 'Inactive', value: 'inactive' },
+              ]"
+              placeholder="Select status"
+              optionLabel="label"
+              optionValue="value"
+            ></p-dropdown>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field full-width">
+            <label for="description">Description *</label>
+            <textarea
+              pInputTextarea
+              id="description"
+              formControlName="description"
+              placeholder="Enter course description"
+              rows="4"
+              [class.ng-invalid]="
+                courseForm.get('description')?.invalid &&
+                courseForm.get('description')?.touched
+              "
+            ></textarea>
+            <small class="field-error" *ngIf="getFieldError('description')">
+              {{ getFieldError("description") }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="form-actions">
+      <p-button
+        label="Cancel"
+        icon="pi pi-times"
+        (onClick)="onCancel()"
+        styleClass="p-button-outlined"
+        [disabled]="loading"
+      ></p-button>
+      <p-button
+        [label]="course ? 'Update Course' : 'Create Course'"
+        icon="pi pi-check"
+        (onClick)="onSave()"
+        [loading]="loading"
+        [disabled]="!courseForm.valid"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
