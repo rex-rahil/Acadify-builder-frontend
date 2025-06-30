@@ -1,51 +1,58 @@
 .admission-stepper {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: var(--surface-ground);
+  min-height: 100vh;
 
   .stepper-header {
-    padding: 2rem 3rem;
-    background: var(--surface-section);
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: 2rem 0 3rem 0;
+    background: transparent;
   }
 
   .step-content {
-    padding: 3rem;
+    padding: 0;
     min-height: 60vh;
 
-    h3 {
-      color: var(--primary-color);
-      font-size: 1.75rem;
-      font-weight: 500;
-      margin: 0 0 2rem 0;
-      text-align: center;
-    }
-
-    :host ::ng-deep p-divider {
-      margin: 2rem 0 3rem 0;
-
-      .p-divider {
-        margin: 0;
-      }
+    h2 {
+      color: var(--text-color);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0 0 3rem 0;
+      text-align: left;
+      letter-spacing: -0.025em;
     }
   }
 
   .step-actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 3rem;
-    padding: 2rem 0 1rem 0;
-    border-top: 2px solid var(--surface-border);
+    align-items: center;
+    margin-top: 4rem;
+    padding: 2rem 0;
 
     .next-actions {
       display: flex;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
     :host ::ng-deep p-button button {
-      padding: 0.75rem 2rem;
-      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.95rem;
       font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid var(--surface-border);
+      transition: all 0.2s ease;
+    }
+
+    :host ::ng-deep .p-button-outlined {
+      background: transparent;
+      color: var(--text-color-secondary);
+
+      &:hover {
+        background: var(--surface-hover);
+        color: var(--text-color);
+      }
     }
   }
 }
