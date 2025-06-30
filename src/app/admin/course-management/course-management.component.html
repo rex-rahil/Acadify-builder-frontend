@@ -12,7 +12,7 @@
           <input
             pInputText
             type="text"
-            [(ngModel)]="globalFilter"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
             placeholder="Search courses..."
             class="p-inputtext-sm"
           />
