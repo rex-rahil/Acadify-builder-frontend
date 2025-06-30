@@ -84,7 +84,18 @@ import { CourseService } from "./services/course.service";
     InputTextareaModule,
     CalendarModule,
     CheckboxModule,
+    TooltipModule,
+    ProgressSpinnerModule,
+    MessageModule,
+    MessagesModule,
+    StepsModule,
   ],
-  providers: [AdminService, UserService, CourseService],
+  providers: [
+    AdminService,
+    UserService,
+    CourseService,
+    ConfirmationService,
+    MessageService,
+  ],
 })
 export class AdminModule {}
