@@ -1,0 +1,178 @@
+<div class="user-management">
+  <div class="page-header">
+    <h1>User Management</h1>
+    <p>Manage system users, roles, and permissions</p>
+  </div>
+
+  <p-card>
+    <p-toolbar>
+      <div class="p-toolbar-group-start">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            [(ngModel)]="globalFilter"
+            placeholder="Search users..."
+            class="p-inputtext-sm"
+          />
+        </span>
+      </div>
+      <div class="p-toolbar-group-end">
+        <p-button
+          label="Add User"
+          icon="pi pi-plus"
+          (onClick)="onAddUser()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+    </p-toolbar>
+
+    <p-table
+      [value]="users"
+      [loading]="loading"
+      [globalFilterFields]="['firstName', 'lastName', 'email', 'role']"
+      [globalFilter]="globalFilter"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      styleClass="p-datatable-striped"
+      responsiveLayout="scroll"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="firstName">
+            Name <p-sortIcon field="firstName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="email">
+            Email <p-sortIcon field="email"></p-sortIcon>
+          </th>
+          <th pSortableColumn="role">
+            Role <p-sortIcon field="role"></p-sortIcon>
+          </th>
+          <th pSortableColumn="status">
+            Status <p-sortIcon field="status"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdDate">
+            Created <p-sortIcon field="createdDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="lastLogin">
+            Last Login <p-sortIcon field="lastLogin"></p-sortIcon>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            <div class="user-info">
+              <div class="user-avatar">
+                {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+              </div>
+              <div class="user-details">
+                <div class="user-name">
+                  {{ user.firstName }} {{ user.lastName }}
+                </div>
+                <div class="user-id" *ngIf="user.employeeId">
+                  ID: {{ user.employeeId }}
+                </div>
+                <div class="user-id" *ngIf="user.studentId">
+                  ID: {{ user.studentId }}
+                </div>
+                <div class="user-department" *ngIf="user.department">
+                  {{ user.department }}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="email-cell">
+              {{ user.email }}
+              <div class="phone">{{ user.phone }}</div>
+            </div>
+          </td>
+          <td>
+            <p-tag
+              [value]="formatRole(user.role)"
+              [severity]="getRoleSeverity(user.role)"
+            ></p-tag>
+          </td>
+          <td>
+            <p-tag
+              [value]="user.status | titlecase"
+              [severity]="getStatusSeverity(user.status)"
+            ></p-tag>
+          </td>
+          <td>{{ formatDate(user.createdDate) }}</td>
+          <td>
+            <span *ngIf="user.lastLogin; else noLogin">
+              {{ formatDate(user.lastLogin) }}
+            </span>
+            <ng-template #noLogin>
+              <span class="no-login">Never</span>
+            </ng-template>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-pencil"
+                (onClick)="onEditUser(user)"
+                styleClass="p-button-rounded p-button-text p-button-sm"
+                pTooltip="Edit user"
+              ></p-button>
+              <p-button
+                [icon]="user.status === 'active' ? 'pi pi-ban' : 'pi pi-check'"
+                (onClick)="onToggleStatus(user)"
+                [styleClass]="
+                  user.status === 'active'
+                    ? 'p-button-rounded p-button-text p-button-warning p-button-sm'
+                    : 'p-button-rounded p-button-text p-button-success p-button-sm'
+                "
+                [pTooltip]="
+                  user.status === 'active' ? 'Deactivate user' : 'Activate user'
+                "
+              ></p-button>
+              <p-button
+                icon="pi pi-trash"
+                (onClick)="onDeleteUser(user)"
+                styleClass="p-button-rounded p-button-text p-button-danger p-button-sm"
+                pTooltip="Delete user"
+              ></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center">
+            <div class="empty-state">
+              <i class="pi pi-users"></i>
+              <h3>No users found</h3>
+              <p>Get started by adding your first user</p>
+              <p-button
+                label="Add User"
+                icon="pi pi-plus"
+                (onClick)="onAddUser()"
+              ></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <!-- User Form Dialog -->
+  <app-user-form
+    [visible]="showUserForm"
+    [user]="selectedUser"
+    (visibleChange)="onUserFormClose()"
+    (userSaved)="onUserSaved()"
+  ></app-user-form>
+
+  <!-- Confirmation Dialog -->
+  <p-confirmDialog></p-confirmDialog>
+</div>
