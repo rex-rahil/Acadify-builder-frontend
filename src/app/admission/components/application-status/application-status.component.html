@@ -1,271 +1,334 @@
 <div class="application-status-container">
-  <!-- Header -->
+  <!-- Modern Header -->
   <div class="status-header">
     <div class="header-content">
-      <h1>
-        <i class="pi pi-file-o"></i>
-        Application Status
-      </h1>
-      <p class="subtitle">Track your admission application progress</p>
+      <div class="header-main">
+        <div class="icon-container">
+          <i class="pi pi-file-check"></i>
+        </div>
+        <div class="header-text">
+          <h1>Application Status</h1>
+          <p class="subtitle">Track your admission journey</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <p-button
+          icon="pi pi-refresh"
+          (onClick)="refreshStatus()"
+          severity="secondary"
+          [outlined]="true"
+          size="small"
+          styleClass="refresh-btn"
+          pTooltip="Refresh Status"
+        ></p-button>
+      </div>
     </div>
-    <p-button
-      label="Refresh"
-      icon="pi pi-refresh"
-      (onClick)="refreshStatus()"
-      severity="secondary"
-      [outlined]="true"
-    ></p-button>
   </div>
 
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
-    <p>Loading application status...</p>
+    <div class="loading-card">
+      <div class="spinner-container">
+        <p-progressSpinner
+          strokeWidth="3"
+          animationDuration="1s"
+        ></p-progressSpinner>
+      </div>
+      <h3>Loading Your Application</h3>
+      <p>Please wait while we fetch your latest status...</p>
+    </div>
   </div>
 
   <!-- No Application Found -->
   <div *ngIf="!loading && !applicationStatus" class="no-application">
-    <div class="empty-state">
-      <i class="pi pi-file-o empty-icon"></i>
+    <div class="empty-state-card">
+      <div class="empty-icon-container">
+        <i class="pi pi-inbox"></i>
+      </div>
       <h3>No Application Found</h3>
-      <p>You haven't submitted an application yet.</p>
+      <p>Ready to begin your journey with Oriental College?</p>
       <p-button
-        label="Start Application"
-        icon="pi pi-plus"
+        label="Start Your Application"
+        icon="pi pi-arrow-right"
         (click)="router.navigate(['/admission'])"
-        severity="primary"
+        size="large"
+        styleClass="start-btn"
       ></p-button>
     </div>
   </div>
 
   <!-- Application Status Display -->
   <div *ngIf="!loading && applicationStatus" class="status-content">
-    <!-- Application Info Card -->
-    <p-card styleClass="application-info-card">
-      <div class="application-header">
-        <div class="app-info">
-          <h2>Application #{{ applicationStatus.applicationId }}</h2>
-          <p class="submitted-date">
-            Submitted on {{ formatDate(applicationStatus.submittedDate) }}
-          </p>
-          <p
-            *ngIf="applicationStatus.resubmissionCount > 0"
-            class="resubmission-count"
+    <!-- Quick Status Overview -->
+    <div class="status-overview">
+      <div class="overview-card">
+        <div class="status-badge-container">
+          <div
+            class="status-badge"
+            [ngClass]="'status-' + applicationStatus.status"
           >
-            <i class="pi pi-refresh"></i>
-            Resubmitted {{ applicationStatus.resubmissionCount }} time(s)
-          </p>
+            <i [class]="getStatusIcon()"></i>
+            <span>{{ getStatusText() }}</span>
+          </div>
         </div>
-        <div class="status-badge">
-          <p-tag
-            [value]="applicationStatus.status.replace('_', ' ').toUpperCase()"
-            [severity]="getStatusColor()"
-            [rounded]="true"
-          ></p-tag>
+        <div class="application-meta">
+          <div class="meta-item">
+            <span class="label">Application ID</span>
+            <span class="value">{{ applicationStatus.applicationId }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Submitted</span>
+            <span class="value">{{
+              formatDate(applicationStatus.submittedDate)
+            }}</span>
+          </div>
+          <div class="meta-item" *ngIf="applicationStatus.reviewedDate">
+            <span class="label">Last Updated</span>
+            <span class="value">{{
+              formatDate(applicationStatus.lastUpdated)
+            }}</span>
+          </div>
         </div>
       </div>
-    </p-card>
+    </div>
 
-    <!-- Status Progress -->
-    <p-card styleClass="progress-card" *ngIf="!isRejected()">
-      <ng-template pTemplate="header">
+    <!-- Progress Timeline -->
+    <div class="progress-section" *ngIf="!isRejected()">
+      <div class="progress-card">
         <div class="card-header">
-          <h3>Application Progress</h3>
-        </div>
-      </ng-template>
-
-      <p-steps
-        [model]="statusSteps"
-        [activeIndex]="getStatusIndex()"
-        [readonly]="true"
-        styleClass="status-steps"
-      ></p-steps>
-
-      <div class="progress-info" *ngIf="applicationStatus.reviewedDate">
-        <p>
-          <i class="pi pi-clock"></i>
-          Last updated: {{ formatDate(applicationStatus.lastUpdated) }}
-        </p>
-        <p *ngIf="applicationStatus.reviewedBy">
-          <i class="pi pi-user"></i>
-          Reviewed by: {{ applicationStatus.reviewedBy }}
-        </p>
-      </div>
-    </p-card>
-
-    <!-- Rejection Notice -->
-    <p-card styleClass="rejection-card" *ngIf="isRejected()">
-      <ng-template pTemplate="header">
-        <div class="card-header rejection-header">
           <h3>
-            <i class="pi pi-times-circle"></i>
-            Application Rejected
+            <i class="pi pi-clock"></i>
+            Application Timeline
           </h3>
         </div>
-      </ng-template>
-
-      <div class="rejection-content">
-        <p class="rejection-reason">
-          <strong>Reason for Rejection:</strong>
-          {{
-            applicationStatus.rejectionReason || "No specific reason provided."
-          }}
-        </p>
-
-        <div class="rejection-actions">
-          <p>
-            You can review and edit your application to address the issues
-            mentioned above.
-          </p>
-          <p-button
-            label="Edit & Resubmit Application"
-            icon="pi pi-pencil"
-            (onClick)="editApplication()"
-            severity="primary"
-          ></p-button>
+        <div class="timeline-container">
+          <div class="timeline-steps">
+            <div
+              *ngFor="let step of getTimelineSteps(); let i = index"
+              class="timeline-step"
+              [ngClass]="{
+                completed: i <= getCurrentStepIndex(),
+                active: i === getCurrentStepIndex(),
+                upcoming: i > getCurrentStepIndex(),
+              }"
+            >
+              <div class="step-indicator">
+                <i [class]="step.icon"></i>
+              </div>
+              <div class="step-content">
+                <h4>{{ step.title }}</h4>
+                <p>{{ step.description }}</p>
+                <span class="step-status" *ngIf="step.status">{{
+                  step.status
+                }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </p-card>
+    </div>
+
+    <!-- Rejection Notice -->
+    <div class="rejection-section" *ngIf="isRejected()">
+      <div class="rejection-card">
+        <div class="rejection-header">
+          <div class="rejection-icon">
+            <i class="pi pi-times-circle"></i>
+          </div>
+          <div class="rejection-text">
+            <h3>Application Requires Attention</h3>
+            <p>Your application needs some updates before we can proceed</p>
+          </div>
+        </div>
+        <div class="rejection-body">
+          <div class="reason-container">
+            <h4>What needs to be fixed:</h4>
+            <div class="reason-content">
+              <i class="pi pi-exclamation-triangle"></i>
+              <p>
+                {{
+                  applicationStatus.rejectionReason ||
+                    "Please review and update your application details."
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="action-container">
+            <p-button
+              label="Edit & Resubmit Application"
+              icon="pi pi-pencil"
+              (onClick)="editApplication()"
+              size="large"
+              styleClass="resubmit-btn"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Payment Section -->
-    <p-card styleClass="payment-card" *ngIf="canMakePayment() || isEnrolled()">
-      <ng-template pTemplate="header">
+    <div class="payment-section" *ngIf="canMakePayment() || isEnrolled()">
+      <div class="payment-card">
         <div class="card-header">
           <h3>
             <i class="pi pi-credit-card"></i>
             Fee Payment
           </h3>
         </div>
-      </ng-template>
-
-      <div class="payment-content">
-        <div *ngIf="paymentDetails" class="payment-info">
-          <div class="payment-amount">
-            <h4>Total Amount: ₹{{ paymentDetails.amount | number }}</h4>
-            <p class="due-date">
-              <i class="pi pi-calendar"></i>
-              Due Date: {{ formatDate(paymentDetails.dueDate) }}
-            </p>
+        <div class="payment-content">
+          <div class="payment-summary" *ngIf="paymentDetails">
+            <div class="amount-display">
+              <div class="amount-label">Total Amount</div>
+              <div class="amount-value">
+                ₹{{ paymentDetails.amount | number }}
+              </div>
+              <div class="due-date">
+                Due: {{ formatDate(paymentDetails.dueDate) }}
+              </div>
+            </div>
+            <div class="payment-status">
+              <div
+                class="status-indicator"
+                [ngClass]="'payment-' + paymentDetails.status"
+              >
+                <i [class]="getPaymentStatusIcon()"></i>
+                <span>{{ getPaymentStatusText() }}</span>
+              </div>
+            </div>
           </div>
 
-          <div class="payment-status">
-            <p-tag
-              [value]="paymentDetails.status.toUpperCase()"
-              [severity]="
-                paymentDetails.status === 'completed' ? 'success' : 'warn'
-              "
-            ></p-tag>
-          </div>
-        </div>
-
-        <div class="payment-actions">
-          <p-button
-            *ngIf="canMakePayment()"
-            label="Proceed to Payment"
-            icon="pi pi-credit-card"
-            (onClick)="proceedToPayment()"
-            severity="primary"
-            size="large"
-          ></p-button>
-
-          <div *ngIf="isEnrolled()" class="enrollment-success">
-            <p>
-              <i class="pi pi-check-circle"></i>
-              Payment completed successfully! You are now enrolled.
-            </p>
+          <div class="payment-actions">
             <p-button
-              label="Access Student Dashboard"
-              icon="pi pi-th-large"
-              (onClick)="accessDashboard()"
-              severity="success"
+              *ngIf="canMakePayment()"
+              label="Pay Now"
+              icon="pi pi-arrow-right"
+              (onClick)="proceedToPayment()"
               size="large"
+              styleClass="pay-now-btn"
             ></p-button>
+
+            <div *ngIf="isEnrolled()" class="enrollment-success">
+              <div class="success-icon">
+                <i class="pi pi-check-circle"></i>
+              </div>
+              <div class="success-text">
+                <h4>Welcome to Oriental College!</h4>
+                <p>Your payment is complete and you're successfully enrolled</p>
+              </div>
+              <p-button
+                label="Access Student Portal"
+                icon="pi pi-external-link"
+                (onClick)="accessDashboard()"
+                size="large"
+                styleClass="portal-btn"
+              ></p-button>
+            </div>
           </div>
         </div>
       </div>
-    </p-card>
+    </div>
 
-    <!-- Document Status -->
-    <p-card
-      styleClass="documents-card"
+    <!-- Documents Status -->
+    <div
+      class="documents-section"
       *ngIf="
         applicationStatus?.documents && applicationStatus.documents.length > 0
       "
     >
-      <ng-template pTemplate="header">
+      <div class="documents-card">
         <div class="card-header">
           <h3>
             <i class="pi pi-file"></i>
-            Document Status
+            Document Verification
           </h3>
         </div>
-      </ng-template>
-
-      <div class="documents-list">
-        <div
-          *ngFor="let doc of applicationStatus?.documents"
-          class="document-item"
-        >
-          <div class="doc-info">
-            <i class="pi pi-file-pdf"></i>
-            <div class="doc-details">
-              <p class="doc-name">{{ doc.documentType }}</p>
-              <p class="doc-filename">{{ doc.fileName }}</p>
+        <div class="documents-grid">
+          <div
+            *ngFor="let doc of applicationStatus?.documents"
+            class="document-item"
+          >
+            <div class="doc-icon" [ngClass]="'doc-' + doc.status">
+              <i [class]="getDocumentIcon(doc.status)"></i>
             </div>
-          </div>
-          <div class="doc-status">
-            <p-tag
-              [value]="doc.status.toUpperCase()"
-              [severity]="
-                doc.status === 'approved'
-                  ? 'success'
-                  : doc.status === 'rejected'
-                    ? 'danger'
-                    : 'warning'
-              "
-            ></p-tag>
-            <p *ngIf="doc.rejectionReason" class="rejection-reason">
-              {{ doc.rejectionReason }}
-            </p>
+            <div class="doc-details">
+              <h4>{{ doc.documentType }}</h4>
+              <p class="doc-filename">{{ doc.fileName }}</p>
+              <div class="doc-status">
+                <span class="status-badge" [ngClass]="'status-' + doc.status">
+                  {{ doc.status | titlecase }}
+                </span>
+              </div>
+              <p *ngIf="doc.rejectionReason" class="rejection-reason">
+                <i class="pi pi-info-circle"></i>
+                {{ doc.rejectionReason }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </p-card>
+    </div>
 
     <!-- Notifications -->
-    <p-card styleClass="notifications-card" *ngIf="notifications.length > 0">
-      <ng-template pTemplate="header">
+    <div class="notifications-section" *ngIf="notifications.length > 0">
+      <div class="notifications-card">
         <div class="card-header">
           <h3>
             <i class="pi pi-bell"></i>
-            Recent Notifications
+            Recent Updates
           </h3>
         </div>
-      </ng-template>
-
-      <div class="notifications-list">
-        <div
-          *ngFor="let notification of notifications"
-          class="notification-item"
-          [class.unread]="!notification.isRead"
-          (click)="markNotificationRead(notification)"
-        >
-          <div class="notification-icon">
-            <i [class]="'pi ' + getNotificationIcon(notification.type)"></i>
-          </div>
-          <div class="notification-content">
-            <h4>{{ notification.title }}</h4>
-            <p>{{ notification.message }}</p>
-            <span class="notification-date">
-              {{ formatDate(notification.createdDate) }}
-            </span>
-          </div>
-          <div class="notification-badge" *ngIf="!notification.isRead">
-            <span class="unread-dot"></span>
+        <div class="notifications-list">
+          <div
+            *ngFor="let notification of notifications | slice: 0 : 5"
+            class="notification-item"
+            [class.unread]="!notification.isRead"
+            (click)="markNotificationRead(notification)"
+          >
+            <div
+              class="notification-icon"
+              [ngClass]="'notif-' + notification.type"
+            >
+              <i [class]="getNotificationIcon(notification.type)"></i>
+            </div>
+            <div class="notification-content">
+              <h4>{{ notification.title }}</h4>
+              <p>{{ notification.message }}</p>
+              <div class="notification-meta">
+                <span class="notification-time">{{
+                  formatDate(notification.createdDate)
+                }}</span>
+                <span *ngIf="!notification.isRead" class="unread-indicator"
+                  >New</span
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </p-card>
+    </div>
+
+    <!-- Help Section -->
+    <div class="help-section">
+      <div class="help-card">
+        <div class="help-content">
+          <div class="help-icon">
+            <i class="pi pi-question-circle"></i>
+          </div>
+          <div class="help-text">
+            <h4>Need Help?</h4>
+            <p>Our admission team is here to support you through the process</p>
+          </div>
+          <div class="help-actions">
+            <p-button
+              label="Contact Support"
+              icon="pi pi-phone"
+              [outlined]="true"
+              size="small"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
