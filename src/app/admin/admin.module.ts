@@ -22,6 +22,12 @@ import { TabViewModule } from "primeng/tabview";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { CalendarModule } from "primeng/calendar";
 import { CheckboxModule } from "primeng/checkbox";
+import { TooltipModule } from "primeng/tooltip";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { MessageModule } from "primeng/message";
+import { MessagesModule } from "primeng/messages";
+import { StepsModule } from "primeng/steps";
+import { ConfirmationService, MessageService } from "primeng/api";
 
 // Routing
 import { AdminRoutingModule } from "./admin-routing.module";
