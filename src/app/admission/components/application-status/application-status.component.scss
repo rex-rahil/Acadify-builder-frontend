@@ -67,9 +67,24 @@
         background: rgba(135, 206, 235, 0.1);
         border-color: #87ceeb;
         color: #4682b4;
+        box-shadow: none;
 
         &:hover {
           background: rgba(135, 206, 235, 0.2);
+          border-color: #4682b4;
+          color: #4682b4;
+          box-shadow: 0 2px 8px rgba(135, 206, 235, 0.3);
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.3);
+          border-color: #87ceeb;
+        }
+
+        &:active {
+          background: rgba(135, 206, 235, 0.3);
+          border-color: #4682b4;
+          color: #4682b4;
         }
       }
     }
@@ -188,10 +203,25 @@
       padding: 0.75rem 2rem;
       font-weight: 600;
       box-shadow: 0 4px 20px rgba(135, 206, 235, 0.3);
+      color: white;
 
       &:hover {
+        background: linear-gradient(135deg, #6bb6ff, #357abd);
         transform: translateY(-2px);
         box-shadow: 0 6px 25px rgba(135, 206, 235, 0.4);
+        color: white;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.5);
+        background: linear-gradient(135deg, #87ceeb, #4682b4);
+        color: white;
+      }
+
+      &:active {
+        background: linear-gradient(135deg, #4682b4, #2c5aa0);
+        transform: translateY(0);
+        color: white;
       }
     }
   }
@@ -530,10 +560,25 @@
           padding: 0.75rem 2rem;
           font-weight: 600;
           box-shadow: 0 4px 20px rgba(135, 206, 235, 0.3);
+          color: white;
 
           &:hover {
+            background: linear-gradient(135deg, #6bb6ff, #357abd);
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(135, 206, 235, 0.4);
+            color: white;
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.5);
+            background: linear-gradient(135deg, #87ceeb, #4682b4);
+            color: white;
+          }
+
+          &:active {
+            background: linear-gradient(135deg, #4682b4, #2c5aa0);
+            transform: translateY(0);
+            color: white;
           }
         }
       }
@@ -637,10 +682,25 @@
           font-weight: 600;
           font-size: 1.1rem;
           box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+          color: white;
 
           &:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+            color: white;
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+          }
+
+          &:active {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(0);
+            color: white;
           }
         }
 
@@ -688,10 +748,25 @@
             padding: 0.75rem 2rem;
             font-weight: 600;
             box-shadow: 0 4px 20px rgba(135, 206, 235, 0.3);
+            color: white;
 
             &:hover {
+              background: linear-gradient(135deg, #6bb6ff, #357abd);
               transform: translateY(-2px);
               box-shadow: 0 6px 25px rgba(135, 206, 235, 0.4);
+              color: white;
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.5);
+              background: linear-gradient(135deg, #87ceeb, #4682b4);
+              color: white;
+            }
+
+            &:active {
+              background: linear-gradient(135deg, #4682b4, #2c5aa0);
+              transform: translateY(0);
+              color: white;
             }
           }
         }
@@ -1025,9 +1100,26 @@
         ::ng-deep .p-button {
           border-color: #87ceeb;
           color: #4682b4;
+          background: transparent;
+          box-shadow: none;
 
           &:hover {
             background: rgba(135, 206, 235, 0.1);
+            border-color: #4682b4;
+            color: #4682b4;
+            box-shadow: 0 2px 8px rgba(135, 206, 235, 0.2);
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.3);
+            border-color: #87ceeb;
+            color: #4682b4;
+          }
+
+          &:active {
+            background: rgba(135, 206, 235, 0.2);
+            border-color: #4682b4;
+            color: #4682b4;
           }
         }
       }
