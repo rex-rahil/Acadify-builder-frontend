@@ -1,0 +1,163 @@
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p>System overview and management center</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid" *ngIf="!loading">
+    <div class="stat-card">
+      <div class="stat-icon users">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.totalUsers }}</h3>
+        <p>Total Users</p>
+        <span class="stat-detail">{{ stats.activeUsers }} active</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon courses">
+        <i class="pi pi-book"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.totalCourses }}</h3>
+        <p>Total Courses</p>
+        <span class="stat-detail">{{ stats.totalSubjects }} subjects</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon admissions">
+        <i class="pi pi-file-edit"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.pendingAdmissions }}</h3>
+        <p>Pending Admissions</p>
+        <span class="stat-detail">{{ stats.enrolledStudents }} enrolled</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon faculty">
+        <i class="pi pi-user-edit"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.facultyMembers }}</h3>
+        <p>Faculty Members</p>
+        <span class="stat-detail">{{ stats.admissionOfficers }} officers</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="stats-grid loading-grid" *ngIf="loading">
+    <div class="stat-card loading" *ngFor="let item of [1, 2, 3, 4]">
+      <div class="loading-content">
+        <div class="loading-circle"></div>
+        <div class="loading-lines">
+          <div class="loading-line"></div>
+          <div class="loading-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid">
+    <!-- Recent Activities -->
+    <p-card header="Recent Activities" styleClass="activities-card">
+      <div class="activities-list">
+        <div
+          class="activity-item"
+          *ngFor="let activity of recentActivities; trackBy: trackByActivityId"
+        >
+          <div class="activity-icon">
+            <i [class]="getActivityIcon(activity.type)"></i>
+          </div>
+          <div class="activity-content">
+            <p>{{ activity.message }}</p>
+            <span class="activity-time">{{
+              formatTimeAgo(activity.timestamp)
+            }}</span>
+          </div>
+          <p-tag
+            [value]="activity.type.replace('_', ' ') | titlecase"
+            [severity]="activity.severity"
+          ></p-tag>
+        </div>
+
+        <div class="no-activities" *ngIf="recentActivities.length === 0">
+          <i class="pi pi-info-circle"></i>
+          <p>No recent activities</p>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- System Health -->
+    <p-card header="System Health" styleClass="health-card">
+      <div class="health-grid">
+        <div class="health-item" *ngFor="let item of systemHealth | keyvalue">
+          <div class="health-header">
+            <i [class]="getHealthIcon(item.value.status)"></i>
+            <h4>{{ item.key | titlecase }}</h4>
+          </div>
+          <p-tag
+            [value]="item.value.status | titlecase"
+            [severity]="getHealthSeverity(item.value.status)"
+          ></p-tag>
+          <div class="health-details">
+            <span *ngIf="item.value.responseTime"
+              >Response: {{ item.value.responseTime }}</span
+            >
+            <span *ngIf="item.value.uptime"
+              >Uptime: {{ item.value.uptime }}</span
+            >
+            <span *ngIf="item.value.usage">Usage: {{ item.value.usage }}</span>
+            <span *ngIf="item.value.lastBackup"
+              >Last backup: {{ item.value.lastBackup }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Quick Actions -->
+    <p-card header="Quick Actions" styleClass="actions-card">
+      <div class="quick-actions">
+        <button
+          pButton
+          type="button"
+          label="Manage Users"
+          icon="pi pi-users"
+          class="p-button-outlined"
+          routerLink="/admin/users"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Manage Courses"
+          icon="pi pi-book"
+          class="p-button-outlined"
+          routerLink="/admin/courses"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Subject Allocation"
+          icon="pi pi-sitemap"
+          class="p-button-outlined"
+          routerLink="/admin/subjects"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="View Reports"
+          icon="pi pi-chart-bar"
+          class="p-button-outlined"
+        ></button>
+      </div>
+    </p-card>
+  </div>
+</div>
