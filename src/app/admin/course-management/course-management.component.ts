@@ -13,7 +13,6 @@ export class CourseManagementComponent implements OnInit {
   loading = true;
   showCourseForm = false;
   selectedCourse: Course | null = null;
-  globalFilter = "";
 
   constructor(
     private courseService: CourseService,
