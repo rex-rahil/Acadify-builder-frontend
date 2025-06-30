@@ -103,4 +103,8 @@ export class AdminDashboardComponent implements OnInit {
     if (hours < 24) return `${hours}h ago`;
     return `${days}d ago`;
   }
+
+  trackByActivityId(index: number, activity: any): number {
+    return activity.id;
+  }
 }
