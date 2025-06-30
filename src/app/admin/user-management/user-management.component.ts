@@ -13,7 +13,6 @@ export class UserManagementComponent implements OnInit {
   loading = true;
   showUserForm = false;
   selectedUser: User | null = null;
-  globalFilter = "";
 
   constructor(
     private userService: UserService,
