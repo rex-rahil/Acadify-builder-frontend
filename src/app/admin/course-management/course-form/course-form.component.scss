@@ -1,0 +1,156 @@
+:host ::ng-deep .course-form-dialog {
+  .p-dialog-header {
+    background: var(--surface-50);
+    border-bottom: 1px solid var(--surface-border);
+    border-radius: 12px 12px 0 0;
+
+    .p-dialog-title {
+      font-weight: 600;
+      color: var(--text-color);
+    }
+  }
+
+  .p-dialog-content {
+    padding: 2rem;
+    background: white;
+  }
+
+  .p-dialog-footer {
+    background: var(--surface-50);
+    border-top: 1px solid var(--surface-border);
+    border-radius: 0 0 12px 12px;
+    padding: 1.5rem 2rem;
+  }
+}
+
+.form-grid {
+  .form-section {
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h3 {
+      color: var(--primary-color);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 1.5rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-field {
+      &.full-width {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  .form-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+      font-size: 0.95rem;
+    }
+
+    input,
+    textarea,
+    p-dropdown {
+      width: 100%;
+    }
+
+    :host ::ng-deep .p-inputtext,
+    :host ::ng-deep .p-inputtextarea,
+    :host ::ng-deep .p-dropdown {
+      border-radius: 6px;
+      border: 1px solid var(--surface-border);
+      padding: 0.75rem;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px var(--primary-color-light);
+      }
+
+      &.ng-invalid {
+        border-color: var(--red-500);
+
+        &:focus {
+          border-color: var(--red-500);
+          box-shadow: 0 0 0 2px var(--red-100);
+        }
+      }
+    }
+
+    .field-error {
+      color: var(--red-500);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+      display: block;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  :host ::ng-deep .p-button {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host ::ng-deep .course-form-dialog {
+    .p-dialog {
+      width: 95vw !important;
+      margin: 1rem;
+    }
+
+    .p-dialog-content {
+      padding: 1.5rem;
+    }
+
+    .p-dialog-footer {
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  .form-grid {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .form-section h3 {
+      font-size: 1rem;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+
+    :host ::ng-deep .p-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
