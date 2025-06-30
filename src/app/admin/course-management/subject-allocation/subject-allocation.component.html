@@ -1,0 +1,125 @@
+<div class="subject-allocation">
+  <div class="page-header">
+    <h1>Subject Allocation</h1>
+    <p>Allocate subjects to courses and manage curriculum</p>
+  </div>
+
+  <div class="allocation-grid">
+    <!-- Course Selection -->
+    <p-card header="Select Course" styleClass="course-selection-card">
+      <div class="course-list">
+        <div
+          class="course-item"
+          *ngFor="let course of courses"
+          [class.selected]="selectedCourse?.id === course.id"
+          (click)="onCourseSelect(course)"
+        >
+          <div class="course-info">
+            <h4>{{ course.name }}</h4>
+            <p>{{ course.code }} - {{ course.department }}</p>
+            <div class="course-stats">
+              <span>{{ course.subjects.length }} subjects</span>
+              <span>{{ course.totalCredits }} credits</span>
+            </div>
+          </div>
+          <p-tag
+            [value]="course.status | titlecase"
+            [severity]="course.status === 'active' ? 'success' : 'danger'"
+          ></p-tag>
+        </div>
+
+        <div class="no-courses" *ngIf="courses.length === 0">
+          <i class="pi pi-book"></i>
+          <p>No courses available</p>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Subject Allocation -->
+    <div class="allocation-panel" *ngIf="selectedCourse">
+      <!-- Available Subjects -->
+      <p-card header="Available Subjects" styleClass="subjects-card">
+        <div class="subjects-section">
+          <div
+            class="department-section"
+            *ngFor="let department of getUniqueDepartments()"
+          >
+            <h4>{{ department }}</h4>
+            <div class="subjects-grid">
+              <div
+                class="subject-item available"
+                *ngFor="let subject of getSubjectsByDepartment(department)"
+                (click)="addSubject(subject)"
+              >
+                <div class="subject-info">
+                  <div class="subject-name">{{ subject.name }}</div>
+                  <div class="subject-code">{{ subject.code }}</div>
+                  <div class="subject-credits">
+                    {{ subject.credits }} credits
+                  </div>
+                </div>
+                <i class="pi pi-plus-circle"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="no-subjects" *ngIf="availableSubjects.length === 0">
+            <i class="pi pi-info-circle"></i>
+            <p>No available subjects for this course</p>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Selected Subjects -->
+      <p-card styleClass="selected-subjects-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h3>Selected Subjects for {{ selectedCourse.name }}</h3>
+            <div class="total-credits">
+              Total Credits: <strong>{{ getTotalCredits() }}</strong>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="selected-subjects">
+          <div
+            class="subject-item selected"
+            *ngFor="let subject of selectedSubjects"
+          >
+            <div class="subject-info">
+              <div class="subject-name">{{ subject.name }}</div>
+              <div class="subject-code">{{ subject.code }}</div>
+              <div class="subject-credits">{{ subject.credits }} credits</div>
+              <div class="subject-department">{{ subject.department }}</div>
+            </div>
+            <i class="pi pi-times-circle" (click)="removeSubject(subject)"></i>
+          </div>
+
+          <div class="no-subjects" *ngIf="selectedSubjects.length === 0">
+            <i class="pi pi-info-circle"></i>
+            <p>No subjects selected</p>
+          </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+          <div class="card-actions">
+            <p-button
+              label="Save Allocation"
+              icon="pi pi-save"
+              (onClick)="saveAllocation()"
+              [loading]="loading"
+              [disabled]="selectedSubjects.length === 0"
+            ></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+
+    <!-- No Course Selected -->
+    <div class="no-selection" *ngIf="!selectedCourse">
+      <i class="pi pi-arrow-left"></i>
+      <h3>Select a course to manage subjects</h3>
+      <p>Choose a course from the list to view and allocate subjects</p>
+    </div>
+  </div>
+</div>
