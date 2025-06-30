@@ -60,26 +60,22 @@
 /* Responsive adjustments for tablets */
 @media screen and (max-width: 768px) {
   .admission-stepper {
-    margin: 1rem auto;
-    padding: 0 0.5rem;
+    padding: 1.5rem 0.75rem;
 
     .stepper-header {
-      padding: 1.5rem 2rem;
+      padding: 1.5rem 0 2.5rem 0;
     }
 
     .step-content {
-      padding: 2rem 1.5rem;
-      min-height: 50vh;
-
-      h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+      h2 {
+        font-size: 1.35rem;
+        margin-bottom: 2.5rem;
       }
     }
 
     .step-actions {
-      margin-top: 2rem;
-      padding-top: 1.5rem;
+      margin-top: 3rem;
+      padding: 1.5rem 0;
       flex-direction: column;
       gap: 1rem;
 
@@ -103,30 +99,22 @@
 /* Responsive stepper for mobile */
 @media screen and (max-width: 600px) {
   .admission-stepper {
-    margin: 0.5rem auto;
-    padding: 0 0.25rem;
+    padding: 1rem 0.5rem;
 
     .stepper-header {
-      padding: 1rem;
+      padding: 1rem 0 2rem 0;
     }
 
     .step-content {
-      padding: 1.5rem 1rem;
-      min-height: 40vh;
-
-      h3 {
+      h2 {
         font-size: 1.25rem;
-        margin-bottom: 1rem;
-      }
-
-      :host ::ng-deep p-divider {
-        margin: 1rem 0 2rem 0;
+        margin-bottom: 2rem;
       }
     }
 
     .step-actions {
-      margin-top: 2rem;
-      padding-top: 1rem;
+      margin-top: 2.5rem;
+      padding: 1rem 0;
     }
   }
 
