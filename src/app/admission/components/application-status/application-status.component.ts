@@ -228,6 +228,139 @@ export class ApplicationStatusComponent implements OnInit {
     });
   }
 
+  getStatusIcon(): string {
+    if (!this.applicationStatus) return "pi-file";
+
+    const iconMap: { [key: string]: string } = {
+      submitted: "pi-upload",
+      resubmitted: "pi-refresh",
+      under_review: "pi-clock",
+      approved: "pi-check-circle",
+      rejected: "pi-times-circle",
+      payment_pending: "pi-credit-card",
+      payment_completed: "pi-check",
+      enrolled: "pi-graduation-cap",
+    };
+
+    return iconMap[this.applicationStatus.status] || "pi-file";
+  }
+
+  getStatusText(): string {
+    if (!this.applicationStatus) return "Unknown";
+
+    const textMap: { [key: string]: string } = {
+      submitted: "Application Submitted",
+      resubmitted: "Application Resubmitted",
+      under_review: "Under Review",
+      approved: "Application Approved",
+      rejected: "Needs Attention",
+      payment_pending: "Payment Required",
+      payment_completed: "Payment Complete",
+      enrolled: "Successfully Enrolled",
+    };
+
+    return textMap[this.applicationStatus.status] || "Unknown Status";
+  }
+
+  getTimelineSteps() {
+    const steps = [
+      {
+        title: "Application Submitted",
+        description: "Your application has been received",
+        icon: "pi-upload",
+        status: "",
+      },
+      {
+        title: "Document Review",
+        description: "We're verifying your documents",
+        icon: "pi-file-check",
+        status: "",
+      },
+      {
+        title: "Application Review",
+        description: "Academic team is reviewing your application",
+        icon: "pi-user-check",
+        status: "",
+      },
+      {
+        title: "Decision Made",
+        description: "Application has been evaluated",
+        icon: "pi-check-circle",
+        status: "",
+      },
+      {
+        title: "Payment & Enrollment",
+        description: "Complete fee payment to secure admission",
+        icon: "pi-graduation-cap",
+        status: "",
+      },
+    ];
+
+    // Add status based on current application status
+    if (this.applicationStatus) {
+      const currentStep = this.getCurrentStepIndex();
+      if (currentStep >= 0 && currentStep < steps.length) {
+        steps[currentStep].status = this.getStatusText();
+      }
+    }
+
+    return steps;
+  }
+
+  getCurrentStepIndex(): number {
+    if (!this.applicationStatus) return -1;
+
+    const stepMap: { [key: string]: number } = {
+      submitted: 0,
+      resubmitted: 0,
+      under_review: 1,
+      document_review: 1,
+      approved: 3,
+      rejected: 1, // Stay at review step for rejected
+      payment_pending: 4,
+      payment_completed: 4,
+      enrolled: 4,
+    };
+
+    return stepMap[this.applicationStatus.status] ?? 0;
+  }
+
+  getPaymentStatusIcon(): string {
+    if (!this.paymentDetails) return "pi-clock";
+
+    const iconMap: { [key: string]: string } = {
+      pending: "pi-clock",
+      completed: "pi-check-circle",
+      failed: "pi-times-circle",
+      refunded: "pi-refresh",
+    };
+
+    return iconMap[this.paymentDetails.status] || "pi-clock";
+  }
+
+  getPaymentStatusText(): string {
+    if (!this.paymentDetails) return "Pending";
+
+    const textMap: { [key: string]: string } = {
+      pending: "Payment Pending",
+      completed: "Payment Completed",
+      failed: "Payment Failed",
+      refunded: "Payment Refunded",
+    };
+
+    return textMap[this.paymentDetails.status] || "Pending";
+  }
+
+  getDocumentIcon(status: string): string {
+    const iconMap: { [key: string]: string } = {
+      pending: "pi-clock",
+      approved: "pi-check",
+      rejected: "pi-times",
+    };
+
+    return iconMap[status] || "pi-file";
+  }
+
   private showError(message: string) {
     this.messageService.add({
       severity: "error",
