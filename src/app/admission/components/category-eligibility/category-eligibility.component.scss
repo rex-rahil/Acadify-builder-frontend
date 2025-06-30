@@ -1,22 +1,24 @@
 .category-eligibility-form {
   .form-section {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    padding: 0 0.5rem;
 
     h4 {
       color: var(--primary-color);
-      font-size: 1.25rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
       border-bottom: 2px solid var(--surface-border);
     }
   }
 
   .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
     align-items: start;
+    margin-top: 1rem;
 
     .full-width {
       grid-column: 1 / -1;
