@@ -22,7 +22,7 @@ export interface StudentApplicationData {
 })
 export class AdmissionStatusService {
   private apiUrl = "/json-api";
-  private currentStudentId = "student_001"; // This would come from auth service
+  private currentStudentId = "student_006"; // This would come from auth service
 
   // Subject to track current application status
   private applicationStatusSubject =
