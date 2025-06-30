@@ -32,7 +32,6 @@
       [value]="users"
       [loading]="loading"
       [globalFilterFields]="['firstName', 'lastName', 'email', 'role']"
-      [globalFilter]="globalFilter"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[5, 10, 20]"
@@ -40,6 +39,7 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       styleClass="p-datatable-striped"
       responsiveLayout="scroll"
+      #dt
     >
       <ng-template pTemplate="header">
         <tr>
