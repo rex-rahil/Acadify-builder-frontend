@@ -127,25 +127,42 @@
   }
 }
 
-/* Custom stepper styling */
+/* Minimalist stepper styling */
 :host ::ng-deep .custom-steps.p-steps {
   .p-steps-item {
     .p-steps-number {
-      background: var(--surface-border);
+      background: var(--surface-200);
       color: var(--text-color-secondary);
-      border: 2px solid var(--surface-border);
-      transition: all 0.2s;
+      border: 1px solid var(--surface-300);
+      font-weight: 500;
+      font-size: 0.9rem;
+      width: 2rem;
+      height: 2rem;
+      transition: all 0.15s ease;
+    }
+
+    .p-steps-title {
+      font-weight: 400;
+      color: var(--text-color-secondary);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
     }
 
     &.p-highlight .p-steps-number {
       background: var(--primary-color);
-      color: var(--primary-color-text);
+      color: white;
       border-color: var(--primary-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     &.p-highlight .p-steps-title {
-      color: var(--primary-color);
-      font-weight: 600;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .p-steps-connector {
+      background: var(--surface-300);
+      height: 1px;
     }
   }
 }
