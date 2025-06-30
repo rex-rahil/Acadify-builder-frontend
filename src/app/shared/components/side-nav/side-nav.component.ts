@@ -22,8 +22,8 @@ export class SideNavComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
 
-  studentName = "Dr. Sarah Johnson"; // This would come from auth service
-  studentId = "FAC001"; // This would come from auth service
+  studentName = "Alex Johnson"; // This would come from auth service
+  studentId = "STU006"; // This would come from auth service
 
   menuSections: MenuSection[] = [
     {
