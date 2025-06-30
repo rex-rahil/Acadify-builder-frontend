@@ -1,0 +1,212 @@
+.user-management {
+  padding: 2rem;
+  background: var(--surface-ground);
+  min-height: 100vh;
+
+  .page-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin: 0 0 0.5rem 0;
+      letter-spacing: -0.025em;
+    }
+
+    p {
+      color: var(--text-color-secondary);
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+
+  :host ::ng-deep .p-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    border: none;
+
+    .p-card-content {
+      padding: 0;
+    }
+  }
+
+  :host ::ng-deep .p-toolbar {
+    border: none;
+    background: var(--surface-50);
+    border-radius: 12px 12px 0 0;
+    padding: 1rem 1.5rem;
+
+    .p-toolbar-group-start {
+      .p-input-icon-left {
+        input {
+          padding-left: 2.5rem;
+          width: 300px;
+        }
+      }
+    }
+  }
+
+  :host ::ng-deep .p-datatable {
+    .p-datatable-header {
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    .p-datatable-thead > tr > th {
+      background: var(--surface-100);
+      border: none;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+      border-bottom: 2px solid var(--surface-border);
+
+      &:first-child {
+        border-radius: 0;
+      }
+
+      &:last-child {
+        border-radius: 0;
+      }
+    }
+
+    .p-datatable-tbody > tr > td {
+      border: none;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .p-datatable-tbody > tr:hover {
+      background: var(--surface-50);
+    }
+
+    .p-paginator {
+      border: none;
+      background: var(--surface-50);
+      border-radius: 0 0 12px 12px;
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+
+    .user-details {
+      .user-name {
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 0.25rem;
+      }
+
+      .user-id {
+        font-size: 0.875rem;
+        color: var(--text-color-secondary);
+        margin-bottom: 0.125rem;
+      }
+
+      .user-department {
+        font-size: 0.875rem;
+        color: var(--primary-color);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .email-cell {
+    .phone {
+      font-size: 0.875rem;
+      color: var(--text-color-secondary);
+      margin-top: 0.25rem;
+    }
+  }
+
+  .no-login {
+    color: var(--text-color-secondary);
+    font-style: italic;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+
+    i {
+      font-size: 4rem;
+      color: var(--text-color-secondary);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      color: var(--text-color);
+      margin: 0 0 0.5rem 0;
+      font-weight: 500;
+    }
+
+    p {
+      color: var(--text-color-secondary);
+      margin: 0 0 1.5rem 0;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-management {
+    padding: 1rem;
+
+    .page-header h1 {
+      font-size: 1.5rem;
+    }
+
+    :host ::ng-deep .p-toolbar {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+
+      .p-toolbar-group-start,
+      .p-toolbar-group-end {
+        width: 100%;
+      }
+
+      .p-input-icon-left input {
+        width: 100%;
+      }
+    }
+
+    .user-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+
+      .user-details .user-name {
+        font-size: 0.9rem;
+      }
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}
