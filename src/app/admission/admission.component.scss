@@ -1,34 +1,51 @@
 .admission-stepper {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 2rem auto;
+  padding: 0 1rem;
 
   .stepper-header {
-    padding: 1rem 2rem;
+    padding: 2rem 3rem;
     background: var(--surface-section);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
 
   .step-content {
-    padding: 2rem;
+    padding: 3rem;
+    min-height: 60vh;
 
     h3 {
       color: var(--primary-color);
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: 500;
-      margin: 0 0 1rem 0;
+      margin: 0 0 2rem 0;
+      text-align: center;
+    }
+
+    :host ::ng-deep p-divider {
+      margin: 2rem 0 3rem 0;
+
+      .p-divider {
+        margin: 0;
+      }
     }
   }
 
   .step-actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--surface-border);
+    margin-top: 3rem;
+    padding: 2rem 0 1rem 0;
+    border-top: 2px solid var(--surface-border);
 
     .next-actions {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
+    }
+
+    :host ::ng-deep p-button button {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
     }
   }
 }
