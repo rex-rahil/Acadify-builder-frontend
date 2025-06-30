@@ -1,0 +1,211 @@
+<p-dialog
+  [header]="user ? 'Edit User' : 'Add New User'"
+  [(visible)]="visible"
+  (onHide)="onCancel()"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="user-form-dialog"
+  [style]="{ width: '600px' }"
+>
+  <form [formGroup]="userForm" (ngSubmit)="onSave()">
+    <div class="form-grid">
+      <!-- Personal Information -->
+      <div class="form-section">
+        <h3>Personal Information</h3>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="firstName">First Name *</label>
+            <input
+              pInputText
+              id="firstName"
+              formControlName="firstName"
+              placeholder="Enter first name"
+              [class.ng-invalid]="
+                userForm.get('firstName')?.invalid &&
+                userForm.get('firstName')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('firstName')">
+              {{ getFieldError("firstName") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="lastName">Last Name *</label>
+            <input
+              pInputText
+              id="lastName"
+              formControlName="lastName"
+              placeholder="Enter last name"
+              [class.ng-invalid]="
+                userForm.get('lastName')?.invalid &&
+                userForm.get('lastName')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('lastName')">
+              {{ getFieldError("lastName") }}
+            </small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="email">Email Address *</label>
+            <input
+              pInputText
+              id="email"
+              formControlName="email"
+              placeholder="Enter email address"
+              type="email"
+              [class.ng-invalid]="
+                userForm.get('email')?.invalid && userForm.get('email')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('email')">
+              {{ getFieldError("email") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Phone Number *</label>
+            <input
+              pInputText
+              id="phone"
+              formControlName="phone"
+              placeholder="Enter phone number"
+              [class.ng-invalid]="
+                userForm.get('phone')?.invalid && userForm.get('phone')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('phone')">
+              {{ getFieldError("phone") }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role and Status -->
+      <div class="form-section">
+        <h3>Role & Status</h3>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="role">Role *</label>
+            <p-dropdown
+              id="role"
+              formControlName="role"
+              [options]="roles"
+              placeholder="Select role"
+              optionLabel="label"
+              optionValue="value"
+              [class.ng-invalid]="
+                userForm.get('role')?.invalid && userForm.get('role')?.touched
+              "
+            ></p-dropdown>
+            <small class="field-error" *ngIf="getFieldError('role')">
+              {{ getFieldError("role") }}
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="status">Status *</label>
+            <p-dropdown
+              id="status"
+              formControlName="status"
+              [options]="[
+                { label: 'Active', value: 'active' },
+                { label: 'Inactive', value: 'inactive' },
+                { label: 'Pending', value: 'pending' },
+              ]"
+              placeholder="Select status"
+              optionLabel="label"
+              optionValue="value"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department and ID -->
+      <div class="form-section">
+        <h3>Department & Identification</h3>
+
+        <div class="form-row">
+          <div class="form-field" *ngIf="shouldShowField('department')">
+            <label for="department"
+              >Department {{ shouldShowField("department") ? "*" : "" }}</label
+            >
+            <p-dropdown
+              id="department"
+              formControlName="department"
+              [options]="departments"
+              placeholder="Select department"
+              [class.ng-invalid]="
+                userForm.get('department')?.invalid &&
+                userForm.get('department')?.touched
+              "
+            ></p-dropdown>
+            <small class="field-error" *ngIf="getFieldError('department')">
+              {{ getFieldError("department") }}
+            </small>
+          </div>
+
+          <div class="form-field" *ngIf="shouldShowField('employeeId')">
+            <label for="employeeId">Employee ID *</label>
+            <input
+              pInputText
+              id="employeeId"
+              formControlName="employeeId"
+              placeholder="Enter employee ID"
+              [class.ng-invalid]="
+                userForm.get('employeeId')?.invalid &&
+                userForm.get('employeeId')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('employeeId')">
+              {{ getFieldError("employeeId") }}
+            </small>
+          </div>
+
+          <div class="form-field" *ngIf="shouldShowField('studentId')">
+            <label for="studentId">Student ID *</label>
+            <input
+              pInputText
+              id="studentId"
+              formControlName="studentId"
+              placeholder="Enter student ID"
+              [class.ng-invalid]="
+                userForm.get('studentId')?.invalid &&
+                userForm.get('studentId')?.touched
+              "
+            />
+            <small class="field-error" *ngIf="getFieldError('studentId')">
+              {{ getFieldError("studentId") }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="form-actions">
+      <p-button
+        label="Cancel"
+        icon="pi pi-times"
+        (onClick)="onCancel()"
+        styleClass="p-button-outlined"
+        [disabled]="loading"
+      ></p-button>
+      <p-button
+        [label]="user ? 'Update User' : 'Create User'"
+        icon="pi pi-check"
+        (onClick)="onSave()"
+        [loading]="loading"
+        [disabled]="!userForm.valid"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
