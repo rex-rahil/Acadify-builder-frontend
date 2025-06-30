@@ -1143,6 +1143,54 @@
   }
 }
 
+// Global button overrides for consistent theming
+::ng-deep {
+  .p-button {
+    &.p-button-secondary {
+      &.p-button-outlined {
+        background: transparent;
+        border-color: #87ceeb;
+        color: #4682b4;
+
+        &:hover {
+          background: rgba(135, 206, 235, 0.1);
+          border-color: #4682b4;
+          color: #4682b4;
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.3) !important;
+        }
+
+        &:active {
+          background: rgba(135, 206, 235, 0.2);
+          border-color: #4682b4;
+          color: #4682b4;
+        }
+      }
+    }
+
+    // Remove any conflicting default styles
+    &:not(.p-button-text):not(.p-button-outlined) {
+      .p-button-label {
+        color: inherit;
+      }
+    }
+
+    // Fix button focus states
+    &:focus {
+      outline: none;
+    }
+  }
+
+  // Fix any default PrimeNG button color overrides
+  .p-button-secondary {
+    .p-button-label {
+      color: inherit !important;
+    }
+  }
+}
+
 // Responsive Design
 @media (max-width: 768px) {
   .application-status-container {
