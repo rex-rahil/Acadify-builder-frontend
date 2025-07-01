@@ -529,14 +529,21 @@
           color: var(--text-color);
 
           .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
             .header-title {
               display: flex;
               align-items: center;
               gap: 0.75rem;
+              flex: 1;
 
               i {
                 color: var(--primary-color);
                 font-size: 1.1rem;
+                flex-shrink: 0;
               }
 
               h3 {
@@ -544,6 +551,7 @@
                 font-size: 1.1rem;
                 font-weight: 600;
                 color: var(--text-color);
+                line-height: 1.2;
               }
             }
           }
