@@ -17,10 +17,12 @@ interface StatCard {
 }
 
 interface QuickAction {
+  id: string;
   label: string;
   icon: string;
   route: string;
   styleClass: string;
+  cardClass: string;
   description: string;
 }
 
