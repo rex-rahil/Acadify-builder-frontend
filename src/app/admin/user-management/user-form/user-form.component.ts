@@ -211,11 +211,8 @@ export class UserFormComponent implements OnInit {
         return (
           role === "student" ||
           role === "faculty" ||
-          role === "admission_officer"
-        );
-      case "employeeId":
-        return (
-          role === "faculty" || role === "admission_officer" || role === "admin"
+          role === "admission_officer" ||
+          role === "hod"
         );
       case "studentId":
         return role === "student";
