@@ -57,31 +57,39 @@ export class AdminDashboardComponent implements OnInit {
 
   quickActions: QuickAction[] = [
     {
+      id: "users",
       label: "User Management",
       icon: "pi pi-users",
       route: "/admin/users",
       styleClass: "p-button-outlined action-users",
+      cardClass: "users-card",
       description: "Manage system users and permissions",
     },
     {
+      id: "courses",
       label: "Course Management",
       icon: "pi pi-book",
       route: "/admin/courses",
       styleClass: "p-button-outlined action-courses",
+      cardClass: "courses-card",
       description: "Manage academic courses and programs",
     },
     {
+      id: "subjects",
       label: "Subject Allocation",
       icon: "pi pi-sitemap",
       route: "/admin/subjects",
       styleClass: "p-button-outlined action-subjects",
+      cardClass: "subjects-card",
       description: "Allocate subjects to courses",
     },
     {
+      id: "reports",
       label: "System Reports",
       icon: "pi pi-chart-bar",
       route: "#",
       styleClass: "p-button-outlined action-reports",
+      cardClass: "reports-card",
       description: "View detailed system reports",
     },
   ];
