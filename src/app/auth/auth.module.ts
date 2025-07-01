@@ -41,6 +41,6 @@ const routes = [
     MessageModule,
     MessagesModule,
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthGuard],
 })
 export class AuthModule {}
