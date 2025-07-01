@@ -40,6 +40,19 @@ export class SideNavComponent implements OnInit, OnDestroy {
     private authService: AuthService,
   ) {}
 
+  ngOnInit() {
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => {
+        this.currentUser = user;
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   menuSections: MenuSection[] = [
     {
       label: "Faculty Portal",
