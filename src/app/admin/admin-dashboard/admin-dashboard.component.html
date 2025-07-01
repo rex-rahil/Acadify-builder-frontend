@@ -1,64 +1,78 @@
 <div class="admin-dashboard">
+  <!-- Header Section -->
   <div class="dashboard-header">
-    <h1>Admin Dashboard</h1>
-    <p>System overview and management center</p>
+    <div class="header-content">
+      <div class="welcome-section">
+        <h1>
+          <i class="pi pi-shield gradient-icon"></i>
+          Admin Dashboard
+        </h1>
+        <p>Welcome back! Here's what's happening at Oriental College today.</p>
+      </div>
+      <div class="header-actions">
+        <div class="date-info">
+          <i class="pi pi-calendar"></i>
+          <span>{{ getCurrentDate() }}</span>
+        </div>
+        <p-button
+          label="Generate Report"
+          icon="pi pi-download"
+          styleClass="p-button-outlined header-btn"
+        ></p-button>
+      </div>
+    </div>
   </div>
 
   <!-- Stats Cards -->
-  <div class="stats-grid" *ngIf="!loading">
-    <div class="stat-card">
-      <div class="stat-icon users">
-        <i class="pi pi-users"></i>
-      </div>
-      <div class="stat-content">
-        <h3>{{ stats.totalUsers }}</h3>
-        <p>Total Users</p>
-        <span class="stat-detail">{{ stats.activeUsers }} active</span>
+  <div class="stats-section">
+    <div class="stats-grid" *ngIf="!loading">
+      <div
+        class="stat-card"
+        *ngFor="let stat of getStatCards(); trackBy: trackByStatId"
+      >
+        <div class="stat-header">
+          <div class="stat-icon" [ngClass]="stat.iconClass">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="stat-trend" [ngClass]="stat.trendClass">
+            <i [class]="stat.trendIcon"></i>
+            <span>{{ stat.trend }}</span>
+          </div>
+        </div>
+        <div class="stat-content">
+          <h3>{{ stat.value }}</h3>
+          <p>{{ stat.label }}</p>
+          <div class="stat-detail">
+            <span>{{ stat.detail }}</span>
+          </div>
+        </div>
+        <div class="stat-footer">
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="stat.progress"
+              [ngClass]="stat.progressClass"
+            ></div>
+          </div>
+          <span class="progress-text">{{ stat.progressText }}</span>
+        </div>
       </div>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-icon courses">
-        <i class="pi pi-book"></i>
-      </div>
-      <div class="stat-content">
-        <h3>{{ stats.totalCourses }}</h3>
-        <p>Total Courses</p>
-        <span class="stat-detail">{{ stats.totalSubjects }} subjects</span>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon admissions">
-        <i class="pi pi-file-edit"></i>
-      </div>
-      <div class="stat-content">
-        <h3>{{ stats.pendingAdmissions }}</h3>
-        <p>Pending Admissions</p>
-        <span class="stat-detail">{{ stats.enrolledStudents }} enrolled</span>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon faculty">
-        <i class="pi pi-user-edit"></i>
-      </div>
-      <div class="stat-content">
-        <h3>{{ stats.facultyMembers }}</h3>
-        <p>Faculty Members</p>
-        <span class="stat-detail">{{ stats.admissionOfficers }} officers</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Loading State -->
-  <div class="stats-grid loading-grid" *ngIf="loading">
-    <div class="stat-card loading" *ngFor="let item of [1, 2, 3, 4]">
-      <div class="loading-content">
-        <div class="loading-circle"></div>
-        <div class="loading-lines">
-          <div class="loading-line"></div>
-          <div class="loading-line"></div>
+    <!-- Enhanced Loading State -->
+    <div class="stats-grid loading-grid" *ngIf="loading">
+      <div class="stat-card loading" *ngFor="let item of [1, 2, 3, 4]">
+        <div class="loading-content">
+          <div class="loading-header">
+            <div class="loading-circle shimmer"></div>
+            <div class="loading-trend shimmer"></div>
+          </div>
+          <div class="loading-body">
+            <div class="loading-number shimmer"></div>
+            <div class="loading-text shimmer"></div>
+            <div class="loading-detail shimmer"></div>
+          </div>
+          <div class="loading-footer shimmer"></div>
         </div>
       </div>
     </div>
@@ -67,97 +81,171 @@
   <!-- Content Grid -->
   <div class="content-grid">
     <!-- Recent Activities -->
-    <p-card header="Recent Activities" styleClass="activities-card">
-      <div class="activities-list">
-        <div
-          class="activity-item"
-          *ngFor="let activity of recentActivities; trackBy: trackByActivityId"
-        >
-          <div class="activity-icon">
-            <i [class]="getActivityIcon(activity.type)"></i>
+    <div class="activity-section">
+      <p-card styleClass="activity-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <div class="header-title">
+              <i class="pi pi-clock"></i>
+              <h3>Recent Activities</h3>
+            </div>
+            <p-button
+              icon="pi pi-refresh"
+              styleClass="p-button-text p-button-sm"
+              (onClick)="loadDashboardData()"
+              [loading]="loading"
+              pTooltip="Refresh"
+            ></p-button>
           </div>
-          <div class="activity-content">
-            <p>{{ activity.message }}</p>
-            <span class="activity-time">{{
-              formatTimeAgo(activity.timestamp)
-            }}</span>
-          </div>
-          <p-tag
-            [value]="activity.type.replace('_', ' ') | titlecase"
-            [severity]="activity.severity"
-          ></p-tag>
-        </div>
+        </ng-template>
 
-        <div class="no-activities" *ngIf="recentActivities.length === 0">
-          <i class="pi pi-info-circle"></i>
-          <p>No recent activities</p>
-        </div>
-      </div>
-    </p-card>
-
-    <!-- System Health -->
-    <p-card header="System Health" styleClass="health-card">
-      <div class="health-grid">
-        <div class="health-item" *ngFor="let item of systemHealth | keyvalue">
-          <div class="health-header">
-            <i [class]="getHealthIcon(item.value.status)"></i>
-            <h4>{{ item.key | titlecase }}</h4>
+        <div class="activities-container">
+          <div class="activity-timeline">
+            <div
+              class="activity-item"
+              *ngFor="
+                let activity of recentActivities;
+                trackBy: trackByActivityId;
+                let first = first
+              "
+              [class.first]="first"
+            >
+              <div class="activity-indicator">
+                <div class="activity-dot" [ngClass]="activity.severity"></div>
+                <div class="activity-line" *ngIf="!last"></div>
+              </div>
+              <div class="activity-card-inner">
+                <div class="activity-header">
+                  <div class="activity-icon" [ngClass]="activity.severity">
+                    <i [class]="getActivityIcon(activity.type)"></i>
+                  </div>
+                  <div class="activity-meta">
+                    <span class="activity-time">{{
+                      formatTimeAgo(activity.timestamp)
+                    }}</span>
+                    <p-tag
+                      [value]="formatActivityType(activity.type)"
+                      [severity]="activity.severity"
+                      styleClass="activity-tag"
+                    ></p-tag>
+                  </div>
+                </div>
+                <div class="activity-content">
+                  <p>{{ activity.message }}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <p-tag
-            [value]="item.value.status | titlecase"
-            [severity]="getHealthSeverity(item.value.status)"
-          ></p-tag>
-          <div class="health-details">
-            <span *ngIf="item.value.responseTime"
-              >Response: {{ item.value.responseTime }}</span
-            >
-            <span *ngIf="item.value.uptime"
-              >Uptime: {{ item.value.uptime }}</span
-            >
-            <span *ngIf="item.value.usage">Usage: {{ item.value.usage }}</span>
-            <span *ngIf="item.value.lastBackup"
-              >Last backup: {{ item.value.lastBackup }}</span
-            >
+
+          <div
+            class="no-activities"
+            *ngIf="recentActivities.length === 0 && !loading"
+          >
+            <div class="empty-state">
+              <i class="pi pi-info-circle"></i>
+              <h4>No Recent Activities</h4>
+              <p>System activities will appear here</p>
+            </div>
           </div>
         </div>
-      </div>
-    </p-card>
+      </p-card>
+    </div>
 
-    <!-- Quick Actions -->
-    <p-card header="Quick Actions" styleClass="actions-card">
-      <div class="quick-actions">
-        <button
-          pButton
-          type="button"
-          label="Manage Users"
-          icon="pi pi-users"
-          class="p-button-outlined"
-          routerLink="/admin/users"
-        ></button>
-        <button
-          pButton
-          type="button"
-          label="Manage Courses"
-          icon="pi pi-book"
-          class="p-button-outlined"
-          routerLink="/admin/courses"
-        ></button>
-        <button
-          pButton
-          type="button"
-          label="Subject Allocation"
-          icon="pi pi-sitemap"
-          class="p-button-outlined"
-          routerLink="/admin/subjects"
-        ></button>
-        <button
-          pButton
-          type="button"
-          label="View Reports"
-          icon="pi pi-chart-bar"
-          class="p-button-outlined"
-        ></button>
-      </div>
-    </p-card>
+    <!-- System Overview -->
+    <div class="overview-section">
+      <!-- System Health -->
+      <p-card header="System Health" styleClass="health-card">
+        <div class="health-grid">
+          <div class="health-item" *ngFor="let item of systemHealth | keyvalue">
+            <div class="health-card-inner">
+              <div class="health-header">
+                <div
+                  class="health-icon"
+                  [ngClass]="getHealthSeverity(item.value.status)"
+                >
+                  <i [class]="getHealthIcon(item.value.status)"></i>
+                </div>
+                <div class="health-info">
+                  <h4>{{ item.key | titlecase }}</h4>
+                  <p-tag
+                    [value]="item.value.status | titlecase"
+                    [severity]="getHealthSeverity(item.value.status)"
+                    styleClass="health-tag"
+                  ></p-tag>
+                </div>
+              </div>
+              <div class="health-details">
+                <div class="health-metrics">
+                  <span *ngIf="item.value.responseTime" class="metric">
+                    <i class="pi pi-clock"></i>
+                    {{ item.value.responseTime }}
+                  </span>
+                  <span *ngIf="item.value.uptime" class="metric">
+                    <i class="pi pi-chart-line"></i>
+                    {{ item.value.uptime }}
+                  </span>
+                  <span *ngIf="item.value.usage" class="metric">
+                    <i class="pi pi-server"></i>
+                    {{ item.value.usage }}
+                  </span>
+                  <span *ngIf="item.value.lastBackup" class="metric">
+                    <i class="pi pi-save"></i>
+                    {{ item.value.lastBackup }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Quick Actions -->
+      <p-card styleClass="actions-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <div class="header-title">
+              <i class="pi pi-bolt"></i>
+              <h3>Quick Actions</h3>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="quick-actions-grid">
+          <button
+            pButton
+            *ngFor="let action of quickActions"
+            [label]="action.label"
+            [icon]="action.icon"
+            [styleClass]="action.styleClass"
+            [routerLink]="action.route"
+            class="action-button"
+          >
+            <span class="action-description">{{ action.description }}</span>
+          </button>
+        </div>
+      </p-card>
+
+      <!-- Performance Metrics -->
+      <p-card header="Performance Overview" styleClass="metrics-card">
+        <div class="metrics-grid">
+          <div class="metric-item" *ngFor="let metric of performanceMetrics">
+            <div class="metric-header">
+              <span class="metric-label">{{ metric.label }}</span>
+              <span class="metric-value" [ngClass]="metric.status">{{
+                metric.value
+              }}</span>
+            </div>
+            <div class="metric-bar">
+              <div
+                class="metric-fill"
+                [style.width.%]="metric.percentage"
+                [ngClass]="metric.status"
+              ></div>
+            </div>
+            <div class="metric-description">{{ metric.description }}</div>
+          </div>
+        </div>
+      </p-card>
+    </div>
   </div>
 </div>
