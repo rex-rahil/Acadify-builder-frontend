@@ -175,7 +175,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
         {
           label: "Logout",
           icon: "pi pi-sign-out",
-          command: () => this.logout(),
+          command: () => this.onLogout(),
         },
       ],
     },
