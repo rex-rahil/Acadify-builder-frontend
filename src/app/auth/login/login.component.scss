@@ -1,0 +1,478 @@
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+
+  .login-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .background-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 6s ease-in-out infinite;
+
+      &.circle-1 {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      &.circle-2 {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+      }
+
+      &.circle-3 {
+        width: 80px;
+        height: 80px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 4s;
+      }
+    }
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    .login-header {
+      text-align: center;
+      padding: 2.5rem 2rem 1.5rem;
+      background: linear-gradient(135deg, #f8f9ff 0%, #e8f0fe 100%);
+      border-bottom: 1px solid var(--surface-border);
+
+      .college-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+
+        i {
+          font-size: 2rem;
+          color: white;
+        }
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.025em;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--primary-color);
+        margin: 0 0 0.75rem 0;
+      }
+
+      p {
+        color: var(--text-color-secondary);
+        margin: 0;
+        font-size: 0.95rem;
+      }
+    }
+
+    .login-form,
+    .forgot-password-form {
+      padding: 2rem;
+
+      .form-field {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+          color: var(--text-color);
+          font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+          position: relative;
+
+          .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color-secondary);
+            z-index: 2;
+          }
+
+          input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: 2px solid var(--surface-border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: var(--surface-ground);
+
+            &:focus {
+              border-color: var(--primary-color);
+              box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+              outline: none;
+            }
+
+            &.ng-invalid {
+              border-color: var(--red-500);
+
+              &:focus {
+                border-color: var(--red-500);
+                box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+              }
+            }
+
+            &::placeholder {
+              color: var(--text-color-secondary);
+            }
+          }
+
+          .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-color-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+
+            &:hover {
+              color: var(--primary-color);
+              background: rgba(102, 126, 234, 0.1);
+            }
+
+            i {
+              font-size: 0.9rem;
+            }
+          }
+        }
+
+        .field-error {
+          color: var(--red-500);
+          font-size: 0.8rem;
+          margin-top: 0.5rem;
+          display: block;
+        }
+      }
+
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+
+        .remember-me {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            cursor: pointer;
+            margin: 0;
+            font-weight: 400;
+          }
+        }
+
+        .forgot-password-link {
+          background: none;
+          border: none;
+          color: var(--primary-color);
+          font-size: 0.9rem;
+          cursor: pointer;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: var(--primary-600);
+            text-decoration: underline;
+          }
+        }
+      }
+
+      :host ::ng-deep .login-button.p-button {
+        width: 100%;
+        padding: 0.875rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+
+        &:enabled:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          transform: none;
+        }
+      }
+    }
+
+    .forgot-password-form {
+      .forgot-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+
+        h3 {
+          color: var(--text-color);
+          margin: 0 0 0.5rem 0;
+          font-weight: 600;
+        }
+
+        p {
+          color: var(--text-color-secondary);
+          margin: 0;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+      }
+
+      .forgot-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+
+        :host ::ng-deep .p-button {
+          flex: 1;
+          padding: 0.875rem;
+          font-weight: 600;
+          border-radius: 12px;
+
+          &.cancel-button {
+            color: var(--text-color-secondary);
+            border-color: var(--surface-border);
+          }
+
+          &.reset-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+          }
+        }
+      }
+    }
+
+    .demo-section {
+      padding: 1.5rem 2rem 2rem;
+      background: var(--surface-50);
+      border-top: 1px solid var(--surface-border);
+
+      .demo-header {
+        text-align: center;
+        margin-bottom: 1rem;
+
+        h4 {
+          color: var(--text-color);
+          margin: 0 0 0.5rem 0;
+          font-size: 1rem;
+          font-weight: 600;
+        }
+
+        p {
+          color: var(--text-color-secondary);
+          margin: 0;
+          font-size: 0.8rem;
+        }
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+
+        .demo-card {
+          background: white;
+          border: 1px solid var(--surface-border);
+          border-radius: 8px;
+          padding: 0.75rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          text-align: left;
+
+          &:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+
+          .demo-role {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+          }
+
+          .demo-email {
+            color: var(--text-color-secondary);
+            font-size: 0.75rem;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+
+  .login-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+
+    p {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+
+      .footer-link {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: white;
+          text-decoration: underline;
+        }
+      }
+
+      .separator {
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// Responsive design
+@media screen and (max-width: 480px) {
+  .login-container {
+    padding: 1rem;
+
+    .login-card {
+      border-radius: 16px;
+
+      .login-header {
+        padding: 2rem 1.5rem 1rem;
+
+        .college-logo {
+          width: 60px;
+          height: 60px;
+          margin-bottom: 1rem;
+
+          i {
+            font-size: 1.5rem;
+          }
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        h2 {
+          font-size: 1rem;
+        }
+      }
+
+      .login-form,
+      .forgot-password-form {
+        padding: 1.5rem;
+
+        .form-options {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+      }
+
+      .demo-section {
+        padding: 1rem 1.5rem 1.5rem;
+
+        .demo-grid {
+          grid-template-columns: 1fr;
+          gap: 0.5rem;
+        }
+      }
+    }
+
+    .login-footer {
+      margin-top: 1.5rem;
+
+      .footer-links {
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .separator {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// Toast message styling
+:host ::ng-deep .p-toast {
+  .p-toast-message {
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+}
