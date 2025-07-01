@@ -1,5 +1,15 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  OnDestroy,
+} from "@angular/core";
 import { Router } from "@angular/router";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { AuthService, User } from "../../auth/services/auth.service";
 
 interface MenuItem {
   label: string;
@@ -18,12 +28,17 @@ interface MenuSection {
   templateUrl: "./side-nav.component.html",
   styleUrls: ["./side-nav.component.scss"],
 })
-export class SideNavComponent {
+export class SideNavComponent implements OnInit, OnDestroy {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
 
-  studentName = "Alex Johnson"; // This would come from auth service
-  studentId = "STU006"; // This would come from auth service
+  currentUser: User | null = null;
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) {}
 
   menuSections: MenuSection[] = [
     {
