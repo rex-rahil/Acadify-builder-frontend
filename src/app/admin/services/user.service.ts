@@ -84,6 +84,19 @@ export class UserService {
       department: "Business",
       studentId: "STU007",
     },
+    {
+      id: "6",
+      firstName: "Dr. Patricia",
+      lastName: "Kumar",
+      email: "patricia.kumar@college.edu",
+      phone: "+1-555-0106",
+      role: "hod",
+      status: "active",
+      createdDate: new Date("2023-01-10"),
+      lastLogin: new Date("2024-01-09T08:15:00"),
+      department: "Computer Science",
+      employeeId: "EMP005",
+    },
   ]);
 
   constructor() {}
