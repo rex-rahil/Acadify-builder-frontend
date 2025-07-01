@@ -149,7 +149,7 @@ export class UserService {
   }
 
   getRoles(): Observable<string[]> {
-    return of(["student", "faculty", "admin", "admission_officer"]).pipe(
+    return of(["student", "faculty", "admin", "admission_officer", "hod"]).pipe(
       delay(200),
     );
   }
