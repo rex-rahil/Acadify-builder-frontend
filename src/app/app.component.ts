@@ -13,6 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = "Oriental College of Pharmacy";
   private destroy$ = new Subject<void>();
   sidebarVisible = false;
+  showHeaderAndSidebar = true;
 
   constructor(
     private router: Router,
@@ -26,6 +27,21 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((visible) => {
         this.sidebarVisible = visible;
       });
+
+    // Monitor route changes to hide header/sidebar on login page
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.showHeaderAndSidebar = !event.url.startsWith("/login");
+        }
+      });
+
+    // Set initial state
+    this.showHeaderAndSidebar = !this.router.url.startsWith("/login");
   }
 
   ngOnDestroy() {

@@ -1,14 +1,17 @@
 <div class="app-container">
   <!-- Header with menu button and page title -->
-  <app-header></app-header>
+  <app-header *ngIf="showHeaderAndSidebar"></app-header>
 
   <!-- Main Content -->
-  <div class="main-content">
+  <div class="main-content" [class.login-mode]="!showHeaderAndSidebar">
     <router-outlet></router-outlet>
   </div>
 
   <!-- Side Navigation -->
-  <app-side-nav [(visible)]="sidebarVisible"></app-side-nav>
+  <app-side-nav
+    [(visible)]="sidebarVisible"
+    *ngIf="showHeaderAndSidebar"
+  ></app-side-nav>
 
   <p-toast position="top-right"></p-toast>
 </div>
