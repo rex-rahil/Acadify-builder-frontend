@@ -199,31 +199,32 @@
         </div>
       </p-card>
 
-      <!-- Quick Actions -->
-      <p-card styleClass="actions-card">
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <div class="header-title">
-              <i class="pi pi-bolt"></i>
-              <h3>Quick Actions</h3>
+      <!-- Quick Actions Grid -->
+      <div class="quick-actions-section">
+        <h3 class="section-title">
+          <i class="pi pi-bolt"></i>
+          Quick Actions
+        </h3>
+        <div class="actions-grid">
+          <div
+            class="action-card"
+            *ngFor="let action of quickActions; trackBy: trackByActionId"
+            [routerLink]="action.route"
+            [ngClass]="action.cardClass"
+          >
+            <div class="action-icon">
+              <i [class]="action.icon"></i>
+            </div>
+            <div class="action-content">
+              <h4>{{ action.label }}</h4>
+              <p>{{ action.description }}</p>
+            </div>
+            <div class="action-arrow">
+              <i class="pi pi-arrow-right"></i>
             </div>
           </div>
-        </ng-template>
-
-        <div class="quick-actions-grid">
-          <button
-            pButton
-            *ngFor="let action of quickActions"
-            [label]="action.label"
-            [icon]="action.icon"
-            [styleClass]="action.styleClass"
-            [routerLink]="action.route"
-            class="action-button"
-          >
-            <span class="action-description">{{ action.description }}</span>
-          </button>
         </div>
-      </p-card>
+      </div>
 
       <!-- Performance Metrics -->
       <p-card header="Performance Overview" styleClass="metrics-card">
