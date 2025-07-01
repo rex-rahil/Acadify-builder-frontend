@@ -111,9 +111,7 @@ export class UserFormComponent implements OnInit {
 
       // Clean up unused fields based on role
       const userData = { ...formValue };
-      if (userData.role === "student") {
-        delete userData.employeeId;
-      } else {
+      if (userData.role !== "student") {
         delete userData.studentId;
       }
 
