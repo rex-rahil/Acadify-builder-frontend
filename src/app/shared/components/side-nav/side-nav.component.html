@@ -30,18 +30,20 @@
     <div class="profile-card">
       <div class="avatar-container">
         <p-avatar
-          [label]="getInitials(studentName)"
+          [label]="getInitials(getUserDisplayName())"
           styleClass="user-avatar"
           size="large"
         ></p-avatar>
         <div class="status-indicator"></div>
       </div>
       <div class="user-details">
-        <h4>{{ studentName }}</h4>
-        <span class="user-id">ID: {{ studentId }}</span>
+        <h4>{{ getUserDisplayName() }}</h4>
+        <span class="user-id" *ngIf="currentUser?.employeeId"
+          >ID: {{ currentUser.employeeId }}</span
+        >
         <div class="user-badge">
-          <i class="pi pi-graduation-cap"></i>
-          <span>Prospective Student</span>
+          <i class="pi pi-user"></i>
+          <span>{{ getUserRole() }}</span>
         </div>
       </div>
     </div>
