@@ -9,7 +9,7 @@ import {
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { AuthService, User } from "../../auth/services/auth.service";
+import { AuthService, User } from "../../../auth/services/auth.service";
 
 interface MenuItem {
   label: string;
@@ -43,7 +43,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authService.currentUser$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((user) => {
+      .subscribe((user: User | null) => {
         this.currentUser = user;
       });
   }
