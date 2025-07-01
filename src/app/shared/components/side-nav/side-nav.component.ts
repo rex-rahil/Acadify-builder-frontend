@@ -181,13 +181,33 @@ export class SideNavComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(public router: Router) {}
+  onLogout() {
+    this.authService.logout();
+    this.onHide();
+  }
 
   getInitials(name: string): string {
+    if (this.currentUser) {
+      return `${this.currentUser.firstName[0]}${this.currentUser.lastName[0]}`;
+    }
     return name
       .split(" ")
       .map((n) => n[0])
       .join("");
+  }
+
+  getUserDisplayName(): string {
+    if (this.currentUser) {
+      return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    }
+    return "User";
+  }
+
+  getUserRole(): string {
+    if (this.currentUser) {
+      return this.currentUser.role.toUpperCase();
+    }
+    return "EMPLOYEE";
   }
 
   onHide() {
