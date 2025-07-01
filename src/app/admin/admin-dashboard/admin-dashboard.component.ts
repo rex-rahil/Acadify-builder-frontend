@@ -1,6 +1,37 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService, DashboardStats } from "../services/admin.service";
 
+interface StatCard {
+  id: string;
+  label: string;
+  value: number;
+  detail: string;
+  icon: string;
+  iconClass: string;
+  trend: string;
+  trendIcon: string;
+  trendClass: string;
+  progress: number;
+  progressText: string;
+  progressClass: string;
+}
+
+interface QuickAction {
+  label: string;
+  icon: string;
+  route: string;
+  styleClass: string;
+  description: string;
+}
+
+interface PerformanceMetric {
+  label: string;
+  value: string;
+  percentage: number;
+  status: string;
+  description: string;
+}
+
 @Component({
   selector: "app-admin-dashboard",
   templateUrl: "./admin-dashboard.component.html",
@@ -21,6 +52,68 @@ export class AdminDashboardComponent implements OnInit {
   recentActivities: any[] = [];
   systemHealth: any = {};
   loading = true;
+
+  quickActions: QuickAction[] = [
+    {
+      label: "User Management",
+      icon: "pi pi-users",
+      route: "/admin/users",
+      styleClass: "p-button-outlined action-users",
+      description: "Manage system users and permissions",
+    },
+    {
+      label: "Course Management",
+      icon: "pi pi-book",
+      route: "/admin/courses",
+      styleClass: "p-button-outlined action-courses",
+      description: "Manage academic courses and programs",
+    },
+    {
+      label: "Subject Allocation",
+      icon: "pi pi-sitemap",
+      route: "/admin/subjects",
+      styleClass: "p-button-outlined action-subjects",
+      description: "Allocate subjects to courses",
+    },
+    {
+      label: "System Reports",
+      icon: "pi pi-chart-bar",
+      route: "#",
+      styleClass: "p-button-outlined action-reports",
+      description: "View detailed system reports",
+    },
+  ];
+
+  performanceMetrics: PerformanceMetric[] = [
+    {
+      label: "System Performance",
+      value: "95%",
+      percentage: 95,
+      status: "excellent",
+      description: "Overall system performance",
+    },
+    {
+      label: "User Satisfaction",
+      value: "87%",
+      percentage: 87,
+      status: "good",
+      description: "Based on user feedback",
+    },
+    {
+      label: "Data Integrity",
+      value: "100%",
+      percentage: 100,
+      status: "excellent",
+      description: "Database consistency check",
+    },
+    {
+      label: "Security Score",
+      value: "92%",
+      percentage: 92,
+      status: "excellent",
+      description: "Security compliance rating",
+    },
+  ];
 
   constructor(private adminService: AdminService) {}
 
