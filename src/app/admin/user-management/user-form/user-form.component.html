@@ -152,23 +152,6 @@
             </small>
           </div>
 
-          <div class="form-field" *ngIf="shouldShowField('employeeId')">
-            <label for="employeeId">Employee ID *</label>
-            <input
-              pInputText
-              id="employeeId"
-              formControlName="employeeId"
-              placeholder="Enter employee ID"
-              [class.ng-invalid]="
-                userForm.get('employeeId')?.invalid &&
-                userForm.get('employeeId')?.touched
-              "
-            />
-            <small class="field-error" *ngIf="getFieldError('employeeId')">
-              {{ getFieldError("employeeId") }}
-            </small>
-          </div>
-
           <div class="form-field" *ngIf="shouldShowField('studentId')">
             <label for="studentId">Student ID *</label>
             <input
