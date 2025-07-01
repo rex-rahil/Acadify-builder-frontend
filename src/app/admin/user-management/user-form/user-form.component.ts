@@ -42,7 +42,6 @@ export class UserFormComponent implements OnInit {
       role: ["", Validators.required],
       status: ["active", Validators.required],
       department: [""],
-      employeeId: [""],
       studentId: [""],
     });
 
