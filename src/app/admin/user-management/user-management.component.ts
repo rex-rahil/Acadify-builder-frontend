@@ -130,6 +130,8 @@ export class UserManagementComponent implements OnInit {
     switch (role) {
       case "admin":
         return "danger";
+      case "hod":
+        return "contrast";
       case "faculty":
         return "info";
       case "admission_officer":
