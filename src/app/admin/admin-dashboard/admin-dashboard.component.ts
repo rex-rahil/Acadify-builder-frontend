@@ -298,4 +298,8 @@ export class AdminDashboardComponent implements OnInit {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
+
+  trackByActionId(index: number, action: QuickAction): string {
+    return action.id;
+  }
 }
