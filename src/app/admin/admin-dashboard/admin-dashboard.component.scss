@@ -957,6 +957,10 @@
 
       .overview-section {
         grid-row: 1;
+
+        .quick-actions-section .actions-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       .activity-section {
