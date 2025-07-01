@@ -200,4 +200,92 @@ export class AdminDashboardComponent implements OnInit {
   trackByActivityId(index: number, activity: any): number {
     return activity.id;
   }
+
+  trackByStatId(index: number, stat: StatCard): string {
+    return stat.id;
+  }
+
+  getCurrentDate(): string {
+    return new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+
+  getStatCards(): StatCard[] {
+    return [
+      {
+        id: "users",
+        label: "Total Users",
+        value: this.stats.totalUsers,
+        detail: `${this.stats.activeUsers} active users`,
+        icon: "pi pi-users",
+        iconClass: "users",
+        trend: "+12%",
+        trendIcon: "pi pi-arrow-up",
+        trendClass: "positive",
+        progress:
+          Math.round((this.stats.activeUsers / this.stats.totalUsers) * 100) ||
+          0,
+        progressText: "Active Rate",
+        progressClass: "success",
+      },
+      {
+        id: "courses",
+        label: "Academic Programs",
+        value: this.stats.totalCourses,
+        detail: `${this.stats.totalSubjects} total subjects`,
+        icon: "pi pi-book",
+        iconClass: "courses",
+        trend: "+8%",
+        trendIcon: "pi pi-arrow-up",
+        trendClass: "positive",
+        progress: 78,
+        progressText: "Completion Rate",
+        progressClass: "info",
+      },
+      {
+        id: "admissions",
+        label: "Pending Admissions",
+        value: this.stats.pendingAdmissions,
+        detail: `${this.stats.enrolledStudents} enrolled`,
+        icon: "pi pi-file-edit",
+        iconClass: "admissions",
+        trend: "-5%",
+        trendIcon: "pi pi-arrow-down",
+        trendClass: "negative",
+        progress:
+          Math.round(
+            (this.stats.pendingAdmissions /
+              (this.stats.pendingAdmissions + this.stats.enrolledStudents)) *
+              100,
+          ) || 0,
+        progressText: "Pending Rate",
+        progressClass: "warning",
+      },
+      {
+        id: "faculty",
+        label: "Faculty & Staff",
+        value: this.stats.facultyMembers + this.stats.admissionOfficers,
+        detail: `${this.stats.facultyMembers} faculty, ${this.stats.admissionOfficers} officers`,
+        icon: "pi pi-user-edit",
+        iconClass: "faculty",
+        trend: "+3%",
+        trendIcon: "pi pi-arrow-up",
+        trendClass: "positive",
+        progress: 85,
+        progressText: "Capacity",
+        progressClass: "success",
+      },
+    ];
+  }
+
+  formatActivityType(type: string): string {
+    return type
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
 }
