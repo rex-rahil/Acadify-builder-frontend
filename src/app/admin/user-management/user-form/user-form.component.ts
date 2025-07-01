@@ -66,31 +66,29 @@ export class UserFormComponent implements OnInit {
 
   updateFormValidation(role: string) {
     const departmentControl = this.userForm.get("department");
-    const employeeIdControl = this.userForm.get("employeeId");
     const studentIdControl = this.userForm.get("studentId");
 
     // Reset validators
     departmentControl?.clearValidators();
-    employeeIdControl?.clearValidators();
     studentIdControl?.clearValidators();
 
     if (role === "student") {
       departmentControl?.setValidators([Validators.required]);
       studentIdControl?.setValidators([Validators.required]);
-      employeeIdControl?.setValue("");
-    } else if (role === "faculty" || role === "admission_officer") {
+    } else if (
+      role === "faculty" ||
+      role === "admission_officer" ||
+      role === "hod"
+    ) {
       departmentControl?.setValidators([Validators.required]);
-      employeeIdControl?.setValidators([Validators.required]);
       studentIdControl?.setValue("");
     } else if (role === "admin") {
-      employeeIdControl?.setValidators([Validators.required]);
       departmentControl?.setValue("");
       studentIdControl?.setValue("");
     }
 
     // Update validity
     departmentControl?.updateValueAndValidity();
-    employeeIdControl?.updateValueAndValidity();
     studentIdControl?.updateValueAndValidity();
   }
 
