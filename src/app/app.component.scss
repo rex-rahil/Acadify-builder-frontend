@@ -9,4 +9,9 @@
   flex: 1;
   overflow-x: hidden;
   background: #f8f9fa;
+
+  &.login-mode {
+    min-height: 100vh;
+    background: none;
+  }
 }
