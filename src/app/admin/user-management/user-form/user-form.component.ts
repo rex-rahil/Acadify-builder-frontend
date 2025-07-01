@@ -192,7 +192,6 @@ export class UserFormComponent implements OnInit {
       role: "Role",
       status: "Status",
       department: "Department",
-      employeeId: "Employee ID",
       studentId: "Student ID",
     };
     return labels[fieldName] || fieldName;
