@@ -96,7 +96,6 @@
             icon="pi pi-sign-in"
             styleClass="login-button"
             [loading]="loading"
-            [disabled]="!loginForm.valid"
           ></p-button>
         </form>
       </div>
@@ -160,6 +159,23 @@
             <div class="demo-email">{{ demo.email }}</div>
           </button>
         </div>
+
+        <!-- Test button -->
+        <button
+          type="button"
+          (click)="testFunction()"
+          style="
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+          "
+        >
+          TEST CLICK (if this works, click events work)
+        </button>
       </div>
     </div>
 
