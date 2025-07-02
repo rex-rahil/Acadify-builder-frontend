@@ -208,9 +208,24 @@ export class FacultyAttendanceComponent implements OnInit {
     const now = new Date();
     this.checkInTime = now;
     this.checkOutTime = new Date(now.getTime() + 8 * 60 * 60 * 1000); // 8 hours later
+    this.checkInTimeString = this.formatTimeForInput(this.checkInTime);
+    this.checkOutTimeString = this.formatTimeForInput(this.checkOutTime);
     this.attendanceStatus = "present";
     this.remarks = "";
     this.showQuickMarkDialog = true;
+  }
+
+  private formatTimeForInput(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  private parseTimeString(timeString: string): Date {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    return date;
   }
 
   closeQuickMarkDialog(): void {
