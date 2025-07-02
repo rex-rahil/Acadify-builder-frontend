@@ -46,13 +46,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateHeaderVisibility(url: string) {
-    this.showHeaderAndSidebar = !url.includes("/login");
+    const isLoginPage =
+      url === "/login" || url.startsWith("/login/") || url.includes("/login");
+    this.showHeaderAndSidebar = !isLoginPage;
     console.log(
       "Route changed to:",
       url,
+      "Is login page:",
+      isLoginPage,
       "Show header:",
       this.showHeaderAndSidebar,
     );
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
