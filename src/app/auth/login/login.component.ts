@@ -191,26 +191,32 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private redirectBasedOnRole(user: any) {
-    if (this.returnUrl && this.returnUrl !== "/dashboard") {
-      // If there's a specific return URL, use it
-      this.router.navigate([this.returnUrl]);
-      return;
-    }
+    try {
+      if (this.returnUrl && this.returnUrl !== "/dashboard") {
+        // If there's a specific return URL, use it
+        this.router.navigate([this.returnUrl]);
+        return;
+      }
 
-    // Default role-based routing
-    switch (user?.role) {
-      case "admin":
-        this.router.navigate(["/admin"]);
-        break;
-      case "faculty":
-      case "hod":
-        this.router.navigate(["/faculty"]);
-        break;
-      case "admission_officer":
-        this.router.navigate(["/admission-officer"]);
-        break;
-      default:
-        this.router.navigate(["/dashboard"]);
+      // Default role-based routing
+      switch (user?.role) {
+        case "admin":
+          this.router.navigate(["/admin"]);
+          break;
+        case "faculty":
+        case "hod":
+          this.router.navigate(["/faculty"]);
+          break;
+        case "admission_officer":
+          this.router.navigate(["/admission-officer"]);
+          break;
+        default:
+          this.router.navigate(["/dashboard"]);
+      }
+    } catch (error) {
+      console.error("Navigation error:", error);
+      // Fallback navigation
+      this.router.navigate(["/dashboard"]);
     }
   }
 
