@@ -31,6 +31,8 @@ export class FacultyAttendanceComponent implements OnInit {
   quickMarkLoading = false;
   checkInTime = new Date();
   checkOutTime = new Date();
+  checkInTimeString = "";
+  checkOutTimeString = "";
   attendanceStatus: "present" | "half-day" | "late" = "present";
   remarks = "";
 

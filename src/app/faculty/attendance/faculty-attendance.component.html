@@ -1,422 +1,586 @@
-<div class="faculty-attendance">
-  <div class="page-header">
-    <div class="header-info">
-      <h1><i class="pi pi-clock"></i> Faculty Attendance</h1>
-      <p *ngIf="facultyProfile">
-        {{ facultyProfile.name }} - {{ facultyProfile.employeeId }}
-      </p>
-    </div>
-    <div class="header-actions">
-      <p-button
-        label="Mark Attendance"
-        icon="pi pi-check"
-        styleClass="p-button-success"
-        (onClick)="openQuickMarkDialog()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Export"
-        icon="pi pi-download"
-        styleClass="p-button-outlined"
-        (onClick)="exportAttendance()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Refresh"
-        icon="pi pi-refresh"
-        styleClass="p-button-outlined"
-        (onClick)="refreshData()"
-        [loading]="loading"
-      >
-      </p-button>
-    </div>
-  </div>
-
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
-    <p>Loading attendance data...</p>
-  </div>
-
-  <div *ngIf="error && !loading" class="error-container">
-    <p-card>
-      <div class="error-content">
-        <i class="pi pi-exclamation-triangle error-icon"></i>
-        <h3>Error Loading Attendance</h3>
-        <p>{{ error }}</p>
-        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
-        </p-button>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Page Header -->
+  <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-4 lg:mb-0">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+          <i class="pi pi-clock text-blue-600 mr-3"></i>
+          Faculty Attendance
+        </h1>
+        <p *ngIf="facultyProfile" class="text-gray-600 mt-1">
+          {{ facultyProfile.name }} - {{ facultyProfile.employeeId }}
+        </p>
       </div>
-    </p-card>
+      <div class="flex flex-wrap gap-3">
+        <button
+          (click)="openQuickMarkDialog()"
+          [disabled]="loading"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <i class="pi pi-check"></i>
+          Mark Attendance
+        </button>
+        <button
+          (click)="exportAttendance()"
+          [disabled]="loading"
+          class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <i class="pi pi-download"></i>
+          Export
+        </button>
+        <button
+          (click)="refreshData()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          [class.animate-spin]="loading"
+        >
+          <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="!loading && !error" class="attendance-content">
-    <!-- Attendance Statistics -->
-    <div class="stats-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-chart-line"></i> Attendance Statistics</h3>
-            <div class="month-selector">
-              <p-dropdown
-                [options]="months"
-                [(ngModel)]="selectedMonth"
-                optionLabel="label"
-                optionValue="value"
-                (onChange)="onMonthYearChange()"
-              >
-              </p-dropdown>
-              <p-dropdown
-                [options]="years"
-                [(ngModel)]="selectedYear"
-                (onChange)="onMonthYearChange()"
-              >
-              </p-dropdown>
-            </div>
-          </div>
-        </ng-template>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+    ></div>
+    <p class="text-gray-600 mt-4">Loading attendance data...</p>
+  </div>
 
-        <div *ngIf="attendanceStats" class="stats-grid">
-          <div class="stat-card total-days">
-            <div class="stat-icon">
-              <i class="pi pi-calendar"></i>
-            </div>
-            <div class="stat-details">
-              <h3>{{ attendanceStats.totalDays }}</h3>
-              <p>Total Days</p>
-            </div>
-          </div>
-
-          <div class="stat-card present-days">
-            <div class="stat-icon">
-              <i class="pi pi-check-circle"></i>
-            </div>
-            <div class="stat-details">
-              <h3>{{ attendanceStats.presentDays }}</h3>
-              <p>Present Days</p>
-            </div>
-          </div>
-
-          <div class="stat-card absent-days">
-            <div class="stat-icon">
-              <i class="pi pi-times-circle"></i>
-            </div>
-            <div class="stat-details">
-              <h3>{{ attendanceStats.absentDays }}</h3>
-              <p>Absent Days</p>
-            </div>
-          </div>
-
-          <div class="stat-card attendance-percentage">
-            <div class="stat-icon">
-              <i class="pi pi-chart-pie"></i>
-            </div>
-            <div class="stat-details">
-              <h3>{{ attendanceStats.attendancePercentage }}%</h3>
-              <p>Attendance Rate</p>
-              <p-progressBar
-                [value]="attendanceStats.attendancePercentage"
-                [style]="{ height: '6px', marginTop: '8px' }"
-                [styleClass]="
-                  getStatsColor(attendanceStats.attendancePercentage)
-                "
-              >
-              </p-progressBar>
-            </div>
-          </div>
-
-          <div class="stat-card avg-hours">
-            <div class="stat-icon">
-              <i class="pi pi-clock"></i>
-            </div>
-            <div class="stat-details">
-              <h3>{{ attendanceStats.averageWorkingHours }}h</h3>
-              <p>Avg Working Hours</p>
-            </div>
-          </div>
-
-          <div class="stat-card leave-days">
-            <div class="stat-icon">
-              <i class="pi pi-calendar-times"></i>
-            </div>
-            <div class="stat-details">
-              <h3>{{ attendanceStats.leaveDays }}</h3>
-              <p>Leave Days</p>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="!attendanceStats" class="no-stats">
-          <p>No attendance statistics available for the selected period</p>
-        </div>
-      </p-card>
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col items-center text-center">
+      <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">
+        Error Loading Attendance
+      </h3>
+      <p class="text-gray-600 mb-4">{{ error }}</p>
+      <button
+        (click)="refreshData()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+      >
+        <i class="pi pi-refresh"></i>
+        Retry
+      </button>
     </div>
+  </div>
 
-    <!-- Calendar View -->
-    <div class="calendar-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-calendar"></i> Attendance Calendar</h3>
-            <div class="calendar-title">
-              {{ monthNames[selectedMonth - 1] }} {{ selectedYear }}
+  <!-- Content -->
+  <div *ngIf="!loading && !error" class="space-y-6">
+    <!-- Attendance Statistics -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6"
+      >
+        <h2
+          class="text-xl font-semibold text-gray-900 flex items-center mb-4 sm:mb-0"
+        >
+          <i class="pi pi-chart-line text-blue-600 mr-2"></i>
+          Attendance Statistics
+        </h2>
+        <div class="flex gap-3">
+          <select
+            [(ngModel)]="selectedMonth"
+            (change)="onMonthYearChange()"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option *ngFor="let month of months" [value]="month.value">
+              {{ month.label }}
+            </option>
+          </select>
+          <select
+            [(ngModel)]="selectedYear"
+            (change)="onMonthYearChange()"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option *ngFor="let year of years" [value]="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        *ngIf="attendanceStats"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4"
+      >
+        <!-- Total Days -->
+        <div
+          class="bg-gradient-to-r from-slate-500 to-slate-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-calendar text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-slate-200 text-sm">Total Days</p>
+              <p class="text-2xl font-semibold">
+                {{ attendanceStats.totalDays }}
+              </p>
             </div>
           </div>
-        </ng-template>
+        </div>
 
-        <div class="calendar-container">
-          <div class="calendar-header">
-            <div
-              *ngFor="
-                let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-              "
-              class="day-header"
-            >
-              {{ day }}
+        <!-- Present Days -->
+        <div
+          class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-check-circle text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-green-200 text-sm">Present Days</p>
+              <p class="text-2xl font-semibold">
+                {{ attendanceStats.presentDays }}
+              </p>
             </div>
           </div>
-          <div class="calendar-grid">
-            <div
-              *ngFor="let dayData of calendarData"
-              class="calendar-day"
-              [class.today]="dayData?.isToday"
-              [class.weekend]="dayData?.isWeekend"
-              [class.empty]="!dayData"
-            >
-              <div *ngIf="dayData" class="day-content">
-                <div class="day-number">{{ dayData.day }}</div>
+        </div>
+
+        <!-- Absent Days -->
+        <div
+          class="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-times-circle text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-red-200 text-sm">Absent Days</p>
+              <p class="text-2xl font-semibold">
+                {{ attendanceStats.absentDays }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance Percentage -->
+        <div
+          class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-chart-pie text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-blue-200 text-sm">Attendance Rate</p>
+              <p class="text-2xl font-semibold">
+                {{ attendanceStats.attendancePercentage }}%
+              </p>
+              <div class="w-full bg-blue-300 rounded-full h-2 mt-2">
                 <div
-                  *ngIf="dayData.attendance"
-                  class="attendance-indicator"
-                  [class]="getAttendanceStatusClass(dayData.attendance.status)"
-                  [pTooltip]="dayData.attendance.status | titlecase"
-                >
-                  <i
-                    [class]="getAttendanceStatusIcon(dayData.attendance.status)"
-                  ></i>
-                </div>
-                <div
-                  *ngIf="!dayData.attendance && !dayData.isWeekend"
-                  class="no-attendance"
-                >
-                  <i class="pi pi-question"></i>
-                </div>
+                  class="bg-white rounded-full h-2 transition-all duration-300"
+                  [style.width.%]="attendanceStats.attendancePercentage"
+                ></div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="calendar-legend">
-          <div class="legend-item">
-            <span class="legend-color status-present"></span>
-            <span>Present</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color status-absent"></span>
-            <span>Absent</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color status-half-day"></span>
-            <span>Half Day</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color status-late"></span>
-            <span>Late</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color status-leave"></span>
-            <span>On Leave</span>
+        <!-- Average Hours -->
+        <div
+          class="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-clock text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-orange-200 text-sm">Avg Hours</p>
+              <p class="text-2xl font-semibold">
+                {{ attendanceStats.averageWorkingHours }}h
+              </p>
+            </div>
           </div>
         </div>
-      </p-card>
+
+        <!-- Leave Days -->
+        <div
+          class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-calendar-times text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-purple-200 text-sm">Leave Days</p>
+              <p class="text-2xl font-semibold">
+                {{ attendanceStats.leaveDays }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!attendanceStats" class="text-center py-8">
+        <p class="text-gray-500">
+          No attendance statistics available for the selected period
+        </p>
+      </div>
+    </div>
+
+    <!-- Calendar View -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+          <i class="pi pi-calendar text-blue-600 mr-2"></i>
+          Attendance Calendar
+        </h2>
+        <h3 class="text-lg font-medium text-gray-700">
+          {{ monthNames[selectedMonth - 1] }} {{ selectedYear }}
+        </h3>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="overflow-x-auto">
+        <div class="min-w-full">
+          <!-- Calendar Header -->
+          <div class="grid grid-cols-7 gap-1 mb-1">
+            <div
+              *ngFor="
+                let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+              "
+              class="bg-blue-600 text-white text-center py-3 text-sm font-semibold rounded-t"
+            >
+              {{ day }}
+            </div>
+          </div>
+
+          <!-- Calendar Body -->
+          <div class="grid grid-cols-7 gap-1 border border-gray-200 rounded-b">
+            <div
+              *ngFor="let dayData of calendarData"
+              class="min-h-[80px] p-2 border-r border-b border-gray-100 transition-colors hover:bg-gray-50"
+              [class.bg-gray-50]="!dayData"
+              [class.bg-blue-50]="dayData?.isToday"
+              [class.bg-gray-100]="dayData?.isWeekend"
+            >
+              <div *ngIf="dayData" class="h-full flex flex-col justify-between">
+                <div class="text-sm font-medium text-gray-900">
+                  {{ dayData.day }}
+                </div>
+                <div class="flex justify-center">
+                  <div
+                    *ngIf="dayData.attendance"
+                    class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
+                    [class.bg-green-500]="
+                      dayData.attendance.status === 'present'
+                    "
+                    [class.bg-red-500]="dayData.attendance.status === 'absent'"
+                    [class.bg-yellow-500]="
+                      dayData.attendance.status === 'half-day'
+                    "
+                    [class.bg-orange-500]="dayData.attendance.status === 'late'"
+                    [class.bg-purple-500]="
+                      dayData.attendance.status === 'leave'
+                    "
+                    [title]="dayData.attendance.status | titlecase"
+                  >
+                    <i
+                      class="pi"
+                      [class.pi-check]="dayData.attendance.status === 'present'"
+                      [class.pi-times]="dayData.attendance.status === 'absent'"
+                      [class.pi-minus]="
+                        dayData.attendance.status === 'half-day'
+                      "
+                      [class.pi-clock]="dayData.attendance.status === 'late'"
+                      [class.pi-calendar-times]="
+                        dayData.attendance.status === 'leave'
+                      "
+                    ></i>
+                  </div>
+                  <div
+                    *ngIf="!dayData.attendance && !dayData.isWeekend"
+                    class="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs"
+                  >
+                    <i class="pi pi-question"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div
+        class="flex flex-wrap justify-center gap-4 mt-6 p-4 bg-gray-50 rounded-lg"
+      >
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+          <span class="text-sm text-gray-700">Present</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+          <span class="text-sm text-gray-700">Absent</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 bg-yellow-500 rounded-full"></div>
+          <span class="text-sm text-gray-700">Half Day</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 bg-orange-500 rounded-full"></div>
+          <span class="text-sm text-gray-700">Late</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+          <span class="text-sm text-gray-700">On Leave</span>
+        </div>
+      </div>
     </div>
 
     <!-- Attendance Records Table -->
-    <div class="records-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-list"></i> Attendance Records</h3>
-          </div>
-        </ng-template>
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+          <i class="pi pi-list text-blue-600 mr-2"></i>
+          Attendance Records
+        </h2>
+      </div>
 
-        <div *ngIf="attendanceRecords.length > 0">
-          <p-table
-            [value]="attendanceRecords"
-            [paginator]="true"
-            [rows]="15"
-            [responsive]="true"
-          >
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Date</th>
-                <th>Check In</th>
-                <th>Check Out</th>
-                <th>Working Hours</th>
-                <th>Status</th>
-                <th>Remarks</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-record>
-              <tr>
-                <td>
-                  <div class="date-cell">
-                    {{ record.date | date: "EEE, MMM d, y" }}
-                  </div>
-                </td>
-                <td>
-                  <div class="time-cell">
-                    {{ record.checkInTime || "-" }}
-                  </div>
-                </td>
-                <td>
-                  <div class="time-cell">
-                    {{ record.checkOutTime || "-" }}
-                  </div>
-                </td>
-                <td>
-                  <div class="hours-cell">
-                    <span *ngIf="record.workingHours"
-                      >{{ record.workingHours }}h</span
-                    >
-                    <span *ngIf="!record.workingHours">-</span>
-                  </div>
-                </td>
-                <td>
-                  <p-tag
-                    [value]="record.status | titlecase"
-                    [severity]="getAttendanceStatusColor(record.status)"
-                    [icon]="getAttendanceStatusIcon(record.status)"
-                  >
-                  </p-tag>
-                </td>
-                <td>
-                  <div class="remarks-cell">
-                    {{ record.remarks || "-" }}
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
+      <div *ngIf="attendanceRecords.length > 0" class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Date
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Check In
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Check Out
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Working Hours
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Status
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Remarks
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr
+              *ngFor="let record of attendanceRecords"
+              class="hover:bg-gray-50"
+            >
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+              >
+                {{ record.date | date: "EEE, MMM d, y" }}
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono"
+              >
+                {{ record.checkInTime || "-" }}
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono"
+              >
+                {{ record.checkOutTime || "-" }}
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600"
+              >
+                <span *ngIf="record.workingHours"
+                  >{{ record.workingHours }}h</span
+                >
+                <span *ngIf="!record.workingHours" class="text-gray-400"
+                  >-</span
+                >
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [class.bg-green-100]="record.status === 'present'"
+                  [class.text-green-800]="record.status === 'present'"
+                  [class.bg-red-100]="record.status === 'absent'"
+                  [class.text-red-800]="record.status === 'absent'"
+                  [class.bg-yellow-100]="record.status === 'half-day'"
+                  [class.text-yellow-800]="record.status === 'half-day'"
+                  [class.bg-orange-100]="record.status === 'late'"
+                  [class.text-orange-800]="record.status === 'late'"
+                  [class.bg-purple-100]="record.status === 'leave'"
+                  [class.text-purple-800]="record.status === 'leave'"
+                >
+                  <i
+                    class="mr-1 pi"
+                    [class.pi-check]="record.status === 'present'"
+                    [class.pi-times]="record.status === 'absent'"
+                    [class.pi-minus]="record.status === 'half-day'"
+                    [class.pi-clock]="record.status === 'late'"
+                    [class.pi-calendar-times]="record.status === 'leave'"
+                  ></i>
+                  {{ record.status | titlecase }}
+                </span>
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate"
+              >
+                {{ record.remarks || "-" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <div *ngIf="attendanceRecords.length === 0" class="empty-state">
-          <i class="pi pi-calendar-times"></i>
-          <p>No attendance records found for the selected period</p>
-        </div>
-      </p-card>
+      <div *ngIf="attendanceRecords.length === 0" class="text-center py-12">
+        <i class="pi pi-calendar-times text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">
+          No attendance records found for the selected period
+        </p>
+      </div>
     </div>
   </div>
 
   <!-- Quick Mark Attendance Dialog -->
-  <p-dialog
-    header="Mark Attendance"
-    [(visible)]="showQuickMarkDialog"
-    [modal]="true"
-    [closable]="true"
-    [resizable]="false"
-    styleClass="quick-mark-dialog"
-    (onHide)="closeQuickMarkDialog()"
+  <div
+    *ngIf="showQuickMarkDialog"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    (click)="closeQuickMarkDialog()"
   >
-    <div class="quick-mark-form">
-      <div class="form-section">
-        <label>Date</label>
-        <p-calendar
-          [ngModel]="checkInTime"
-          [disabled]="true"
-          [showIcon]="true"
-          dateFormat="dd/mm/yy"
-        >
-        </p-calendar>
-      </div>
+    <div
+      class="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+          Mark Attendance
+        </h3>
 
-      <div class="form-section">
-        <label for="checkIn">Check In Time *</label>
-        <p-calendar
-          id="checkIn"
-          [(ngModel)]="checkInTime"
-          [timeOnly]="true"
-          [showIcon]="true"
-        >
-        </p-calendar>
-      </div>
+        <div class="space-y-4">
+          <!-- Date (readonly) -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Date</label
+            >
+            <input
+              type="text"
+              [value]="checkInTime | date: 'dd/MM/yyyy'"
+              readonly
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+            />
+          </div>
 
-      <div class="form-section">
-        <label for="checkOut">Check Out Time *</label>
-        <p-calendar
-          id="checkOut"
-          [(ngModel)]="checkOutTime"
-          [timeOnly]="true"
-          [showIcon]="true"
-        >
-        </p-calendar>
-      </div>
+          <!-- Check In Time -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Check In Time *</label
+            >
+            <input
+              type="time"
+              [(ngModel)]="checkInTimeString"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
 
-      <div class="form-section">
-        <label>Attendance Status *</label>
-        <div class="status-options">
-          <p-radioButton
-            name="status"
-            value="present"
-            [(ngModel)]="attendanceStatus"
-            inputId="present"
+          <!-- Check Out Time -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Check Out Time *</label
+            >
+            <input
+              type="time"
+              [(ngModel)]="checkOutTimeString"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Attendance Status *</label
+            >
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="status"
+                  value="present"
+                  [(ngModel)]="attendanceStatus"
+                  class="text-blue-600 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-sm text-gray-700">Present</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="status"
+                  value="half-day"
+                  [(ngModel)]="attendanceStatus"
+                  class="text-blue-600 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-sm text-gray-700">Half Day</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="status"
+                  value="late"
+                  [(ngModel)]="attendanceStatus"
+                  class="text-blue-600 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-sm text-gray-700">Late</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Remarks -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Remarks</label
+            >
+            <textarea
+              [(ngModel)]="remarks"
+              rows="3"
+              placeholder="Optional remarks..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            ></textarea>
+          </div>
+
+          <!-- Working Hours Info -->
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p class="text-sm text-blue-700">
+              <strong>Working Hours:</strong> {{ calculateWorkingHours() }}h
+            </p>
+          </div>
+        </div>
+
+        <!-- Dialog Actions -->
+        <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+          <button
+            (click)="closeQuickMarkDialog()"
+            class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
-          </p-radioButton>
-          <label for="present">Present</label>
-
-          <p-radioButton
-            name="status"
-            value="half-day"
-            [(ngModel)]="attendanceStatus"
-            inputId="halfday"
+            Cancel
+          </button>
+          <button
+            (click)="markAttendance()"
+            [disabled]="quickMarkLoading"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
           >
-          </p-radioButton>
-          <label for="halfday">Half Day</label>
-
-          <p-radioButton
-            name="status"
-            value="late"
-            [(ngModel)]="attendanceStatus"
-            inputId="late"
-          >
-          </p-radioButton>
-          <label for="late">Late</label>
+            <i class="pi pi-check"></i>
+            {{ quickMarkLoading ? "Marking..." : "Mark Attendance" }}
+          </button>
         </div>
       </div>
-
-      <div class="form-section">
-        <label for="remarks">Remarks</label>
-        <textarea
-          id="remarks"
-          pInputTextarea
-          [(ngModel)]="remarks"
-          rows="3"
-          placeholder="Optional remarks..."
-        ></textarea>
-      </div>
-
-      <div class="working-hours-info">
-        <p><strong>Working Hours:</strong> {{ calculateWorkingHours() }}h</p>
-      </div>
-
-      <div class="dialog-actions">
-        <p-button
-          label="Cancel"
-          icon="pi pi-times"
-          styleClass="p-button-text"
-          (onClick)="closeQuickMarkDialog()"
-        >
-        </p-button>
-        <p-button
-          label="Mark Attendance"
-          icon="pi pi-check"
-          styleClass="p-button-success"
-          (onClick)="markAttendance()"
-          [loading]="quickMarkLoading"
-        >
-        </p-button>
-      </div>
     </div>
-  </p-dialog>
+  </div>
 </div>
