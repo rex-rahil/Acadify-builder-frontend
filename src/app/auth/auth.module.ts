@@ -10,6 +10,7 @@ import { CheckboxModule } from "primeng/checkbox";
 import { ToastModule } from "primeng/toast";
 import { MessageModule } from "primeng/message";
 import { MessagesModule } from "primeng/messages";
+import { MessageService } from "primeng/api";
 
 // Components
 import { LoginComponent } from "./login/login.component";
@@ -41,6 +42,6 @@ const routes = [
     MessageModule,
     MessagesModule,
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, MessageService],
 })
 export class AuthModule {}
