@@ -41,8 +41,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Get return URL
-    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/admin";
+    // Get return URL - default to dashboard, not admin
+    this.returnUrl =
+      this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
 
     this.initializeForm();
   }
@@ -82,9 +83,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                 life: 3000,
               });
 
-              // Small delay to show success message
+              // Redirect based on user role
               setTimeout(() => {
-                this.redirectAfterLogin();
+                this.redirectBasedOnRole(response.user);
               }, 1000);
             }
           },
@@ -187,6 +188,30 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private redirectAfterLogin() {
     this.router.navigate([this.returnUrl]);
+  }
+
+  private redirectBasedOnRole(user: any) {
+    if (this.returnUrl && this.returnUrl !== "/dashboard") {
+      // If there's a specific return URL, use it
+      this.router.navigate([this.returnUrl]);
+      return;
+    }
+
+    // Default role-based routing
+    switch (user?.role) {
+      case "admin":
+        this.router.navigate(["/admin"]);
+        break;
+      case "faculty":
+      case "hod":
+        this.router.navigate(["/faculty"]);
+        break;
+      case "admission_officer":
+        this.router.navigate(["/admission-officer"]);
+        break;
+      default:
+        this.router.navigate(["/dashboard"]);
+    }
   }
 
   private markFormGroupTouched() {
