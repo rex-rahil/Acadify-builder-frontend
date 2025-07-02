@@ -36,12 +36,22 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((event) => {
         if (event instanceof NavigationEnd) {
-          this.showHeaderAndSidebar = !event.url.startsWith("/login");
+          this.updateHeaderVisibility(event.url);
         }
       });
 
     // Set initial state
-    this.showHeaderAndSidebar = !this.router.url.startsWith("/login");
+    this.updateHeaderVisibility(this.router.url);
+  }
+
+  private updateHeaderVisibility(url: string) {
+    this.showHeaderAndSidebar = !url.includes("/login");
+    console.log(
+      "Route changed to:",
+      url,
+      "Show header:",
+      this.showHeaderAndSidebar,
+    );
   }
 
   ngOnDestroy() {
