@@ -27,7 +27,6 @@
             <div class="input-wrapper">
               <i class="pi pi-envelope input-icon"></i>
               <input
-                pInputText
                 id="email"
                 type="email"
                 formControlName="email"
@@ -49,7 +48,6 @@
             <div class="input-wrapper">
               <i class="pi pi-lock input-icon"></i>
               <input
-                pInputText
                 id="password"
                 [type]="showPassword ? 'text' : 'password'"
                 formControlName="password"
@@ -118,7 +116,6 @@
           <div class="input-wrapper">
             <i class="pi pi-envelope input-icon"></i>
             <input
-              pInputText
               id="forgotEmail"
               type="email"
               [(ngModel)]="forgotPasswordEmail"
