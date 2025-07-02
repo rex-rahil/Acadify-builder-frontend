@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: ["", [Validators.required, Validators.minLength(6)]],
       rememberMe: [false],
     });
+    console.log("Login form initialized:", this.loginForm);
   }
 
   onLogin() {
