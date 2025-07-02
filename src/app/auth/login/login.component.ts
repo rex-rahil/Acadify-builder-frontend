@@ -29,7 +29,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
-  ) {}
+  ) {
+    // Initialize form immediately in constructor
+    this.initializeForm();
+  }
 
   ngOnInit() {
     // Check if user is already authenticated
@@ -181,10 +184,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   fillDemoCredentials(email: string) {
-    this.loginForm.patchValue({
-      email: email,
-      password: "password123",
-    });
+    console.log("Filling demo credentials for:", email);
+    if (this.loginForm) {
+      this.loginForm.patchValue({
+        email: email,
+        password: "password123",
+      });
+      console.log("Form after patch:", this.loginForm.value);
+    } else {
+      console.error("Login form not initialized!");
+    }
   }
 
   private redirectAfterLogin() {
