@@ -223,8 +223,8 @@ export class FacultyAttendanceComponent implements OnInit {
     try {
       const attendanceData = {
         date: new Date().toISOString().split("T")[0],
-        checkInTime: this.formatTime(this.checkInTime),
-        checkOutTime: this.formatTime(this.checkOutTime),
+        checkInTime: this.checkInTimeString,
+        checkOutTime: this.checkOutTimeString,
         status: this.attendanceStatus,
         workingHours: this.calculateWorkingHours(),
         remarks: this.remarks,
@@ -248,7 +248,12 @@ export class FacultyAttendanceComponent implements OnInit {
   }
 
   calculateWorkingHours(): number {
-    const diff = this.checkOutTime.getTime() - this.checkInTime.getTime();
+    if (!this.checkInTimeString || !this.checkOutTimeString) {
+      return 0;
+    }
+    const checkIn = this.parseTimeString(this.checkInTimeString);
+    const checkOut = this.parseTimeString(this.checkOutTimeString);
+    const diff = checkOut.getTime() - checkIn.getTime();
     return Math.round((diff / (1000 * 60 * 60)) * 100) / 100;
   }
 
