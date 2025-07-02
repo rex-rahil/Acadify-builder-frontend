@@ -194,6 +194,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
+  testFunction() {
+    alert("Click works! Form exists: " + !!this.loginForm);
+    console.log("Test function called, form:", this.loginForm);
+  }
+
   private redirectAfterLogin() {
     this.router.navigate([this.returnUrl]);
   }
