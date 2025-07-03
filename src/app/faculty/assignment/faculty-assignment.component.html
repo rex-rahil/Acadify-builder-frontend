@@ -161,9 +161,9 @@
         Subject Assignments
       </h2>
 
-      <div *ngIf="assignments.length > 0" class="space-y-4">
+      <div *ngIf="facultyAssignments.length > 0" class="space-y-4">
         <div
-          *ngFor="let assignment of assignments"
+          *ngFor="let assignment of facultyAssignments"
           class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
         >
           <div
@@ -232,7 +232,7 @@
         </div>
       </div>
 
-      <div *ngIf="assignments.length === 0" class="text-center py-12">
+      <div *ngIf="facultyAssignments.length === 0" class="text-center py-12">
         <i class="pi pi-book text-gray-400 text-4xl mb-4"></i>
         <p class="text-gray-500">No subject assignments found</p>
       </div>
@@ -246,11 +246,11 @@
       </h2>
 
       <div
-        *ngIf="facultyList.length > 0"
+        *ngIf="departmentFaculty.length > 0"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
         <div
-          *ngFor="let faculty of facultyList"
+          *ngFor="let faculty of departmentFaculty"
           class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
         >
           <div class="flex items-center">
@@ -285,7 +285,7 @@
         </div>
       </div>
 
-      <div *ngIf="facultyList.length === 0" class="text-center py-12">
+      <div *ngIf="departmentFaculty.length === 0" class="text-center py-12">
         <i class="pi pi-users text-gray-400 text-4xl mb-4"></i>
         <p class="text-gray-500">No faculty members found</p>
       </div>
@@ -318,7 +318,10 @@
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="" disabled>Select faculty member</option>
-              <option *ngFor="let faculty of facultyList" [value]="faculty.id">
+              <option
+                *ngFor="let faculty of departmentFaculty"
+                [value]="faculty.id"
+              >
                 {{ faculty.name }} ({{ faculty.employeeId }})
               </option>
             </select>
