@@ -139,6 +139,47 @@ export class SubjectAllocationComponent implements OnInit {
     }, 500);
   }
 
+  private initializeCourses(): Course[] {
+    return [
+      {
+        id: "1",
+        name: "Bachelor of Pharmacy (B.Pharm)",
+        code: "BPHARM",
+        department: "Pharmacy",
+        duration: 8,
+        description: "4-year undergraduate program in pharmaceutical sciences",
+        status: "active",
+        subjects: [],
+        createdDate: new Date("2023-01-15"),
+        totalCredits: 160,
+      },
+      {
+        id: "2",
+        name: "Diploma in Pharmacy (D.Pharm)",
+        code: "DPHARM",
+        department: "Pharmacy",
+        duration: 4,
+        description: "2-year diploma program in pharmaceutical sciences",
+        status: "active",
+        subjects: [],
+        createdDate: new Date("2023-01-20"),
+        totalCredits: 80,
+      },
+      {
+        id: "3",
+        name: "Master of Pharmacy (M.Pharm)",
+        code: "MPHARM",
+        department: "Pharmacy",
+        duration: 4,
+        description: "2-year postgraduate program in pharmaceutical sciences",
+        status: "active",
+        subjects: [],
+        createdDate: new Date("2023-02-01"),
+        totalCredits: 64,
+      },
+    ];
+  }
+
   private initializePharmacySubjects(): Subject[] {
     return [
       // B.Pharm Semester 1
