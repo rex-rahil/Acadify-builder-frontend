@@ -206,4 +206,12 @@ export class FacultyDashboardComponent implements OnInit {
   refreshData(): void {
     this.loadDashboardData();
   }
+
+  getInitials(name: string): string {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  }
 }
