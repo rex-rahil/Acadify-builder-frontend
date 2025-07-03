@@ -1,351 +1,237 @@
-<div class="course-management">
-  <div class="page-header">
-    <h1><i class="pi pi-book"></i> Course Management</h1>
-    <div class="header-actions">
-      <p-button
-        label="Refresh"
-        icon="pi pi-refresh"
-        styleClass="p-button-outlined"
-        (onClick)="refreshData()"
-        [loading]="loading"
-      >
-      </p-button>
-    </div>
-  </div>
-
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
-    <p>Loading course data...</p>
-  </div>
-
-  <div *ngIf="error && !loading" class="error-container">
-    <p-card>
-      <div class="error-content">
-        <i class="pi pi-exclamation-triangle error-icon"></i>
-        <h3>Error Loading Courses</h3>
-        <p>{{ error }}</p>
-        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
-        </p-button>
-      </div>
-    </p-card>
-  </div>
-
-  <div *ngIf="!loading && !error" class="course-content">
-    <!-- Subject Cards -->
-    <div class="subjects-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-book"></i> My Subjects</h3>
-          </div>
-        </ng-template>
-
-        <div *ngIf="subjects.length > 0" class="subjects-grid">
-          <div *ngFor="let subject of subjects" class="subject-card">
-            <div class="subject-info">
-              <div class="subject-icon">
-                <i [class]="getSubjectTypeIcon(subject.type)"></i>
-              </div>
-              <div class="subject-details">
-                <h4>{{ subject.name }}</h4>
-                <p class="subject-code">{{ subject.code }}</p>
-                <p class="subject-meta">
-                  Semester {{ subject.semester }} •
-                  {{ subject.credits }} Credits
-                </p>
-                <p-tag
-                  [value]="subject.type | titlecase"
-                  [severity]="getSubjectTypeSeverity(subject.type)"
-                >
-                </p-tag>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="subjects.length === 0" class="empty-state">
-          <i class="pi pi-book"></i>
-          <p>No subjects assigned</p>
-        </div>
-      </p-card>
-    </div>
-
-    <!-- Weekly Schedule -->
-    <div class="schedule-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-calendar"></i> Weekly Schedule</h3>
-          </div>
-        </ng-template>
-
-        <div class="schedule-grid">
-          <div
-            *ngFor="let day of [1, 2, 3, 4, 5, 6]; let i = index"
-            class="day-column"
-          >
-            <div class="day-header">
-              <h4>{{ getDayName(day) }}</h4>
-            </div>
-            <div class="day-classes">
-              <div
-                *ngFor="let scheduleItem of getScheduleForDay(day)"
-                class="class-item"
-              >
-                <div class="class-time">
-                  {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
-                </div>
-                <div class="class-details">
-                  <h5>{{ scheduleItem.subjectName }}</h5>
-                  <p>{{ scheduleItem.subjectCode }}</p>
-                  <p class="class-meta">
-                    <span
-                      ><i class="pi pi-map-marker"></i>
-                      {{ scheduleItem.roomNumber }}</span
-                    >
-                    <span
-                      ><i class="pi pi-users"></i> Sem
-                      {{ scheduleItem.semester }}</span
-                    >
-                  </p>
-                  <p-chip
-                    [label]="scheduleItem.type | titlecase"
-                    [styleClass]="
-                      getSubjectTypeSeverity(scheduleItem.type) + '-chip'
-                    "
-                  >
-                  </p-chip>
-                </div>
-              </div>
-              <div
-                *ngIf="getScheduleForDay(day).length === 0"
-                class="no-classes"
-              >
-                <p>No classes</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </p-card>
-    </div>
-
-    <!-- Class Sessions -->
-    <div class="sessions-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-list"></i> Class Sessions</h3>
-            <div class="filters">
-              <p-calendar
-                [(ngModel)]="filterDate"
-                (onSelect)="onDateFilterChange()"
-                [showIcon]="true"
-                placeholder="Select Date"
-              >
-              </p-calendar>
-              <p-dropdown
-                [options]="subjects"
-                [(ngModel)]="selectedSubjectFilter"
-                (onChange)="onSubjectFilterChange()"
-                optionLabel="name"
-                placeholder="All Subjects"
-                [showClear]="true"
-              >
-              </p-dropdown>
-            </div>
-          </div>
-        </ng-template>
-
-        <div *ngIf="classSessions.length > 0">
-          <p-table [value]="classSessions" [paginator]="true" [rows]="10">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Subject</th>
-                <th>Date & Time</th>
-                <th>Room</th>
-                <th>Students</th>
-                <th>Attendance</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-session>
-              <tr>
-                <td>
-                  <div class="subject-info">
-                    <h5>{{ session.subjectName }}</h5>
-                    <p>Semester {{ session.semester }}</p>
-                  </div>
-                </td>
-                <td>
-                  <div class="datetime-info">
-                    <p class="date">{{ session.date | date: "MMM d, y" }}</p>
-                    <p class="time">
-                      {{ session.startTime }} - {{ session.endTime }}
-                    </p>
-                  </div>
-                </td>
-                <td>
-                  <p-chip [label]="session.roomNumber"></p-chip>
-                </td>
-                <td>
-                  <div class="student-count">
-                    <i class="pi pi-users"></i>
-                    {{ session.studentCount }}
-                  </div>
-                </td>
-                <td>
-                  <div
-                    *ngIf="session.attendanceMarked"
-                    class="attendance-summary"
-                  >
-                    <span class="present"
-                      >{{ session.presentCount }} Present</span
-                    >
-                    <span class="absent">{{ session.absentCount }} Absent</span>
-                  </div>
-                  <span *ngIf="!session.attendanceMarked" class="not-marked">
-                    Not Marked
-                  </span>
-                </td>
-                <td>
-                  <p-tag
-                    [value]="getSessionStatusText(session)"
-                    [severity]="getSessionStatusSeverity(session)"
-                  >
-                  </p-tag>
-                </td>
-                <td>
-                  <p-button
-                    [label]="
-                      session.attendanceMarked ? 'View' : 'Mark Attendance'
-                    "
-                    [icon]="
-                      session.attendanceMarked ? 'pi pi-eye' : 'pi pi-check'
-                    "
-                    [styleClass]="
-                      session.attendanceMarked
-                        ? 'p-button-info p-button-sm'
-                        : 'p-button-success p-button-sm'
-                    "
-                    (onClick)="openAttendanceDialog(session)"
-                  >
-                  </p-button>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-
-        <div *ngIf="classSessions.length === 0" class="empty-state">
-          <i class="pi pi-calendar-times"></i>
-          <p>No class sessions found for the selected criteria</p>
-        </div>
-      </p-card>
-    </div>
-  </div>
-
-  <!-- Attendance Dialog -->
-  <p-dialog
-    header="Student Attendance"
-    [(visible)]="showAttendanceDialog"
-    [modal]="true"
-    [closable]="true"
-    [resizable]="true"
-    [maximizable]="true"
-    styleClass="attendance-dialog"
-    (onHide)="closeAttendanceDialog()"
-  >
-    <div *ngIf="selectedSession" class="attendance-content">
-      <div class="session-info">
-        <h4>{{ selectedSession.subjectName }}</h4>
-        <p>
-          {{ selectedSession.date | date: "EEEE, MMMM d, y" }} •
-          {{ selectedSession.startTime }} - {{ selectedSession.endTime }} • Room
-          {{ selectedSession.roomNumber }}
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Page Header -->
+  <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-4 lg:mb-0">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+          <i class="pi pi-book text-blue-600 mr-3"></i>
+          Course Management
+        </h1>
+        <p class="text-gray-600 mt-1">
+          Manage your subjects and course schedule
         </p>
       </div>
-
-      <div class="attendance-summary">
-        <div class="summary-stats">
-          <p-chip
-            [label]="'Present: ' + getPresentCount()"
-            styleClass="present-chip"
-          >
-          </p-chip>
-          <p-chip
-            [label]="'Absent: ' + getAbsentCount()"
-            styleClass="absent-chip"
-          >
-          </p-chip>
-          <p-chip
-            [label]="'Total: ' + studentAttendance.length"
-            styleClass="total-chip"
-          >
-          </p-chip>
-        </div>
-        <div class="bulk-actions">
-          <p-button
-            label="Mark All Present"
-            icon="pi pi-check"
-            styleClass="p-button-success p-button-sm"
-            (onClick)="markAllPresent()"
-          >
-          </p-button>
-          <p-button
-            label="Mark All Absent"
-            icon="pi pi-times"
-            styleClass="p-button-danger p-button-sm"
-            (onClick)="markAllAbsent()"
-          >
-          </p-button>
-        </div>
-      </div>
-
-      <div class="students-list">
-        <div *ngFor="let student of studentAttendance" class="student-item">
-          <div class="student-info">
-            <p-avatar
-              [label]="student.studentName.charAt(0)"
-              size="normal"
-              shape="circle"
-            >
-            </p-avatar>
-            <div class="student-details">
-              <h5>{{ student.studentName }}</h5>
-              <p>{{ student.rollNumber }}</p>
-            </div>
-          </div>
-          <div class="attendance-controls">
-            <p-button
-              [icon]="getAttendanceStatusIcon(student.status)"
-              [label]="student.status | titlecase"
-              [styleClass]="'p-button-sm status-' + student.status"
-              (onClick)="toggleStudentAttendance(student)"
-            >
-            </p-button>
-          </div>
-        </div>
-      </div>
-
-      <div class="dialog-actions">
-        <p-button
-          label="Cancel"
-          icon="pi pi-times"
-          styleClass="p-button-text"
-          (onClick)="closeAttendanceDialog()"
+      <div class="flex flex-wrap gap-3">
+        <button
+          (click)="refreshData()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          [class.animate-spin]="loading"
         >
-        </p-button>
-        <p-button
-          label="Save Attendance"
-          icon="pi pi-check"
-          styleClass="p-button-success"
-          (onClick)="saveAttendance()"
-          [loading]="attendanceLoading"
-          [disabled]="selectedSession?.attendanceMarked"
-        >
-        </p-button>
+          <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+          Refresh
+        </button>
       </div>
     </div>
-  </p-dialog>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+    ></div>
+    <p class="text-gray-600 mt-4">Loading course data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col items-center text-center">
+      <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">
+        Error Loading Courses
+      </h3>
+      <p class="text-gray-600 mb-4">{{ error }}</p>
+      <button
+        (click)="refreshData()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+      >
+        <i class="pi pi-refresh"></i>
+        Retry
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && !error" class="space-y-6">
+    <!-- My Subjects Section -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-book text-green-600 mr-2"></i>
+        My Subjects
+      </h2>
+
+      <div
+        *ngIf="subjects.length > 0"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <div
+          *ngFor="let subject of subjects"
+          class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+        >
+          <div class="flex items-start">
+            <div class="flex-shrink-0 mr-4">
+              <div
+                class="w-12 h-12 rounded-lg flex items-center justify-center"
+                [class.bg-blue-100]="subject.type === 'theory'"
+                [class.text-blue-600]="subject.type === 'theory'"
+                [class.bg-green-100]="subject.type === 'practical'"
+                [class.text-green-600]="subject.type === 'practical'"
+                [class.bg-purple-100]="subject.type === 'lab'"
+                [class.text-purple-600]="subject.type === 'lab'"
+              >
+                <i [class]="getSubjectTypeIcon(subject.type)"></i>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-lg font-semibold text-gray-900 mb-1 truncate">
+                {{ subject.name }}
+              </h3>
+              <p class="text-sm text-gray-600 mb-2">{{ subject.code }}</p>
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span>Semester {{ subject.semester }}</span>
+                <span class="mx-2">•</span>
+                <span>{{ subject.credits }} Credits</span>
+              </div>
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [class.bg-blue-100]="subject.type === 'theory'"
+                [class.text-blue-800]="subject.type === 'theory'"
+                [class.bg-green-100]="subject.type === 'practical'"
+                [class.text-green-800]="subject.type === 'practical'"
+                [class.bg-purple-100]="subject.type === 'lab'"
+                [class.text-purple-800]="subject.type === 'lab'"
+              >
+                {{ subject.type | titlecase }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="subjects.length === 0" class="text-center py-12">
+        <i class="pi pi-book text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No subjects assigned</p>
+      </div>
+    </div>
+
+    <!-- Weekly Schedule Section -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-calendar text-purple-600 mr-2"></i>
+        Weekly Schedule
+      </h2>
+
+      <div *ngIf="weeklySchedule.length > 0" class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th class="text-left py-3 px-4 font-semibold text-gray-900">
+                Time
+              </th>
+              <th
+                *ngFor="
+                  let day of [
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                  ]
+                "
+                class="text-left py-3 px-4 font-semibold text-gray-900"
+              >
+                {{ day }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let slot of getTimeSlots()"
+              class="border-b border-gray-100 hover:bg-gray-50"
+            >
+              <td class="py-3 px-4 font-medium text-gray-700">
+                {{ slot }}
+              </td>
+              <td *ngFor="let day of [1, 2, 3, 4, 5, 6]" class="py-3 px-4">
+                <div
+                  *ngIf="getScheduleForSlot(day, slot) as schedule"
+                  class="bg-blue-50 border border-blue-200 rounded-lg p-2"
+                >
+                  <div class="font-semibold text-blue-900 text-sm">
+                    {{ schedule.subjectName }}
+                  </div>
+                  <div class="text-blue-700 text-xs">
+                    {{ schedule.room }}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="weeklySchedule.length === 0" class="text-center py-12">
+        <i class="pi pi-calendar text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No schedule available for this week</p>
+      </div>
+    </div>
+
+    <!-- Today's Classes Section -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-clock text-orange-600 mr-2"></i>
+        Today's Classes
+      </h2>
+
+      <div *ngIf="todayClasses.length > 0" class="space-y-3">
+        <div
+          *ngFor="let class of todayClasses"
+          class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+              [class.bg-green-100]="class.status === 'completed'"
+              [class.text-green-600]="class.status === 'completed'"
+              [class.bg-blue-100]="class.status === 'ongoing'"
+              [class.text-blue-600]="class.status === 'ongoing'"
+              [class.bg-gray-100]="class.status === 'upcoming'"
+              [class.text-gray-600]="class.status === 'upcoming'"
+            >
+              <i
+                class="pi"
+                [class.pi-check]="class.status === 'completed'"
+                [class.pi-play]="class.status === 'ongoing'"
+                [class.pi-clock]="class.status === 'upcoming'"
+              ></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900">
+                {{ class.subjectName }}
+              </h3>
+              <p class="text-sm text-gray-600">
+                {{ class.startTime }} - {{ class.endTime }} • {{ class.room }}
+              </p>
+            </div>
+          </div>
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            [class.bg-green-100]="class.status === 'completed'"
+            [class.text-green-800]="class.status === 'completed'"
+            [class.bg-blue-100]="class.status === 'ongoing'"
+            [class.text-blue-800]="class.status === 'ongoing'"
+            [class.bg-gray-100]="class.status === 'upcoming'"
+            [class.text-gray-800]="class.status === 'upcoming'"
+          >
+            {{ class.status | titlecase }}
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="todayClasses.length === 0" class="text-center py-12">
+        <i class="pi pi-clock text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No classes scheduled for today</p>
+      </div>
+    </div>
+  </div>
 </div>
