@@ -120,7 +120,7 @@
         Weekly Schedule
       </h2>
 
-      <div *ngIf="weeklySchedule.length > 0" class="overflow-x-auto">
+      <div *ngIf="schedule.length > 0" class="overflow-x-auto">
         <table class="min-w-full">
           <thead>
             <tr class="border-b border-gray-200">
@@ -170,7 +170,7 @@
         </table>
       </div>
 
-      <div *ngIf="weeklySchedule.length === 0" class="text-center py-12">
+      <div *ngIf="schedule.length === 0" class="text-center py-12">
         <i class="pi pi-calendar text-gray-400 text-4xl mb-4"></i>
         <p class="text-gray-500">No schedule available for this week</p>
       </div>
@@ -183,9 +183,9 @@
         Today's Classes
       </h2>
 
-      <div *ngIf="todayClasses.length > 0" class="space-y-3">
+      <div *ngIf="classSessions.length > 0" class="space-y-3">
         <div
-          *ngFor="let class of todayClasses"
+          *ngFor="let class of classSessions"
           class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
         >
           <div class="flex items-center">
@@ -228,7 +228,7 @@
         </div>
       </div>
 
-      <div *ngIf="todayClasses.length === 0" class="text-center py-12">
+      <div *ngIf="classSessions.length === 0" class="text-center py-12">
         <i class="pi pi-clock text-gray-400 text-4xl mb-4"></i>
         <p class="text-gray-500">No classes scheduled for today</p>
       </div>
