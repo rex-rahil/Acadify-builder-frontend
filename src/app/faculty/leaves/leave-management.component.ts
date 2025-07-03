@@ -323,6 +323,11 @@ export class LeaveManagementComponent implements OnInit {
     return new Date();
   }
 
+  getCurrentDateString(): string {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  }
+
   private extractErrorMessage(error: any): string {
     if (error?.message) {
       return error.message;
