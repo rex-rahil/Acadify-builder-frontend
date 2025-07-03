@@ -119,17 +119,15 @@ export class SubjectAllocationComponent implements OnInit {
   loadData() {
     this.loading = true;
 
-    Promise.all([
-      this.courseService.getCourses().toPromise(),
-      this.courseService.getSubjects().toPromise(),
-    ])
-      .then(([courses, subjects]) => {
-        this.courses = courses || [];
+    // Use setTimeout to simulate async behavior and ensure loading state is visible
+    setTimeout(() => {
+      try {
+        // Initialize with local data for now
+        this.courses = this.initializeCourses();
         this.subjects = this.initializePharmacySubjects();
         this.filteredCourses = [...this.courses];
         this.loading = false;
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error loading data:", error);
         this.loading = false;
         this.messageService.add({
@@ -137,7 +135,8 @@ export class SubjectAllocationComponent implements OnInit {
           summary: "Error",
           detail: "Failed to load data",
         });
-      });
+      }
+    }, 500);
   }
 
   private initializePharmacySubjects(): Subject[] {
