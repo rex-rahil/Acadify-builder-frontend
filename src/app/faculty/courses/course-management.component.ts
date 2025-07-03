@@ -278,6 +278,25 @@ export class CourseManagementComponent implements OnInit {
     this.loadCourseData();
   }
 
+  getTimeSlots(): string[] {
+    return [
+      "09:00 - 10:00",
+      "10:00 - 11:00",
+      "11:00 - 12:00",
+      "12:00 - 13:00",
+      "14:00 - 15:00",
+      "15:00 - 16:00",
+      "16:00 - 17:00",
+    ];
+  }
+
+  getScheduleForSlot(day: number, timeSlot: string): any {
+    const startTime = timeSlot.split(" - ")[0];
+    return this.schedule.find(
+      (s) => s.dayOfWeek === day && s.startTime === startTime,
+    );
+  }
+
   private extractErrorMessage(error: any): string {
     if (error?.message) {
       return error.message;
