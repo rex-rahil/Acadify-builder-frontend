@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FacultyService } from "../services/faculty.service";
 import {
   FacultyProfile,
@@ -30,12 +31,30 @@ export class FacultyAssignmentComponent implements OnInit {
   selectedFaculty: FacultyProfile | null = null;
   selectedSubject: Subject | null = null;
   assignmentLoading = false;
+  assignmentForm: FormGroup;
 
   // Filters
   selectedFacultyFilter: FacultyProfile | null = null;
   selectedSubjectFilter: Subject | null = null;
 
-  constructor(private facultyService: FacultyService) {}
+  // Form options
+  academicYears = [
+    { label: "2023-24", value: "2023-24" },
+    { label: "2024-25", value: "2024-25" },
+    { label: "2025-26", value: "2025-26" },
+  ];
+
+  constructor(
+    private facultyService: FacultyService,
+    private fb: FormBuilder,
+  ) {
+    this.assignmentForm = this.fb.group({
+      facultyId: ["", Validators.required],
+      subjectId: ["", Validators.required],
+      academicYear: ["", Validators.required],
+      notes: [""],
+    });
+  }
 
   ngOnInit(): void {
     this.loadAssignmentData();
@@ -130,6 +149,7 @@ export class FacultyAssignmentComponent implements OnInit {
   openAssignmentDialog(): void {
     this.selectedFaculty = null;
     this.selectedSubject = null;
+    this.assignmentForm.reset();
     this.showAssignmentDialog = true;
   }
 
@@ -214,6 +234,10 @@ export class FacultyAssignmentComponent implements OnInit {
       const workload = this.getFacultyWorkload(faculty.id);
       return !workload || workload.workloadPercentage < 90;
     });
+  }
+
+  get availableSubjects(): Subject[] {
+    return this.getUnassignedSubjects();
   }
 
   getAvailableSubjects(): Subject[] {
