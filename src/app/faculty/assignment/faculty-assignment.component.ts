@@ -269,6 +269,24 @@ export class FacultyAssignmentComponent implements OnInit {
     }
   }
 
+  getInitials(name: string): string {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  }
+
+  editAssignment(assignment: FacultyAssignment): void {
+    // Open edit dialog or navigate to edit page
+    console.log("Edit assignment:", assignment);
+  }
+
+  viewFacultyDetails(faculty: FacultyProfile): void {
+    // Navigate to faculty details or open modal
+    console.log("View faculty details:", faculty);
+  }
+
   private extractErrorMessage(error: any): string {
     if (error?.message) {
       return error.message;
