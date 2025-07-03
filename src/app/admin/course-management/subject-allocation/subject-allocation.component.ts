@@ -649,6 +649,8 @@ export class SubjectAllocationComponent implements OnInit {
         (f) => f.id === this.selectedFacultyId,
       );
       if (faculty) {
+        const subjectName = this.selectedSubjectForFaculty.name;
+
         this.subjectFacultyAssignments[this.selectedSubjectForFaculty.id] = {
           subjectId: this.selectedSubjectForFaculty.id,
           facultyId: faculty.id,
@@ -663,7 +665,7 @@ export class SubjectAllocationComponent implements OnInit {
         this.messageService.add({
           severity: "success",
           summary: "Faculty Assigned",
-          detail: `${faculty.name} has been assigned to ${this.selectedSubjectForFaculty?.name}`,
+          detail: `${faculty.name} has been assigned to ${subjectName}`,
         });
       }
     }
