@@ -1,125 +1,841 @@
-<div class="subject-allocation">
-  <div class="page-header">
-    <h1>Subject Allocation</h1>
-    <p>Allocate subjects to courses and manage curriculum</p>
+<!-- Loading State -->
+<div *ngIf="loading" class="flex items-center justify-center min-h-screen">
+  <div class="text-center">
+    <div
+      class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+    ></div>
+    <p class="text-gray-600">Loading subject allocation data...</p>
   </div>
+</div>
 
-  <div class="allocation-grid">
-    <!-- Course Selection -->
-    <p-card header="Select Course" styleClass="course-selection-card">
-      <div class="course-list">
-        <div
-          class="course-item"
-          *ngFor="let course of courses"
-          [class.selected]="selectedCourse?.id === course.id"
-          (click)="onCourseSelect(course)"
-        >
-          <div class="course-info">
-            <h4>{{ course.name }}</h4>
-            <p>{{ course.code }} - {{ course.department }}</p>
-            <div class="course-stats">
-              <span>{{ course.subjects.length }} subjects</span>
-              <span>{{ course.totalCredits }} credits</span>
-            </div>
-          </div>
-          <p-tag
-            [value]="course.status | titlecase"
-            [severity]="course.status === 'active' ? 'success' : 'danger'"
-          ></p-tag>
+<!-- Main Content -->
+<div *ngIf="!loading" class="min-h-screen bg-gray-50 p-6">
+  <!-- Header Section -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div
+      class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-4xl font-bold mb-2">Subject Allocation Management</h1>
+          <p class="text-blue-100 text-lg">
+            Allocate subjects to courses and manage curriculum structure for
+            Oriental College
+          </p>
         </div>
-
-        <div class="no-courses" *ngIf="courses.length === 0">
-          <i class="pi pi-book"></i>
-          <p>No courses available</p>
+        <div class="bg-white/20 rounded-xl p-4">
+          <i class="pi pi-sitemap text-4xl"></i>
         </div>
       </div>
-    </p-card>
+    </div>
+  </div>
 
-    <!-- Subject Allocation -->
-    <div class="allocation-panel" *ngIf="selectedCourse">
-      <!-- Available Subjects -->
-      <p-card header="Available Subjects" styleClass="subjects-card">
-        <div class="subjects-section">
-          <div
-            class="department-section"
-            *ngFor="let department of getUniqueDepartments()"
+  <div class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-4 gap-6">
+    <!-- Course Selection Panel -->
+    <div class="xl:col-span-1">
+      <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-semibold text-gray-800">Courses</h2>
+          <button
+            (click)="refreshData()"
+            class="p-2 text-gray-400 hover:text-blue-600 transition-colors"
           >
-            <h4>{{ department }}</h4>
-            <div class="subjects-grid">
-              <div
-                class="subject-item available"
-                *ngFor="let subject of getSubjectsByDepartment(department)"
-                (click)="addSubject(subject)"
+            <i class="pi pi-refresh text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Search Filter -->
+        <div class="mb-4">
+          <div class="relative">
+            <input
+              type="text"
+              [(ngModel)]="courseSearchTerm"
+              (input)="filterCourses()"
+              placeholder="Search courses..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <i
+              class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            ></i>
+          </div>
+        </div>
+
+        <!-- Course List -->
+        <div class="space-y-3 max-h-96 overflow-y-auto">
+          <div
+            *ngFor="let course of filteredCourses"
+            class="course-card p-4 rounded-lg border-2 transition-all cursor-pointer"
+            [ngClass]="{
+              'border-blue-500 bg-blue-50': selectedCourse?.id === course.id,
+              'border-gray-200 hover:border-blue-300 hover:bg-gray-50':
+                selectedCourse?.id !== course.id,
+            }"
+            (click)="onCourseSelect(course)"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="font-semibold text-gray-800 text-sm leading-tight">
+                {{ course.name }}
+              </h3>
+              <span
+                class="text-xs px-2 py-1 rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': course.status === 'active',
+                  'bg-red-100 text-red-700': course.status === 'inactive',
+                }"
               >
-                <div class="subject-info">
-                  <div class="subject-name">{{ subject.name }}</div>
-                  <div class="subject-code">{{ subject.code }}</div>
-                  <div class="subject-credits">
-                    {{ subject.credits }} credits
-                  </div>
-                </div>
-                <i class="pi pi-plus-circle"></i>
+                {{ course.status | titlecase }}
+              </span>
+            </div>
+
+            <p class="text-gray-600 text-xs mb-3">
+              {{ course.code }} • {{ course.department }}
+            </p>
+
+            <div class="flex justify-between text-xs">
+              <span class="text-blue-600 font-medium"
+                >{{ course.subjects.length }} subjects</span
+              >
+              <span class="text-purple-600 font-medium"
+                >{{ course.totalCredits }} credits</span
+              >
+            </div>
+          </div>
+
+          <div
+            *ngIf="filteredCourses.length === 0"
+            class="text-center py-8 text-gray-500"
+          >
+            <i class="pi pi-book text-3xl mb-3 block"></i>
+            <p>No courses found</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="xl:col-span-3">
+      <!-- Course Not Selected State -->
+      <div
+        *ngIf="!selectedCourse"
+        class="bg-white rounded-xl shadow-lg p-12 text-center"
+      >
+        <div class="max-w-md mx-auto">
+          <div
+            class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="pi pi-arrow-left text-3xl text-gray-400"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">
+            Select a Course
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Choose a course from the left panel to manage its subject allocation
+            and curriculum structure.
+          </p>
+          <div class="bg-blue-50 rounded-lg p-4">
+            <p class="text-blue-700 text-sm">
+              <i class="pi pi-info-circle mr-2"></i>
+              Subject allocation allows you to assign subjects to courses,
+              manage curriculum, and allocate faculty to subjects.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Selected - Subject Management -->
+      <div *ngIf="selectedCourse" class="space-y-6">
+        <!-- Course Summary Card -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-800">
+                {{ selectedCourse.name }}
+              </h2>
+              <p class="text-gray-600">
+                {{ selectedCourse.code }} • {{ selectedCourse.department }}
+              </p>
+            </div>
+            <div class="text-right">
+              <div
+                class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg"
+              >
+                <div class="text-2xl font-bold">{{ getTotalCredits() }}</div>
+                <div class="text-sm opacity-90">Total Credits</div>
               </div>
             </div>
           </div>
 
-          <div class="no-subjects" *ngIf="availableSubjects.length === 0">
-            <i class="pi pi-info-circle"></i>
-            <p>No available subjects for this course</p>
-          </div>
-        </div>
-      </p-card>
-
-      <!-- Selected Subjects -->
-      <p-card styleClass="selected-subjects-card">
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3>Selected Subjects for {{ selectedCourse.name }}</h3>
-            <div class="total-credits">
-              Total Credits: <strong>{{ getTotalCredits() }}</strong>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-blue-600">
+                {{ selectedSubjects.length }}
+              </div>
+              <div class="text-sm text-blue-700">Allocated Subjects</div>
             </div>
-          </div>
-        </ng-template>
-
-        <div class="selected-subjects">
-          <div
-            class="subject-item selected"
-            *ngFor="let subject of selectedSubjects"
-          >
-            <div class="subject-info">
-              <div class="subject-name">{{ subject.name }}</div>
-              <div class="subject-code">{{ subject.code }}</div>
-              <div class="subject-credits">{{ subject.credits }} credits</div>
-              <div class="subject-department">{{ subject.department }}</div>
+            <div class="bg-green-50 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-green-600">
+                {{ getTheorySubjectsCount() }}
+              </div>
+              <div class="text-sm text-green-700">Theory Subjects</div>
             </div>
-            <i class="pi pi-times-circle" (click)="removeSubject(subject)"></i>
-          </div>
-
-          <div class="no-subjects" *ngIf="selectedSubjects.length === 0">
-            <i class="pi pi-info-circle"></i>
-            <p>No subjects selected</p>
+            <div class="bg-purple-50 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-purple-600">
+                {{ getPracticalSubjectsCount() }}
+              </div>
+              <div class="text-sm text-purple-700">Practical Subjects</div>
+            </div>
+            <div class="bg-orange-50 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-orange-600">
+                {{ selectedCourse.duration }}
+              </div>
+              <div class="text-sm text-orange-700">Semesters</div>
+            </div>
           </div>
         </div>
 
-        <ng-template pTemplate="footer">
-          <div class="card-actions">
-            <p-button
-              label="Save Allocation"
-              icon="pi pi-save"
-              (onClick)="saveAllocation()"
-              [loading]="loading"
-              [disabled]="selectedSubjects.length === 0"
-            ></p-button>
+        <!-- Action Buttons -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center justify-between">
+            <div class="flex space-x-4">
+              <button
+                (click)="toggleView('subjects')"
+                class="px-4 py-2 rounded-lg transition-colors"
+                [ngClass]="{
+                  'bg-blue-600 text-white': currentView === 'subjects',
+                  'bg-gray-100 text-gray-700 hover:bg-gray-200':
+                    currentView !== 'subjects',
+                }"
+              >
+                <i class="pi pi-book mr-2"></i>
+                Manage Subjects
+              </button>
+              <button
+                (click)="toggleView('faculty')"
+                class="px-4 py-2 rounded-lg transition-colors"
+                [ngClass]="{
+                  'bg-blue-600 text-white': currentView === 'faculty',
+                  'bg-gray-100 text-gray-700 hover:bg-gray-200':
+                    currentView !== 'faculty',
+                }"
+              >
+                <i class="pi pi-users mr-2"></i>
+                Faculty Assignment
+              </button>
+              <button
+                (click)="toggleView('schedule')"
+                class="px-4 py-2 rounded-lg transition-colors"
+                [ngClass]="{
+                  'bg-blue-600 text-white': currentView === 'schedule',
+                  'bg-gray-100 text-gray-700 hover:bg-gray-200':
+                    currentView !== 'schedule',
+                }"
+              >
+                <i class="pi pi-calendar mr-2"></i>
+                Schedule Allocation
+              </button>
+            </div>
+            <div class="flex space-x-3">
+              <button
+                (click)="bulkAddSubjects()"
+                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <i class="pi pi-plus mr-2"></i>
+                Bulk Add
+              </button>
+              <button
+                (click)="saveAllocation()"
+                [disabled]="selectedSubjects.length === 0"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                <i class="pi pi-save mr-2"></i>
+                Save Changes
+              </button>
+            </div>
           </div>
-        </ng-template>
-      </p-card>
-    </div>
+        </div>
 
-    <!-- No Course Selected -->
-    <div class="no-selection" *ngIf="!selectedCourse">
-      <i class="pi pi-arrow-left"></i>
-      <h3>Select a course to manage subjects</h3>
-      <p>Choose a course from the list to view and allocate subjects</p>
+        <!-- Subject Management View -->
+        <div
+          *ngIf="currentView === 'subjects'"
+          class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+        >
+          <!-- Available Subjects -->
+          <div class="bg-white rounded-xl shadow-lg">
+            <div class="p-6 border-b border-gray-200">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">
+                  Available Subjects
+                </h3>
+                <button
+                  (click)="showCreateSubjectDialog = true"
+                  class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                >
+                  <i class="pi pi-plus mr-2"></i>
+                  Create Subject
+                </button>
+              </div>
+
+              <!-- Search and Filter -->
+              <div class="space-y-3">
+                <div class="relative">
+                  <input
+                    type="text"
+                    [(ngModel)]="subjectSearchTerm"
+                    (input)="filterSubjects()"
+                    placeholder="Search subjects..."
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <i
+                    class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  ></i>
+                </div>
+                <select
+                  [(ngModel)]="selectedDepartmentFilter"
+                  (change)="filterSubjects()"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">All Departments</option>
+                  <option
+                    *ngFor="let dept of getUniqueDepartments()"
+                    [value]="dept"
+                  >
+                    {{ dept }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="p-6 max-h-96 overflow-y-auto">
+              <div class="space-y-3">
+                <div
+                  *ngFor="let subject of filteredAvailableSubjects"
+                  class="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all cursor-pointer group"
+                  (click)="addSubject(subject)"
+                >
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                      <h4 class="font-semibold text-gray-800 mb-1">
+                        {{ subject.name }}
+                      </h4>
+                      <p class="text-blue-600 text-sm font-medium mb-1">
+                        {{ subject.code }}
+                      </p>
+                      <div
+                        class="flex items-center space-x-4 text-xs text-gray-600"
+                      >
+                        <span>{{ subject.credits }} credits</span>
+                        <span>{{ subject.department }}</span>
+                        <span
+                          class="px-2 py-1 rounded-full"
+                          [ngClass]="{
+                            'bg-blue-100 text-blue-700':
+                              subject.type === 'Theory',
+                            'bg-green-100 text-green-700':
+                              subject.type === 'Practical',
+                            'bg-purple-100 text-purple-700':
+                              subject.type === 'Lab',
+                            'bg-orange-100 text-orange-700':
+                              subject.type === 'Elective',
+                          }"
+                        >
+                          {{ subject.type || "Theory" }}
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <i class="pi pi-plus-circle text-green-600 text-xl"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="filteredAvailableSubjects.length === 0"
+                  class="text-center py-8 text-gray-500"
+                >
+                  <i class="pi pi-info-circle text-3xl mb-3 block"></i>
+                  <p>No available subjects found</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Subjects -->
+          <div class="bg-white rounded-xl shadow-lg">
+            <div class="p-6 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-gray-800">
+                  Selected Subjects
+                </h3>
+                <button
+                  *ngIf="selectedSubjects.length > 0"
+                  (click)="clearAllSubjects()"
+                  class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                >
+                  <i class="pi pi-trash mr-2"></i>
+                  Clear All
+                </button>
+              </div>
+            </div>
+
+            <div class="p-6 max-h-96 overflow-y-auto">
+              <div class="space-y-3">
+                <div
+                  *ngFor="let subject of selectedSubjects; let i = index"
+                  class="p-4 border border-blue-200 bg-blue-50 rounded-lg group"
+                >
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                      <h4 class="font-semibold text-gray-800 mb-1">
+                        {{ subject.name }}
+                      </h4>
+                      <p class="text-blue-600 text-sm font-medium mb-1">
+                        {{ subject.code }}
+                      </p>
+                      <div
+                        class="flex items-center space-x-4 text-xs text-gray-600 mb-2"
+                      >
+                        <span>{{ subject.credits }} credits</span>
+                        <span>{{ subject.department }}</span>
+                        <span
+                          class="px-2 py-1 rounded-full"
+                          [ngClass]="{
+                            'bg-blue-100 text-blue-700':
+                              subject.type === 'Theory',
+                            'bg-green-100 text-green-700':
+                              subject.type === 'Practical',
+                            'bg-purple-100 text-purple-700':
+                              subject.type === 'Lab',
+                            'bg-orange-100 text-orange-700':
+                              subject.type === 'Elective',
+                          }"
+                        >
+                          {{ subject.type || "Theory" }}
+                        </span>
+                      </div>
+                      <!-- Subject Order Controls -->
+                      <div class="flex items-center space-x-2">
+                        <button
+                          *ngIf="i > 0"
+                          (click)="moveSubjectUp(i)"
+                          class="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                        >
+                          <i class="pi pi-arrow-up text-sm"></i>
+                        </button>
+                        <button
+                          *ngIf="i < selectedSubjects.length - 1"
+                          (click)="moveSubjectDown(i)"
+                          class="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                        >
+                          <i class="pi pi-arrow-down text-sm"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      (click)="removeSubject(subject)"
+                      class="p-2 text-red-400 hover:text-red-600 transition-colors"
+                    >
+                      <i class="pi pi-times-circle text-xl"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="selectedSubjects.length === 0"
+                  class="text-center py-8 text-gray-500"
+                >
+                  <i class="pi pi-info-circle text-3xl mb-3 block"></i>
+                  <p>No subjects selected</p>
+                  <p class="text-sm">Add subjects from the available list</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Faculty Assignment View -->
+        <div
+          *ngIf="currentView === 'faculty'"
+          class="bg-white rounded-xl shadow-lg p-6"
+        >
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">
+              Faculty Assignment
+            </h3>
+            <p class="text-gray-600">
+              Assign faculty members to subjects for {{ selectedCourse.name }}
+            </p>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-200">
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                    Subject
+                  </th>
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                    Code
+                  </th>
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                    Type
+                  </th>
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                    Credits
+                  </th>
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                    Assigned Faculty
+                  </th>
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let subject of selectedSubjects"
+                  class="border-b border-gray-100 hover:bg-gray-50"
+                >
+                  <td class="py-3 px-4">
+                    <div class="font-medium text-gray-800">
+                      {{ subject.name }}
+                    </div>
+                  </td>
+                  <td class="py-3 px-4">
+                    <span class="text-blue-600 font-medium">{{
+                      subject.code
+                    }}</span>
+                  </td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="px-2 py-1 rounded-full text-xs"
+                      [ngClass]="{
+                        'bg-blue-100 text-blue-700': subject.type === 'Theory',
+                        'bg-green-100 text-green-700':
+                          subject.type === 'Practical',
+                        'bg-purple-100 text-purple-700': subject.type === 'Lab',
+                        'bg-orange-100 text-orange-700':
+                          subject.type === 'Elective',
+                      }"
+                    >
+                      {{ subject.type || "Theory" }}
+                    </span>
+                  </td>
+                  <td class="py-3 px-4">{{ subject.credits }}</td>
+                  <td class="py-3 px-4">
+                    <div
+                      *ngIf="subjectFacultyAssignments[subject.id]"
+                      class="flex items-center space-x-2"
+                    >
+                      <div
+                        class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold"
+                      >
+                        {{
+                          getInitials(
+                            subjectFacultyAssignments[subject.id].name
+                          )
+                        }}
+                      </div>
+                      <span class="text-gray-800">{{
+                        subjectFacultyAssignments[subject.id].name
+                      }}</span>
+                    </div>
+                    <span
+                      *ngIf="!subjectFacultyAssignments[subject.id]"
+                      class="text-gray-400 italic"
+                      >Not assigned</span
+                    >
+                  </td>
+                  <td class="py-3 px-4">
+                    <button
+                      (click)="assignFaculty(subject)"
+                      class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                    >
+                      <i class="pi pi-user-plus mr-1"></i>
+                      {{
+                        subjectFacultyAssignments[subject.id]
+                          ? "Reassign"
+                          : "Assign"
+                      }}
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div
+              *ngIf="selectedSubjects.length === 0"
+              class="text-center py-8 text-gray-500"
+            >
+              <i class="pi pi-users text-3xl mb-3 block"></i>
+              <p>No subjects to assign faculty</p>
+              <p class="text-sm">
+                Add subjects first to assign faculty members
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schedule Allocation View -->
+        <div
+          *ngIf="currentView === 'schedule'"
+          class="bg-white rounded-xl shadow-lg p-6"
+        >
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">
+              Schedule Allocation
+            </h3>
+            <p class="text-gray-600">
+              Manage time slots and schedule for {{ selectedCourse.name }}
+            </p>
+          </div>
+
+          <!-- Coming Soon Placeholder -->
+          <div class="text-center py-12">
+            <div
+              class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="pi pi-calendar text-3xl text-gray-400"></i>
+            </div>
+            <h4 class="text-xl font-semibold text-gray-800 mb-2">
+              Schedule Management
+            </h4>
+            <p class="text-gray-600 mb-4">
+              Advanced schedule allocation features coming soon
+            </p>
+            <div class="bg-blue-50 rounded-lg p-4 max-w-md mx-auto">
+              <p class="text-blue-700 text-sm">
+                This feature will allow you to assign time slots, manage
+                timetables, and coordinate class schedules.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Create Subject Dialog -->
+<p-dialog
+  [(visible)]="showCreateSubjectDialog"
+  header="Create New Subject"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '500px' }"
+  styleClass="p-fluid"
+>
+  <form [formGroup]="subjectForm" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2"
+        >Subject Name</label
+      >
+      <input
+        type="text"
+        formControlName="name"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter subject name"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Subject Code</label
+        >
+        <input
+          type="text"
+          formControlName="code"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="e.g., PC401"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Credits</label
+        >
+        <input
+          type="number"
+          formControlName="credits"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Credits"
+        />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Department</label
+        >
+        <select
+          formControlName="department"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">Select Department</option>
+          <option value="Pharmacy">Pharmacy</option>
+          <option value="Pharmaceutical Chemistry">
+            Pharmaceutical Chemistry
+          </option>
+          <option value="Pharmacology">Pharmacology</option>
+          <option value="Pharmaceutics">Pharmaceutics</option>
+          <option value="General">General</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+        <select
+          formControlName="type"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="Theory">Theory</option>
+          <option value="Practical">Practical</option>
+          <option value="Lab">Lab</option>
+          <option value="Elective">Elective</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2"
+        >Description</label
+      >
+      <textarea
+        formControlName="description"
+        rows="3"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Subject description..."
+      ></textarea>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end space-x-3">
+      <button
+        (click)="showCreateSubjectDialog = false"
+        class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="createSubject()"
+        [disabled]="subjectForm.invalid"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+      >
+        Create Subject
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Bulk Add Subjects Dialog -->
+<p-dialog
+  [(visible)]="showBulkAddDialog"
+  header="Bulk Add Subjects"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '600px' }"
+>
+  <div class="space-y-4">
+    <p class="text-gray-600">
+      Select multiple subjects to add to {{ selectedCourse?.name }}:
+    </p>
+
+    <div class="max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-4">
+      <div class="space-y-2">
+        <label
+          *ngFor="let subject of availableSubjects"
+          class="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+        >
+          <input
+            type="checkbox"
+            [value]="subject.id"
+            (change)="onBulkSubjectToggle(subject, $event)"
+            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
+          <div class="flex-1">
+            <div class="font-medium text-gray-800">{{ subject.name }}</div>
+            <div class="text-sm text-gray-600">
+              {{ subject.code }} • {{ subject.credits }} credits
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end space-x-3">
+      <button
+        (click)="showBulkAddDialog = false"
+        class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="confirmBulkAdd()"
+        [disabled]="bulkSelectedSubjects.length === 0"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+      >
+        Add {{ bulkSelectedSubjects.length }} Subject{{
+          bulkSelectedSubjects.length !== 1 ? "s" : ""
+        }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Faculty Assignment Dialog -->
+<p-dialog
+  [(visible)]="showFacultyDialog"
+  header="Assign Faculty"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '500px' }"
+>
+  <div *ngIf="selectedSubjectForFaculty" class="space-y-4">
+    <div class="bg-gray-50 rounded-lg p-4">
+      <h4 class="font-semibold text-gray-800">
+        {{ selectedSubjectForFaculty.name }}
+      </h4>
+      <p class="text-gray-600">
+        {{ selectedSubjectForFaculty.code }} •
+        {{ selectedSubjectForFaculty.credits }} credits
+      </p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2"
+        >Select Faculty Member</label
+      >
+      <select
+        [(ngModel)]="selectedFacultyId"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      >
+        <option value="">Choose faculty member</option>
+        <option *ngFor="let faculty of availableFaculty" [value]="faculty.id">
+          {{ faculty.name }} - {{ faculty.department }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end space-x-3">
+      <button
+        (click)="showFacultyDialog = false"
+        class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="confirmFacultyAssignment()"
+        [disabled]="!selectedFacultyId"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+      >
+        Assign Faculty
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

@@ -8,6 +8,7 @@ export interface Subject {
   code: string;
   credits: number;
   department: string;
+  type?: "Theory" | "Practical" | "Lab" | "Elective";
   description?: string;
   prerequisites?: string[];
 }
