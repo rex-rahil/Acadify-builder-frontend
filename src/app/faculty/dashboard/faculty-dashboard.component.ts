@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { FacultyService } from "../services/faculty.service";
 import {
   FacultyDashboardStats,
@@ -27,7 +28,10 @@ export class FacultyDashboardComponent implements OnInit {
   currentTime = new Date();
   greeting = "";
 
-  constructor(private facultyService: FacultyService) {}
+  constructor(
+    private facultyService: FacultyService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.setGreeting();
@@ -174,19 +178,19 @@ export class FacultyDashboardComponent implements OnInit {
   }
 
   navigateToSchedule(): void {
-    // Navigation logic would be implemented here
+    this.router.navigate(["/faculty/assignment"]);
   }
 
   navigateToAttendance(): void {
-    // Navigation logic would be implemented here
+    this.router.navigate(["/faculty/attendance"]);
   }
 
   navigateToLeaves(): void {
-    // Navigation logic would be implemented here
+    this.router.navigate(["/faculty/leaves"]);
   }
 
   navigateToCourses(): void {
-    // Navigation logic would be implemented here
+    this.router.navigate(["/faculty/courses"]);
   }
 
   private extractErrorMessage(error: any): string {
