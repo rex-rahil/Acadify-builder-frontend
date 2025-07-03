@@ -160,21 +160,33 @@ export class FacultyAssignmentComponent implements OnInit {
   }
 
   async assignFaculty(): Promise<void> {
-    if (!this.selectedFaculty || !this.selectedSubject) return;
+    if (this.assignmentForm.invalid) return;
 
     this.assignmentLoading = true;
     try {
+      const formValue = this.assignmentForm.value;
+      const selectedFaculty = this.departmentFaculty.find(
+        (f) => f.id === formValue.facultyId,
+      );
+      const selectedSubject = this.departmentSubjects.find(
+        (s) => s.id === formValue.subjectId,
+      );
+
+      if (!selectedFaculty || !selectedSubject) return;
+
       const assignmentData = {
-        facultyId: this.selectedFaculty.id,
-        facultyName: this.selectedFaculty.name,
-        subjectId: this.selectedSubject.id,
-        subjectName: this.selectedSubject.name,
-        subjectCode: this.selectedSubject.code,
-        semester: this.selectedSubject.semester,
+        facultyId: selectedFaculty.id,
+        facultyName: selectedFaculty.name,
+        subjectId: selectedSubject.id,
+        subjectName: selectedSubject.name,
+        subjectCode: selectedSubject.code,
+        semester: selectedSubject.semester,
         assignedDate: new Date().toISOString(),
         assignedBy: this.hodId,
-        workload: this.calculateSubjectWorkload(this.selectedSubject),
+        workload: this.calculateSubjectWorkload(selectedSubject),
         status: "active" as const,
+        academicYear: formValue.academicYear,
+        notes: formValue.notes || "",
       };
 
       await this.facultyService
