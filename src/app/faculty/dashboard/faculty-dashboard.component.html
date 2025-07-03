@@ -1,338 +1,380 @@
-<div class="faculty-dashboard">
-  <div class="dashboard-header">
-    <div class="welcome-section">
-      <h1 class="welcome-title">
-        {{ greeting }}, {{ facultyProfile?.name || "Faculty" }}!
-      </h1>
-      <p class="current-time">
-        {{ currentTime | date: "EEEE, MMMM d, y" }} •
-        {{ currentTime | date: "h:mm:ss a" }}
-      </p>
-    </div>
-    <div class="quick-actions">
-      <p-button
-        label="Mark Attendance"
-        icon="pi pi-check"
-        styleClass="p-button-success"
-        (onClick)="markAttendance()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Refresh"
-        icon="pi pi-refresh"
-        styleClass="p-button-outlined"
-        (onClick)="refreshData()"
-        [loading]="loading"
-      >
-      </p-button>
-    </div>
-  </div>
-
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
-    <p>Loading dashboard...</p>
-  </div>
-
-  <div *ngIf="error && !loading" class="error-container">
-    <p-card>
-      <div class="error-content">
-        <i class="pi pi-exclamation-triangle error-icon"></i>
-        <h3>Error Loading Dashboard</h3>
-        <p>{{ error }}</p>
-        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
-        </p-button>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Dashboard Header -->
+  <div
+    class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-6 mb-6 text-white"
+  >
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-4 lg:mb-0">
+        <h1 class="text-3xl font-bold mb-2">
+          {{ greeting }}, {{ facultyProfile?.name || "Faculty" }}!
+        </h1>
+        <p class="text-blue-100 text-lg">
+          {{ currentTime | date: "EEEE, MMMM d, y" }} •
+          {{ currentTime | date: "h:mm:ss a" }}
+        </p>
+        <div *ngIf="facultyProfile" class="mt-2">
+          <span
+            *ngIf="facultyProfile.isHOD"
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800"
+          >
+            <i class="pi pi-star mr-1"></i>
+            Head of Department
+          </span>
+        </div>
       </div>
-    </p-card>
+      <div class="flex flex-wrap gap-3">
+        <button
+          (click)="markAttendance()"
+          [disabled]="loading"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <i class="pi pi-check"></i>
+          Mark Attendance
+        </button>
+        <button
+          (click)="refreshData()"
+          class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          [class.animate-spin]="loading"
+        >
+          <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="!loading && !error" class="dashboard-content">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+    ></div>
+    <p class="text-gray-600 mt-4">Loading dashboard...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col items-center text-center">
+      <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">
+        Error Loading Dashboard
+      </h3>
+      <p class="text-gray-600 mb-4">{{ error }}</p>
+      <button
+        (click)="refreshData()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+      >
+        <i class="pi pi-refresh"></i>
+        Retry
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && !error" class="space-y-6">
     <!-- Statistics Cards -->
-    <div class="stats-grid">
-      <p-card class="stat-card subjects-card">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-book"></i>
-          </div>
-          <div class="stat-details">
-            <h3>{{ dashboardStats?.totalSubjects || 0 }}</h3>
-            <p>Total Subjects</p>
-          </div>
-        </div>
-      </p-card>
-
-      <p-card class="stat-card classes-card">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-calendar"></i>
-          </div>
-          <div class="stat-details">
-            <h3>{{ dashboardStats?.todayClasses || 0 }}</h3>
-            <p>Today's Classes</p>
-          </div>
-        </div>
-      </p-card>
-
-      <p-card class="stat-card attendance-card">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-chart-line"></i>
-          </div>
-          <div class="stat-details">
-            <h3>{{ dashboardStats?.attendancePercentage || 0 }}%</h3>
-            <p>Attendance Rate</p>
-          </div>
-        </div>
-      </p-card>
-
-      <p-card class="stat-card leave-card">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-calendar-times"></i>
-          </div>
-          <div class="stat-details">
-            <h3>{{ dashboardStats?.leaveBalance || 0 }}</h3>
-            <p>Leave Balance</p>
-          </div>
-        </div>
-      </p-card>
-    </div>
-
-    <!-- Current Status Section -->
-    <div class="status-section">
-      <div class="current-class" *ngIf="getCurrentClass() as currentClass">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-clock"></i> Current Class</h3>
-              <p-tag
-                severity="success"
-                value="LIVE"
-                icon="pi pi-circle-fill"
-              ></p-tag>
-            </div>
-          </ng-template>
-          <div class="class-info">
-            <h4>{{ currentClass.subjectName }}</h4>
-            <p><strong>Code:</strong> {{ currentClass.subjectCode }}</p>
-            <p>
-              <strong>Time:</strong> {{ currentClass.startTime }} -
-              {{ currentClass.endTime }}
-            </p>
-            <p><strong>Room:</strong> {{ currentClass.roomNumber }}</p>
-            <p><strong>Semester:</strong> {{ currentClass.semester }}</p>
-          </div>
-        </p-card>
-      </div>
-
-      <div class="next-class" *ngIf="getNextClass() as nextClass">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-clock"></i> Next Class</h3>
-              <p-tag severity="info" value="UPCOMING"></p-tag>
-            </div>
-          </ng-template>
-          <div class="class-info">
-            <h4>{{ nextClass.subjectName }}</h4>
-            <p><strong>Code:</strong> {{ nextClass.subjectCode }}</p>
-            <p>
-              <strong>Time:</strong> {{ nextClass.startTime }} -
-              {{ nextClass.endTime }}
-            </p>
-            <p><strong>Room:</strong> {{ nextClass.roomNumber }}</p>
-            <p><strong>Semester:</strong> {{ nextClass.semester }}</p>
-          </div>
-        </p-card>
-      </div>
-    </div>
-
-    <!-- Content Grid -->
-    <div class="content-grid">
-      <!-- Today's Schedule -->
-      <div class="schedule-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-calendar"></i> Today's Schedule</h3>
-              <p-button
-                icon="pi pi-external-link"
-                styleClass="p-button-text p-button-sm"
-                (onClick)="navigateToSchedule()"
-                pTooltip="View Full Schedule"
-              >
-              </p-button>
-            </div>
-          </ng-template>
-
-          <div *ngIf="todaySchedule.length > 0" class="schedule-list">
-            <div *ngFor="let schedule of todaySchedule" class="schedule-item">
-              <div class="schedule-time">
-                <span class="time">{{ schedule.startTime }}</span>
-                <span class="duration">{{ schedule.endTime }}</span>
-              </div>
-              <div class="schedule-details">
-                <h4>{{ schedule.subjectName }}</h4>
-                <p class="schedule-meta">
-                  <span class="room"
-                    ><i class="pi pi-map-marker"></i>
-                    {{ schedule.roomNumber }}</span
-                  >
-                  <span class="semester"
-                    ><i class="pi pi-users"></i> Semester
-                    {{ schedule.semester }}</span
-                  >
-                  <span class="type">
-                    <i [class]="getClassTypeIcon(schedule.type)"></i>
-                    {{ schedule.type | titlecase }}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="todaySchedule.length === 0" class="empty-state">
-            <i class="pi pi-calendar-times"></i>
-            <p>No classes scheduled for today</p>
-          </div>
-        </p-card>
-      </div>
-
-      <!-- Recent Activities -->
-      <div class="activities-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-list"></i> Upcoming Classes</h3>
-              <p-button
-                icon="pi pi-external-link"
-                styleClass="p-button-text p-button-sm"
-                (onClick)="navigateToCourses()"
-                pTooltip="View All Classes"
-              >
-              </p-button>
-            </div>
-          </ng-template>
-
-          <div *ngIf="upcomingClasses.length > 0" class="activities-list">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Total Subjects -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
             <div
-              *ngFor="let classSession of upcomingClasses"
-              class="activity-item"
+              class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
             >
-              <div class="activity-icon">
-                <i [class]="getClassTypeIcon(classSession.subjectName)"></i>
-              </div>
-              <div class="activity-details">
-                <h4>{{ classSession.subjectName }}</h4>
-                <p>
-                  {{ classSession.date | date: "MMM d" }} •
-                  {{ classSession.startTime }} - {{ classSession.endTime }}
-                </p>
-                <p class="activity-meta">
-                  Room {{ classSession.roomNumber }} •
-                  {{ classSession.studentCount }} students
-                </p>
-              </div>
-              <div class="activity-status">
-                <p-chip
-                  [label]="
-                    classSession.attendanceMarked ? 'Completed' : 'Pending'
-                  "
-                  [styleClass]="
-                    classSession.attendanceMarked
-                      ? 'success-chip'
-                      : 'warning-chip'
-                  "
-                >
-                </p-chip>
-              </div>
+              <i class="pi pi-book text-blue-600 text-xl"></i>
             </div>
           </div>
-
-          <div *ngIf="upcomingClasses.length === 0" class="empty-state">
-            <i class="pi pi-calendar-plus"></i>
-            <p>No upcoming classes</p>
+          <div class="ml-4">
+            <p class="text-sm text-gray-600">Total Subjects</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ dashboardStats?.totalSubjects || 0 }}
+            </p>
           </div>
-        </p-card>
+        </div>
       </div>
 
-      <!-- Recent Leaves -->
-      <div class="leaves-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3>
-                <i class="pi pi-calendar-times"></i> Recent Leave Requests
+      <!-- Today's Classes -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"
+            >
+              <i class="pi pi-calendar text-green-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm text-gray-600">Today's Classes</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ dashboardStats?.todayClasses || 0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attendance Percentage -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div
+              class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"
+            >
+              <i class="pi pi-chart-line text-purple-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm text-gray-600">Attendance</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ dashboardStats?.attendancePercentage || 0 }}%
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Leaves -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div
+              class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center"
+            >
+              <i class="pi pi-calendar-times text-orange-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm text-gray-600">Pending Leaves</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ dashboardStats?.pendingLeaves || 0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's Schedule -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+          <i class="pi pi-clock text-blue-600 mr-2"></i>
+          Today's Schedule
+        </h2>
+        <button
+          (click)="navigateToSchedule()"
+          class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
+        >
+          View Full Schedule
+          <i class="pi pi-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <div *ngIf="todaySchedule.length > 0" class="space-y-3">
+        <div
+          *ngFor="let schedule of todaySchedule"
+          class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+              [class.bg-green-100]="schedule.status === 'completed'"
+              [class.text-green-600]="schedule.status === 'completed'"
+              [class.bg-blue-100]="schedule.status === 'ongoing'"
+              [class.text-blue-600]="schedule.status === 'ongoing'"
+              [class.bg-gray-100]="schedule.status === 'upcoming'"
+              [class.text-gray-600]="schedule.status === 'upcoming'"
+            >
+              <i
+                class="pi"
+                [class.pi-check]="schedule.status === 'completed'"
+                [class.pi-play]="schedule.status === 'ongoing'"
+                [class.pi-clock]="schedule.status === 'upcoming'"
+              ></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900">
+                {{ schedule.subjectName }}
               </h3>
-              <p-button
-                icon="pi pi-external-link"
-                styleClass="p-button-text p-button-sm"
-                (onClick)="navigateToLeaves()"
-                pTooltip="View All Leaves"
-              >
-              </p-button>
-            </div>
-          </ng-template>
-
-          <div *ngIf="recentLeaves.length > 0" class="leaves-list">
-            <div *ngFor="let leave of recentLeaves" class="leave-item">
-              <div class="leave-details">
-                <h4>{{ leave.leaveType | titlecase }} Leave</h4>
-                <p>
-                  {{ leave.startDate | date: "MMM d" }} -
-                  {{ leave.endDate | date: "MMM d, y" }}
-                </p>
-                <p class="leave-reason">{{ leave.reason }}</p>
-              </div>
-              <div class="leave-status">
-                <p-tag
-                  [value]="leave.status | titlecase"
-                  [severity]="getLeaveStatusSeverity(leave.status)"
-                >
-                </p-tag>
-              </div>
+              <p class="text-sm text-gray-600">
+                {{ schedule.startTime }} - {{ schedule.endTime }} •
+                {{ schedule.room }}
+              </p>
             </div>
           </div>
-
-          <div *ngIf="recentLeaves.length === 0" class="empty-state">
-            <i class="pi pi-check-circle"></i>
-            <p>No pending leave requests</p>
-          </div>
-        </p-card>
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            [class.bg-green-100]="schedule.status === 'completed'"
+            [class.text-green-800]="schedule.status === 'completed'"
+            [class.bg-blue-100]="schedule.status === 'ongoing'"
+            [class.text-blue-800]="schedule.status === 'ongoing'"
+            [class.bg-gray-100]="schedule.status === 'upcoming'"
+            [class.text-gray-800]="schedule.status === 'upcoming'"
+          >
+            {{ schedule.status | titlecase }}
+          </span>
+        </div>
       </div>
 
-      <!-- Faculty Profile Summary -->
-      <div class="profile-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-user"></i> Profile Summary</h3>
-            </div>
-          </ng-template>
+      <div *ngIf="todaySchedule.length === 0" class="text-center py-8">
+        <i class="pi pi-calendar text-gray-400 text-3xl mb-2"></i>
+        <p class="text-gray-500">No classes scheduled for today</p>
+      </div>
+    </div>
 
-          <div *ngIf="facultyProfile" class="profile-summary">
-            <div class="profile-avatar">
-              <p-avatar
-                [image]="facultyProfile.avatar"
-                [label]="facultyProfile.name?.charAt(0)"
-                size="large"
-                shape="circle"
-              >
-              </p-avatar>
+    <!-- Upcoming Classes -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+          <i class="pi pi-calendar-plus text-green-600 mr-2"></i>
+          Upcoming Classes
+        </h2>
+        <button
+          (click)="navigateToCourses()"
+          class="text-green-600 hover:text-green-800 text-sm font-medium flex items-center gap-1"
+        >
+          View All Classes
+          <i class="pi pi-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <div *ngIf="upcomingClasses.length > 0" class="space-y-3">
+        <div
+          *ngFor="let class of upcomingClasses.slice(0, 5)"
+          class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4"
+            >
+              <i class="pi pi-book text-blue-600"></i>
             </div>
-            <div class="profile-info">
-              <h4>{{ facultyProfile.name }}</h4>
-              <p class="profile-designation">
-                {{ facultyProfile.designation }}
+            <div>
+              <h3 class="font-semibold text-gray-900">
+                {{ class.subjectName }}
+              </h3>
+              <p class="text-sm text-gray-600">
+                {{ class.date | date: "MMM d" }} • {{ class.startTime }} -
+                {{ class.endTime }} •
+                {{ class.room }}
               </p>
-              <p class="profile-department">{{ facultyProfile.department }}</p>
-              <p class="profile-id">ID: {{ facultyProfile.employeeId }}</p>
-              <div *ngIf="facultyProfile.isHOD" class="hod-badge">
-                <p-chip label="HOD" styleClass="hod-chip"></p-chip>
-              </div>
             </div>
           </div>
-        </p-card>
+          <span class="text-sm text-gray-500">
+            {{ class.type | titlecase }}
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="upcomingClasses.length === 0" class="text-center py-8">
+        <i class="pi pi-calendar-plus text-gray-400 text-3xl mb-2"></i>
+        <p class="text-gray-500">No upcoming classes</p>
+      </div>
+    </div>
+
+    <!-- Recent Leave Requests -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+          <i class="pi pi-calendar-times text-purple-600 mr-2"></i>
+          Recent Leave Requests
+        </h2>
+        <button
+          (click)="navigateToLeaves()"
+          class="text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center gap-1"
+        >
+          View All Leaves
+          <i class="pi pi-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <div *ngIf="recentLeaves.length > 0" class="space-y-3">
+        <div
+          *ngFor="let leave of recentLeaves.slice(0, 3)"
+          class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+              [class.bg-yellow-100]="leave.status === 'pending'"
+              [class.text-yellow-600]="leave.status === 'pending'"
+              [class.bg-green-100]="leave.status === 'approved'"
+              [class.text-green-600]="leave.status === 'approved'"
+              [class.bg-red-100]="leave.status === 'rejected'"
+              [class.text-red-600]="leave.status === 'rejected'"
+            >
+              <i
+                class="pi"
+                [class.pi-clock]="leave.status === 'pending'"
+                [class.pi-check]="leave.status === 'approved'"
+                [class.pi-times]="leave.status === 'rejected'"
+              ></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900">
+                {{ leave.leaveType | titlecase }} Leave
+              </h3>
+              <p class="text-sm text-gray-600">
+                {{ leave.startDate | date: "MMM d" }} -
+                {{ leave.endDate | date: "MMM d, y" }} ({{ leave.duration }}
+                days)
+              </p>
+            </div>
+          </div>
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            [class.bg-yellow-100]="leave.status === 'pending'"
+            [class.text-yellow-800]="leave.status === 'pending'"
+            [class.bg-green-100]="leave.status === 'approved'"
+            [class.text-green-800]="leave.status === 'approved'"
+            [class.bg-red-100]="leave.status === 'rejected'"
+            [class.text-red-800]="leave.status === 'rejected'"
+          >
+            {{ leave.status | titlecase }}
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="recentLeaves.length === 0" class="text-center py-8">
+        <i class="pi pi-calendar-times text-gray-400 text-3xl mb-2"></i>
+        <p class="text-gray-500">No recent leave requests</p>
+      </div>
+    </div>
+
+    <!-- Faculty Profile Card -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-user text-indigo-600 mr-2"></i>
+        Faculty Profile
+      </h2>
+
+      <div *ngIf="facultyProfile" class="flex items-center">
+        <div class="flex-shrink-0 mr-6">
+          <div
+            class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-indigo-600 font-bold text-xl">
+              {{ getInitials(facultyProfile.name) }}
+            </span>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-900 mb-1">
+            {{ facultyProfile.name }}
+          </h3>
+          <p class="text-gray-600 mb-1">{{ facultyProfile.employeeId }}</p>
+          <p class="text-sm text-gray-500">{{ facultyProfile.department }}</p>
+          <div class="mt-2 flex items-center gap-2">
+            <span class="text-sm text-gray-600">
+              {{ facultyProfile.experience }} years experience
+            </span>
+            <span class="text-gray-400">•</span>
+            <span class="text-sm text-gray-600">
+              {{ facultyProfile.qualification }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!facultyProfile" class="text-center py-8">
+        <i class="pi pi-user text-gray-400 text-3xl mb-2"></i>
+        <p class="text-gray-500">Profile information not available</p>
       </div>
     </div>
   </div>
