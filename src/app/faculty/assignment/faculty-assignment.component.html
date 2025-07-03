@@ -1,443 +1,396 @@
-<div class="faculty-assignment">
-  <div class="page-header">
-    <div class="header-info">
-      <h1><i class="pi pi-users"></i> Faculty Assignment</h1>
-      <p *ngIf="department">{{ department.name }} Department</p>
-    </div>
-    <div class="header-actions">
-      <p-button
-        label="Assign Faculty"
-        icon="pi pi-plus"
-        styleClass="p-button-success"
-        (onClick)="openAssignmentDialog()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Export"
-        icon="pi pi-download"
-        styleClass="p-button-outlined"
-        (onClick)="exportAssignments()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Refresh"
-        icon="pi pi-refresh"
-        styleClass="p-button-outlined"
-        (onClick)="refreshData()"
-        [loading]="loading"
-      >
-      </p-button>
-    </div>
-  </div>
-
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
-    <p>Loading assignment data...</p>
-  </div>
-
-  <div *ngIf="error && !loading" class="error-container">
-    <p-card>
-      <div class="error-content">
-        <i class="pi pi-exclamation-triangle error-icon"></i>
-        <h3>Error Loading Assignments</h3>
-        <p>{{ error }}</p>
-        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
-        </p-button>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Page Header -->
+  <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-4 lg:mb-0">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+          <i class="pi pi-users text-indigo-600 mr-3"></i>
+          Faculty Assignment
+        </h1>
+        <p *ngIf="department" class="text-gray-600 mt-1">
+          {{ department.name }} Department
+        </p>
       </div>
-    </p-card>
+      <div class="flex flex-wrap gap-3">
+        <button
+          (click)="openAssignmentDialog()"
+          [disabled]="loading"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <i class="pi pi-plus"></i>
+          Assign Faculty
+        </button>
+        <button
+          (click)="exportAssignments()"
+          [disabled]="loading"
+          class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <i class="pi pi-download"></i>
+          Export
+        </button>
+        <button
+          (click)="refreshData()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          [class.animate-spin]="loading"
+        >
+          <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="!loading && !error" class="assignment-content">
-    <!-- Workload Summary -->
-    <div class="workload-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-chart-bar"></i> Faculty Workload Summary</h3>
-          </div>
-        </ng-template>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"
+    ></div>
+    <p class="text-gray-600 mt-4">Loading assignment data...</p>
+  </div>
 
-        <div *ngIf="workloadSummary.length > 0" class="workload-grid">
-          <div
-            *ngFor="let workload of workloadSummary"
-            class="workload-card"
-            [class.overloaded]="workload.workloadPercentage >= 90"
-            [class.high-load]="
-              workload.workloadPercentage >= 75 &&
-              workload.workloadPercentage < 90
-            "
-          >
-            <div class="faculty-info">
-              <h4>{{ workload.facultyName }}</h4>
-              <p>{{ workload.totalSubjects }} subjects assigned</p>
-            </div>
-            <div class="workload-details">
-              <div class="workload-hours">
-                <span class="total-hours">{{ workload.totalHours }}h</span>
-                <span class="max-hours">/ {{ workload.maxWorkload }}h</span>
-              </div>
-              <div class="workload-breakdown">
-                <div class="hour-type">
-                  <span>Theory: {{ workload.theoryHours }}h</span>
-                </div>
-                <div class="hour-type">
-                  <span>Practical: {{ workload.practicalHours }}h</span>
-                </div>
-                <div class="hour-type">
-                  <span>Lab: {{ workload.labHours }}h</span>
-                </div>
-              </div>
-              <div class="workload-progress">
-                <p-progressBar
-                  [value]="workload.workloadPercentage"
-                  [style]="{ height: '8px' }"
-                  [styleClass]="
-                    'workload-bar ' +
-                    getWorkloadColor(workload.workloadPercentage)
-                  "
-                >
-                </p-progressBar>
-                <span class="percentage"
-                  >{{ workload.workloadPercentage }}%</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="workloadSummary.length === 0" class="empty-state">
-          <i class="pi pi-chart-bar"></i>
-          <p>No faculty workload data available</p>
-        </div>
-      </p-card>
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col items-center text-center">
+      <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">
+        Error Loading Assignments
+      </h3>
+      <p class="text-gray-600 mb-4">{{ error }}</p>
+      <button
+        (click)="refreshData()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+      >
+        <i class="pi pi-refresh"></i>
+        Retry
+      </button>
     </div>
+  </div>
 
-    <!-- Faculty Assignments -->
-    <div class="assignments-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3><i class="pi pi-list"></i> Current Assignments</h3>
-            <div class="filters">
-              <p-dropdown
-                [options]="departmentFaculty"
-                [(ngModel)]="selectedFacultyFilter"
-                optionLabel="name"
-                placeholder="Filter by Faculty"
-                [showClear]="true"
-              >
-              </p-dropdown>
-              <p-dropdown
-                [options]="departmentSubjects"
-                [(ngModel)]="selectedSubjectFilter"
-                optionLabel="name"
-                placeholder="Filter by Subject"
-                [showClear]="true"
-              >
-              </p-dropdown>
-            </div>
-          </div>
-        </ng-template>
+  <!-- Content -->
+  <div *ngIf="!loading && !error" class="space-y-6">
+    <!-- Faculty Workload Summary -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-chart-bar text-blue-600 mr-2"></i>
+        Faculty Workload Summary
+      </h2>
 
-        <div *ngIf="getFilteredAssignments().length > 0">
-          <p-table
-            [value]="getFilteredAssignments()"
-            [paginator]="true"
-            [rows]="10"
-            [responsive]="true"
-          >
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Faculty</th>
-                <th>Subject</th>
-                <th>Semester</th>
-                <th>Workload</th>
-                <th>Assigned Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-assignment>
-              <tr>
-                <td>
-                  <div class="faculty-cell">
-                    <p-avatar
-                      [label]="assignment.facultyName.charAt(0)"
-                      size="normal"
-                      shape="circle"
-                    >
-                    </p-avatar>
-                    <div class="faculty-details">
-                      <h5>{{ assignment.facultyName }}</h5>
-                      <p>
-                        {{
-                          getFacultyWorkload(assignment.facultyId)
-                            ?.workloadPercentage || 0
-                        }}% workload
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="subject-cell">
-                    <h5>{{ assignment.subjectName }}</h5>
-                    <p>{{ assignment.subjectCode }}</p>
-                  </div>
-                </td>
-                <td>
-                  <p-chip [label]="'Semester ' + assignment.semester"> </p-chip>
-                </td>
-                <td>
-                  <div class="workload-cell">
-                    <span class="workload-hours"
-                      >{{ assignment.workload }}h</span
-                    >
-                    <span class="workload-label">per week</span>
-                  </div>
-                </td>
-                <td>
-                  {{ assignment.assignedDate | date: "MMM d, y" }}
-                </td>
-                <td>
-                  <p-tag
-                    [value]="assignment.status | titlecase"
-                    [severity]="getAssignmentStatusSeverity(assignment.status)"
-                  >
-                  </p-tag>
-                </td>
-                <td>
-                  <div class="action-buttons">
-                    <p-button
-                      [icon]="
-                        assignment.status === 'active'
-                          ? 'pi pi-pause'
-                          : 'pi pi-play'
-                      "
-                      [pTooltip]="
-                        assignment.status === 'active'
-                          ? 'Deactivate'
-                          : 'Activate'
-                      "
-                      styleClass="p-button-text p-button-sm"
-                      [severity]="
-                        assignment.status === 'active' ? 'warning' : 'success'
-                      "
-                      (onClick)="toggleAssignmentStatus(assignment)"
-                    >
-                    </p-button>
-                    <p-button
-                      icon="pi pi-trash"
-                      pTooltip="Remove Assignment"
-                      styleClass="p-button-text p-button-sm p-button-danger"
-                      (onClick)="removeAssignment(assignment)"
-                    >
-                    </p-button>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-
-        <div *ngIf="getFilteredAssignments().length === 0" class="empty-state">
-          <i class="pi pi-user-plus"></i>
-          <p>No assignments found for the selected criteria</p>
-        </div>
-      </p-card>
-    </div>
-
-    <!-- Unassigned Subjects -->
-    <div class="unassigned-section">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <h3>
-              <i class="pi pi-exclamation-triangle"></i> Unassigned Subjects
+      <div
+        *ngIf="workloadSummary.length > 0"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <div
+          *ngFor="let workload of workloadSummary"
+          class="border rounded-lg p-4 transition-all hover:shadow-md"
+          [class.border-red-300]="workload.workloadPercentage >= 90"
+          [class.bg-red-50]="workload.workloadPercentage >= 90"
+          [class.border-yellow-300]="
+            workload.workloadPercentage >= 75 &&
+            workload.workloadPercentage < 90
+          "
+          [class.bg-yellow-50]="
+            workload.workloadPercentage >= 75 &&
+            workload.workloadPercentage < 90
+          "
+          [class.border-green-300]="workload.workloadPercentage < 75"
+          [class.bg-green-50]="workload.workloadPercentage < 75"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-gray-900">
+              {{ workload.facultyName }}
             </h3>
+            <span
+              class="text-sm font-medium px-2 py-1 rounded-full"
+              [class.bg-red-100]="workload.workloadPercentage >= 90"
+              [class.text-red-800]="workload.workloadPercentage >= 90"
+              [class.bg-yellow-100]="
+                workload.workloadPercentage >= 75 &&
+                workload.workloadPercentage < 90
+              "
+              [class.text-yellow-800]="
+                workload.workloadPercentage >= 75 &&
+                workload.workloadPercentage < 90
+              "
+              [class.bg-green-100]="workload.workloadPercentage < 75"
+              [class.text-green-800]="workload.workloadPercentage < 75"
+            >
+              {{ workload.workloadPercentage }}%
+            </span>
           </div>
-        </ng-template>
 
-        <div *ngIf="getUnassignedSubjects().length > 0" class="unassigned-grid">
+          <div class="space-y-2 text-sm text-gray-600">
+            <div class="flex justify-between">
+              <span>Subjects:</span>
+              <span class="font-medium">{{ workload.totalSubjects }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Hours:</span>
+              <span class="font-medium">
+                {{ workload.totalHours }}h / {{ workload.maxWorkload }}h
+              </span>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="rounded-full h-2 transition-all duration-300"
+                [class.bg-red-500]="workload.workloadPercentage >= 90"
+                [class.bg-yellow-500]="
+                  workload.workloadPercentage >= 75 &&
+                  workload.workloadPercentage < 90
+                "
+                [class.bg-green-500]="workload.workloadPercentage < 75"
+                [style.width.%]="workload.workloadPercentage"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="workloadSummary.length === 0" class="text-center py-12">
+        <i class="pi pi-chart-bar text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No workload data available</p>
+      </div>
+    </div>
+
+    <!-- Subject Assignments -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-book text-green-600 mr-2"></i>
+        Subject Assignments
+      </h2>
+
+      <div *ngIf="assignments.length > 0" class="space-y-4">
+        <div
+          *ngFor="let assignment of assignments"
+          class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+        >
           <div
-            *ngFor="let subject of getUnassignedSubjects()"
-            class="unassigned-card"
+            class="flex flex-col lg:flex-row lg:items-center lg:justify-between"
           >
-            <div class="subject-info">
-              <h4>{{ subject.name }}</h4>
-              <p class="subject-code">{{ subject.code }}</p>
-              <div class="subject-meta">
-                <span class="semester">Semester {{ subject.semester }}</span>
-                <span class="credits">{{ subject.credits }} Credits</span>
-                <p-tag
-                  [value]="subject.type | titlecase"
-                  [severity]="
-                    subject.type === 'theory'
-                      ? 'info'
-                      : subject.type === 'practical'
-                        ? 'warning'
-                        : 'success'
+            <div class="flex-1 mb-4 lg:mb-0">
+              <div class="flex items-center mb-2">
+                <h3 class="font-semibold text-gray-900 mr-3">
+                  {{ assignment.subjectName }}
+                </h3>
+                <span class="text-sm text-gray-600 mr-3">
+                  {{ assignment.subjectCode }}
+                </span>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [class.bg-blue-100]="assignment.subjectType === 'theory'"
+                  [class.text-blue-800]="assignment.subjectType === 'theory'"
+                  [class.bg-green-100]="assignment.subjectType === 'practical'"
+                  [class.text-green-800]="
+                    assignment.subjectType === 'practical'
                   "
+                  [class.bg-purple-100]="assignment.subjectType === 'lab'"
+                  [class.text-purple-800]="assignment.subjectType === 'lab'"
                 >
-                </p-tag>
+                  {{ assignment.subjectType | titlecase }}
+                </span>
+              </div>
+              <div
+                class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-sm text-gray-600"
+              >
+                <div>
+                  <span class="font-medium">Faculty:</span>
+                  {{ assignment.facultyName }}
+                </div>
+                <div>
+                  <span class="font-medium">Semester:</span>
+                  {{ assignment.semester }}
+                </div>
+                <div>
+                  <span class="font-medium">Credits:</span>
+                  {{ assignment.credits }}
+                </div>
+                <div>
+                  <span class="font-medium">Hours/Week:</span>
+                  {{ assignment.hoursPerWeek }}h
+                </div>
               </div>
             </div>
-            <div class="subject-actions">
-              <p-button
-                label="Assign Faculty"
-                icon="pi pi-user-plus"
-                styleClass="p-button-success p-button-sm"
-                (onClick)="selectedSubject = subject; openAssignmentDialog()"
+            <div class="flex gap-2">
+              <button
+                (click)="editAssignment(assignment)"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm flex items-center gap-1 transition-colors"
               >
-              </p-button>
+                <i class="pi pi-pencil text-xs"></i>
+                Edit
+              </button>
+              <button
+                (click)="removeAssignment(assignment)"
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm flex items-center gap-1 transition-colors"
+              >
+                <i class="pi pi-trash text-xs"></i>
+                Remove
+              </button>
             </div>
           </div>
         </div>
+      </div>
 
-        <div *ngIf="getUnassignedSubjects().length === 0" class="empty-state">
-          <i class="pi pi-check-circle"></i>
-          <p>All subjects have been assigned to faculty</p>
+      <div *ngIf="assignments.length === 0" class="text-center py-12">
+        <i class="pi pi-book text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No subject assignments found</p>
+      </div>
+    </div>
+
+    <!-- Faculty List -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-users text-purple-600 mr-2"></i>
+        Faculty Members
+      </h2>
+
+      <div
+        *ngIf="facultyList.length > 0"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <div
+          *ngFor="let faculty of facultyList"
+          class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0 mr-4">
+              <div
+                class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center"
+              >
+                <span class="text-indigo-600 font-semibold text-lg">
+                  {{ getInitials(faculty.name) }}
+                </span>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-gray-900 truncate">
+                {{ faculty.name }}
+              </h3>
+              <p class="text-sm text-gray-600">{{ faculty.employeeId }}</p>
+              <p class="text-xs text-gray-500">{{ faculty.department }}</p>
+            </div>
+          </div>
+          <div class="mt-3 flex items-center justify-between">
+            <span class="text-sm text-gray-600">
+              {{ faculty.totalSubjects || 0 }} subjects
+            </span>
+            <button
+              (click)="viewFacultyDetails(faculty)"
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              View Details
+            </button>
+          </div>
         </div>
-      </p-card>
+      </div>
+
+      <div *ngIf="facultyList.length === 0" class="text-center py-12">
+        <i class="pi pi-users text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No faculty members found</p>
+      </div>
     </div>
   </div>
 
   <!-- Assignment Dialog -->
-  <p-dialog
-    header="Assign Faculty to Subject"
-    [(visible)]="showAssignmentDialog"
-    [modal]="true"
-    [closable]="true"
-    [resizable]="true"
-    styleClass="assignment-dialog"
-    (onHide)="closeAssignmentDialog()"
+  <div
+    *ngIf="showAssignmentDialog"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    (click)="closeAssignmentDialog()"
   >
-    <div class="assignment-form">
-      <div class="form-section">
-        <label for="faculty">Select Faculty *</label>
-        <p-dropdown
-          id="faculty"
-          [options]="getAvailableFaculty()"
-          [(ngModel)]="selectedFaculty"
-          optionLabel="name"
-          placeholder="Choose a faculty member"
-          [filter]="true"
-          filterBy="name"
-          styleClass="w-100"
-        >
-          <ng-template let-faculty pTemplate="item">
-            <div class="faculty-option">
-              <div class="faculty-details">
-                <h5>{{ faculty.name }}</h5>
-                <p>{{ faculty.designation }} • {{ faculty.department }}</p>
-                <div class="workload-info">
-                  <span
-                    class="workload-percentage"
-                    [class]="
-                      'workload-' +
-                      getWorkloadColor(
-                        getFacultyWorkload(faculty.id)?.workloadPercentage || 0
-                      )
-                    "
-                  >
-                    {{
-                      getFacultyWorkload(faculty.id)?.workloadPercentage || 0
-                    }}% workload
-                  </span>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
+    <div
+      class="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-6">
+          Assign Faculty to Subject
+        </h3>
 
-      <div class="form-section">
-        <label for="subject">Select Subject *</label>
-        <p-dropdown
-          id="subject"
-          [options]="getAvailableSubjects()"
-          [(ngModel)]="selectedSubject"
-          optionLabel="name"
-          placeholder="Choose a subject"
-          [filter]="true"
-          filterBy="name"
-          styleClass="w-100"
-        >
-          <ng-template let-subject pTemplate="item">
-            <div class="subject-option">
-              <div class="subject-details">
-                <h5>{{ subject.name }}</h5>
-                <p>{{ subject.code }} • Semester {{ subject.semester }}</p>
-                <div class="subject-info">
-                  <span class="credits">{{ subject.credits }} Credits</span>
-                  <p-tag
-                    [value]="subject.type | titlecase"
-                    [severity]="
-                      subject.type === 'theory'
-                        ? 'info'
-                        : subject.type === 'practical'
-                          ? 'warning'
-                          : 'success'
-                    "
-                  >
-                  </p-tag>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
-
-      <div
-        *ngIf="selectedFaculty && selectedSubject"
-        class="assignment-summary"
-      >
-        <p-card>
-          <ng-template pTemplate="header">
-            <h4>Assignment Summary</h4>
-          </ng-template>
-          <div class="summary-details">
-            <div class="summary-item">
-              <strong>Faculty:</strong> {{ selectedFaculty.name }}
-            </div>
-            <div class="summary-item">
-              <strong>Subject:</strong> {{ selectedSubject.name }} ({{
-                selectedSubject.code
-              }})
-            </div>
-            <div class="summary-item">
-              <strong>Estimated Workload:</strong>
-              {{ calculateSubjectWorkload(selectedSubject) }} hours/week
-            </div>
-            <div class="summary-item">
-              <strong>Current Faculty Workload:</strong>
-              {{
-                getFacultyWorkload(selectedFaculty.id)?.workloadPercentage || 0
-              }}%
-            </div>
+        <form [formGroup]="assignmentForm" class="space-y-4">
+          <!-- Faculty Selection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Faculty *</label
+            >
+            <select
+              formControlName="facultyId"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="" disabled>Select faculty member</option>
+              <option *ngFor="let faculty of facultyList" [value]="faculty.id">
+                {{ faculty.name }} ({{ faculty.employeeId }})
+              </option>
+            </select>
           </div>
-        </p-card>
-      </div>
 
-      <div class="dialog-actions">
-        <p-button
-          label="Cancel"
-          icon="pi pi-times"
-          styleClass="p-button-text"
-          (onClick)="closeAssignmentDialog()"
-        >
-        </p-button>
-        <p-button
-          label="Assign Faculty"
-          icon="pi pi-check"
-          styleClass="p-button-success"
-          (onClick)="assignFaculty()"
-          [loading]="assignmentLoading"
-          [disabled]="!selectedFaculty || !selectedSubject"
-        >
-        </p-button>
+          <!-- Subject Selection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Subject *</label
+            >
+            <select
+              formControlName="subjectId"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="" disabled>Select subject</option>
+              <option
+                *ngFor="let subject of availableSubjects"
+                [value]="subject.id"
+              >
+                {{ subject.name }} ({{ subject.code }})
+              </option>
+            </select>
+          </div>
+
+          <!-- Academic Year -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Academic Year *</label
+            >
+            <select
+              formControlName="academicYear"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="" disabled>Select academic year</option>
+              <option *ngFor="let year of academicYears" [value]="year.value">
+                {{ year.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Notes -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Notes (Optional)</label
+            >
+            <textarea
+              formControlName="notes"
+              rows="3"
+              placeholder="Additional notes..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            ></textarea>
+          </div>
+        </form>
+
+        <!-- Dialog Actions -->
+        <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+          <button
+            (click)="closeAssignmentDialog()"
+            class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            (click)="assignFaculty()"
+            [disabled]="assignmentForm.invalid || assignmentLoading"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+          >
+            <i class="pi pi-check"></i>
+            {{ assignmentLoading ? "Assigning..." : "Assign Faculty" }}
+          </button>
+        </div>
       </div>
     </div>
-  </p-dialog>
+  </div>
 </div>
