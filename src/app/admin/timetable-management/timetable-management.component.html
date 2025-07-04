@@ -524,7 +524,7 @@
           <i class="pi pi-calendar text-blue-600 text-xl"></i>
         </div>
         <div class="text-2xl font-bold text-gray-800">
-          {{ lectureSlots.filter(s => s.isAssigned).length }}
+          {{ getAssignedLecturesCount() }}
         </div>
         <div class="text-sm text-gray-600">Assigned Lectures</div>
       </div>
@@ -536,7 +536,7 @@
           <i class="pi pi-users text-green-600 text-xl"></i>
         </div>
         <div class="text-2xl font-bold text-gray-800">
-          {{ faculties.length }}
+          {{ getFacultiesCount() }}
         </div>
         <div class="text-sm text-gray-600">Available Faculty</div>
       </div>
@@ -548,7 +548,7 @@
           <i class="pi pi-book text-yellow-600 text-xl"></i>
         </div>
         <div class="text-2xl font-bold text-gray-800">
-          {{ subjects.length }}
+          {{ getSubjectsCount() }}
         </div>
         <div class="text-sm text-gray-600">Total Subjects</div>
       </div>
@@ -559,7 +559,9 @@
         >
           <i class="pi pi-exclamation-triangle text-red-600 text-xl"></i>
         </div>
-        <div class="text-2xl font-bold text-gray-800">{{ conflicts.size }}</div>
+        <div class="text-2xl font-bold text-gray-800">
+          {{ getConflictsCount() }}
+        </div>
         <div class="text-sm text-gray-600">Conflicts</div>
       </div>
     </div>
