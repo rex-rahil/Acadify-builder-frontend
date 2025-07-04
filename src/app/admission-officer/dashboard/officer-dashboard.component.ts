@@ -52,6 +52,89 @@ export class OfficerDashboardComponent implements OnInit {
     }, 1000);
   }
 
+  // UI Helper Methods
+  getReviewProgress(): number {
+    if (!this.overview) return 0;
+    const total = this.overview.totalApplications || 0;
+    const pending = this.overview.pendingReview || 0;
+    if (total === 0) return 100;
+    return Math.round(((total - pending) / total) * 100);
+  }
+
+  getApprovalRate(): number {
+    if (!this.overview) return 0;
+    const total = this.overview.totalApplications || 0;
+    const approved = this.overview.approved || 0;
+    if (total === 0) return 0;
+    return Math.round((approved / total) * 100);
+  }
+
+  getPendingRate(): number {
+    if (!this.overview) return 0;
+    const total = this.overview.totalApplications || 0;
+    const pending = this.overview.pendingReview || 0;
+    if (total === 0) return 0;
+    return Math.round((pending / total) * 100);
+  }
+
+  getNotificationIcon(type: string): string {
+    switch (type) {
+      case "info":
+        return "pi pi-info-circle";
+      case "warning":
+        return "pi pi-exclamation-triangle";
+      case "success":
+        return "pi pi-check-circle";
+      case "error":
+        return "pi pi-times-circle";
+      default:
+        return "pi pi-bell";
+    }
+  }
+
+  getTimeAgo(date: Date): string {
+    const now = new Date();
+    const diffMs = now.getTime() - new Date(date).getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return new Date(date).toLocaleDateString();
+  }
+
+  // Navigation Methods
+  navigateToReview(): void {
+    this.router.navigate(["/admission-officer/review"]);
+  }
+
+  navigateToPayments(): void {
+    this.router.navigate(["/admission-officer/payment"]);
+  }
+
+  viewApplication(applicationId: string): void {
+    this.router.navigate(["/admission-officer/details", applicationId]);
+  }
+
+  // Quick Actions
+  async quickApprove(applicationId: string): Promise<void> {
+    try {
+      await this.admissionService.quickApprove(applicationId).toPromise();
+      await this.loadDashboardData(); // Refresh data
+    } catch (error: any) {
+      this.error = this.extractErrorMessage(error);
+    }
+  }
+
+  showRejectDialog(applicationId: string): void {
+    // This would open a dialog for rejection reason
+    // For now, just navigate to details page
+    this.viewApplication(applicationId);
+  }
+
   private async loadDashboardData(): Promise<void> {
     this.loading = true;
     this.error = null;
