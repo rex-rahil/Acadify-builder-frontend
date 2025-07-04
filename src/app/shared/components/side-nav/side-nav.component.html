@@ -1,98 +1,93 @@
-<p-sidebar
-  [(visible)]="visible"
-  position="left"
-  [modal]="true"
-  styleClass="side-nav-sidebar"
-  [showCloseIcon]="false"
+<!-- Modern Sidebar -->
+<div
+  class="sidebar-overlay"
+  *ngIf="visible"
+  (click)="onHide()"
+  [@fadeInOut]
+></div>
+
+<aside
+  class="modern-sidebar"
+  [class.visible]="visible"
+  [@slideInOut]
+  (click)="$event.stopPropagation()"
 >
-  <!-- Custom Header -->
-  <div class="nav-header">
-    <div class="close-button">
-      <button class="close-btn" (click)="onHide()" pRipple>
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <div class="header-top">
+      <div class="logo-section">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="pi pi-graduation-cap"></i>
+          </div>
+          <div class="logo-text">
+            <h3>Oriental College</h3>
+            <span>Portal</span>
+          </div>
+        </div>
+      </div>
+      <button class="close-btn" (click)="onHide()">
         <i class="pi pi-times"></i>
       </button>
-    </div>
-    <div class="header-content">
-      <div class="college-logo">
-        <div class="logo-circle">
-          <i class="pi pi-graduation-cap"></i>
-        </div>
-      </div>
-      <div class="college-info">
-        <h3>Oriental College</h3>
-        <span>of Pharmacy</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- User Profile Section -->
-  <div class="user-profile">
-    <div class="profile-card">
-      <div class="avatar-container">
-        <p-avatar
-          [label]="getInitials(getUserDisplayName())"
-          styleClass="user-avatar"
-          size="large"
-        ></p-avatar>
-        <div class="status-indicator"></div>
-      </div>
-      <div class="user-details">
-        <h4>{{ getUserDisplayName() }}</h4>
-        <span class="user-id" *ngIf="currentUser?.employeeId"
-          >ID: {{ currentUser.employeeId }}</span
-        >
-        <div class="user-badge">
-          <i class="pi pi-user"></i>
-          <span>{{ getUserRole() }}</span>
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- Navigation Menu -->
-  <div class="nav-menu">
-    <div *ngFor="let section of menuSections" class="menu-section">
-      <div class="section-header">
-        <h5>{{ section.label }}</h5>
-        <div class="section-divider"></div>
-      </div>
-      <ul class="menu-list">
-        <li *ngFor="let item of section.items" class="menu-item">
-          <button
-            (click)="
-              item.route
-                ? navigateTo(item.route)
-                : item.command
-                  ? item.command()
-                  : null
-            "
-            class="menu-link"
-            [class.active]="item.route && router.isActive(item.route, false)"
-            pRipple
-          >
-            <div class="menu-icon">
-              <i [class]="item.icon"></i>
-            </div>
-            <span class="menu-text">{{ item.label }}</span>
-            <div class="menu-arrow" *ngIf="item.route">
-              <i class="pi pi-chevron-right"></i>
-            </div>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-content">
+      <!-- Main Navigation Sections -->
+      <div
+        *ngFor="let section of getFilteredMenuSections()"
+        class="nav-section"
+      >
+        <div class="section-header" *ngIf="section.label">
+          <h5>{{ section.label }}</h5>
+        </div>
 
-  <!-- Footer -->
-  <div class="nav-footer">
-    <div class="footer-info">
-      <div class="footer-logo">
-        <i class="pi pi-shield"></i>
-      </div>
-      <div class="footer-text">
-        <span>Secure Portal</span>
-        <small>v2024.1</small>
+        <ul class="nav-list">
+          <li *ngFor="let item of section.items" class="nav-item">
+            <a
+              *ngIf="item.route"
+              [routerLink]="item.route"
+              class="nav-link"
+              [class.active]="router.isActive(item.route, false)"
+              (click)="navigateAndClose(item.route)"
+              routerLinkActive="active"
+            >
+              <div class="link-content">
+                <div class="icon-container">
+                  <i [class]="item.icon"></i>
+                </div>
+                <span class="link-text">{{ item.label }}</span>
+              </div>
+            </a>
+
+            <button
+              *ngIf="!item.route && item.command"
+              class="nav-link nav-button"
+              (click)="item.command()"
+            >
+              <div class="link-content">
+                <div class="icon-container">
+                  <i [class]="item.icon"></i>
+                </div>
+                <span class="link-text">{{ item.label }}</span>
+              </div>
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
+
+  <!-- Sidebar Footer -->
+  <div class="sidebar-footer">
+    <!-- Footer Actions -->
+    <div class="footer-actions">
+      <button class="footer-btn logout-btn" (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        <span>Sign Out</span>
+      </button>
+    </div>
   </div>
-</p-sidebar>
+</aside>

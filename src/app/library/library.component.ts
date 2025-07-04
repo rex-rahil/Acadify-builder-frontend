@@ -14,6 +14,7 @@ import { MessageService, ConfirmationService } from "primeng/api";
   styleUrls: ["./library.component.scss"],
   providers: [MessageService, ConfirmationService],
 })
+// Library management component following faculty UI patterns
 export class LibraryComponent implements OnInit {
   books: Book[] = [];
   filteredBooks: Book[] = [];
@@ -30,10 +31,17 @@ export class LibraryComponent implements OnInit {
   subjects: string[] = [];
 
   activeTab = 0;
+  error: string | null = null;
 
   currentStudentId = "OCP2024001"; // This would come from auth service
 
   loading = true;
+
+  tabs = [
+    { label: "Browse Books", icon: "pi pi-search" },
+    { label: "My Issues", icon: "pi pi-send" },
+    { label: "My Reservations", icon: "pi pi-clock" },
+  ];
 
   constructor(
     private libraryService: LibraryService,
@@ -45,8 +53,23 @@ export class LibraryComponent implements OnInit {
     this.loadLibraryData();
   }
 
+  refreshData() {
+    this.error = null;
+    this.loadLibraryData();
+  }
+
+  exportLibraryData() {
+    // Implementation for exporting library data
+    this.messageService.add({
+      severity: "success",
+      summary: "Export Started",
+      detail: "Library data export has been initiated",
+    });
+  }
+
   loadLibraryData() {
     this.loading = true;
+    this.error = null;
 
     // Load all books
     this.libraryService.getAllBooks().subscribe({
@@ -58,11 +81,7 @@ export class LibraryComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error loading books:", error);
-        this.messageService.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Failed to load library books",
-        });
+        this.error = "Failed to load library books. Please try again.";
         this.loading = false;
       },
     });
