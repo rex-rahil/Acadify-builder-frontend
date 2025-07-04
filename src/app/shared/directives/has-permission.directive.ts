@@ -33,6 +33,7 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
     private permissionService: PermissionService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
