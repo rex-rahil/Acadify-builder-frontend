@@ -24,14 +24,43 @@ export class AssetListComponent implements OnInit, OnDestroy {
   loading = true;
   searchQuery = "";
 
-  // Filter options
-  categories = Object.values(AssetCategory);
-  statuses = Object.values(AssetStatus);
-  conditions = Object.values(AssetCondition);
+  // Missing properties for template
+  totalAssets = 0;
+  currentView = "table";
+  viewOptions = [
+    { label: "Table View", value: "table" },
+    { label: "Grid View", value: "grid" },
+    { label: "Card View", value: "card" },
+  ];
 
-  selectedCategory: AssetCategory | null = null;
-  selectedStatus: AssetStatus | null = null;
-  selectedCondition: AssetCondition | null = null;
+  // Filter options
+  categories = [
+    { label: "All Categories", value: null },
+    { label: "Computer", value: "Computer" },
+    { label: "Furniture", value: "Furniture" },
+    { label: "Equipment", value: "Equipment" },
+    { label: "Vehicle", value: "Vehicle" },
+  ];
+
+  statuses = [
+    { label: "All Statuses", value: null },
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" },
+    { label: "Maintenance", value: "Maintenance" },
+    { label: "Disposed", value: "Disposed" },
+  ];
+
+  conditions = [
+    { label: "All Conditions", value: null },
+    { label: "Excellent", value: "Excellent" },
+    { label: "Good", value: "Good" },
+    { label: "Fair", value: "Fair" },
+    { label: "Poor", value: "Poor" },
+  ];
+
+  selectedCategory: string | null = null;
+  selectedStatus: string | null = null;
+  selectedCondition: string | null = null;
   selectedDepartment: string | null = null;
   selectedLocation: string | null = null;
 
@@ -41,6 +70,44 @@ export class AssetListComponent implements OnInit, OnDestroy {
   // Pagination
   first = 0;
   rows = 10;
+
+  // Mock data for demonstration
+  mockAssets = [
+    {
+      id: "1",
+      assetTag: "COM001234",
+      name: "Dell OptiPlex 7090",
+      brand: "Dell",
+      model: "OptiPlex 7090",
+      serialNumber: "DL123456789",
+      category: "Computer",
+      status: "Active",
+      condition: "Excellent",
+      currentValue: 1200,
+      purchaseValue: 1500,
+      assignedTo: "John Doe",
+      assignmentDate: new Date("2023-01-15"),
+      location: "IT Department",
+      department: "Information Technology",
+    },
+    {
+      id: "2",
+      assetTag: "FUR002345",
+      name: "Executive Office Chair",
+      brand: "Herman Miller",
+      model: "Aeron",
+      serialNumber: "HM987654321",
+      category: "Furniture",
+      status: "Active",
+      condition: "Good",
+      currentValue: 800,
+      purchaseValue: 1000,
+      assignedTo: "Jane Smith",
+      assignmentDate: new Date("2023-02-20"),
+      location: "Admin Office",
+      department: "Administration",
+    },
+  ];
 
   private destroy$ = new Subject<void>();
 
