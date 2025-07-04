@@ -624,4 +624,21 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   toggleFacultyPanel() {
     this.showFacultyPanel = !this.showFacultyPanel;
   }
+
+  // Helper methods for template calculations
+  getAssignedLecturesCount(): number {
+    return this.lectureSlots.filter((s) => s.isAssigned).length;
+  }
+
+  getFacultiesCount(): number {
+    return this.faculties.length;
+  }
+
+  getSubjectsCount(): number {
+    return this.subjects.length;
+  }
+
+  getConflictsCount(): number {
+    return this.conflicts.size;
+  }
 }
