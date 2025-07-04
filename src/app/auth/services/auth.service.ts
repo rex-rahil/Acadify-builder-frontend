@@ -17,6 +17,9 @@ export interface User {
   department?: string;
   employeeId?: string;
   avatar?: string;
+  permissions?: string[];
+  lastLogin?: Date;
+  isActive?: boolean;
 }
 
 export interface AuthResponse {
