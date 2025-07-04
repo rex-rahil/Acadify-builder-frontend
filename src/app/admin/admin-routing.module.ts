@@ -5,6 +5,7 @@ import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.compo
 import { UserManagementComponent } from "./user-management/user-management.component";
 import { CourseManagementComponent } from "./course-management/course-management.component";
 import { SubjectAllocationComponent } from "./course-management/subject-allocation/subject-allocation.component";
+import { TimetableManagementComponent } from "./timetable-management/timetable-management.component";
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: "subjects",
     component: SubjectAllocationComponent,
+  },
+  {
+    path: "timetable",
+    component: TimetableManagementComponent,
   },
 ];
 
