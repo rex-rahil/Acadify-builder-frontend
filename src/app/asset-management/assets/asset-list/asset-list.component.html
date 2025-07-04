@@ -1,9 +1,56 @@
-<!-- Asset List Component -->
-<div class="asset-list-container">
-  <!-- Header -->
-  <div class="page-header">
-    <h1>Asset Management</h1>
-    <p>Manage and track all college assets</p>
+<!-- Modern Asset List Component -->
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Modern Header with Gradient -->
+  <div
+    class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white"
+  >
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-6 lg:mb-0">
+        <h1 class="text-4xl font-bold mb-3">Asset Management</h1>
+        <p class="text-indigo-100 text-lg mb-4">
+          Comprehensive asset tracking and management system
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20"
+          >
+            <i class="pi pi-box mr-2"></i>
+            {{ totalAssets }} Total Assets
+          </span>
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20"
+          >
+            <i class="pi pi-dollar mr-2"></i>
+            {{ getTotalValue() | currency }}
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <button
+          (click)="createAsset()"
+          class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+        >
+          <i class="pi pi-plus text-lg"></i>
+          Add New Asset
+        </button>
+        <div class="flex gap-2">
+          <button
+            (click)="exportAssets()"
+            class="bg-white/20 hover:bg-white/30 text-white px-4 py-3 rounded-xl flex items-center gap-2 transition-all duration-300"
+          >
+            <i class="pi pi-upload"></i>
+            Export
+          </button>
+          <button
+            (click)="importAssets()"
+            class="bg-white/20 hover:bg-white/30 text-white px-4 py-3 rounded-xl flex items-center gap-2 transition-all duration-300"
+          >
+            <i class="pi pi-download"></i>
+            Import
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Toolbar -->
