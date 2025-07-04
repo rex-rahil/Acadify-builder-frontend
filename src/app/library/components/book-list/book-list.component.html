@@ -1,198 +1,269 @@
 <div class="book-list-container">
-  <!-- Layout Toggle -->
-  <div class="layout-controls">
-    <div class="layout-buttons">
-      <p-button
-        icon="pi pi-th-large"
-        [outlined]="layout !== 'grid'"
-        (onClick)="layout = 'grid'"
-        pTooltip="Grid View"
-        tooltipPosition="top"
-      ></p-button>
-      <p-button
-        icon="pi pi-list"
-        [outlined]="layout !== 'list'"
-        (onClick)="layout = 'list'"
-        pTooltip="List View"
-        tooltipPosition="top"
-      ></p-button>
+  <!-- Layout Controls -->
+  <div
+    class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 bg-gray-50 rounded-lg p-4"
+  >
+    <div class="flex gap-2 mb-4 sm:mb-0">
+      <button
+        (click)="layout = 'grid'"
+        class="px-3 py-2 text-sm font-medium rounded-lg border transition-colors"
+        [class.bg-blue-600]="layout === 'grid'"
+        [class.text-white]="layout === 'grid'"
+        [class.border-blue-600]="layout === 'grid'"
+        [class.bg-white]="layout !== 'grid'"
+        [class.text-gray-700]="layout !== 'grid'"
+        [class.border-gray-300]="layout !== 'grid'"
+        [class.hover:bg-gray-50]="layout !== 'grid'"
+      >
+        <i class="pi pi-th-large mr-2"></i>
+        Grid View
+      </button>
+      <button
+        (click)="layout = 'list'"
+        class="px-3 py-2 text-sm font-medium rounded-lg border transition-colors"
+        [class.bg-blue-600]="layout === 'list'"
+        [class.text-white]="layout === 'list'"
+        [class.border-blue-600]="layout === 'list'"
+        [class.bg-white]="layout !== 'list'"
+        [class.text-gray-700]="layout !== 'list'"
+        [class.border-gray-300]="layout !== 'list'"
+        [class.hover:bg-gray-50]="layout !== 'list'"
+      >
+        <i class="pi pi-list mr-2"></i>
+        List View
+      </button>
     </div>
-    <span class="book-count">{{ books.length }} books found</span>
+    <span
+      class="text-sm text-gray-600 font-medium bg-white px-3 py-2 rounded-lg border border-gray-200"
+    >
+      {{ books.length }} books found
+    </span>
   </div>
 
   <!-- Loading State -->
-  <div *ngIf="loading" class="loading-container">
-    <p-progressBar mode="indeterminate"></p-progressBar>
-    <p>Loading books...</p>
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+    ></div>
+    <p class="text-gray-600 mt-4">Loading books...</p>
   </div>
 
   <!-- No Books Found -->
-  <div *ngIf="!loading && books.length === 0" class="no-books">
-    <i class="pi pi-search"></i>
-    <h3>No Books Found</h3>
-    <p>Try adjusting your search criteria or filters.</p>
+  <div *ngIf="!loading && books.length === 0" class="text-center py-12">
+    <i class="pi pi-search text-gray-400 text-4xl mb-4"></i>
+    <h3 class="text-lg font-semibold text-gray-900 mb-2">No Books Found</h3>
+    <p class="text-gray-500">Try adjusting your search criteria or filters.</p>
   </div>
 
   <!-- Grid View -->
   <div
     *ngIf="!loading && books.length > 0 && layout === 'grid'"
-    class="books-grid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
   >
-    <p-card *ngFor="let book of books" styleClass="book-card">
-      <ng-template pTemplate="header">
-        <div class="book-image">
-          <img [src]="getBookImage(book)" [alt]="book.title" />
-          <div class="availability-badge">
-            <p-tag
-              [value]="getAvailabilityStatus(book)"
-              [severity]="getAvailabilitySeverity(book)"
-            ></p-tag>
-          </div>
+    <div
+      *ngFor="let book of books"
+      class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+    >
+      <!-- Book Image -->
+      <div class="relative h-48 bg-gradient-to-br from-blue-50 to-blue-100">
+        <img
+          [src]="getBookImage(book)"
+          [alt]="book.title"
+          class="w-full h-full object-cover"
+          (error)="$event.target.src = getBookImage(book)"
+        />
+        <div class="absolute top-2 right-2">
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            [class.bg-green-100]="book.availableCopies > 0"
+            [class.text-green-800]="book.availableCopies > 0"
+            [class.bg-red-100]="book.availableCopies === 0"
+            [class.text-red-800]="book.availableCopies === 0"
+          >
+            {{ getAvailabilityStatus(book) }}
+          </span>
         </div>
-      </ng-template>
+      </div>
 
-      <div class="book-content">
-        <h3 class="book-title">{{ book.title }}</h3>
-        <p class="book-author">by {{ book.author }}</p>
+      <!-- Book Content -->
+      <div class="p-4">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+          {{ book.title }}
+        </h3>
+        <p class="text-sm text-gray-600 mb-3 italic">by {{ book.author }}</p>
 
-        <div class="book-details">
-          <div class="detail-item">
-            <span class="label">Subject:</span>
-            <p-chip [label]="book.subject" styleClass="subject-chip"></p-chip>
+        <!-- Book Details -->
+        <div class="space-y-2 text-sm mb-4">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Subject:</span>
+            <span class="font-medium text-blue-600">{{ book.subject }}</span>
           </div>
-          <div class="detail-item">
-            <span class="label">Publisher:</span>
-            <span class="value">{{ book.publisher }}</span>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Publisher:</span>
+            <span class="text-gray-900 truncate ml-2">{{
+              book.publisher
+            }}</span>
           </div>
-          <div class="detail-item">
-            <span class="label">Edition:</span>
-            <span class="value"
+          <div class="flex justify-between">
+            <span class="text-gray-500">Edition:</span>
+            <span class="text-gray-900"
               >{{ book.edition }} ({{ book.publishedYear }})</span
             >
           </div>
-          <div class="detail-item">
-            <span class="label">ISBN:</span>
-            <span class="value">{{ book.isbn }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="label">Available:</span>
-            <span class="value">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Available:</span>
+            <span class="font-medium text-gray-900">
               {{ book.availableCopies }}/{{ book.totalCopies }} copies
             </span>
           </div>
-          <div class="detail-item">
-            <span class="label">Location:</span>
-            <span class="value"
+          <div class="flex justify-between">
+            <span class="text-gray-500">Location:</span>
+            <span class="text-gray-900"
               >{{ book.location.section }} - {{ book.location.shelf }}</span
             >
           </div>
         </div>
 
-        <div class="book-description" *ngIf="book.description">
-          <p>
-            {{ book.description | slice: 0 : 150
-            }}<span *ngIf="book.description.length > 150">...</span>
+        <!-- Book Description -->
+        <div *ngIf="book.description" class="mb-4">
+          <p class="text-sm text-gray-600 line-clamp-3">
+            {{ book.description }}
           </p>
         </div>
 
-        <div class="book-tags" *ngIf="book.tags && book.tags.length > 0">
-          <p-chip
+        <!-- Book Tags -->
+        <div
+          *ngIf="book.tags && book.tags.length > 0"
+          class="flex flex-wrap gap-1 mb-4"
+        >
+          <span
             *ngFor="let tag of book.tags.slice(0, 3)"
-            [label]="tag"
-            styleClass="tag-chip"
-          ></p-chip>
+            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+          >
+            {{ tag }}
+          </span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-2">
+          <button
+            *ngIf="book.availableCopies > 0"
+            (click)="onIssueBook(book)"
+            class="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <i class="pi pi-send mr-1"></i>
+            Issue Book
+          </button>
+          <button
+            *ngIf="book.availableCopies === 0"
+            (click)="onReserveBook(book)"
+            class="flex-1 bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <i class="pi pi-clock mr-1"></i>
+            Reserve
+          </button>
+          <button
+            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <i class="pi pi-info-circle"></i>
+          </button>
         </div>
       </div>
-
-      <ng-template pTemplate="footer">
-        <div class="book-actions">
-          <p-button
-            *ngIf="book.availableCopies > 0"
-            label="Issue Book"
-            icon="pi pi-send"
-            styleClass="p-button-sm"
-            (onClick)="onIssueBook(book)"
-          ></p-button>
-          <p-button
-            *ngIf="book.availableCopies === 0"
-            label="Reserve"
-            icon="pi pi-clock"
-            styleClass="p-button-sm p-button-warning"
-            (onClick)="onReserveBook(book)"
-          ></p-button>
-          <p-button
-            label="Details"
-            icon="pi pi-info-circle"
-            styleClass="p-button-sm p-button-outlined"
-          ></p-button>
-        </div>
-      </ng-template>
-    </p-card>
+    </div>
   </div>
 
   <!-- List View -->
   <div
     *ngIf="!loading && books.length > 0 && layout === 'list'"
-    class="books-list"
+    class="space-y-4"
   >
-    <div class="book-list-items">
-      <div *ngFor="let book of books" class="book-list-item">
-        <div class="book-image-small">
-          <img [src]="getBookImage(book)" [alt]="book.title" />
+    <div
+      *ngFor="let book of books"
+      class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+    >
+      <div class="flex items-start space-x-4">
+        <!-- Book Image -->
+        <div class="flex-shrink-0">
+          <div
+            class="w-20 h-28 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg overflow-hidden"
+          >
+            <img
+              [src]="getBookImage(book)"
+              [alt]="book.title"
+              class="w-full h-full object-cover"
+              (error)="$event.target.src = getBookImage(book)"
+            />
+          </div>
         </div>
 
-        <div class="book-info">
-          <div class="book-header">
-            <h4>{{ book.title }}</h4>
-            <p-tag
-              [value]="getAvailabilityStatus(book)"
-              [severity]="getAvailabilitySeverity(book)"
-            ></p-tag>
+        <!-- Book Info -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                {{ book.title }}
+              </h3>
+              <p class="text-sm text-gray-600 mb-3 italic">
+                by {{ book.author }}
+              </p>
+            </div>
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-4"
+              [class.bg-green-100]="book.availableCopies > 0"
+              [class.text-green-800]="book.availableCopies > 0"
+              [class.bg-red-100]="book.availableCopies === 0"
+              [class.text-red-800]="book.availableCopies === 0"
+            >
+              {{ getAvailabilityStatus(book) }}
+            </span>
           </div>
 
-          <p class="author">by {{ book.author }}</p>
-
-          <div class="book-meta">
-            <span class="meta-item">
-              <i class="pi pi-bookmark"></i>
+          <!-- Book Meta -->
+          <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
+            <span class="flex items-center">
+              <i class="pi pi-bookmark mr-1 text-blue-600"></i>
               {{ book.subject }}
             </span>
-            <span class="meta-item">
-              <i class="pi pi-building"></i>
+            <span class="flex items-center">
+              <i class="pi pi-building mr-1 text-blue-600"></i>
               {{ book.publisher }}
             </span>
-            <span class="meta-item">
-              <i class="pi pi-calendar"></i>
+            <span class="flex items-center">
+              <i class="pi pi-calendar mr-1 text-blue-600"></i>
               {{ book.publishedYear }}
             </span>
-            <span class="meta-item">
-              <i class="pi pi-map-marker"></i>
+            <span class="flex items-center">
+              <i class="pi pi-map-marker mr-1 text-blue-600"></i>
               {{ book.location.section }} - {{ book.location.shelf }}
             </span>
           </div>
 
-          <div class="availability-info">
-            <span class="available-count">
+          <!-- Availability Info -->
+          <div class="text-sm text-gray-600 mb-4">
+            <span class="font-medium">
               {{ book.availableCopies }}/{{ book.totalCopies }} copies available
             </span>
           </div>
         </div>
 
-        <div class="book-actions">
-          <p-button
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-2 ml-4">
+          <button
             *ngIf="book.availableCopies > 0"
-            label="Issue"
-            icon="pi pi-send"
-            styleClass="p-button-sm"
-            (onClick)="onIssueBook(book)"
-          ></p-button>
-          <p-button
+            (click)="onIssueBook(book)"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <i class="pi pi-send mr-2"></i>
+            Issue
+          </button>
+          <button
             *ngIf="book.availableCopies === 0"
-            label="Reserve"
-            icon="pi pi-clock"
-            styleClass="p-button-sm p-button-warning"
-            (onClick)="onReserveBook(book)"
-          ></p-button>
+            (click)="onReserveBook(book)"
+            class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <i class="pi pi-clock mr-2"></i>
+            Reserve
+          </button>
         </div>
       </div>
     </div>
