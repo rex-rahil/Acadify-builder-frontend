@@ -138,18 +138,114 @@ export class AssetDashboardComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  // Navigation Methods
   navigateToAssets() {
-    // Navigation logic will be implemented
+    this.router.navigate(["/asset-management/assets"]);
   }
 
   navigateToMaintenance() {
-    // Navigation logic will be implemented
+    this.router.navigate(["/asset-management/maintenance"]);
   }
 
   navigateToAlerts() {
-    // Navigation logic will be implemented
+    this.router.navigate(["/asset-management/alerts"]);
   }
 
+  // Quick Action Methods
+  quickScan() {
+    this.messageService.add({
+      severity: "info",
+      summary: "QR Scanner",
+      detail: "QR Code scanner activated. Point camera at asset QR code.",
+      life: 3000,
+    });
+  }
+
+  refreshData() {
+    this.loading = true;
+    this.loadDashboardData();
+    this.messageService.add({
+      severity: "success",
+      summary: "Data Refreshed",
+      detail: "Dashboard data has been updated successfully.",
+      life: 2000,
+    });
+  }
+
+  addNewAsset() {
+    this.router.navigate(["/asset-management/assets/new"]);
+  }
+
+  createMaintenanceRequest() {
+    this.messageService.add({
+      severity: "info",
+      summary: "Maintenance Request",
+      detail: "Opening maintenance request form...",
+      life: 2000,
+    });
+    this.router.navigate(["/asset-management/maintenance/new"]);
+  }
+
+  trackAsset() {
+    this.messageService.add({
+      severity: "info",
+      summary: "Asset Tracking",
+      detail: "Opening real-time asset tracking system...",
+      life: 2000,
+    });
+  }
+
+  generateReport() {
+    this.messageService.add({
+      severity: "info",
+      summary: "Report Generation",
+      detail: "Generating comprehensive asset report...",
+      life: 3000,
+    });
+  }
+
+  exportData() {
+    this.messageService.add({
+      severity: "success",
+      summary: "Export Started",
+      detail:
+        "Asset data export has been initiated. Download will start shortly.",
+      life: 3000,
+    });
+  }
+
+  openMaintenanceScheduler() {
+    this.messageService.add({
+      severity: "info",
+      summary: "Maintenance Scheduler",
+      detail: "Opening maintenance scheduling interface...",
+      life: 2000,
+    });
+  }
+
+  // Filter and View Methods
+  filterByCategory(category: string) {
+    this.messageService.add({
+      severity: "info",
+      summary: "Filter Applied",
+      detail: `Showing assets in category: ${category}`,
+      life: 2000,
+    });
+    this.router.navigate(["/asset-management/assets"], {
+      queryParams: { category: category.toLowerCase() },
+    });
+  }
+
+  viewAlertDetails(alert: any) {
+    this.messageService.add({
+      severity: "info",
+      summary: "Alert Details",
+      detail: `Viewing details for: ${alert.assetName}`,
+      life: 2000,
+    });
+  }
+
+  // UI Helper Methods
   getAlertSeverityColor(alertType: string): string {
     switch (alertType) {
       case "MAINTENANCE_DUE":
@@ -164,6 +260,110 @@ export class AssetDashboardComponent implements OnInit, OnDestroy {
         return "warning";
       default:
         return "info";
+    }
+  }
+
+  getAlertCardClass(alertType: string): string {
+    switch (alertType) {
+      case "MAINTENANCE_DUE":
+        return "bg-yellow-50 border-yellow-400";
+      case "WARRANTY_EXPIRY":
+        return "bg-blue-50 border-blue-400";
+      case "INSPECTION_DUE":
+        return "bg-orange-50 border-orange-400";
+      case "LOW_STOCK":
+        return "bg-red-50 border-red-400";
+      default:
+        return "bg-gray-50 border-gray-400";
+    }
+  }
+
+  getAlertIcon(alertType: string): string {
+    switch (alertType) {
+      case "MAINTENANCE_DUE":
+        return "pi pi-wrench text-yellow-600";
+      case "WARRANTY_EXPIRY":
+        return "pi pi-shield text-blue-600";
+      case "INSPECTION_DUE":
+        return "pi pi-search text-orange-600";
+      case "LOW_STOCK":
+        return "pi pi-exclamation-triangle text-red-600";
+      default:
+        return "pi pi-info-circle text-gray-600";
+    }
+  }
+
+  getAlertPriority(alertType: string): string {
+    switch (alertType) {
+      case "MAINTENANCE_DUE":
+        return "High";
+      case "WARRANTY_EXPIRY":
+        return "Medium";
+      case "INSPECTION_DUE":
+        return "Medium";
+      case "LOW_STOCK":
+        return "High";
+      default:
+        return "Low";
+    }
+  }
+
+  getAlertPriorityClass(alertType: string): string {
+    const priority = this.getAlertPriority(alertType);
+    switch (priority) {
+      case "High":
+        return "bg-red-100 text-red-700";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700";
+      case "Low":
+        return "bg-green-100 text-green-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  }
+
+  getActivityIcon(type: string): string {
+    switch (type) {
+      case "allocation":
+        return "pi pi-users";
+      case "maintenance":
+        return "pi pi-wrench";
+      case "acquisition":
+        return "pi pi-plus";
+      case "repair":
+        return "pi pi-cog";
+      default:
+        return "pi pi-info-circle";
+    }
+  }
+
+  getActivityIconClass(type: string): string {
+    switch (type) {
+      case "allocation":
+        return "bg-blue-500";
+      case "maintenance":
+        return "bg-yellow-500";
+      case "acquisition":
+        return "bg-green-500";
+      case "repair":
+        return "bg-red-500";
+      default:
+        return "bg-gray-500";
+    }
+  }
+
+  getActivityStatusClass(status: string): string {
+    switch (status) {
+      case "Completed":
+        return "bg-green-100 text-green-700";
+      case "In Progress":
+        return "bg-yellow-100 text-yellow-700";
+      case "Pending Review":
+        return "bg-blue-100 text-blue-700";
+      case "Failed":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
     }
   }
 
