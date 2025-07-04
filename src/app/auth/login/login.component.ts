@@ -45,9 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Get return URL - default to dashboard, not admin
-    this.returnUrl =
-      this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
+    // Get return URL from query params
+    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "";
   }
 
   ngOnDestroy() {
