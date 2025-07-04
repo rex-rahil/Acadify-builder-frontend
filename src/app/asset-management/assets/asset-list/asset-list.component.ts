@@ -350,17 +350,15 @@ export class AssetListComponent implements OnInit, OnDestroy {
     this.first = 0; // Reset pagination
   }
 
-  private matchesSearchQuery(asset: Asset, query: string): boolean {
+  private matchesSearchQuery(asset: any, query: string): boolean {
     const searchText = query.toLowerCase();
-    return (
-      asset.name.toLowerCase().includes(searchText) ||
-      asset.assetTag.toLowerCase().includes(searchText) ||
-      asset.description.toLowerCase().includes(searchText) ||
-      asset.brand.toLowerCase().includes(searchText) ||
-      asset.model.toLowerCase().includes(searchText) ||
-      (asset.serialNumber &&
-        asset.serialNumber.toLowerCase().includes(searchText)) ||
-      (asset.assignedTo && asset.assignedTo.toLowerCase().includes(searchText))
+    return !!(
+      asset.name?.toLowerCase().includes(searchText) ||
+      asset.assetTag?.toLowerCase().includes(searchText) ||
+      asset.brand?.toLowerCase().includes(searchText) ||
+      asset.model?.toLowerCase().includes(searchText) ||
+      asset.serialNumber?.toLowerCase().includes(searchText) ||
+      asset.assignedTo?.toLowerCase().includes(searchText)
     );
   }
 
