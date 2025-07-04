@@ -53,30 +53,7 @@ import { InventoryService } from "./services/inventory.service";
 import { AlertService } from "./services/alert.service";
 
 @NgModule({
-  declarations: [
-    AssetDashboardComponent,
-    AssetListComponent,
-    AssetFormComponent,
-    AssetDetailsComponent,
-    MaintenanceRequestsComponent,
-    MaintenanceFormComponent,
-    MaintenanceHistoryComponent,
-    ProcurementDashboardComponent,
-    RequisitionListComponent,
-    RequisitionFormComponent,
-    PurchaseOrderListComponent,
-    PurchaseOrderFormComponent,
-    InventoryListComponent,
-    InventoryFormComponent,
-    StockMovementComponent,
-    ReportsComponent,
-    AssetAllocationComponent,
-    AllocationFormComponent,
-    DepreciationTrackingComponent,
-    AlertsComponent,
-    SuppliersComponent,
-    SupplierFormComponent,
-  ],
+  declarations: [AssetDashboardComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
