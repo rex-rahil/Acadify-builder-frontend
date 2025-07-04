@@ -169,6 +169,11 @@ export class SideNavComponent implements OnInit, OnDestroy {
           icon: "pi pi-database",
           route: "/library",
         },
+        {
+          label: "Asset Management",
+          icon: "pi pi-box",
+          route: "/asset-management",
+        },
       ],
     },
     {
