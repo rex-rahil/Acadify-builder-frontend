@@ -2,6 +2,9 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
+// Angular CDK
+import { DragDropModule } from "@angular/cdk/drag-drop";
+
 // PrimeNG Modules
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
