@@ -53,17 +53,23 @@
 
   <!-- Loading State -->
   <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
-    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mb-4"></div>
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mb-4"
+    ></div>
     <p class="text-gray-600 text-lg">Loading admission dashboard...</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="error && !loading" class="max-w-md mx-auto">
     <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
-      <div class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+      <div
+        class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+      >
         <i class="pi pi-exclamation-triangle text-red-600 text-2xl"></i>
       </div>
-      <h3 class="text-xl font-semibold text-gray-800 mb-2">Error Loading Dashboard</h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Error Loading Dashboard
+      </h3>
       <p class="text-gray-600 mb-6">{{ error }}</p>
       <button
         (click)="refreshData()"
@@ -80,11 +86,15 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <!-- Total Applications Card -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500 transform hover:scale-105 transition-all">
+      <div
+        class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500 transform hover:scale-105 transition-all duration-200"
+      >
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm font-medium">Total Applications</p>
-            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.totalApplications || 0 }}</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">
+              {{ overview?.totalApplications || 0 }}
+            </p>
             <p class="text-green-600 text-sm mt-1">
               <i class="pi pi-arrow-up text-xs"></i>
               +12% from last month
@@ -97,11 +107,15 @@
       </div>
 
       <!-- Pending Review Card -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500 transform hover:scale-105 transition-all">
+      <div
+        class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500 transform hover:scale-105 transition-all duration-200"
+      >
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm font-medium">Pending Review</p>
-            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.pendingReview || 0 }}</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">
+              {{ overview?.pendingReview || 0 }}
+            </p>
             <p class="text-yellow-600 text-sm mt-1">
               <i class="pi pi-clock text-xs"></i>
               Requires attention
@@ -114,11 +128,15 @@
       </div>
 
       <!-- Approved Card -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500 transform hover:scale-105 transition-all">
+      <div
+        class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500 transform hover:scale-105 transition-all duration-200"
+      >
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm font-medium">Approved</p>
-            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.approved || 0 }}</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">
+              {{ overview?.approved || 0 }}
+            </p>
             <p class="text-green-600 text-sm mt-1">
               <i class="pi pi-check text-xs"></i>
               Successfully processed
@@ -131,11 +149,15 @@
       </div>
 
       <!-- Rejected Card -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-500 transform hover:scale-105 transition-all">
+      <div
+        class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-500 transform hover:scale-105 transition-all duration-200"
+      >
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm font-medium">Rejected</p>
-            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.rejected || 0 }}</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">
+              {{ overview?.rejected || 0 }}
+            </p>
             <p class="text-red-600 text-sm mt-1">
               <i class="pi pi-times text-xs"></i>
               Need improvement
@@ -147,211 +169,243 @@
         </div>
       </div>
     </div>
-            <h3>{{ overview?.rejected || 0 }}</h3>
-            <p>Rejected</p>
-          </div>
-        </div>
-      </p-card>
 
-      <p-card class="stat-card payment-pending">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-credit-card"></i>
+    <!-- Additional Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Payment Pending Card -->
+      <div
+        class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-orange-500 transform hover:scale-105 transition-all duration-200"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Payment Pending</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">
+              {{ overview?.paymentPending || 0 }}
+            </p>
+            <p class="text-orange-600 text-sm mt-1">
+              <i class="pi pi-exclamation text-xs"></i>
+              Awaiting payment
+            </p>
           </div>
-          <div class="stat-details">
-            <h3>{{ overview?.paymentPending || 0 }}</h3>
-            <p>Payment Pending</p>
+          <div class="bg-orange-100 rounded-xl p-3">
+            <i class="pi pi-credit-card text-orange-600 text-2xl"></i>
           </div>
         </div>
-      </p-card>
+      </div>
 
-      <p-card class="stat-card enrolled">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-graduation-cap"></i>
+      <!-- Enrolled Card -->
+      <div
+        class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-500 transform hover:scale-105 transition-all duration-200"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Enrolled Students</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">
+              {{ overview?.enrolled || 0 }}
+            </p>
+            <p class="text-purple-600 text-sm mt-1">
+              <i class="pi pi-graduation-cap text-xs"></i>
+              Active students
+            </p>
           </div>
-          <div class="stat-details">
-            <h3>{{ overview?.enrolled || 0 }}</h3>
-            <p>Enrolled</p>
+          <div class="bg-purple-100 rounded-xl p-3">
+            <i class="pi pi-graduation-cap text-purple-600 text-2xl"></i>
           </div>
         </div>
-      </p-card>
+      </div>
     </div>
 
     <!-- Content Grid -->
-    <div class="content-grid">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Recent Applications -->
-      <div class="applications-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-file"></i> Recent Applications</h3>
-              <p-button
-                icon="pi pi-external-link"
-                styleClass="p-button-text p-button-sm"
-                (onClick)="navigateToReview()"
-                pTooltip="View All Applications"
+      <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3
+            class="text-xl font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <i class="pi pi-file text-purple-600"></i>
+            Recent Applications
+          </h3>
+          <button
+            (click)="navigateToReview()"
+            class="text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center gap-1 transition-colors"
+          >
+            View All
+            <i class="pi pi-arrow-right text-xs"></i>
+          </button>
+        </div>
+
+        <div
+          *ngIf="recentApplications && recentApplications.length > 0"
+          class="space-y-4"
+        >
+          <div
+            *ngFor="let application of recentApplications"
+            class="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center"
               >
-              </p-button>
-            </div>
-          </ng-template>
-
-          <div *ngIf="recentApplications.length > 0" class="applications-list">
-            <div
-              *ngFor="let application of recentApplications"
-              class="application-item"
-            >
-              <div class="application-info">
-                <div class="application-header">
-                  <h4>Application #{{ application.id }}</h4>
-                  <p-tag
-                    [value]="application.status | titlecase"
-                    [severity]="getStatusSeverity(application.status)"
-                  >
-                  </p-tag>
-                </div>
-                <div class="application-details">
-                  <p>
-                    <strong>Student ID:</strong> {{ application.studentId }}
-                  </p>
-                  <p>
-                    <strong>Submitted:</strong>
-                    {{ application.submittedDate | date: "MMM d, y" }}
-                  </p>
-                  <p *ngIf="application.rejectionReason">
-                    <strong>Reason:</strong> {{ application.rejectionReason }}
-                  </p>
-                </div>
+                <i class="pi pi-user text-purple-600"></i>
               </div>
-              <div class="application-actions">
-                <p-button
-                  icon="pi pi-eye"
-                  styleClass="p-button-text p-button-sm"
-                  pTooltip="View Details"
-                  (onClick)="viewApplication(application.id)"
-                >
-                </p-button>
-                <p-button
-                  *ngIf="application.status === 'submitted'"
-                  icon="pi pi-check"
-                  styleClass="p-button-text p-button-sm p-button-success"
-                  pTooltip="Quick Approve"
-                  (onClick)="quickApprove(application.id)"
-                >
-                </p-button>
-                <p-button
-                  *ngIf="application.status === 'submitted'"
-                  icon="pi pi-times"
-                  styleClass="p-button-text p-button-sm p-button-danger"
-                  pTooltip="Quick Reject"
-                  (onClick)="showRejectDialog(application.id)"
-                >
-                </p-button>
+              <div>
+                <h4 class="font-medium text-gray-800">
+                  Application #{{ application.id }}
+                </h4>
+                <p class="text-sm text-gray-600">
+                  Student ID: {{ application.studentId }}
+                </p>
+                <p class="text-xs text-gray-500">
+                  {{ application.submittedDate | date: "MMM d, y" }}
+                </p>
               </div>
             </div>
+            <div class="flex items-center gap-3">
+              <span
+                class="px-3 py-1 rounded-full text-xs font-medium"
+                [ngClass]="{
+                  'bg-yellow-100 text-yellow-700':
+                    application.status === 'submitted',
+                  'bg-green-100 text-green-700':
+                    application.status === 'approved',
+                  'bg-red-100 text-red-700': application.status === 'rejected',
+                  'bg-blue-100 text-blue-700':
+                    application.status === 'under_review',
+                }"
+              >
+                {{ application.status | titlecase }}
+              </span>
+              <button
+                (click)="viewApplication(application.id)"
+                class="p-2 text-gray-400 hover:text-purple-600 transition-colors"
+              >
+                <i class="pi pi-eye"></i>
+              </button>
+            </div>
           </div>
+        </div>
 
-          <div *ngIf="recentApplications.length === 0" class="empty-state">
-            <i class="pi pi-file"></i>
-            <p>No recent applications</p>
+        <div
+          *ngIf="!recentApplications || recentApplications.length === 0"
+          class="text-center py-12"
+        >
+          <div
+            class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="pi pi-file text-gray-400 text-2xl"></i>
           </div>
-        </p-card>
+          <p class="text-gray-500">No recent applications</p>
+        </div>
       </div>
 
-      <!-- Notifications -->
-      <div class="notifications-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-bell"></i> Recent Notifications</h3>
-            </div>
-          </ng-template>
+      <!-- Quick Stats & Actions -->
+      <div class="space-y-6">
+        <!-- Today's Summary -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h3
+            class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-chart-bar text-purple-600"></i>
+            Today's Summary
+          </h3>
 
-          <div *ngIf="notifications.length > 0" class="notifications-list">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">New Submissions</span>
+              <span class="font-semibold text-gray-800">{{
+                overview?.todaySubmissions || 0
+              }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">Reviews Completed</span>
+              <span class="font-semibold text-gray-800">{{
+                overview?.todayReviews || 0
+              }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">Avg Review Time</span>
+              <span class="font-semibold text-gray-800"
+                >{{ overview?.avgReviewTime || 0 }}h</span
+              >
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-gray-100">
+            <div class="mb-2 flex justify-between">
+              <span class="text-sm text-gray-600">Review Progress</span>
+              <span class="text-sm font-medium text-gray-800"
+                >{{ getReviewProgress() }}%</span
+              >
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                [style.width.%]="getReviewProgress()"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h3
+            class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-bell text-purple-600"></i>
+            Recent Notifications
+          </h3>
+
+          <div
+            *ngIf="notifications && notifications.length > 0"
+            class="space-y-3"
+          >
             <div
               *ngFor="let notification of notifications"
-              class="notification-item"
-              [class.unread]="!notification.isRead"
+              class="p-3 border border-gray-100 rounded-lg"
+              [class.bg-blue-50]="!notification.isRead"
             >
-              <div class="notification-icon">
-                <i
-                  [class]="getNotificationIcon(notification.type)"
-                  [class.read-icon]="notification.isRead"
-                ></i>
-              </div>
-              <div class="notification-content">
-                <h5>{{ notification.title }}</h5>
-                <p>{{ notification.message }}</p>
-                <span class="notification-time">{{
-                  getTimeAgo(notification.createdDate)
-                }}</span>
-              </div>
-              <div class="notification-status">
-                <p-tag
-                  [value]="notification.type | titlecase"
-                  [severity]="getNotificationSeverity(notification.type)"
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 rounded-full flex items-center justify-center text-xs"
+                  [ngClass]="{
+                    'bg-blue-100 text-blue-600': notification.type === 'info',
+                    'bg-yellow-100 text-yellow-600':
+                      notification.type === 'warning',
+                    'bg-green-100 text-green-600':
+                      notification.type === 'success',
+                    'bg-red-100 text-red-600': notification.type === 'error',
+                  }"
                 >
-                </p-tag>
+                  <i [class]="getNotificationIcon(notification.type)"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-800">
+                    {{ notification.title }}
+                  </p>
+                  <p class="text-xs text-gray-600 mt-1">
+                    {{ notification.message }}
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    {{ getTimeAgo(notification.createdDate) }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div *ngIf="notifications.length === 0" class="empty-state">
-            <i class="pi pi-bell"></i>
-            <p>No recent notifications</p>
+          <div
+            *ngIf="!notifications || notifications.length === 0"
+            class="text-center py-8"
+          >
+            <div
+              class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3"
+            >
+              <i class="pi pi-bell text-gray-400"></i>
+            </div>
+            <p class="text-sm text-gray-500">No recent notifications</p>
           </div>
-        </p-card>
-      </div>
-
-      <!-- Quick Stats -->
-      <div class="quick-stats-section">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="card-header">
-              <h3><i class="pi pi-chart-bar"></i> Today's Summary</h3>
-            </div>
-          </ng-template>
-
-          <div class="quick-stats">
-            <div class="stat-item">
-              <div class="stat-number">
-                {{ overview?.todaySubmissions || 0 }}
-              </div>
-              <div class="stat-label">New Submissions</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">{{ overview?.avgReviewTime || 0 }}h</div>
-              <div class="stat-label">Avg Review Time</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">{{ getPendingRate().toFixed(1) }}%</div>
-              <div class="stat-label">Pending Rate</div>
-            </div>
-          </div>
-
-          <p-divider></p-divider>
-
-          <div class="progress-indicators">
-            <div class="progress-item">
-              <label>Review Progress</label>
-              <p-progressBar
-                [value]="getReviewProgress()"
-                [style]="{ height: '8px' }"
-                styleClass="progress-success"
-              >
-              </p-progressBar>
-            </div>
-            <div class="progress-item">
-              <label>Approval Rate</label>
-              <p-progressBar
-                [value]="getApprovalRate()"
-                [style]="{ height: '8px' }"
-                styleClass="progress-info"
-              >
-              </p-progressBar>
-            </div>
-          </div>
-        </p-card>
+        </div>
       </div>
     </div>
   </div>
