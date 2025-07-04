@@ -465,31 +465,31 @@ export class AssetListComponent implements OnInit, OnDestroy {
 
   getStatusSeverity(status: string): string {
     switch (status) {
-      case AssetStatus.ACTIVE:
+      case "Active":
         return "success";
-      case AssetStatus.MAINTENANCE:
+      case "Maintenance":
         return "warning";
-      case AssetStatus.DISPOSED:
-      case AssetStatus.LOST:
-      case AssetStatus.STOLEN:
+      case "Disposed":
+      case "Lost":
+      case "Stolen":
         return "danger";
-      case AssetStatus.INACTIVE:
+      case "Inactive":
         return "secondary";
       default:
         return "info";
     }
   }
 
-  getConditionSeverity(condition: AssetCondition): string {
+  getConditionSeverity(condition: string): string {
     switch (condition) {
-      case AssetCondition.EXCELLENT:
+      case "Excellent":
         return "success";
-      case AssetCondition.GOOD:
+      case "Good":
         return "info";
-      case AssetCondition.FAIR:
+      case "Fair":
         return "warning";
-      case AssetCondition.POOR:
-      case AssetCondition.OUT_OF_ORDER:
+      case "Poor":
+      case "Out of Order":
         return "danger";
       default:
         return "secondary";
