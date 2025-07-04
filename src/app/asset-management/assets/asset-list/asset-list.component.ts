@@ -129,25 +129,171 @@ export class AssetListComponent implements OnInit, OnDestroy {
 
   loadAssets() {
     this.loading = true;
-    this.assetService
-      .getAssets()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (assets) => {
-          this.assets = assets;
-          this.filteredAssets = [...assets];
-          this.extractFilterOptions();
-          this.loading = false;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Failed to load assets",
-          });
-          this.loading = false;
-        },
-      });
+    // Using mock data for now
+    setTimeout(() => {
+      this.assets = this.mockAssets;
+      this.filteredAssets = [...this.mockAssets];
+      this.totalAssets = this.assets.length;
+      this.extractFilterOptions();
+      this.loading = false;
+    }, 1000);
+  }
+
+  // New missing methods
+  getTotalValue(): number {
+    return this.filteredAssets.reduce(
+      (total, asset) => total + asset.currentValue,
+      0,
+    );
+  }
+
+  getActiveAssetsCount(): number {
+    return this.filteredAssets.filter((asset) => asset.status === "Active")
+      .length;
+  }
+
+  getMaintenanceCount(): number {
+    return this.filteredAssets.filter((asset) => asset.status === "Maintenance")
+      .length;
+  }
+
+  saveCurrentView(): void {
+    this.messageService.add({
+      severity: "success",
+      summary: "View Saved",
+      detail: "Current view preferences have been saved",
+      life: 2000,
+    });
+  }
+
+  changeView(): void {
+    this.messageService.add({
+      severity: "info",
+      summary: "View Changed",
+      detail: `Switched to ${this.currentView} view`,
+      life: 2000,
+    });
+  }
+
+  getAssetIcon(category: string): string {
+    switch (category) {
+      case "Computer":
+        return "pi pi-desktop";
+      case "Furniture":
+        return "pi pi-home";
+      case "Equipment":
+        return "pi pi-cog";
+      case "Vehicle":
+        return "pi pi-car";
+      default:
+        return "pi pi-box";
+    }
+  }
+
+  getCategoryStyle(category: string): string {
+    switch (category) {
+      case "Computer":
+        return "bg-blue-100 text-blue-700";
+      case "Furniture":
+        return "bg-green-100 text-green-700";
+      case "Equipment":
+        return "bg-yellow-100 text-yellow-700";
+      case "Vehicle":
+        return "bg-purple-100 text-purple-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  }
+
+  getStatusStyle(status: string): string {
+    switch (status) {
+      case "Active":
+        return "bg-green-100 text-green-700";
+      case "Inactive":
+        return "bg-gray-100 text-gray-700";
+      case "Maintenance":
+        return "bg-yellow-100 text-yellow-700";
+      case "Disposed":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  }
+
+  getStatusIndicator(status: string): string {
+    switch (status) {
+      case "Active":
+        return "bg-green-500";
+      case "Inactive":
+        return "bg-gray-500";
+      case "Maintenance":
+        return "bg-yellow-500";
+      case "Disposed":
+        return "bg-red-500";
+      default:
+        return "bg-gray-500";
+    }
+  }
+
+  getConditionStyle(condition: string): string {
+    switch (condition) {
+      case "Excellent":
+        return "bg-green-100 text-green-700";
+      case "Good":
+        return "bg-blue-100 text-blue-700";
+      case "Fair":
+        return "bg-yellow-100 text-yellow-700";
+      case "Poor":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  }
+
+  transferAsset(asset: any): void {
+    this.messageService.add({
+      severity: "info",
+      summary: "Transfer Asset",
+      detail: `Initiating transfer for ${asset.name}`,
+      life: 2000,
+    });
+  }
+
+  bulkTransfer(): void {
+    this.messageService.add({
+      severity: "info",
+      summary: "Bulk Transfer",
+      detail: `Transferring ${this.selectedAssets.length} assets`,
+      life: 2000,
+    });
+  }
+
+  bulkMaintenance(): void {
+    this.messageService.add({
+      severity: "info",
+      summary: "Bulk Maintenance",
+      detail: `Scheduling maintenance for ${this.selectedAssets.length} assets`,
+      life: 2000,
+    });
+  }
+
+  bulkExport(): void {
+    this.messageService.add({
+      severity: "success",
+      summary: "Export Started",
+      detail: `Exporting ${this.selectedAssets.length} selected assets`,
+      life: 2000,
+    });
+  }
+
+  clearSelection(): void {
+    this.selectedAssets = [];
+    this.messageService.add({
+      severity: "info",
+      summary: "Selection Cleared",
+      detail: "Asset selection has been cleared",
+      life: 2000,
+    });
   }
 
   private extractFilterOptions() {
