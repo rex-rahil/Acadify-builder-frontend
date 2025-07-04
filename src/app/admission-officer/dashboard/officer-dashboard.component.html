@@ -1,37 +1,53 @@
-<div class="officer-dashboard">
-  <div class="dashboard-header">
-    <div class="welcome-section">
-      <h1 class="welcome-title">{{ greeting }}, Admission Officer!</h1>
-      <p class="current-time">
-        {{ currentTime | date: "EEEE, MMMM d, y" }} •
-        {{ currentTime | date: "h:mm:ss a" }}
-      </p>
-    </div>
-    <div class="quick-actions">
-      <p-button
-        label="Review Applications"
-        icon="pi pi-file-check"
-        styleClass="p-button-primary"
-        (onClick)="navigateToReview()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Manage Payments"
-        icon="pi pi-credit-card"
-        styleClass="p-button-outlined"
-        (onClick)="navigateToPayments()"
-        [disabled]="loading"
-      >
-      </p-button>
-      <p-button
-        label="Refresh"
-        icon="pi pi-refresh"
-        styleClass="p-button-outlined"
-        (onClick)="refreshData()"
-        [loading]="loading"
-      >
-      </p-button>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Dashboard Header -->
+  <div
+    class="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl shadow-lg p-8 mb-8 text-white"
+  >
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-6 lg:mb-0">
+        <h1 class="text-4xl font-bold mb-2">
+          {{ greeting }}, Admission Officer!
+        </h1>
+        <p class="text-purple-100 text-lg">
+          {{ currentTime | date: "EEEE, MMMM d, y" }} •
+          {{ currentTime | date: "h:mm:ss a" }}
+        </p>
+        <div class="mt-3 flex items-center">
+          <div class="bg-white/20 rounded-xl p-3 mr-4">
+            <i class="pi pi-graduation-cap text-2xl"></i>
+          </div>
+          <div>
+            <p class="text-sm text-purple-100">Admission Management Portal</p>
+            <p class="text-lg font-semibold">Oriental College</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <button
+          (click)="navigateToReview()"
+          [disabled]="loading"
+          class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
+        >
+          <i class="pi pi-file-check"></i>
+          Review Applications
+        </button>
+        <button
+          (click)="navigateToPayments()"
+          [disabled]="loading"
+          class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg"
+        >
+          <i class="pi pi-credit-card"></i>
+          Manage Payments
+        </button>
+        <button
+          (click)="refreshData()"
+          class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-3 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg"
+          [class.animate-spin]="loading"
+        >
+          <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+          Refresh
+        </button>
+      </div>
     </div>
   </div>
 
