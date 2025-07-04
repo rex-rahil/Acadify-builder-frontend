@@ -45,34 +45,11 @@ import { AssetManagementRoutingModule } from "./asset-management-routing.module"
 
 // Components
 import { AssetDashboardComponent } from "./dashboard/asset-dashboard.component";
-import { AssetListComponent } from "./assets/asset-list/asset-list.component";
-import { AssetFormComponent } from "./assets/asset-form/asset-form.component";
-import { AssetDetailsComponent } from "./assets/asset-details/asset-details.component";
-import { MaintenanceRequestsComponent } from "./maintenance/maintenance-requests/maintenance-requests.component";
-import { MaintenanceFormComponent } from "./maintenance/maintenance-form/maintenance-form.component";
-import { MaintenanceHistoryComponent } from "./maintenance/maintenance-history/maintenance-history.component";
-import { ProcurementDashboardComponent } from "./procurement/procurement-dashboard/procurement-dashboard.component";
-import { RequisitionListComponent } from "./procurement/requisition-list/requisition-list.component";
-import { RequisitionFormComponent } from "./procurement/requisition-form/requisition-form.component";
-import { PurchaseOrderListComponent } from "./procurement/purchase-order-list/purchase-order-list.component";
-import { PurchaseOrderFormComponent } from "./procurement/purchase-order-form/purchase-order-form.component";
-import { InventoryListComponent } from "./inventory/inventory-list/inventory-list.component";
-import { InventoryFormComponent } from "./inventory/inventory-form/inventory-form.component";
-import { StockMovementComponent } from "./inventory/stock-movement/stock-movement.component";
-import { ReportsComponent } from "./reports/reports.component";
-import { AssetAllocationComponent } from "./allocation/asset-allocation.component";
-import { AllocationFormComponent } from "./allocation/allocation-form/allocation-form.component";
-import { DepreciationTrackingComponent } from "./depreciation/depreciation-tracking.component";
-import { AlertsComponent } from "./alerts/alerts.component";
-import { SuppliersComponent } from "./suppliers/suppliers.component";
-import { SupplierFormComponent } from "./suppliers/supplier-form/supplier-form.component";
 
 // Services
 import { AssetService } from "./services/asset.service";
 import { MaintenanceService } from "./services/maintenance.service";
-import { ProcurementService } from "./services/procurement.service";
 import { InventoryService } from "./services/inventory.service";
-import { ReportService } from "./services/report.service";
 import { AlertService } from "./services/alert.service";
 
 @NgModule({
