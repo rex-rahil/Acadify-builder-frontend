@@ -14,6 +14,7 @@ import { MessageService, ConfirmationService } from "primeng/api";
   styleUrls: ["./library.component.scss"],
   providers: [MessageService, ConfirmationService],
 })
+// Library management component following faculty UI patterns
 export class LibraryComponent implements OnInit {
   books: Book[] = [];
   filteredBooks: Book[] = [];
