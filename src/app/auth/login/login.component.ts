@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
               // Redirect based on user role
               setTimeout(() => {
-                this.redirectBasedOnRole(response.user);
+                this.redirectBasedOnRole(response.user || null);
               }, 1000);
             }
           },
