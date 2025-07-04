@@ -322,13 +322,19 @@ export class SideNavComponent implements OnInit, OnDestroy {
   }
 
   getFilteredMenuSections() {
-    // Filter menu sections based on user role
-    const userRole = this.getUserRole().toLowerCase();
+    return this.menuSections;
+  }
 
-    return this.menuSections.filter((section) => {
-      // Show all sections for now, but you can implement role-based filtering here
-      return true;
-    });
+  private hasRole(roles: UserRole[]): boolean {
+    if (!this.currentUser) return false;
+    return roles.includes(this.currentUser.role as UserRole);
+  }
+
+  private hasPermission(permission: Permission): boolean {
+    if (!this.currentUser) return false;
+    return this.permissionService
+      .getCurrentUserPermissions()
+      .includes(permission);
   }
 
   logout() {
