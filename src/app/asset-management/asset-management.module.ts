@@ -100,9 +100,7 @@ import { AlertService } from "./services/alert.service";
   providers: [
     AssetService,
     MaintenanceService,
-    ProcurementService,
     InventoryService,
-    ReportService,
     AlertService,
     ConfirmationService,
     MessageService,
