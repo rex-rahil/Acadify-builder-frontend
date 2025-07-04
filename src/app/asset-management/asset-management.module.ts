@@ -45,6 +45,7 @@ import { AssetManagementRoutingModule } from "./asset-management-routing.module"
 
 // Components
 import { AssetDashboardComponent } from "./dashboard/asset-dashboard.component";
+import { AssetListComponent } from "./assets/asset-list/asset-list.component";
 
 // Services
 import { AssetService } from "./services/asset.service";
@@ -53,7 +54,7 @@ import { InventoryService } from "./services/inventory.service";
 import { AlertService } from "./services/alert.service";
 
 @NgModule({
-  declarations: [AssetDashboardComponent],
+  declarations: [AssetDashboardComponent, AssetListComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
