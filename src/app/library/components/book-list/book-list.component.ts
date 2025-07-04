@@ -43,9 +43,15 @@ export class BookListComponent {
   }
 
   getBookImage(book: Book): string {
-    return (
-      book.coverImage ||
-      `https://via.placeholder.com/200x300/87ceeb/ffffff?text=${encodeURIComponent(book.title.substring(0, 20))}`
-    );
+    if (book.coverImage && book.coverImage.trim() !== "") {
+      return book.coverImage;
+    }
+
+    // Create a more readable title for placeholder
+    const shortTitle =
+      book.title.length > 25 ? book.title.substring(0, 22) + "..." : book.title;
+
+    // Use a reliable placeholder service
+    return `https://placehold.co/300x400/87ceeb/ffffff/png?text=${encodeURIComponent(shortTitle)}&font=roboto`;
   }
 }
