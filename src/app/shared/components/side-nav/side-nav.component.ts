@@ -62,12 +62,6 @@ export class SideNavComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   private destroy$ = new Subject<void>();
 
-  // Quick stats for footer
-  quickStats = {
-    books: 3,
-    hours: 24,
-  };
-
   constructor(
     public router: Router,
     private authService: AuthService,
@@ -219,23 +213,6 @@ export class SideNavComponent implements OnInit, OnDestroy {
     this.onHide();
   }
 
-  getInitials(name: string): string {
-    if (this.currentUser) {
-      return `${this.currentUser.firstName[0]}${this.currentUser.lastName[0]}`;
-    }
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("");
-  }
-
-  getUserDisplayName(): string {
-    if (this.currentUser) {
-      return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-    }
-    return "User";
-  }
-
   getUserRole(): string {
     if (this.currentUser) {
       return this.currentUser.role.toUpperCase();
@@ -267,21 +244,6 @@ export class SideNavComponent implements OnInit, OnDestroy {
       // Show all sections for now, but you can implement role-based filtering here
       return true;
     });
-  }
-
-  viewProfile() {
-    this.router.navigate(["/profile"]);
-    this.onHide();
-  }
-
-  openSettings() {
-    this.router.navigate(["/settings"]);
-    this.onHide();
-  }
-
-  openHelp() {
-    this.router.navigate(["/help"]);
-    this.onHide();
   }
 
   logout() {
