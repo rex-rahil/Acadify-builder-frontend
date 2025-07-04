@@ -9,7 +9,10 @@
       "department": "Computer Science",
       "designation": "Associate Professor",
       "joiningDate": "2020-06-15",
-      "qualifications": ["PhD Computer Science", "M.Tech Software Engineering"],
+      "qualifications": [
+        "PhD Computer Science",
+        "M.Tech Software Engineering"
+      ],
       "avatar": null,
       "isHOD": true
     },
@@ -22,7 +25,10 @@
       "department": "Computer Science",
       "designation": "Assistant Professor",
       "joiningDate": "2019-08-20",
-      "qualifications": ["M.Tech Computer Science", "B.Tech CSE"],
+      "qualifications": [
+        "M.Tech Computer Science",
+        "B.Tech CSE"
+      ],
       "avatar": null,
       "isHOD": false
     },
@@ -35,7 +41,10 @@
       "department": "Computer Science",
       "designation": "Assistant Professor",
       "joiningDate": "2021-03-10",
-      "qualifications": ["PhD Information Technology", "M.Sc Computer Science"],
+      "qualifications": [
+        "PhD Information Technology",
+        "M.Sc Computer Science"
+      ],
       "avatar": null,
       "isHOD": false
     }
@@ -64,9 +73,18 @@
       "nextMaintenanceDate": "2024-12-15",
       "notes": "Regular maintenance scheduled",
       "specifications": [
-        { "name": "RAM", "value": "16GB" },
-        { "name": "Storage", "value": "512GB SSD" },
-        { "name": "Processor", "value": "Intel Core i7" }
+        {
+          "name": "RAM",
+          "value": "16GB"
+        },
+        {
+          "name": "Storage",
+          "value": "512GB SSD"
+        },
+        {
+          "name": "Processor",
+          "value": "Intel Core i7"
+        }
       ],
       "createdBy": "admin",
       "createdAt": "2023-01-15T00:00:00Z",
@@ -93,9 +111,18 @@
       "warrantyExpiry": "2025-03-10",
       "notes": "No maintenance required",
       "specifications": [
-        { "name": "Material", "value": "Mesh" },
-        { "name": "Color", "value": "Black" },
-        { "name": "Adjustable", "value": "Yes" }
+        {
+          "name": "Material",
+          "value": "Mesh"
+        },
+        {
+          "name": "Color",
+          "value": "Black"
+        },
+        {
+          "name": "Adjustable",
+          "value": "Yes"
+        }
       ],
       "createdBy": "admin",
       "createdAt": "2023-03-10T00:00:00Z",
@@ -284,6 +311,54 @@
       "message": "Low stock alert: Whiteboard Markers (15 remaining)",
       "dueDate": "2024-11-20T00:00:00Z",
       "createdDate": "2024-11-15T00:00:00Z",
+      "isRead": false,
+      "isResolved": false
+    },
+    {
+      "id": "alert_0yex44gnwd7p",
+      "assetId": "asset_001",
+      "assetName": "Dell OptiPlex 7090",
+      "assetTag": "COM001234",
+      "alertType": "Maintenance Due",
+      "message": "Maintenance is due for Dell OptiPlex 7090 (COM001234)",
+      "dueDate": "2024-12-15T00:00:00.000Z",
+      "createdDate": "2025-07-04T15:03:36.188Z",
+      "isRead": false,
+      "isResolved": false
+    },
+    {
+      "id": "alert_6wgm80po9au",
+      "assetId": "inv_002",
+      "assetName": "Whiteboard Markers",
+      "assetTag": "INVENTORY",
+      "alertType": "Low Stock",
+      "message": "Low stock alert: Whiteboard Markers (15 remaining)",
+      "dueDate": "2025-07-04T15:03:35.946Z",
+      "createdDate": "2025-07-04T15:03:36.430Z",
+      "isRead": false,
+      "isResolved": false
+    },
+    {
+      "id": "alert_6gje9kq4aw",
+      "assetId": "asset_001",
+      "assetName": "Dell OptiPlex 7090",
+      "assetTag": "COM001234",
+      "alertType": "Inspection Due",
+      "message": "Inspection is due for Dell OptiPlex 7090 (COM001234)",
+      "dueDate": "2024-12-12T00:00:00.000Z",
+      "createdDate": "2025-07-04T15:03:36.699Z",
+      "isRead": false,
+      "isResolved": false
+    },
+    {
+      "id": "alert_493ckz2lkme",
+      "assetId": "asset_002",
+      "assetName": "Executive Office Chair",
+      "assetTag": "FUR002345",
+      "alertType": "Inspection Due",
+      "message": "Inspection is due for Executive Office Chair (FUR002345)",
+      "dueDate": "2023-09-06T00:00:00.000Z",
+      "createdDate": "2025-07-04T15:03:36.953Z",
       "isRead": false,
       "isResolved": false
     }
@@ -598,7 +673,9 @@
       "approvedBy": "HOD",
       "approvedDate": "2025-07-03T07:28:38.481Z",
       "rejectionReason": null,
-      "documents": ["medical_certificate.pdf"]
+      "documents": [
+        "medical_certificate.pdf"
+      ]
     },
     {
       "id": "leave_003",
@@ -1059,7 +1136,10 @@
           "numberOfInstallments": 2,
           "firstInstallmentAmount": 65000,
           "subsequentInstallmentAmount": 60000,
-          "installmentDates": ["2025-01-15", "2025-06-15"],
+          "installmentDates": [
+            "2025-01-15",
+            "2025-06-15"
+          ],
           "processingFee": 1000
         },
         {
