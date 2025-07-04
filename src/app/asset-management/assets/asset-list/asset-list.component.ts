@@ -503,8 +503,12 @@ export class AssetListComponent implements OnInit, OnDestroy {
     }).format(value);
   }
 
-  calculateDepreciation(asset: Asset): number {
-    return this.assetService.calculateDepreciation(asset);
+  calculateDepreciation(asset: any): number {
+    // Simple depreciation calculation for now
+    const yearsOwned =
+      new Date().getFullYear() -
+      new Date(asset.purchaseDate || "2020-01-01").getFullYear();
+    return Math.max(0, asset.purchaseValue * Math.pow(0.9, yearsOwned));
   }
 
   exportAssets() {
