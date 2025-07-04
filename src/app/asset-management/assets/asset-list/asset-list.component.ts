@@ -304,7 +304,7 @@ export class AssetListComponent implements OnInit, OnDestroy {
   }
 
   applyFilters() {
-    this.filteredAssets = this.assets.filter((asset) => {
+    this.filteredAssets = this.assets.filter((asset: any) => {
       // Search query filter
       if (
         this.searchQuery &&
