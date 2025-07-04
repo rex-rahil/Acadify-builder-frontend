@@ -1,0 +1,636 @@
+// Modern Timetable Management Styling
+:host {
+  display: block;
+  width: 100%;
+}
+
+// Custom animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+// CDK Drag and Drop Styling
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  transform: rotate(5deg);
+  opacity: 0.9;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+  border: 2px dashed #94a3b8;
+  background: #f1f5f9;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list {
+  &.cdk-drop-list-receiving {
+    .cdk-drag-placeholder {
+      border-color: #3b82f6;
+      background: #eff6ff;
+      animation: pulse 1s infinite;
+    }
+  }
+}
+
+.cdk-drag {
+  &:hover {
+    transform: scale(1.02);
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  &.cdk-drag-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Timetable specific styling
+.timetable-grid {
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th,
+    td {
+      position: relative;
+
+      &:first-child {
+        border-radius: 12px 0 0 12px;
+      }
+
+      &:last-child {
+        border-radius: 0 12px 12px 0;
+      }
+    }
+
+    thead th {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+      }
+    }
+
+    tbody tr {
+      &:hover {
+        background: #f8fafc;
+
+        td {
+          background: inherit;
+        }
+      }
+
+      &:nth-child(even) {
+        background: rgba(249, 250, 251, 0.5);
+      }
+    }
+  }
+}
+
+// Time slot styling
+.time-slot {
+  .time-display {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.025em;
+  }
+}
+
+// Lecture slot styling
+.lecture-slot {
+  min-height: 80px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.empty {
+    &:hover {
+      border-style: solid;
+      border-width: 2px;
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+
+      .drop-hint {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  }
+
+  &.assigned {
+    border-color: #10b981;
+    background: #ecfdf5;
+
+    .lecture-card {
+      transform: translateY(0);
+      opacity: 1;
+      animation: fadeInUp 0.5s ease-out;
+    }
+  }
+
+  &.conflict {
+    border-color: #ef4444 !important;
+    background: #fef2f2 !important;
+    animation: shake 0.5s ease-in-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 12px;
+      height: 12px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 2px solid white;
+      z-index: 5;
+    }
+  }
+
+  .drop-hint {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+  }
+
+  .lecture-card {
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+      .remove-btn {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .remove-btn {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// Subject panel styling
+.subject-panel {
+  .subject-card {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .drag-handle {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    &:hover .drag-handle {
+      opacity: 1;
+    }
+  }
+}
+
+// Faculty panel styling
+.faculty-panel {
+  .faculty-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .faculty-avatar {
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 12px;
+        height: 12px;
+        background: #10b981;
+        border: 2px solid white;
+        border-radius: 50%;
+      }
+
+      &.offline::after {
+        background: #6b7280;
+      }
+    }
+
+    .hod-badge {
+      animation: fadeInUp 0.5s ease-out;
+    }
+  }
+}
+
+// PrimeNG Customizations
+::ng-deep {
+  .modern-dropdown {
+    .p-dropdown {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background: white;
+
+      &:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      &:not(.p-disabled).p-focus {
+        outline: 0 none;
+        outline-offset: 0;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        border-color: #3b82f6;
+      }
+
+      .p-dropdown-label {
+        padding: 12px 16px;
+        font-weight: 500;
+        color: #374151;
+      }
+
+      .p-dropdown-trigger {
+        border-radius: 0 12px 12px 0;
+        background: #f9fafb;
+        border-left: 1px solid #e5e7eb;
+
+        .p-dropdown-trigger-icon {
+          color: #6b7280;
+        }
+      }
+    }
+
+    .p-dropdown-panel {
+      border-radius: 12px;
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+      border: 1px solid #e5e7eb;
+      margin-top: 4px;
+
+      .p-dropdown-items {
+        .p-dropdown-item {
+          padding: 12px 16px;
+          transition: all 0.2s ease;
+          border-radius: 8px;
+          margin: 4px 8px;
+
+          &:hover {
+            background: #eff6ff;
+            color: #1d4ed8;
+          }
+
+          &.p-highlight {
+            background: #3b82f6;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .p-dialog {
+    .p-dialog-header {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-bottom: 1px solid #e2e8f0;
+      border-radius: 12px 12px 0 0;
+      padding: 20px 24px;
+
+      .p-dialog-title {
+        font-weight: 600;
+        color: #374151;
+      }
+
+      .p-dialog-header-icon {
+        color: #6b7280;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: #374151;
+          background: rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 24px;
+      border-radius: 0 0 12px 12px;
+    }
+  }
+
+  .p-toast {
+    .p-toast-message {
+      border-radius: 12px;
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      &.p-toast-message-success {
+        background: rgba(16, 185, 129, 0.95);
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+
+      &.p-toast-message-info {
+        background: rgba(59, 130, 246, 0.95);
+        border-color: rgba(59, 130, 246, 0.2);
+      }
+
+      &.p-toast-message-warn {
+        background: rgba(245, 158, 11, 0.95);
+        border-color: rgba(245, 158, 11, 0.2);
+      }
+
+      &.p-toast-message-error {
+        background: rgba(239, 68, 68, 0.95);
+        border-color: rgba(239, 68, 68, 0.2);
+      }
+    }
+  }
+
+  .p-confirmdialog {
+    .p-dialog-header {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-bottom: 1px solid #fecaca;
+
+      .p-dialog-title {
+        color: #991b1b;
+      }
+    }
+
+    .p-dialog-content {
+      .p-confirm-dialog-icon {
+        color: #f59e0b;
+        font-size: 3rem;
+      }
+
+      .p-confirm-dialog-message {
+        color: #374151;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Custom scrollbar
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+// Loading states
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .timetable-grid {
+    table {
+      font-size: 0.875rem;
+
+      th,
+      td {
+        padding: 8px;
+      }
+    }
+  }
+
+  .lecture-slot {
+    min-height: 60px;
+  }
+
+  .subject-panel,
+  .faculty-panel {
+    .card {
+      padding: 12px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .timetable-grid {
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      min-width: 800px;
+    }
+  }
+
+  .panels {
+    flex-direction: column;
+
+    .panel {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .no-print,
+  .subject-panel,
+  .faculty-panel,
+  .controls,
+  .print-hide {
+    display: none !important;
+  }
+
+  .timetable-grid {
+    table {
+      border-collapse: collapse;
+
+      th,
+      td {
+        border: 1px solid #000 !important;
+        padding: 8px !important;
+        background: white !important;
+      }
+    }
+  }
+
+  .lecture-card {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .cdk-drag {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// Focus states for accessibility
+button:focus-visible,
+.focusable:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .lecture-slot {
+    border-width: 3px;
+
+    &.assigned {
+      border-color: #000;
+      background: #fff;
+    }
+
+    &.conflict {
+      border-color: #f00;
+      background: #ffe6e6;
+    }
+  }
+
+  .lecture-card {
+    border: 2px solid #000;
+  }
+}
