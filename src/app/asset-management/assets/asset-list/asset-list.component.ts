@@ -542,7 +542,7 @@ export class AssetListComponent implements OnInit, OnDestroy {
     this.loadAssets();
   }
 
-  getMaintenanceStatus(asset: Asset): string {
+  getMaintenanceStatus(asset: any): string {
     if (!asset.nextMaintenanceDate) return "";
 
     const nextMaintenance = new Date(asset.nextMaintenanceDate);
@@ -560,7 +560,7 @@ export class AssetListComponent implements OnInit, OnDestroy {
     }
   }
 
-  getMaintenanceStatusSeverity(asset: Asset): string {
+  getMaintenanceStatusSeverity(asset: any): string {
     const status = this.getMaintenanceStatus(asset);
     switch (status) {
       case "Overdue":
