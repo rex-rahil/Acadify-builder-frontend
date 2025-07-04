@@ -62,7 +62,7 @@ interface ConflictInfo {
   providers: [MessageService, ConfirmationService],
 })
 export class TimetableManagementComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private destroy$ = new RxSubject<void>();
   currentTime = new Date();
 
   // Selected class and week
@@ -348,24 +348,9 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.detectConflicts();
   }
 
-  // Drag and drop methods
-  onDragStart(subject: Subject) {
-    this.draggedSubject = subject;
-  }
-
-  onDrop(event: CdkDragDrop<any>, slot: LectureSlot) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    } else {
-      // Check if dropping a subject onto a time slot
-      if (this.draggedSubject) {
-        this.assignSubjectToSlot(this.draggedSubject, slot);
-      }
-    }
+  // Subject assignment methods
+  onSubjectClick(subject: Subject, slot: LectureSlot) {
+    this.assignSubjectToSlot(subject, slot);
   }
 
   private assignSubjectToSlot(subject: Subject, slot: LectureSlot) {
