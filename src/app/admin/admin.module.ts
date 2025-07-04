@@ -44,6 +44,7 @@ import { CourseManagementComponent } from "./course-management/course-management
 import { CourseListComponent } from "./course-management/course-list/course-list.component";
 import { CourseFormComponent } from "./course-management/course-form/course-form.component";
 import { SubjectAllocationComponent } from "./course-management/subject-allocation/subject-allocation.component";
+import { TimetableManagementComponent } from "./timetable-management/timetable-management.component";
 
 // Services
 import { AdminService } from "./services/admin.service";
