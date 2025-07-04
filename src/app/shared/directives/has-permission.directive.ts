@@ -9,6 +9,7 @@ import {
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { PermissionService } from "../../auth/services/permission.service";
+import { AuthService, User } from "../../auth/services/auth.service";
 import { Permission, UserRole } from "../../auth/models/role.model";
 
 @Directive({
