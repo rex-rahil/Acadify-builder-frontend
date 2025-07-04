@@ -4,12 +4,6 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { MessageService, ConfirmationService } from "primeng/api";
 import { AssetService } from "../../services/asset.service";
-import {
-  Asset,
-  AssetCategory,
-  AssetStatus,
-  AssetCondition,
-} from "../../../shared/models/asset.interface";
 
 @Component({
   selector: "app-asset-list",
