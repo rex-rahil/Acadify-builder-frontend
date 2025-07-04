@@ -1,0 +1,563 @@
+<!-- Modern Asset List Component -->
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Modern Header with Gradient -->
+  <div
+    class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white"
+  >
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-6 lg:mb-0">
+        <h1 class="text-4xl font-bold mb-3">Asset Management</h1>
+        <p class="text-indigo-100 text-lg mb-4">
+          Comprehensive asset tracking and management system
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20"
+          >
+            <i class="pi pi-box mr-2"></i>
+            {{ totalAssets }} Total Assets
+          </span>
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20"
+          >
+            <i class="pi pi-dollar mr-2"></i>
+            {{ getTotalValue() | currency }}
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <button
+          (click)="createAsset()"
+          class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+        >
+          <i class="pi pi-plus text-lg"></i>
+          Add New Asset
+        </button>
+        <div class="flex gap-2">
+          <button
+            (click)="exportAssets()"
+            class="bg-white/20 hover:bg-white/30 text-white px-4 py-3 rounded-xl flex items-center gap-2 transition-all duration-300"
+          >
+            <i class="pi pi-upload"></i>
+            Export
+          </button>
+          <button
+            (click)="importAssets()"
+            class="bg-white/20 hover:bg-white/30 text-white px-4 py-3 rounded-xl flex items-center gap-2 transition-all duration-300"
+          >
+            <i class="pi pi-download"></i>
+            Import
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Filters Section -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Search & Filter Assets</h2>
+      <button
+        (click)="refreshData()"
+        [disabled]="loading"
+        class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+        [class.animate-spin]="loading"
+      >
+        <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Search Input -->
+      <div class="space-y-2">
+        <label for="search" class="block text-sm font-semibold text-gray-700"
+          >Search Assets</label
+        >
+        <div class="relative">
+          <input
+            pInputText
+            id="search"
+            [(ngModel)]="searchQuery"
+            placeholder="Search by name, tag, or model..."
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            (input)="onSearchInput()"
+          />
+          <i
+            class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          ></i>
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="space-y-2">
+        <label for="category" class="block text-sm font-semibold text-gray-700"
+          >Category</label
+        >
+        <p-dropdown
+          id="category"
+          [options]="categories"
+          [(ngModel)]="selectedCategory"
+          placeholder="All Categories"
+          class="w-full"
+          (onChange)="onFilterChange()"
+          [showClear]="true"
+          styleClass="custom-dropdown"
+        ></p-dropdown>
+      </div>
+
+      <!-- Status Filter -->
+      <div class="space-y-2">
+        <label for="status" class="block text-sm font-semibold text-gray-700"
+          >Status</label
+        >
+        <p-dropdown
+          id="status"
+          [options]="statuses"
+          [(ngModel)]="selectedStatus"
+          placeholder="All Statuses"
+          class="w-full"
+          (onChange)="onFilterChange()"
+          [showClear]="true"
+          styleClass="custom-dropdown"
+        ></p-dropdown>
+      </div>
+
+      <!-- Condition Filter -->
+      <div class="space-y-2">
+        <label for="condition" class="block text-sm font-semibold text-gray-700"
+          >Condition</label
+        >
+        <p-dropdown
+          id="condition"
+          [options]="conditions"
+          [(ngModel)]="selectedCondition"
+          placeholder="All Conditions"
+          class="w-full"
+          (onChange)="onFilterChange()"
+          [showClear]="true"
+          styleClass="custom-dropdown"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <!-- Filter Actions -->
+    <div
+      class="flex items-center justify-between mt-6 pt-6 border-t border-gray-200"
+    >
+      <div class="text-sm text-gray-600">
+        Showing {{ filteredAssets.length }} of {{ totalAssets }} assets
+      </div>
+      <div class="flex gap-3">
+        <button
+          (click)="clearFilters()"
+          class="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+        >
+          Clear Filters
+        </button>
+        <button
+          (click)="saveCurrentView()"
+          class="px-4 py-2 text-blue-600 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+        >
+          Save View
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Assets Table -->
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <!-- Table Header -->
+    <div
+      class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200"
+    >
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-gray-800">Asset Inventory</h3>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-600"
+            >{{ filteredAssets.length }} items</span
+          >
+          <p-dropdown
+            [options]="viewOptions"
+            [(ngModel)]="currentView"
+            placeholder="Table View"
+            class="text-sm"
+            (onChange)="changeView()"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Data Table -->
+    <p-table
+      [value]="filteredAssets"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="rows"
+      [first]="first"
+      [totalRecords]="filteredAssets.length"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} assets"
+      [(selection)]="selectedAssets"
+      dataKey="id"
+      styleClass="modern-table"
+      [rowHover]="true"
+      [responsive]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr class="bg-gray-50">
+          <th style="width: 3rem" class="border-r border-gray-200">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th
+            pSortableColumn="assetTag"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-tag text-blue-600"></i>
+              Asset Tag
+              <p-sortIcon field="assetTag"></p-sortIcon>
+            </div>
+          </th>
+          <th
+            pSortableColumn="name"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-box text-green-600"></i>
+              Asset Details
+              <p-sortIcon field="name"></p-sortIcon>
+            </div>
+          </th>
+          <th
+            pSortableColumn="category"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-sitemap text-purple-600"></i>
+              Category
+              <p-sortIcon field="category"></p-sortIcon>
+            </div>
+          </th>
+          <th
+            pSortableColumn="status"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-circle text-yellow-600"></i>
+              Status
+              <p-sortIcon field="status"></p-sortIcon>
+            </div>
+          </th>
+          <th
+            pSortableColumn="condition"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-heart text-red-600"></i>
+              Condition
+              <p-sortIcon field="condition"></p-sortIcon>
+            </div>
+          </th>
+          <th
+            pSortableColumn="currentValue"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-dollar text-green-600"></i>
+              Value
+              <p-sortIcon field="currentValue"></p-sortIcon>
+            </div>
+          </th>
+          <th
+            pSortableColumn="assignedTo"
+            class="border-r border-gray-200 font-semibold text-gray-700"
+          >
+            <div class="flex items-center gap-2">
+              <i class="pi pi-user text-blue-600"></i>
+              Assigned To
+              <p-sortIcon field="assignedTo"></p-sortIcon>
+            </div>
+          </th>
+          <th class="font-semibold text-gray-700">
+            <div class="flex items-center gap-2">
+              <i class="pi pi-cog text-gray-600"></i>
+              Actions
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-asset let-rowIndex="rowIndex">
+        <tr
+          class="hover:bg-blue-50 transition-colors duration-200 border-b border-gray-100"
+        >
+          <td class="border-r border-gray-100">
+            <p-tableCheckbox [value]="asset"></p-tableCheckbox>
+          </td>
+          <td class="border-r border-gray-100">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"
+              >
+                <i
+                  [class]="getAssetIcon(asset.category)"
+                  class="text-blue-600"
+                ></i>
+              </div>
+              <span class="font-semibold text-gray-800">{{
+                asset.assetTag
+              }}</span>
+            </div>
+          </td>
+          <td class="border-r border-gray-100">
+            <div class="space-y-1">
+              <div class="font-semibold text-gray-800">{{ asset.name }}</div>
+              <div class="text-sm text-gray-500">
+                {{ asset.brand }} {{ asset.model }}
+              </div>
+              <div class="text-xs text-gray-400" *ngIf="asset.serialNumber">
+                SN: {{ asset.serialNumber }}
+              </div>
+            </div>
+          </td>
+          <td class="border-r border-gray-100">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              [class]="getCategoryStyle(asset.category)"
+            >
+              {{ asset.category }}
+            </span>
+          </td>
+          <td class="border-r border-gray-100">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              [class]="getStatusStyle(asset.status)"
+            >
+              <div
+                class="w-2 h-2 rounded-full mr-2"
+                [class]="getStatusIndicator(asset.status)"
+              ></div>
+              {{ asset.status }}
+            </span>
+          </td>
+          <td class="border-r border-gray-100">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              [class]="getConditionStyle(asset.condition)"
+            >
+              {{ asset.condition }}
+            </span>
+          </td>
+          <td class="border-r border-gray-100">
+            <div class="text-right">
+              <div class="font-semibold text-gray-800">
+                {{ formatCurrency(asset.currentValue) }}
+              </div>
+              <div class="text-xs text-gray-500" *ngIf="asset.purchaseValue">
+                Original: {{ formatCurrency(asset.purchaseValue) }}
+              </div>
+            </div>
+          </td>
+          <td class="border-r border-gray-100">
+            <div
+              *ngIf="asset.assignedTo; else unassigned"
+              class="flex items-center gap-2"
+            >
+              <div
+                class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
+              >
+                <i class="pi pi-user text-gray-600 text-xs"></i>
+              </div>
+              <div>
+                <div class="font-medium text-sm text-gray-800">
+                  {{ asset.assignedTo }}
+                </div>
+                <div class="text-xs text-gray-500">
+                  {{ asset.assignmentDate | date: "MMM d, y" }}
+                </div>
+              </div>
+            </div>
+            <ng-template #unassigned>
+              <span class="text-gray-400 text-sm">Unassigned</span>
+            </ng-template>
+          </td>
+          <td>
+            <div class="flex gap-1">
+              <button
+                (click)="viewAsset(asset)"
+                class="p-2 hover:bg-blue-100 rounded-lg transition-colors text-blue-600"
+                pTooltip="View Details"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-eye text-sm"></i>
+              </button>
+              <button
+                (click)="editAsset(asset)"
+                class="p-2 hover:bg-green-100 rounded-lg transition-colors text-green-600"
+                pTooltip="Edit Asset"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-pencil text-sm"></i>
+              </button>
+              <button
+                (click)="createMaintenanceRequest(asset)"
+                class="p-2 hover:bg-yellow-100 rounded-lg transition-colors text-yellow-600"
+                pTooltip="Schedule Maintenance"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-wrench text-sm"></i>
+              </button>
+              <button
+                (click)="transferAsset(asset)"
+                class="p-2 hover:bg-purple-100 rounded-lg transition-colors text-purple-600"
+                pTooltip="Transfer Asset"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-arrow-right text-sm"></i>
+              </button>
+              <button
+                (click)="deleteAsset(asset)"
+                class="p-2 hover:bg-red-100 rounded-lg transition-colors text-red-600"
+                pTooltip="Delete Asset"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-trash text-sm"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center py-16">
+            <div class="flex flex-col items-center">
+              <div
+                class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+              >
+                <i class="pi pi-search text-3xl text-gray-400"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-600 mb-2">
+                No assets found
+              </h3>
+              <p class="text-gray-500">
+                Try adjusting your search criteria or add a new asset
+              </p>
+              <button
+                (click)="createAsset()"
+                class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                <i class="pi pi-plus mr-2"></i>
+                Add First Asset
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="paginatorleft">
+        <span class="text-sm text-gray-600"
+          >Total Value: {{ getTotalValue() | currency }}</span
+        >
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Enhanced Bulk Actions Panel -->
+  <div *ngIf="selectedAssets.length > 0" class="mt-6">
+    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
+      <div
+        class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+      >
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+          >
+            <i class="pi pi-check text-blue-600 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-800">
+              {{ selectedAssets.length }} Asset(s) Selected
+            </h3>
+            <p class="text-sm text-gray-600">
+              Choose an action to apply to selected assets
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <button
+            (click)="bulkTransfer()"
+            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+          >
+            <i class="pi pi-arrow-right"></i>
+            Transfer
+          </button>
+          <button
+            (click)="bulkMaintenance()"
+            class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center gap-2"
+          >
+            <i class="pi pi-wrench"></i>
+            Schedule Maintenance
+          </button>
+          <button
+            (click)="bulkExport()"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+          >
+            <i class="pi pi-download"></i>
+            Export Selected
+          </button>
+          <button
+            (click)="deleteSelectedAssets()"
+            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
+          >
+            <i class="pi pi-trash"></i>
+            Delete
+          </button>
+          <button
+            (click)="clearSelection()"
+            class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            Clear Selection
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats Footer -->
+  <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="text-center">
+        <div class="text-2xl font-bold text-blue-600">{{ totalAssets }}</div>
+        <div class="text-sm text-gray-600">Total Assets</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-green-600">
+          {{ getActiveAssetsCount() }}
+        </div>
+        <div class="text-sm text-gray-600">Active</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-yellow-600">
+          {{ getMaintenanceCount() }}
+        </div>
+        <div class="text-sm text-gray-600">Under Maintenance</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-purple-600">
+          {{ getTotalValue() | currency: "USD" : "symbol" : "1.0-0" }}
+        </div>
+        <div class="text-sm text-gray-600">Total Value</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PrimeNG Components -->
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>
+<p-toast position="top-right"></p-toast>
