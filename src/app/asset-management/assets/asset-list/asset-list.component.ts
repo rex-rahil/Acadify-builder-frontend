@@ -456,14 +456,14 @@ export class AssetListComponent implements OnInit, OnDestroy {
     });
   }
 
-  createMaintenanceRequest(asset: Asset) {
+  createMaintenanceRequest(asset: any) {
     // Navigate to maintenance request form with asset pre-selected
     this.router.navigate(["/asset-management/maintenance"], {
       queryParams: { assetId: asset.id },
     });
   }
 
-  getStatusSeverity(status: AssetStatus): string {
+  getStatusSeverity(status: string): string {
     switch (status) {
       case AssetStatus.ACTIVE:
         return "success";
