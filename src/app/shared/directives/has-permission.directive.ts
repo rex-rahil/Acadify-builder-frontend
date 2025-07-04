@@ -57,9 +57,10 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
   private checkRole(role: UserRole | UserRole[]): void {
     const roles = Array.isArray(role) ? role : [role];
 
-    this.permissionService.permissionService.currentUser$
+    this.permissionService
+      .getCurrentUser$()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((user) => {
+      .subscribe((user: any) => {
         const hasRole = user ? roles.includes(user.role as UserRole) : false;
         this.updateView(hasRole);
       });
