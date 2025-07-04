@@ -52,6 +52,27 @@ export class OfficerDashboardComponent implements OnInit {
     }, 1000);
   }
 
+  private async loadDashboardData(): Promise<void> {
+    this.loading = true;
+    this.error = null;
+
+    try {
+      const [overview, applications, notifications] = await Promise.all([
+        this.admissionService.getApplicationOverview().toPromise(),
+        this.admissionService.getPendingApplications().toPromise(),
+        this.admissionService.getNotifications("officer_001").toPromise(),
+      ]);
+
+      this.overview = overview || null;
+      this.recentApplications = (applications || []).slice(0, 5);
+      this.notifications = (notifications || []).slice(0, 5);
+    } catch (error: any) {
+      this.error = this.extractErrorMessage(error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
   // UI Helper Methods
   getReviewProgress(): number {
     if (!this.overview) return 0;
@@ -80,21 +101,27 @@ export class OfficerDashboardComponent implements OnInit {
   getNotificationIcon(type: string): string {
     switch (type) {
       case "info":
+      case "application_submitted":
         return "pi pi-info-circle";
       case "warning":
+      case "payment_due":
+      case "resubmission_required":
         return "pi pi-exclamation-triangle";
       case "success":
+      case "application_approved":
         return "pi pi-check-circle";
       case "error":
+      case "application_rejected":
         return "pi pi-times-circle";
       default:
         return "pi pi-bell";
     }
   }
 
-  getTimeAgo(date: Date): string {
+  getTimeAgo(date: Date | string): string {
     const now = new Date();
-    const diffMs = now.getTime() - new Date(date).getTime();
+    const targetDate = typeof date === "string" ? new Date(date) : date;
+    const diffMs = now.getTime() - targetDate.getTime();
     const diffMins = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMins / 60);
     const diffDays = Math.floor(diffHours / 24);
@@ -103,57 +130,7 @@ export class OfficerDashboardComponent implements OnInit {
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
-    return new Date(date).toLocaleDateString();
-  }
-
-  // Navigation Methods
-  navigateToReview(): void {
-    this.router.navigate(["/admission-officer/review"]);
-  }
-
-  navigateToPayments(): void {
-    this.router.navigate(["/admission-officer/payment"]);
-  }
-
-  viewApplication(applicationId: string): void {
-    this.router.navigate(["/admission-officer/details", applicationId]);
-  }
-
-  // Quick Actions
-  async quickApprove(applicationId: string): Promise<void> {
-    try {
-      await this.admissionService.quickApprove(applicationId).toPromise();
-      await this.loadDashboardData(); // Refresh data
-    } catch (error: any) {
-      this.error = this.extractErrorMessage(error);
-    }
-  }
-
-  showRejectDialog(applicationId: string): void {
-    // This would open a dialog for rejection reason
-    // For now, just navigate to details page
-    this.viewApplication(applicationId);
-  }
-
-  private async loadDashboardData(): Promise<void> {
-    this.loading = true;
-    this.error = null;
-
-    try {
-      const [overview, applications, notifications] = await Promise.all([
-        this.admissionService.getApplicationOverview().toPromise(),
-        this.admissionService.getPendingApplications().toPromise(),
-        this.admissionService.getNotifications("officer_001").toPromise(),
-      ]);
-
-      this.overview = overview || null;
-      this.recentApplications = (applications || []).slice(0, 5);
-      this.notifications = (notifications || []).slice(0, 5);
-    } catch (error: any) {
-      this.error = this.extractErrorMessage(error);
-    } finally {
-      this.loading = false;
-    }
+    return targetDate.toLocaleDateString();
   }
 
   getStatusSeverity(status: string): string {
@@ -174,23 +151,6 @@ export class OfficerDashboardComponent implements OnInit {
     }
   }
 
-  getNotificationIcon(type: string): string {
-    switch (type) {
-      case "application_submitted":
-        return "pi pi-file-plus";
-      case "application_approved":
-        return "pi pi-check-circle";
-      case "application_rejected":
-        return "pi pi-times-circle";
-      case "payment_due":
-        return "pi pi-credit-card";
-      case "resubmission_required":
-        return "pi pi-refresh";
-      default:
-        return "pi pi-info-circle";
-    }
-  }
-
   getNotificationSeverity(type: string): string {
     switch (type) {
       case "application_submitted":
@@ -200,7 +160,6 @@ export class OfficerDashboardComponent implements OnInit {
       case "application_rejected":
         return "danger";
       case "payment_due":
-        return "warning";
       case "resubmission_required":
         return "warning";
       default:
@@ -208,24 +167,26 @@ export class OfficerDashboardComponent implements OnInit {
     }
   }
 
+  // Navigation Methods
   navigateToReview(): void {
     this.router.navigate(["/admission-officer/review"]);
   }
 
   navigateToPayments(): void {
-    this.router.navigate(["/admission-officer/payments"]);
+    this.router.navigate(["/admission-officer/payment"]);
   }
 
   viewApplication(applicationId: string): void {
-    this.router.navigate(["/admission-officer/application", applicationId]);
+    this.router.navigate(["/admission-officer/details", applicationId]);
   }
 
+  // Quick Actions
   async quickApprove(applicationId: string): Promise<void> {
     try {
       await this.admissionService
         .updateApplicationStatus(applicationId, "approved")
         .toPromise();
-      await this.loadDashboardData();
+      await this.loadDashboardData(); // Refresh data
     } catch (error: any) {
       this.error = this.extractErrorMessage(error);
     }
@@ -249,46 +210,6 @@ export class OfficerDashboardComponent implements OnInit {
     } catch (error: any) {
       this.error = this.extractErrorMessage(error);
     }
-  }
-
-  getTimeAgo(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMinutes = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60),
-    );
-
-    if (diffInMinutes < 1) return "Just now";
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-    return `${Math.floor(diffInMinutes / 1440)}d ago`;
-  }
-
-  getPendingRate(): number {
-    if (!this.overview?.pendingReview || !this.overview?.totalApplications) {
-      return 0;
-    }
-    return (
-      (this.overview.pendingReview / this.overview.totalApplications) * 100
-    );
-  }
-
-  getReviewProgress(): number {
-    if (!this.overview?.totalApplications || !this.overview?.pendingReview) {
-      return 0;
-    }
-    return (
-      ((this.overview.totalApplications - this.overview.pendingReview) /
-        this.overview.totalApplications) *
-      100
-    );
-  }
-
-  getApprovalRate(): number {
-    if (!this.overview?.approved || !this.overview?.totalApplications) {
-      return 0;
-    }
-    return (this.overview.approved / this.overview.totalApplications) * 100;
   }
 
   refreshData(): void {
