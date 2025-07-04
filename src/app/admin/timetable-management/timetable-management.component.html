@@ -160,10 +160,7 @@
         <div class="space-y-3 max-h-96 overflow-y-auto custom-scroll">
           <div
             *ngFor="let subject of availableSubjects"
-            cdkDrag
-            [cdkDragData]="subject"
-            (cdkDragStarted)="onDragStart(subject)"
-            class="p-4 rounded-xl border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 cursor-move group"
+            class="p-4 rounded-xl border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 cursor-pointer group"
             [style.border-color]="subject.color"
           >
             <div class="flex items-center gap-3">
