@@ -201,11 +201,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  private redirectAfterLogin() {
-    this.router.navigate([this.returnUrl]);
+  private redirectAfterLogin(): void {
+    const currentUser = this.authService.getCurrentUser();
+    this.redirectBasedOnRole(currentUser);
   }
 
-  private redirectBasedOnRole(user: User | undefined) {
+  private redirectBasedOnRole(user: User | null) {
     try {
       if (this.returnUrl && this.returnUrl !== "") {
         // If there's a specific return URL, use it
@@ -241,11 +242,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       // Fallback navigation
       this.router.navigate(["/dashboard"]);
     }
-  }
-
-  private redirectAfterLogin(): void {
-    const currentUser = this.authService.getCurrentUser();
-    this.redirectBasedOnRole(currentUser);
   }
 
   private markFormGroupTouched() {
