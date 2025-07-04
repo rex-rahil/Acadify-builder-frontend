@@ -78,9 +78,15 @@ export class IssueBookComponent implements OnInit {
   }
 
   getBookImageUrl(book: any): string {
-    return (
-      book.coverImage ||
-      `https://via.placeholder.com/150x200/87ceeb/ffffff?text=${encodeURIComponent(book.title.substring(0, 15))}`
-    );
+    if (book.coverImage && book.coverImage.trim() !== "") {
+      return book.coverImage;
+    }
+
+    // Create a more readable title for placeholder
+    const shortTitle =
+      book.title.length > 20 ? book.title.substring(0, 18) + "..." : book.title;
+
+    // Use a reliable placeholder service
+    return `https://placehold.co/200x280/87ceeb/ffffff/png?text=${encodeURIComponent(shortTitle)}&font=roboto`;
   }
 }

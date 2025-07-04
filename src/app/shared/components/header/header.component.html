@@ -1,30 +1,194 @@
-<header class="app-header" [class.no-menu]="!showMenuButton">
-  <div class="header-content">
-    <!-- Menu Button (only show when sidebar is enabled) -->
-    <button
-      *ngIf="showMenuButton"
-      class="menu-button"
-      (click)="toggleSidebar()"
-      pButton
-      pRipple
-      type="button"
-      icon="pi pi-bars"
-      [outlined]="true"
-      severity="secondary"
-      size="small"
-    ></button>
+<header class="modern-header" [class.no-menu]="!showMenuButton">
+  <div class="header-container">
+    <!-- Left Section: Menu & Logo -->
+    <div class="header-left">
+      <!-- Menu Button -->
+      <button
+        *ngIf="showMenuButton"
+        class="menu-toggle"
+        (click)="toggleSidebar()"
+        type="button"
+      >
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
 
-    <!-- Page Title -->
-    <div class="page-title">
-      <h1>{{ getPageTitle() }}</h1>
+      <!-- Logo & Brand -->
+      <div class="brand-section">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="pi pi-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-name">Oriental College</h1>
+            <span class="brand-subtitle">of Pharmacy</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- College Info -->
-    <div class="college-info">
-      <div class="college-name">
-        <i class="pi pi-graduation-cap"></i>
-        <span>Oriental College</span>
+    <!-- Center Section: Page Title & Breadcrumb -->
+    <div class="header-center">
+      <div class="page-info">
+        <nav class="breadcrumb" *ngIf="getBreadcrumbs().length > 1">
+          <ol class="breadcrumb-list">
+            <li
+              *ngFor="let crumb of getBreadcrumbs(); let last = last"
+              class="breadcrumb-item"
+            >
+              <a
+                *ngIf="!last && crumb.url"
+                [routerLink]="crumb.url"
+                class="breadcrumb-link"
+              >
+                {{ crumb.label }}
+              </a>
+              <span *ngIf="last || !crumb.url" class="breadcrumb-current">
+                {{ crumb.label }}
+              </span>
+              <i
+                *ngIf="!last"
+                class="pi pi-chevron-right breadcrumb-separator"
+              ></i>
+            </li>
+          </ol>
+        </nav>
+        <h2 class="page-title">{{ getPageTitle() }}</h2>
+      </div>
+    </div>
+
+    <!-- Right Section: User Actions -->
+    <div class="header-right">
+      <!-- Search Button -->
+      <button
+        class="action-btn search-btn"
+        type="button"
+        (click)="openSearch()"
+      >
+        <i class="pi pi-search"></i>
+      </button>
+
+      <!-- Notifications -->
+      <button
+        class="action-btn notification-btn"
+        type="button"
+        (click)="openNotifications()"
+      >
+        <i class="pi pi-bell"></i>
+        <span class="notification-badge" *ngIf="notificationCount > 0">{{
+          notificationCount
+        }}</span>
+      </button>
+
+      <!-- Quick Settings -->
+      <button
+        class="action-btn settings-btn"
+        type="button"
+        (click)="openQuickSettings()"
+      >
+        <i class="pi pi-cog"></i>
+      </button>
+
+      <!-- User Profile -->
+      <div class="user-profile-btn" (click)="openUserMenu()">
+        <div class="profile-avatar">
+          <span>{{ getUserInitials() }}</span>
+        </div>
+        <div class="profile-info">
+          <span class="profile-name">{{ getUserDisplayName() }}</span>
+          <span class="profile-role">{{ getUserRole() }}</span>
+        </div>
+        <i class="pi pi-chevron-down profile-chevron"></i>
       </div>
     </div>
   </div>
+
+  <!-- Progress Bar for loading states -->
+  <div class="loading-bar" [class.active]="isLoading">
+    <div class="loading-progress"></div>
+  </div>
 </header>
+
+<!-- User Menu Dropdown -->
+<div class="user-menu-overlay" *ngIf="showUserMenu" (click)="closeUserMenu()">
+  <div class="user-menu" (click)="$event.stopPropagation()">
+    <div class="user-menu-header">
+      <div class="user-avatar-large">
+        <span>{{ getUserInitials() }}</span>
+      </div>
+      <div class="user-info">
+        <h4>{{ getUserDisplayName() }}</h4>
+        <p>{{ getUserEmail() }}</p>
+        <span class="user-role-badge">{{ getUserRole() }}</span>
+      </div>
+    </div>
+
+    <div class="user-menu-actions">
+      <a href="#" class="menu-action" (click)="navigateToProfile()">
+        <i class="pi pi-user"></i>
+        <span>View Profile</span>
+      </a>
+      <a href="#" class="menu-action" (click)="navigateToSettings()">
+        <i class="pi pi-cog"></i>
+        <span>Settings</span>
+      </a>
+      <a href="#" class="menu-action" (click)="navigateToHelp()">
+        <i class="pi pi-question-circle"></i>
+        <span>Help & Support</span>
+      </a>
+      <div class="menu-divider"></div>
+      <a href="#" class="menu-action logout" (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        <span>Sign Out</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Search Overlay -->
+<div class="search-overlay" *ngIf="showSearch" (click)="closeSearch()">
+  <div class="search-container" (click)="$event.stopPropagation()">
+    <div class="search-header">
+      <h3>Quick Search</h3>
+      <button class="close-search" (click)="closeSearch()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+    <div class="search-input-container">
+      <i class="pi pi-search search-icon"></i>
+      <input
+        type="text"
+        placeholder="Search for books, students, courses..."
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        #searchInput
+      />
+      <button *ngIf="searchQuery" class="clear-search" (click)="clearSearch()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+    <div class="search-results" *ngIf="searchResults.length > 0">
+      <div class="search-category" *ngFor="let category of searchResults">
+        <h4>{{ category.title }}</h4>
+        <div class="search-items">
+          <a
+            *ngFor="let item of category.items"
+            [routerLink]="item.url"
+            class="search-item"
+            (click)="closeSearch()"
+          >
+            <i [class]="item.icon"></i>
+            <div class="item-info">
+              <span class="item-title">{{ item.title }}</span>
+              <span class="item-description">{{ item.description }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
