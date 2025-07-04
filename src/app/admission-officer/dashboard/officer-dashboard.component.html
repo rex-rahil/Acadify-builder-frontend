@@ -51,21 +51,34 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
-    <p>Loading dashboard...</p>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mb-4"
+    ></div>
+    <p class="text-gray-600 text-lg">Loading admission dashboard...</p>
   </div>
 
-  <div *ngIf="error && !loading" class="error-container">
-    <p-card>
-      <div class="error-content">
-        <i class="pi pi-exclamation-triangle error-icon"></i>
-        <h3>Error Loading Dashboard</h3>
-        <p>{{ error }}</p>
-        <p-button label="Retry" icon="pi pi-refresh" (onClick)="refreshData()">
-        </p-button>
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="max-w-md mx-auto">
+    <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+      <div
+        class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
+      >
+        <i class="pi pi-exclamation-triangle text-red-600 text-2xl"></i>
       </div>
-    </p-card>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Error Loading Dashboard
+      </h3>
+      <p class="text-gray-600 mb-6">{{ error }}</p>
+      <button
+        (click)="refreshData()"
+        class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 mx-auto transition-colors"
+      >
+        <i class="pi pi-refresh"></i>
+        Retry
+      </button>
+    </div>
   </div>
 
   <div *ngIf="!loading && !error" class="dashboard-content">
