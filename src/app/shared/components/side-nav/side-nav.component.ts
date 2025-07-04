@@ -119,6 +119,11 @@ export class SideNavComponent implements OnInit, OnDestroy {
             icon: "pi pi-sitemap",
             route: "/admin/subjects",
           },
+          {
+            label: "Timetable Management",
+            icon: "pi pi-calendar",
+            route: "/admin/timetable",
+          },
         ],
       });
     }
