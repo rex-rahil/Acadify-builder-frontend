@@ -62,11 +62,13 @@ export class SideNavComponent implements OnInit, OnDestroy {
   @Output() visibleChange = new EventEmitter<boolean>();
 
   currentUser: User | null = null;
+  menuSections: MenuSection[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
     public router: Router,
     private authService: AuthService,
+    private permissionService: PermissionService,
   ) {}
 
   ngOnInit() {
