@@ -76,6 +76,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((user: User | null) => {
         this.currentUser = user;
+        this.loadMenuSections();
       });
   }
 
