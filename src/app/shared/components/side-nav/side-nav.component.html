@@ -30,36 +30,6 @@
         <i class="pi pi-times"></i>
       </button>
     </div>
-
-    <!-- User Profile Card -->
-    <div class="user-profile-card">
-      <div class="profile-content">
-        <div class="avatar-section">
-          <div class="user-avatar">
-            <span>{{ getInitials(getUserDisplayName()) }}</span>
-          </div>
-          <div class="online-status"></div>
-        </div>
-        <div class="user-info">
-          <h4 class="user-name">{{ getUserDisplayName() }}</h4>
-          <p class="user-id" *ngIf="currentUser?.employeeId">
-            ID: {{ currentUser.employeeId }}
-          </p>
-          <div class="role-badge">
-            <i class="pi pi-shield"></i>
-            <span>{{ getUserRole() }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="profile-actions">
-        <button class="action-btn" (click)="viewProfile()">
-          <i class="pi pi-user"></i>
-        </button>
-        <button class="action-btn" (click)="openSettings()">
-          <i class="pi pi-cog"></i>
-        </button>
-      </div>
-    </div>
   </div>
 
   <!-- Navigation Menu -->
@@ -72,7 +42,6 @@
       >
         <div class="section-header" *ngIf="section.label">
           <h5>{{ section.label }}</h5>
-          <div class="section-line"></div>
         </div>
 
         <ul class="nav-list">
@@ -90,9 +59,7 @@
                   <i [class]="item.icon"></i>
                 </div>
                 <span class="link-text">{{ item.label }}</span>
-                <div class="link-indicator"></div>
               </div>
-              <div class="hover-bg"></div>
             </a>
 
             <button
@@ -105,9 +72,7 @@
                   <i [class]="item.icon"></i>
                 </div>
                 <span class="link-text">{{ item.label }}</span>
-                <div class="link-indicator"></div>
               </div>
-              <div class="hover-bg"></div>
             </button>
           </li>
         </ul>
@@ -117,46 +82,12 @@
 
   <!-- Sidebar Footer -->
   <div class="sidebar-footer">
-    <!-- Quick Stats -->
-    <div class="quick-stats" *ngIf="quickStats">
-      <div class="stat-item">
-        <div class="stat-icon">
-          <i class="pi pi-book"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">{{ quickStats.books }}</span>
-          <span class="stat-label">Books Issued</span>
-        </div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon">
-          <i class="pi pi-clock"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">{{ quickStats.hours }}</span>
-          <span class="stat-label">Study Hours</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Footer Actions -->
     <div class="footer-actions">
-      <button class="footer-btn help-btn" (click)="openHelp()">
-        <i class="pi pi-question-circle"></i>
-        <span>Help & Support</span>
-      </button>
       <button class="footer-btn logout-btn" (click)="logout()">
         <i class="pi pi-sign-out"></i>
         <span>Sign Out</span>
       </button>
-    </div>
-
-    <!-- App Version -->
-    <div class="app-version">
-      <div class="version-info">
-        <i class="pi pi-shield"></i>
-        <span>Portal v2.1.0</span>
-      </div>
     </div>
   </div>
 </aside>
