@@ -236,6 +236,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
+  private redirectAfterLogin(): void {
+    const currentUser = this.authService.getCurrentUser();
+    this.redirectBasedOnRole(currentUser);
+  }
+
   private markFormGroupTouched() {
     Object.keys(this.loginForm.controls).forEach((key) => {
       const control = this.loginForm.get(key);
