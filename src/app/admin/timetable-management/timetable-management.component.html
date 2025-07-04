@@ -377,10 +377,15 @@
                             ?.isAssigned
                         "
                         class="flex items-center justify-center h-full text-gray-400"
+                        (click)="
+                          openSlotAssignment(
+                            getSlotForDayAndTime(dayIndex, timeSlot.id)!
+                          )
+                        "
                       >
                         <div class="text-center">
                           <i class="pi pi-plus text-2xl mb-1"></i>
-                          <div class="text-xs">Drop subject here</div>
+                          <div class="text-xs">Click to assign</div>
                         </div>
                       </div>
 
