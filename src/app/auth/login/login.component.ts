@@ -181,17 +181,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     ];
   }
 
-  fillDemoCredentials(email: string) {
-    console.log("Filling demo credentials for:", email);
-    if (this.loginForm) {
-      this.loginForm.patchValue({
-        email: email,
-        password: "password123",
-      });
-      console.log("Form after patch:", this.loginForm.value);
-    } else {
-      console.error("Login form not initialized!");
-    }
+  fillDemoUser(email: string): void {
+    this.loginForm.patchValue({
+      email: email,
+      password: "password123",
+    });
   }
 
   private redirectAfterLogin(): void {
