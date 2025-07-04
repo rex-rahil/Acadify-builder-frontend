@@ -9,6 +9,13 @@ import {
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from "@angular/animations";
 import { AuthService, User } from "../../../auth/services/auth.service";
 
 interface MenuItem {
@@ -27,6 +34,26 @@ interface MenuSection {
   selector: "app-side-nav",
   templateUrl: "./side-nav.component.html",
   styleUrls: ["./side-nav.component.scss"],
+  animations: [
+    trigger("slideInOut", [
+      state("in", style({ transform: "translateX(0)" })),
+      transition("void => *", [
+        style({ transform: "translateX(-100%)" }),
+        animate(400, style({ transform: "translateX(0)" })),
+      ]),
+      transition("* => void", [
+        animate(400, style({ transform: "translateX(-100%)" })),
+      ]),
+    ]),
+    trigger("fadeInOut", [
+      state("in", style({ opacity: 1 })),
+      transition("void => *", [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 })),
+      ]),
+      transition("* => void", [animate(300, style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class SideNavComponent implements OnInit, OnDestroy {
   @Input() visible: boolean = false;
@@ -35,8 +62,14 @@ export class SideNavComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   private destroy$ = new Subject<void>();
 
+  // Quick stats for footer
+  quickStats = {
+    books: 3,
+    hours: 24,
+  };
+
   constructor(
-    private router: Router,
+    public router: Router,
     private authService: AuthService,
   ) {}
 
@@ -221,9 +254,38 @@ export class SideNavComponent implements OnInit, OnDestroy {
     this.onHide();
   }
 
+  navigateAndClose(route: string) {
+    this.router.navigate([route]);
+    this.onHide();
+  }
+
+  getFilteredMenuSections() {
+    // Filter menu sections based on user role
+    const userRole = this.getUserRole().toLowerCase();
+
+    return this.menuSections.filter((section) => {
+      // Show all sections for now, but you can implement role-based filtering here
+      return true;
+    });
+  }
+
+  viewProfile() {
+    this.router.navigate(["/profile"]);
+    this.onHide();
+  }
+
+  openSettings() {
+    this.router.navigate(["/settings"]);
+    this.onHide();
+  }
+
+  openHelp() {
+    this.router.navigate(["/help"]);
+    this.onHide();
+  }
+
   logout() {
-    // Implement logout logic
-    console.log("Logout clicked");
+    this.authService.logout();
     this.onHide();
   }
 }
