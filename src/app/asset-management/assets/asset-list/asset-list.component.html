@@ -53,64 +53,44 @@
     </div>
   </div>
 
-  <!-- Toolbar -->
-  <p-toolbar styleClass="mb-4">
-    <ng-template pTemplate="left">
+  <!-- Enhanced Filters Section -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Search & Filter Assets</h2>
       <button
-        pButton
-        type="button"
-        label="New Asset"
-        icon="pi pi-plus"
-        class="mr-2"
-        (click)="createAsset()"
-      ></button>
-      <button
-        pButton
-        type="button"
-        label="Export"
-        icon="pi pi-upload"
-        severity="secondary"
-        class="mr-2"
-        (click)="exportAssets()"
-      ></button>
-      <button
-        pButton
-        type="button"
-        label="Import"
-        icon="pi pi-download"
-        severity="secondary"
-        (click)="importAssets()"
-      ></button>
-    </ng-template>
-    <ng-template pTemplate="right">
-      <button
-        pButton
-        type="button"
-        icon="pi pi-refresh"
-        severity="secondary"
         (click)="refreshData()"
-      ></button>
-    </ng-template>
-  </p-toolbar>
+        [disabled]="loading"
+        class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+        [class.animate-spin]="loading"
+      >
+        <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+      </button>
+    </div>
 
-  <!-- Filters -->
-  <p-card header="Filters" styleClass="mb-4">
-    <div class="grid">
-      <div class="col-12 md:col-6 lg:col-3">
-        <label for="search" class="block text-sm font-medium mb-2"
-          >Search</label
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Search Input -->
+      <div class="space-y-2">
+        <label for="search" class="block text-sm font-semibold text-gray-700"
+          >Search Assets</label
         >
-        <input
-          pInputText
-          id="search"
-          [(ngModel)]="searchQuery"
-          placeholder="Search assets..."
-          class="w-full"
-          (input)="onSearchInput()"
-        />
+        <div class="relative">
+          <input
+            pInputText
+            id="search"
+            [(ngModel)]="searchQuery"
+            placeholder="Search by name, tag, or model..."
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            (input)="onSearchInput()"
+          />
+          <i
+            class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          ></i>
+        </div>
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
-        <label for="category" class="block text-sm font-medium mb-2"
+
+      <!-- Category Filter -->
+      <div class="space-y-2">
+        <label for="category" class="block text-sm font-semibold text-gray-700"
           >Category</label
         >
         <p-dropdown
@@ -121,10 +101,13 @@
           class="w-full"
           (onChange)="onFilterChange()"
           [showClear]="true"
+          styleClass="custom-dropdown"
         ></p-dropdown>
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
-        <label for="status" class="block text-sm font-medium mb-2"
+
+      <!-- Status Filter -->
+      <div class="space-y-2">
+        <label for="status" class="block text-sm font-semibold text-gray-700"
           >Status</label
         >
         <p-dropdown
@@ -135,10 +118,13 @@
           class="w-full"
           (onChange)="onFilterChange()"
           [showClear]="true"
+          styleClass="custom-dropdown"
         ></p-dropdown>
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
-        <label for="condition" class="block text-sm font-medium mb-2"
+
+      <!-- Condition Filter -->
+      <div class="space-y-2">
+        <label for="condition" class="block text-sm font-semibold text-gray-700"
           >Condition</label
         >
         <p-dropdown
@@ -149,20 +135,34 @@
           class="w-full"
           (onChange)="onFilterChange()"
           [showClear]="true"
+          styleClass="custom-dropdown"
         ></p-dropdown>
       </div>
     </div>
-    <div class="mt-3">
-      <button
-        pButton
-        type="button"
-        label="Clear Filters"
-        severity="secondary"
-        size="small"
-        (click)="clearFilters()"
-      ></button>
+
+    <!-- Filter Actions -->
+    <div
+      class="flex items-center justify-between mt-6 pt-6 border-t border-gray-200"
+    >
+      <div class="text-sm text-gray-600">
+        Showing {{ filteredAssets.length }} of {{ totalAssets }} assets
+      </div>
+      <div class="flex gap-3">
+        <button
+          (click)="clearFilters()"
+          class="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+        >
+          Clear Filters
+        </button>
+        <button
+          (click)="saveCurrentView()"
+          class="px-4 py-2 text-blue-600 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+        >
+          Save View
+        </button>
+      </div>
     </div>
-  </p-card>
+  </div>
 
   <!-- Assets Table -->
   <p-card>
