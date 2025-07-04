@@ -378,15 +378,15 @@ export class AssetListComponent implements OnInit, OnDestroy {
     this.router.navigate(["/asset-management/assets/new"]);
   }
 
-  editAsset(asset: Asset) {
+  editAsset(asset: any) {
     this.router.navigate([`/asset-management/assets/${asset.id}/edit`]);
   }
 
-  viewAsset(asset: Asset) {
+  viewAsset(asset: any) {
     this.router.navigate([`/asset-management/assets/${asset.id}`]);
   }
 
-  deleteAsset(asset: Asset) {
+  deleteAsset(asset: any) {
     this.confirmationService.confirm({
       message: `Are you sure you want to delete asset "${asset.name}" (${asset.assetTag})?`,
       header: "Confirm Deletion",
