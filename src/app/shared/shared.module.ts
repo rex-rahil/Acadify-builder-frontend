@@ -11,9 +11,18 @@ import { RippleModule } from "primeng/ripple";
 
 import { SideNavComponent } from "./components/side-nav/side-nav.component";
 import { HeaderComponent } from "./components/header/header.component";
+import {
+  HasPermissionDirective,
+  HasRoleDirective,
+} from "./directives/has-permission.directive";
 
 @NgModule({
-  declarations: [SideNavComponent, HeaderComponent],
+  declarations: [
+    SideNavComponent,
+    HeaderComponent,
+    HasPermissionDirective,
+    HasRoleDirective,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -23,6 +32,11 @@ import { HeaderComponent } from "./components/header/header.component";
     AvatarModule,
     RippleModule,
   ],
-  exports: [SideNavComponent, HeaderComponent],
+  exports: [
+    SideNavComponent,
+    HeaderComponent,
+    HasPermissionDirective,
+    HasRoleDirective,
+  ],
 })
 export class SharedModule {}
