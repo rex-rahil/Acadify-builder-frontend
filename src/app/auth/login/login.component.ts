@@ -54,6 +54,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  fillDemoUser(email: string): void {
+    this.loginForm.patchValue({
+      email: email,
+      password: "password123",
+    });
+  }
+
   initializeForm() {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
