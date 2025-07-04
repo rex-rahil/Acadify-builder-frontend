@@ -66,9 +66,6 @@ import { CourseService } from "./services/course.service";
     FormsModule,
     AdminRoutingModule,
 
-    // Angular CDK
-    DragDropModule,
-
     // PrimeNG
     ButtonModule,
     CardModule,
