@@ -53,23 +53,17 @@
 
   <!-- Loading State -->
   <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
-    <div
-      class="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mb-4"
-    ></div>
+    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mb-4"></div>
     <p class="text-gray-600 text-lg">Loading admission dashboard...</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="error && !loading" class="max-w-md mx-auto">
     <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
-      <div
-        class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-      >
+      <div class="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
         <i class="pi pi-exclamation-triangle text-red-600 text-2xl"></i>
       </div>
-      <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Error Loading Dashboard
-      </h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">Error Loading Dashboard</h3>
       <p class="text-gray-600 mb-6">{{ error }}</p>
       <button
         (click)="refreshData()"
@@ -81,51 +75,78 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && !error" class="dashboard-content">
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading && !error" class="max-w-7xl mx-auto">
     <!-- Statistics Cards -->
-    <div class="stats-grid">
-      <p-card class="stat-card total-applications">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-file"></i>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Applications Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500 transform hover:scale-105 transition-all">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Total Applications</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.totalApplications || 0 }}</p>
+            <p class="text-green-600 text-sm mt-1">
+              <i class="pi pi-arrow-up text-xs"></i>
+              +12% from last month
+            </p>
           </div>
-          <div class="stat-details">
-            <h3>{{ overview?.totalApplications || 0 }}</h3>
-            <p>Total Applications</p>
-          </div>
-        </div>
-      </p-card>
-
-      <p-card class="stat-card pending-review">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-clock"></i>
-          </div>
-          <div class="stat-details">
-            <h3>{{ overview?.pendingReview || 0 }}</h3>
-            <p>Pending Review</p>
+          <div class="bg-blue-100 rounded-xl p-3">
+            <i class="pi pi-file text-blue-600 text-2xl"></i>
           </div>
         </div>
-      </p-card>
+      </div>
 
-      <p-card class="stat-card approved">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-check-circle"></i>
+      <!-- Pending Review Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500 transform hover:scale-105 transition-all">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Pending Review</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.pendingReview || 0 }}</p>
+            <p class="text-yellow-600 text-sm mt-1">
+              <i class="pi pi-clock text-xs"></i>
+              Requires attention
+            </p>
           </div>
-          <div class="stat-details">
-            <h3>{{ overview?.approved || 0 }}</h3>
-            <p>Approved</p>
+          <div class="bg-yellow-100 rounded-xl p-3">
+            <i class="pi pi-clock text-yellow-600 text-2xl"></i>
           </div>
         </div>
-      </p-card>
+      </div>
 
-      <p-card class="stat-card rejected">
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="pi pi-times-circle"></i>
+      <!-- Approved Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500 transform hover:scale-105 transition-all">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Approved</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.approved || 0 }}</p>
+            <p class="text-green-600 text-sm mt-1">
+              <i class="pi pi-check text-xs"></i>
+              Successfully processed
+            </p>
           </div>
-          <div class="stat-details">
+          <div class="bg-green-100 rounded-xl p-3">
+            <i class="pi pi-check-circle text-green-600 text-2xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rejected Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-500 transform hover:scale-105 transition-all">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Rejected</p>
+            <p class="text-3xl font-bold text-gray-800 mt-1">{{ overview?.rejected || 0 }}</p>
+            <p class="text-red-600 text-sm mt-1">
+              <i class="pi pi-times text-xs"></i>
+              Need improvement
+            </p>
+          </div>
+          <div class="bg-red-100 rounded-xl p-3">
+            <i class="pi pi-times-circle text-red-600 text-2xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
             <h3>{{ overview?.rejected || 0 }}</h3>
             <p>Rejected</p>
           </div>
