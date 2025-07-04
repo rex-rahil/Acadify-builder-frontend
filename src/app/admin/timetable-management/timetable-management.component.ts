@@ -611,6 +611,13 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   }
 
   // Dialog methods
+  openSlotAssignment(slot: LectureSlot) {
+    // For now, just auto-assign the first available subject
+    if (this.subjects.length > 0) {
+      this.assignSubjectToSlot(this.subjects[0], slot);
+    }
+  }
+
   closeAssignmentDialog() {
     this.showAssignmentDialog = false;
     this.selectedSlot = null;
