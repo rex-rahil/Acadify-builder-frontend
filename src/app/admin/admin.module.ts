@@ -61,12 +61,16 @@ import { CourseService } from "./services/course.service";
     CourseListComponent,
     CourseFormComponent,
     SubjectAllocationComponent,
+    TimetableManagementComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     AdminRoutingModule,
+
+    // Angular CDK
+    DragDropModule,
 
     // PrimeNG
     ButtonModule,
