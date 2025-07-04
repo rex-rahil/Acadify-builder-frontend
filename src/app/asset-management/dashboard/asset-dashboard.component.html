@@ -1,0 +1,260 @@
+<!-- Asset Management Dashboard -->
+<div class="asset-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header mb-4">
+    <h1 class="text-3xl font-bold text-gray-900">Asset Management Dashboard</h1>
+    <p class="text-gray-600 mt-2">
+      Monitor and manage all college assets, maintenance, and inventory
+    </p>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading">
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <!-- Total Assets -->
+      <p-card styleClass="h-full border-l-4 border-blue-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700">Total Assets</h3>
+            <p class="text-3xl font-bold text-blue-600">
+              {{ assetStats.total || 0 }}
+            </p>
+          </div>
+          <div class="p-3 bg-blue-100 rounded-full">
+            <i class="pi pi-box text-blue-600 text-2xl"></i>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Total Value -->
+      <p-card styleClass="h-full border-l-4 border-green-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700">Total Value</h3>
+            <p class="text-3xl font-bold text-green-600">
+              {{ formatCurrency(assetStats.totalValue || 0) }}
+            </p>
+          </div>
+          <div class="p-3 bg-green-100 rounded-full">
+            <i class="pi pi-dollar text-green-600 text-2xl"></i>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Maintenance Due -->
+      <p-card styleClass="h-full border-l-4 border-yellow-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700">Maintenance Due</h3>
+            <p class="text-3xl font-bold text-yellow-600">
+              {{ assetStats.maintenanceDue || 0 }}
+            </p>
+          </div>
+          <div class="p-3 bg-yellow-100 rounded-full">
+            <i class="pi pi-wrench text-yellow-600 text-2xl"></i>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Warranty Expiring -->
+      <p-card styleClass="h-full border-l-4 border-red-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700">
+              Warranty Expiring
+            </h3>
+            <p class="text-3xl font-bold text-red-600">
+              {{ assetStats.warrantyExpiring || 0 }}
+            </p>
+          </div>
+          <div class="p-3 bg-red-100 rounded-full">
+            <i class="pi pi-exclamation-triangle text-red-600 text-2xl"></i>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column - Charts -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Asset Distribution -->
+        <p-card header="Asset Distribution by Category">
+          <div class="h-64">
+            <p-chart
+              type="doughnut"
+              [data]="chartData.assetsByCategory"
+              [options]="chartOptions"
+              width="100%"
+              height="100%"
+            ></p-chart>
+          </div>
+        </p-card>
+
+        <!-- Asset Status -->
+        <p-card header="Asset Status Overview">
+          <div class="h-64">
+            <p-chart
+              type="bar"
+              [data]="chartData.assetsByStatus"
+              [options]="chartOptions"
+              width="100%"
+              height="100%"
+            ></p-chart>
+          </div>
+        </p-card>
+
+        <!-- Maintenance Statistics -->
+        <p-card header="Maintenance Overview">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <div class="text-2xl font-bold text-blue-600">
+                {{ maintenanceStats.pending || 0 }}
+              </div>
+              <div class="text-sm text-gray-600">Pending</div>
+            </div>
+            <div class="text-center p-4 bg-yellow-50 rounded-lg">
+              <div class="text-2xl font-bold text-yellow-600">
+                {{ maintenanceStats.inProgress || 0 }}
+              </div>
+              <div class="text-sm text-gray-600">In Progress</div>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+              <div class="text-2xl font-bold text-green-600">
+                {{ maintenanceStats.completed || 0 }}
+              </div>
+              <div class="text-sm text-gray-600">Completed</div>
+            </div>
+            <div class="text-center p-4 bg-red-50 rounded-lg">
+              <div class="text-2xl font-bold text-red-600">
+                {{ maintenanceStats.overdue || 0 }}
+              </div>
+              <div class="text-sm text-gray-600">Overdue</div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Right Column - Alerts and Quick Actions -->
+      <div class="space-y-6">
+        <!-- Recent Alerts -->
+        <p-card header="Recent Alerts">
+          <div class="space-y-3" *ngIf="alerts.length > 0; else noAlerts">
+            <div
+              *ngFor="let alert of alerts"
+              class="flex items-start space-x-3 p-3 rounded-lg border"
+              [ngClass]="{
+                'border-yellow-200 bg-yellow-50':
+                  getAlertSeverityColor(alert.alertType) === 'warning',
+                'border-red-200 bg-red-50':
+                  getAlertSeverityColor(alert.alertType) === 'danger',
+                'border-blue-200 bg-blue-50':
+                  getAlertSeverityColor(alert.alertType) === 'info',
+              }"
+            >
+              <i
+                class="pi text-sm mt-1"
+                [ngClass]="{
+                  'pi-exclamation-triangle text-yellow-600':
+                    getAlertSeverityColor(alert.alertType) === 'warning',
+                  'pi-times-circle text-red-600':
+                    getAlertSeverityColor(alert.alertType) === 'danger',
+                  'pi-info-circle text-blue-600':
+                    getAlertSeverityColor(alert.alertType) === 'info',
+                }"
+              ></i>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900">
+                  {{ alert.assetName }}
+                </p>
+                <p class="text-xs text-gray-600">{{ alert.message }}</p>
+                <p class="text-xs text-gray-500 mt-1">
+                  Due: {{ alert.dueDate | date: "short" }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <ng-template #noAlerts>
+            <div class="text-center py-4 text-gray-500">
+              <i class="pi pi-check-circle text-2xl mb-2"></i>
+              <p>No active alerts</p>
+            </div>
+          </ng-template>
+          <div class="mt-4 pt-3 border-t">
+            <button
+              pButton
+              type="button"
+              label="View All Alerts"
+              class="w-full"
+              severity="secondary"
+              size="small"
+              (click)="navigateToAlerts()"
+            ></button>
+          </div>
+        </p-card>
+
+        <!-- Quick Actions -->
+        <p-card header="Quick Actions">
+          <div class="space-y-3">
+            <button
+              pButton
+              type="button"
+              label="Add New Asset"
+              icon="pi pi-plus"
+              class="w-full"
+              (click)="navigateToAssets()"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="Create Maintenance Request"
+              icon="pi pi-wrench"
+              class="w-full"
+              severity="secondary"
+              (click)="navigateToMaintenance()"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="Generate Report"
+              icon="pi pi-file-pdf"
+              class="w-full"
+              severity="info"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="Manage Inventory"
+              icon="pi pi-database"
+              class="w-full"
+              severity="help"
+            ></button>
+          </div>
+        </p-card>
+
+        <!-- Recent Activity -->
+        <p-card header="Recent Activity">
+          <p-timeline [value]="[]" layout="vertical">
+            <ng-template pTemplate="content" let-event>
+              <div class="text-sm">
+                <p class="font-medium">{{ event.title }}</p>
+                <p class="text-gray-600">{{ event.description }}</p>
+                <p class="text-xs text-gray-500">{{ event.timestamp }}</p>
+              </div>
+            </ng-template>
+          </p-timeline>
+          <div class="text-center py-4 text-gray-500" *ngIf="true">
+            <i class="pi pi-clock text-2xl mb-2"></i>
+            <p>No recent activity</p>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>
