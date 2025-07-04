@@ -4,7 +4,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { AuthService, LoginCredentials } from "../services/auth.service";
+import { AuthService, LoginCredentials, User } from "../services/auth.service";
+import { UserRole } from "../models/role.model";
 
 @Component({
   selector: "app-login",
@@ -44,9 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Get return URL - default to dashboard, not admin
-    this.returnUrl =
-      this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
+    // Get return URL from query params
+    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "";
   }
 
   ngOnDestroy() {
@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
               // Redirect based on user role
               setTimeout(() => {
-                this.redirectBasedOnRole(response.user);
+                this.redirectBasedOnRole(response.user || null);
               }, 1000);
             }
           },
@@ -181,43 +181,46 @@ export class LoginComponent implements OnInit, OnDestroy {
     ];
   }
 
-  fillDemoCredentials(email: string) {
-    console.log("Filling demo credentials for:", email);
-    if (this.loginForm) {
-      this.loginForm.patchValue({
-        email: email,
-        password: "password123",
-      });
-      console.log("Form after patch:", this.loginForm.value);
-    } else {
-      console.error("Login form not initialized!");
-    }
+  fillDemoUser(email: string): void {
+    this.loginForm.patchValue({
+      email: email,
+      password: "password123",
+    });
   }
 
-  private redirectAfterLogin() {
-    this.router.navigate([this.returnUrl]);
+  private redirectAfterLogin(): void {
+    const currentUser = this.authService.getCurrentUser();
+    this.redirectBasedOnRole(currentUser);
   }
 
-  private redirectBasedOnRole(user: any) {
+  private redirectBasedOnRole(user: User | null) {
     try {
-      if (this.returnUrl && this.returnUrl !== "/dashboard") {
+      if (this.returnUrl && this.returnUrl !== "") {
         // If there's a specific return URL, use it
         this.router.navigate([this.returnUrl]);
         return;
       }
 
-      // Default role-based routing
-      switch (user?.role) {
-        case "admin":
+      // Default role-based routing using new UserRole enum
+      const userRole = user?.role as UserRole;
+      switch (userRole) {
+        case UserRole.ADMIN:
           this.router.navigate(["/admin"]);
           break;
-        case "faculty":
-        case "hod":
+        case UserRole.FACULTY:
+        case UserRole.HOD:
           this.router.navigate(["/faculty"]);
           break;
-        case "admission_officer":
+        case UserRole.ADMISSION_OFFICER:
           this.router.navigate(["/admission-officer"]);
           break;
+        case UserRole.LIBRARIAN:
+          this.router.navigate(["/library"]);
+          break;
+        case UserRole.ASSET_MANAGER:
+          this.router.navigate(["/asset-management"]);
+          break;
+        case UserRole.STUDENT:
         default:
           this.router.navigate(["/dashboard"]);
       }

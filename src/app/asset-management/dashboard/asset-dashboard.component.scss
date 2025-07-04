@@ -1,0 +1,304 @@
+// Modern Asset Dashboard Styling
+:host {
+  display: block;
+  width: 100%;
+}
+
+// Custom animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+// Component animations
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// PrimeNG Customizations
+::ng-deep {
+  .p-card {
+    border: none !important;
+    border-radius: 1rem !important;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+
+    &:hover {
+      box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .p-card-header {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      font-weight: 600 !important;
+      color: #374151 !important;
+      padding: 1.5rem !important;
+      border-radius: 1rem 1rem 0 0 !important;
+      position: relative !important;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+      }
+    }
+
+    .p-card-body {
+      padding: 0 !important;
+
+      .p-card-content {
+        padding: 1.5rem !important;
+      }
+    }
+  }
+
+  .p-button {
+    border-radius: 0.75rem !important;
+    font-weight: 500 !important;
+    padding: 0.75rem 1.5rem !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition:
+        width 0.6s,
+        height 0.6s;
+    }
+
+    &:hover {
+      transform: translateY(-2px) !important;
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+
+      &::before {
+        width: 300px;
+        height: 300px;
+      }
+    }
+
+    &:active {
+      transform: translateY(0) !important;
+    }
+
+    &:disabled {
+      opacity: 0.6 !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+    }
+  }
+
+  .p-progressspinner {
+    width: 60px !important;
+    height: 60px !important;
+
+    .p-progressspinner-circle {
+      stroke: #3b82f6 !important;
+      stroke-width: 3 !important;
+    }
+  }
+
+  .p-toast {
+    .p-toast-message {
+      border-radius: 1rem !important;
+      box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+      backdrop-filter: blur(10px) !important;
+
+      &.p-toast-message-success {
+        background: rgba(16, 185, 129, 0.95) !important;
+        border: 1px solid rgba(16, 185, 129, 0.2) !important;
+      }
+
+      &.p-toast-message-info {
+        background: rgba(59, 130, 246, 0.95) !important;
+        border: 1px solid rgba(59, 130, 246, 0.2) !important;
+      }
+
+      &.p-toast-message-warn {
+        background: rgba(245, 158, 11, 0.95) !important;
+        border: 1px solid rgba(245, 158, 11, 0.2) !important;
+      }
+
+      &.p-toast-message-error {
+        background: rgba(239, 68, 68, 0.95) !important;
+        border: 1px solid rgba(239, 68, 68, 0.2) !important;
+      }
+    }
+  }
+}
+
+// Custom scroll behavior
+.space-y-4 > * + *,
+.space-y-6 > * + * {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.space-y-4 > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.space-y-4 > *:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.space-y-4 > *:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.space-y-4 > *:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+// Glassmorphism effect for cards
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+// Hover effects for interactive elements
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}
+
+// Custom loading state
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Responsive design helpers
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lg\\:col-span-2,
+  .lg\\:col-span-3,
+  .xl\\:col-span-3 {
+    grid-column: span 1 / span 1 !important;
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus states for accessibility
+button:focus-visible,
+.cursor-pointer:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+// Print styles
+@media print {
+  .bg-gradient-to-r,
+  .bg-gradient-to-br {
+    background: #f8fafc !important;
+    color: #374151 !important;
+  }
+
+  .shadow-lg,
+  .shadow-xl {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+  }
+}

@@ -17,6 +17,9 @@ export interface User {
   department?: string;
   employeeId?: string;
   avatar?: string;
+  permissions?: string[];
+  lastLogin?: Date;
+  isActive?: boolean;
 }
 
 export interface AuthResponse {
@@ -45,6 +48,8 @@ export class AuthService {
       email: "admin@college.edu",
       role: "admin",
       employeeId: "EMP001",
+      isActive: true,
+      lastLogin: new Date(),
     },
     {
       id: "2",
@@ -54,6 +59,8 @@ export class AuthService {
       role: "faculty",
       department: "Computer Science",
       employeeId: "EMP002",
+      isActive: true,
+      lastLogin: new Date(),
     },
     {
       id: "3",
@@ -63,6 +70,8 @@ export class AuthService {
       role: "hod",
       department: "Computer Science",
       employeeId: "EMP005",
+      isActive: true,
+      lastLogin: new Date(),
     },
     {
       id: "4",
@@ -71,6 +80,39 @@ export class AuthService {
       email: "emily.brown@college.edu",
       role: "admission_officer",
       employeeId: "EMP003",
+      isActive: true,
+      lastLogin: new Date(),
+    },
+    {
+      id: "5",
+      firstName: "Michael",
+      lastName: "Chen",
+      email: "student@college.edu",
+      role: "student",
+      employeeId: "STU001",
+      department: "Computer Science",
+      isActive: true,
+      lastLogin: new Date(),
+    },
+    {
+      id: "6",
+      firstName: "Lisa",
+      lastName: "Johnson",
+      email: "librarian@college.edu",
+      role: "librarian",
+      employeeId: "LIB001",
+      isActive: true,
+      lastLogin: new Date(),
+    },
+    {
+      id: "7",
+      firstName: "David",
+      lastName: "Smith",
+      email: "assets@college.edu",
+      role: "asset_manager",
+      employeeId: "AST001",
+      isActive: true,
+      lastLogin: new Date(),
     },
   ];
 
