@@ -9,10 +9,7 @@
       "department": "Computer Science",
       "designation": "Associate Professor",
       "joiningDate": "2020-06-15",
-      "qualifications": [
-        "PhD Computer Science",
-        "M.Tech Software Engineering"
-      ],
+      "qualifications": ["PhD Computer Science", "M.Tech Software Engineering"],
       "avatar": null,
       "isHOD": true
     },
@@ -25,10 +22,7 @@
       "department": "Computer Science",
       "designation": "Assistant Professor",
       "joiningDate": "2019-08-20",
-      "qualifications": [
-        "M.Tech Computer Science",
-        "B.Tech CSE"
-      ],
+      "qualifications": ["M.Tech Computer Science", "B.Tech CSE"],
       "avatar": null,
       "isHOD": false
     },
@@ -41,12 +35,257 @@
       "department": "Computer Science",
       "designation": "Assistant Professor",
       "joiningDate": "2021-03-10",
-      "qualifications": [
-        "PhD Information Technology",
-        "M.Sc Computer Science"
-      ],
+      "qualifications": ["PhD Information Technology", "M.Sc Computer Science"],
       "avatar": null,
       "isHOD": false
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset_001",
+      "assetTag": "COM001234",
+      "name": "Dell OptiPlex 7090",
+      "description": "Desktop computer for faculty use",
+      "category": "Computer",
+      "brand": "Dell",
+      "model": "OptiPlex 7090",
+      "serialNumber": "DL7090123456",
+      "purchaseDate": "2023-01-15",
+      "purchasePrice": 1200,
+      "currentValue": 1000,
+      "depreciationRate": 15,
+      "condition": "Good",
+      "status": "Active",
+      "location": "Faculty Room 101",
+      "department": "Computer Science",
+      "assignedTo": "Dr. Sarah Johnson",
+      "warrantyExpiry": "2026-01-15",
+      "lastMaintenanceDate": "2024-06-15",
+      "nextMaintenanceDate": "2024-12-15",
+      "notes": "Regular maintenance scheduled",
+      "specifications": [
+        { "name": "RAM", "value": "16GB" },
+        { "name": "Storage", "value": "512GB SSD" },
+        { "name": "Processor", "value": "Intel Core i7" }
+      ],
+      "createdBy": "admin",
+      "createdAt": "2023-01-15T00:00:00Z",
+      "updatedAt": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "asset_002",
+      "assetTag": "FUR002345",
+      "name": "Executive Office Chair",
+      "description": "Ergonomic office chair for faculty",
+      "category": "Furniture",
+      "brand": "Herman Miller",
+      "model": "Aeron",
+      "serialNumber": "HM2345678",
+      "purchaseDate": "2023-03-10",
+      "purchasePrice": 800,
+      "currentValue": 720,
+      "depreciationRate": 10,
+      "condition": "Excellent",
+      "status": "Active",
+      "location": "Faculty Room 101",
+      "department": "Computer Science",
+      "assignedTo": "Dr. Sarah Johnson",
+      "warrantyExpiry": "2025-03-10",
+      "notes": "No maintenance required",
+      "specifications": [
+        { "name": "Material", "value": "Mesh" },
+        { "name": "Color", "value": "Black" },
+        { "name": "Adjustable", "value": "Yes" }
+      ],
+      "createdBy": "admin",
+      "createdAt": "2023-03-10T00:00:00Z",
+      "updatedAt": "2023-03-10T00:00:00Z"
+    }
+  ],
+  "maintenanceRequests": [
+    {
+      "id": "maint_001",
+      "assetId": "asset_001",
+      "assetName": "Dell OptiPlex 7090",
+      "assetTag": "COM001234",
+      "requestType": "Preventive",
+      "priority": "Medium",
+      "description": "Regular system maintenance and software updates",
+      "reportedBy": "Dr. Sarah Johnson",
+      "reportedDate": "2024-10-01T00:00:00Z",
+      "assignedTo": "IT Technician",
+      "scheduledDate": "2024-10-15T00:00:00Z",
+      "status": "Pending",
+      "notes": "Schedule during off-hours"
+    }
+  ],
+  "assetAllocations": [
+    {
+      "id": "alloc_001",
+      "assetId": "asset_001",
+      "allocatedTo": "Dr. Sarah Johnson",
+      "allocatedBy": "Admin",
+      "department": "Computer Science",
+      "allocationDate": "2023-01-15T00:00:00Z",
+      "status": "Allocated",
+      "purpose": "Faculty workstation",
+      "condition": "Good",
+      "notes": "For daily teaching and research activities"
+    }
+  ],
+  "inventoryItems": [
+    {
+      "id": "inv_001",
+      "name": "A4 Copy Paper",
+      "description": "White A4 size copy paper, 80 GSM",
+      "category": "Stationery",
+      "unitOfMeasure": "Ream",
+      "minimumStock": 50,
+      "currentStock": 120,
+      "unitPrice": 5.99,
+      "supplier": "Office Supplies Co.",
+      "location": "Storage Room A",
+      "lastRestocked": "2024-09-15T00:00:00Z",
+      "notes": "Standard office paper"
+    },
+    {
+      "id": "inv_002",
+      "name": "Whiteboard Markers",
+      "description": "Blue whiteboard markers",
+      "category": "Stationery",
+      "unitOfMeasure": "Piece",
+      "minimumStock": 20,
+      "currentStock": 15,
+      "unitPrice": 2.5,
+      "supplier": "Office Supplies Co.",
+      "location": "Storage Room A",
+      "lastRestocked": "2024-08-01T00:00:00Z",
+      "notes": "Low stock - reorder soon"
+    }
+  ],
+  "stockMovements": [
+    {
+      "id": "move_001",
+      "itemId": "inv_001",
+      "type": "Stock In",
+      "quantity": 50,
+      "reason": "Monthly restock",
+      "performedBy": "Store Keeper",
+      "performedDate": "2024-09-15T00:00:00Z",
+      "reference": "PO-2024-0915"
+    }
+  ],
+  "purchaseRequisitions": [
+    {
+      "id": "req_001",
+      "requestNumber": "REQ240001",
+      "requestedBy": "Dr. Sarah Johnson",
+      "department": "Computer Science",
+      "requestDate": "2024-09-01T00:00:00Z",
+      "requiredBy": "2024-10-01T00:00:00Z",
+      "status": "Approved",
+      "priority": "Medium",
+      "totalAmount": 2500,
+      "approvedBy": "Department Head",
+      "approvedDate": "2024-09-05T00:00:00Z",
+      "items": [
+        {
+          "id": "req_item_001",
+          "name": "Laptop Computer",
+          "description": "MacBook Pro 14-inch for research",
+          "category": "Computer",
+          "quantity": 1,
+          "estimatedPrice": 2500,
+          "specification": "Apple M2 Pro, 16GB RAM, 512GB SSD",
+          "justification": "Research work requires high-performance laptop"
+        }
+      ],
+      "notes": "Urgent requirement for ongoing research project"
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "id": "po_001",
+      "orderNumber": "PO240001",
+      "requisitionId": "req_001",
+      "supplier": {
+        "id": "sup_001",
+        "name": "Tech Solutions Ltd",
+        "contactPerson": "John Smith",
+        "email": "john@techsolutions.com",
+        "phone": "+1234567890",
+        "address": "123 Tech Street, City",
+        "rating": 4.5,
+        "isActive": true
+      },
+      "orderDate": "2024-09-10T00:00:00Z",
+      "expectedDelivery": "2024-09-25T00:00:00Z",
+      "status": "Sent",
+      "totalAmount": 2500,
+      "taxAmount": 250,
+      "discountAmount": 0,
+      "shippingCost": 50,
+      "items": [
+        {
+          "id": "po_item_001",
+          "name": "MacBook Pro 14-inch",
+          "description": "Apple M2 Pro, 16GB RAM, 512GB SSD",
+          "quantity": 1,
+          "unitPrice": 2500,
+          "totalPrice": 2500
+        }
+      ],
+      "createdBy": "Purchase Manager",
+      "notes": "Standard academic discount applied"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "sup_001",
+      "name": "Tech Solutions Ltd",
+      "contactPerson": "John Smith",
+      "email": "john@techsolutions.com",
+      "phone": "+1234567890",
+      "address": "123 Tech Street, City",
+      "rating": 4.5,
+      "isActive": true
+    },
+    {
+      "id": "sup_002",
+      "name": "Office Supplies Co.",
+      "contactPerson": "Jane Doe",
+      "email": "jane@officesupplies.com",
+      "phone": "+1234567891",
+      "address": "456 Supply Avenue, City",
+      "rating": 4.2,
+      "isActive": true
+    }
+  ],
+  "maintenanceAlerts": [
+    {
+      "id": "alert_001",
+      "assetId": "asset_001",
+      "assetName": "Dell OptiPlex 7090",
+      "assetTag": "COM001234",
+      "alertType": "MAINTENANCE_DUE",
+      "message": "Scheduled maintenance due for Dell OptiPlex 7090",
+      "dueDate": "2024-12-15T00:00:00Z",
+      "createdDate": "2024-11-15T00:00:00Z",
+      "isRead": false,
+      "isResolved": false,
+      "assignedTo": "IT Technician"
+    },
+    {
+      "id": "alert_002",
+      "assetId": "inv_002",
+      "assetName": "Whiteboard Markers",
+      "assetTag": "INVENTORY",
+      "alertType": "LOW_STOCK",
+      "message": "Low stock alert: Whiteboard Markers (15 remaining)",
+      "dueDate": "2024-11-20T00:00:00Z",
+      "createdDate": "2024-11-15T00:00:00Z",
+      "isRead": false,
+      "isResolved": false
     }
   ],
   "departments": [
@@ -359,9 +598,7 @@
       "approvedBy": "HOD",
       "approvedDate": "2025-07-03T07:28:38.481Z",
       "rejectionReason": null,
-      "documents": [
-        "medical_certificate.pdf"
-      ]
+      "documents": ["medical_certificate.pdf"]
     },
     {
       "id": "leave_003",
@@ -822,10 +1059,7 @@
           "numberOfInstallments": 2,
           "firstInstallmentAmount": 65000,
           "subsequentInstallmentAmount": 60000,
-          "installmentDates": [
-            "2025-01-15",
-            "2025-06-15"
-          ],
+          "installmentDates": ["2025-01-15", "2025-06-15"],
           "processingFee": 1000
         },
         {
