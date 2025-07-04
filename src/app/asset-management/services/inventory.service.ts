@@ -120,13 +120,22 @@ export class InventoryService {
     return this.getInventoryItem(itemId).pipe(
       map((item) => {
         const adjustment = newQuantity - item.currentStock;
-        return this.recordStockMovement({
+        this.recordStockMovement({
           itemId,
           type: StockMovementType.ADJUSTMENT,
           quantity: adjustment,
           reason,
           performedBy,
-        });
+        }).subscribe();
+        return {
+          id: this.generateId(),
+          itemId,
+          type: StockMovementType.ADJUSTMENT,
+          quantity: adjustment,
+          reason,
+          performedBy,
+          performedDate: new Date(),
+        };
       }),
     );
   }
