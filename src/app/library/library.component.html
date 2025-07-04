@@ -1,95 +1,225 @@
-<div class="library-container">
-  <!-- Header Section -->
-  <div class="library-header">
-    <div class="header-content">
-      <h1>
-        <i class="pi pi-book"></i>
-        Library Management System
-      </h1>
-      <p>Oriental College of Pharmacy - Digital Library</p>
-    </div>
-
-    <!-- Library Statistics -->
-    <div class="stats-cards" *ngIf="libraryStats">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="pi pi-book"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">{{ libraryStats.totalBooks }}</span>
-          <span class="stat-label">Total Books</span>
-        </div>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Page Header -->
+  <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div class="mb-4 lg:mb-0">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+          <i class="pi pi-book text-blue-600 mr-3"></i>
+          Library Management System
+        </h1>
+        <p class="text-gray-600 mt-1">
+          Oriental College of Pharmacy - Digital Library
+        </p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon available">
-          <i class="pi pi-check-circle"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">{{ libraryStats.availableBooks }}</span>
-          <span class="stat-label">Available</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon issued">
-          <i class="pi pi-send"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">{{ libraryStats.issuedBooks }}</span>
-          <span class="stat-label">Issued</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon reserved">
-          <i class="pi pi-clock"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">{{ libraryStats.reservedBooks }}</span>
-          <span class="stat-label">Reserved</span>
-        </div>
+      <div class="flex flex-wrap gap-3">
+        <button
+          (click)="exportLibraryData()"
+          [disabled]="loading"
+          class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <i class="pi pi-download"></i>
+          Export
+        </button>
+        <button
+          (click)="refreshData()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          [class.animate-spin]="loading"
+        >
+          <i class="pi pi-refresh" [class.animate-spin]="loading"></i>
+          Refresh
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="library-content">
-    <p-tabView [(activeIndex)]="activeTab">
-      <!-- Browse Books Tab -->
-      <p-tabPanel header="Browse Books" leftIcon="pi pi-search">
-        <div class="books-section">
-          <!-- Search and Filter Toolbar -->
-          <p-toolbar styleClass="search-toolbar">
-            <ng-template pTemplate="start">
-              <div class="search-controls">
-                <span class="p-input-icon-left">
-                  <i class="pi pi-search"></i>
-                  <input
-                    type="text"
-                    pInputText
-                    placeholder="Search by title, author, or ISBN..."
-                    [(ngModel)]="searchQuery"
-                    (input)="onSearch()"
-                    class="search-input"
-                  />
-                </span>
-                <p-dropdown
-                  [options]="subjects"
-                  [(ngModel)]="selectedSubject"
-                  placeholder="Filter by Subject"
-                  [showClear]="true"
-                  (onChange)="onSubjectFilter()"
-                  styleClass="subject-filter"
-                ></p-dropdown>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+    ></div>
+    <p class="text-gray-600 mt-4">Loading library data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div class="flex flex-col items-center text-center">
+      <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">
+        Error Loading Library Data
+      </h3>
+      <p class="text-gray-600 mb-4">{{ error }}</p>
+      <button
+        (click)="refreshData()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+      >
+        <i class="pi pi-refresh"></i>
+        Retry
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && !error" class="space-y-6">
+    <!-- Library Statistics -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-900 flex items-center mb-6">
+        <i class="pi pi-chart-bar text-blue-600 mr-2"></i>
+        Library Statistics
+      </h2>
+
+      <div
+        *ngIf="libraryStats"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
+        <!-- Total Books -->
+        <div
+          class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-book text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-blue-200 text-sm">Total Books</p>
+              <p class="text-2xl font-semibold">
+                {{ libraryStats.totalBooks }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Available Books -->
+        <div
+          class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-check-circle text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-green-200 text-sm">Available</p>
+              <p class="text-2xl font-semibold">
+                {{ libraryStats.availableBooks }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issued Books -->
+        <div
+          class="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-send text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-orange-200 text-sm">Issued</p>
+              <p class="text-2xl font-semibold">
+                {{ libraryStats.issuedBooks }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reserved Books -->
+        <div
+          class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg p-4"
+        >
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="pi pi-clock text-2xl"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-purple-200 text-sm">Reserved</p>
+              <p class="text-2xl font-semibold">
+                {{ libraryStats.reservedBooks }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!libraryStats" class="text-center py-8">
+        <p class="text-gray-500">No statistics available</p>
+      </div>
+    </div>
+
+    <!-- Main Library Content -->
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <!-- Tab Navigation -->
+      <div class="border-b border-gray-200">
+        <nav class="flex space-x-8 px-6" aria-label="Tabs">
+          <button
+            *ngFor="let tab of tabs; let i = index"
+            (click)="activeTab = i"
+            class="py-4 px-1 border-b-2 font-medium text-sm transition-colors"
+            [class.border-blue-500]="activeTab === i"
+            [class.text-blue-600]="activeTab === i"
+            [class.border-transparent]="activeTab !== i"
+            [class.text-gray-500]="activeTab !== i"
+            [class.hover:text-gray-700]="activeTab !== i"
+            [class.hover:border-gray-300]="activeTab !== i"
+          >
+            <i [class]="tab.icon" class="mr-2"></i>
+            {{ tab.label }}
+          </button>
+        </nav>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="p-6">
+        <!-- Browse Books Tab -->
+        <div *ngIf="activeTab === 0">
+          <div class="mb-6">
+            <h3
+              class="text-lg font-semibold text-gray-900 flex items-center mb-4"
+            >
+              <i class="pi pi-search text-blue-600 mr-2"></i>
+              Browse Books
+            </h3>
+
+            <!-- Search and Filter Toolbar -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+              <div
+                class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+              >
+                <div class="flex flex-col sm:flex-row gap-4 flex-1">
+                  <div class="relative flex-1">
+                    <div
+                      class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                    >
+                      <i class="pi pi-search text-gray-400"></i>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Search by title, author, or ISBN..."
+                      [(ngModel)]="searchQuery"
+                      (input)="onSearch()"
+                      class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <select
+                    [(ngModel)]="selectedSubject"
+                    (change)="onSubjectFilter()"
+                    class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">All Subjects</option>
+                    <option *ngFor="let subject of subjects" [value]="subject">
+                      {{ subject }}
+                    </option>
+                  </select>
+                </div>
+                <button
+                  (click)="clearFilters()"
+                  class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                >
+                  <i class="pi pi-filter-slash"></i>
+                  Clear Filters
+                </button>
               </div>
-            </ng-template>
-            <ng-template pTemplate="end">
-              <p-button
-                icon="pi pi-filter-slash"
-                label="Clear Filters"
-                styleClass="p-button-outlined"
-                (onClick)="clearFilters()"
-              ></p-button>
-            </ng-template>
-          </p-toolbar>
+            </div>
+          </div>
 
           <!-- Books List -->
           <app-book-list
@@ -99,150 +229,190 @@
             (reserveBook)="openReserveDialog($event)"
           ></app-book-list>
         </div>
-      </p-tabPanel>
 
-      <!-- My Issues Tab -->
-      <p-tabPanel header="My Issues" leftIcon="pi pi-send">
-        <div class="my-issues-section">
-          <h3>Currently Issued Books</h3>
-          <p-divider></p-divider>
+        <!-- My Issues Tab -->
+        <div *ngIf="activeTab === 1">
+          <h3
+            class="text-lg font-semibold text-gray-900 flex items-center mb-6"
+          >
+            <i class="pi pi-send text-orange-600 mr-2"></i>
+            Currently Issued Books
+          </h3>
 
-          <div *ngIf="myIssues.length === 0" class="empty-state">
-            <i class="pi pi-info-circle"></i>
-            <h4>No Books Currently Issued</h4>
-            <p>You don't have any books issued at the moment.</p>
+          <div *ngIf="myIssues.length === 0" class="text-center py-12">
+            <i class="pi pi-info-circle text-gray-400 text-4xl mb-4"></i>
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">
+              No Books Currently Issued
+            </h4>
+            <p class="text-gray-500">
+              You don't have any books issued at the moment.
+            </p>
           </div>
 
-          <div *ngIf="myIssues.length > 0" class="issues-grid">
-            <p-card *ngFor="let issue of myIssues" styleClass="issue-card">
-              <ng-template pTemplate="header">
-                <div class="issue-header">
-                  <h4>{{ issue.bookTitle }}</h4>
-                  <p-tag
-                    [value]="issue.status"
-                    [severity]="getStatusSeverity(issue.status)"
-                  ></p-tag>
-                </div>
-              </ng-template>
+          <div
+            *ngIf="myIssues.length > 0"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            <div
+              *ngFor="let issue of myIssues"
+              class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <h4 class="text-lg font-semibold text-gray-900">
+                  {{ issue.bookTitle }}
+                </h4>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [class.bg-green-100]="issue.status === 'issued'"
+                  [class.text-green-800]="issue.status === 'issued'"
+                  [class.bg-red-100]="issue.status === 'overdue'"
+                  [class.text-red-800]="issue.status === 'overdue'"
+                >
+                  {{ issue.status | titlecase }}
+                </span>
+              </div>
 
-              <div class="issue-details">
-                <div class="detail-row">
-                  <span class="label">Issue Date:</span>
-                  <span class="value">{{
+              <div class="space-y-3 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Issue Date:</span>
+                  <span class="font-medium text-gray-900">{{
                     issue.issueDate | date: "dd/MM/yyyy"
                   }}</span>
                 </div>
-                <div class="detail-row">
-                  <span class="label">Due Date:</span>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Due Date:</span>
                   <span
-                    class="value"
-                    [class.overdue]="isOverdue(issue.dueDate)"
+                    class="font-medium"
+                    [class.text-gray-900]="!isOverdue(issue.dueDate)"
+                    [class.text-red-600]="isOverdue(issue.dueDate)"
                   >
                     {{ issue.dueDate | date: "dd/MM/yyyy" }}
-                    <span *ngIf="isOverdue(issue.dueDate)" class="overdue-text">
-                      ({{
-                        getAbsoluteDays(getDaysUntilDue(issue.dueDate))
-                      }}
+                    <span
+                      *ngIf="isOverdue(issue.dueDate)"
+                      class="text-red-600 text-xs ml-1"
+                    >
+                      ({{ getAbsoluteDays(getDaysUntilDue(issue.dueDate)) }}
                       days overdue)
                     </span>
-                    <span *ngIf="!isOverdue(issue.dueDate)" class="due-text">
+                    <span
+                      *ngIf="!isOverdue(issue.dueDate)"
+                      class="text-green-600 text-xs ml-1"
+                    >
                       ({{ getDaysUntilDue(issue.dueDate) }} days remaining)
                     </span>
                   </span>
                 </div>
-                <div class="detail-row">
-                  <span class="label">Renewals:</span>
-                  <span class="value">{{ issue.renewalCount }}/3</span>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Renewals:</span>
+                  <span class="font-medium text-gray-900"
+                    >{{ issue.renewalCount }}/3</span
+                  >
                 </div>
                 <div
-                  class="detail-row"
                   *ngIf="issue.fineAmount && issue.fineAmount > 0"
+                  class="flex justify-between"
                 >
-                  <span class="label">Fine:</span>
-                  <span class="value fine-amount">₹{{ issue.fineAmount }}</span>
+                  <span class="text-gray-600">Fine:</span>
+                  <span class="font-semibold text-red-600"
+                    >₹{{ issue.fineAmount }}</span
+                  >
                 </div>
               </div>
 
-              <ng-template pTemplate="footer">
-                <div class="issue-actions">
-                  <p-button
-                    label="Renew"
-                    icon="pi pi-refresh"
-                    styleClass="p-button-sm p-button-outlined"
-                    [disabled]="
-                      issue.renewalCount >= 3 || isOverdue(issue.dueDate)
-                    "
-                    (onClick)="renewBook(issue)"
-                  ></p-button>
-                </div>
-              </ng-template>
-            </p-card>
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <button
+                  (click)="renewBook(issue)"
+                  [disabled]="
+                    issue.renewalCount >= 3 || isOverdue(issue.dueDate)
+                  "
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <i class="pi pi-refresh mr-2"></i>
+                  Renew Book
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </p-tabPanel>
 
-      <!-- My Reservations Tab -->
-      <p-tabPanel header="My Reservations" leftIcon="pi pi-clock">
-        <div class="my-reservations-section">
-          <h3>Book Reservations</h3>
-          <p-divider></p-divider>
+        <!-- My Reservations Tab -->
+        <div *ngIf="activeTab === 2">
+          <h3
+            class="text-lg font-semibold text-gray-900 flex items-center mb-6"
+          >
+            <i class="pi pi-clock text-purple-600 mr-2"></i>
+            Book Reservations
+          </h3>
 
-          <div *ngIf="myReservations.length === 0" class="empty-state">
-            <i class="pi pi-info-circle"></i>
-            <h4>No Active Reservations</h4>
-            <p>You don't have any book reservations at the moment.</p>
+          <div *ngIf="myReservations.length === 0" class="text-center py-12">
+            <i class="pi pi-info-circle text-gray-400 text-4xl mb-4"></i>
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">
+              No Active Reservations
+            </h4>
+            <p class="text-gray-500">
+              You don't have any book reservations at the moment.
+            </p>
           </div>
 
-          <div *ngIf="myReservations.length > 0" class="reservations-grid">
-            <p-card
+          <div
+            *ngIf="myReservations.length > 0"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            <div
               *ngFor="let reservation of myReservations"
-              styleClass="reservation-card"
+              class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
             >
-              <ng-template pTemplate="header">
-                <div class="reservation-header">
-                  <h4>{{ reservation.bookTitle }}</h4>
-                  <p-tag
-                    [value]="reservation.status"
-                    [severity]="getStatusSeverity(reservation.status)"
-                  ></p-tag>
-                </div>
-              </ng-template>
+              <div class="flex items-start justify-between mb-4">
+                <h4 class="text-lg font-semibold text-gray-900">
+                  {{ reservation.bookTitle }}
+                </h4>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [class.bg-blue-100]="reservation.status === 'active'"
+                  [class.text-blue-800]="reservation.status === 'active'"
+                  [class.bg-yellow-100]="reservation.status === 'expired'"
+                  [class.text-yellow-800]="reservation.status === 'expired'"
+                >
+                  {{ reservation.status | titlecase }}
+                </span>
+              </div>
 
-              <div class="reservation-details">
-                <div class="detail-row">
-                  <span class="label">Reserved Date:</span>
-                  <span class="value">{{
+              <div class="space-y-3 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Reserved Date:</span>
+                  <span class="font-medium text-gray-900">{{
                     reservation.reservationDate | date: "dd/MM/yyyy"
                   }}</span>
                 </div>
-                <div class="detail-row">
-                  <span class="label">Expires On:</span>
-                  <span class="value">{{
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Expires On:</span>
+                  <span class="font-medium text-gray-900">{{
                     reservation.expiryDate | date: "dd/MM/yyyy"
                   }}</span>
                 </div>
-                <div class="detail-row">
-                  <span class="label">Position in Queue:</span>
-                  <span class="value">#{{ reservation.position }}</span>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Position in Queue:</span>
+                  <span class="font-medium text-blue-600"
+                    >#{{ reservation.position }}</span
+                  >
                 </div>
               </div>
 
-              <ng-template pTemplate="footer">
-                <div class="reservation-actions">
-                  <p-button
-                    label="Cancel"
-                    icon="pi pi-times"
-                    styleClass="p-button-sm p-button-outlined p-button-danger"
-                    [disabled]="reservation.status !== 'active'"
-                    (onClick)="cancelReservation(reservation)"
-                  ></p-button>
-                </div>
-              </ng-template>
-            </p-card>
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <button
+                  (click)="cancelReservation(reservation)"
+                  [disabled]="reservation.status !== 'active'"
+                  class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <i class="pi pi-times mr-2"></i>
+                  Cancel Reservation
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </p-tabPanel>
-    </p-tabView>
+      </div>
+    </div>
   </div>
 
   <!-- Issue Book Dialog -->
