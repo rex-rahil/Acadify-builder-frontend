@@ -50,6 +50,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: "asset-management",
+    loadChildren: () =>
+      import("./asset-management/asset-management.module").then(
+        (m) => m.AssetManagementModule,
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: "**",
     redirectTo: "/login",
   },
