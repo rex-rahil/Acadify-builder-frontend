@@ -11,9 +11,9 @@ import { AssetService } from "../../services/asset.service";
   styleUrls: ["./asset-list.component.scss"],
 })
 export class AssetListComponent implements OnInit, OnDestroy {
-  assets: Asset[] = [];
-  filteredAssets: Asset[] = [];
-  selectedAssets: Asset[] = [];
+  assets: any[] = [];
+  filteredAssets: any[] = [];
+  selectedAssets: any[] = [];
 
   loading = true;
   searchQuery = "";
