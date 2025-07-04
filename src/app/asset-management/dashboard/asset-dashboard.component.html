@@ -165,61 +165,251 @@
       </div>
     </div>
 
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left Column - Charts -->
-      <div class="lg:col-span-2 space-y-6">
-        <!-- Asset Overview -->
-        <p-card header="Asset Overview">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="text-center p-4 bg-blue-50 rounded-lg">
-              <div class="text-2xl font-bold text-blue-600">8</div>
-              <div class="text-sm text-gray-600">Computer</div>
-            </div>
-            <div class="text-center p-4 bg-green-50 rounded-lg">
-              <div class="text-2xl font-bold text-green-600">12</div>
-              <div class="text-sm text-gray-600">Furniture</div>
-            </div>
-            <div class="text-center p-4 bg-yellow-50 rounded-lg">
-              <div class="text-2xl font-bold text-yellow-600">3</div>
-              <div class="text-sm text-gray-600">Equipment</div>
-            </div>
-            <div class="text-center p-4 bg-purple-50 rounded-lg">
-              <div class="text-2xl font-bold text-purple-600">2</div>
-              <div class="text-sm text-gray-600">Vehicle</div>
+    <!-- Enhanced Main Content Grid -->
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <!-- Left Column - Analytics & Charts -->
+      <div class="xl:col-span-3 space-y-6">
+        <!-- Asset Distribution Overview -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Asset Distribution</h2>
+            <div class="flex gap-2">
+              <button
+                class="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors"
+              >
+                View Details
+              </button>
+              <button
+                (click)="exportData()"
+                class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              >
+                <i class="pi pi-download mr-2"></i>Export
+              </button>
             </div>
           </div>
-        </p-card>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow cursor-pointer"
+              (click)="filterByCategory('Computer')"
+            >
+              <div
+                class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i class="pi pi-desktop text-white text-2xl"></i>
+              </div>
+              <div class="text-3xl font-bold text-blue-600 mb-1">
+                {{ assetCategories.computer || 8 }}
+              </div>
+              <div class="text-sm font-medium text-gray-600">Computers</div>
+              <div class="text-xs text-gray-500 mt-1">
+                {{
+                  formatPercentage(
+                    ((assetCategories.computer || 8) /
+                      (assetStats.total || 25)) *
+                      100
+                  )
+                }}
+                of total
+              </div>
+            </div>
+            <div
+              class="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow cursor-pointer"
+              (click)="filterByCategory('Furniture')"
+            >
+              <div
+                class="bg-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i class="pi pi-home text-white text-2xl"></i>
+              </div>
+              <div class="text-3xl font-bold text-green-600 mb-1">
+                {{ assetCategories.furniture || 12 }}
+              </div>
+              <div class="text-sm font-medium text-gray-600">Furniture</div>
+              <div class="text-xs text-gray-500 mt-1">
+                {{
+                  formatPercentage(
+                    ((assetCategories.furniture || 12) /
+                      (assetStats.total || 25)) *
+                      100
+                  )
+                }}
+                of total
+              </div>
+            </div>
+            <div
+              class="text-center p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl hover:shadow-md transition-shadow cursor-pointer"
+              (click)="filterByCategory('Equipment')"
+            >
+              <div
+                class="bg-yellow-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i class="pi pi-cog text-white text-2xl"></i>
+              </div>
+              <div class="text-3xl font-bold text-yellow-600 mb-1">
+                {{ assetCategories.equipment || 3 }}
+              </div>
+              <div class="text-sm font-medium text-gray-600">Equipment</div>
+              <div class="text-xs text-gray-500 mt-1">
+                {{
+                  formatPercentage(
+                    ((assetCategories.equipment || 3) /
+                      (assetStats.total || 25)) *
+                      100
+                  )
+                }}
+                of total
+              </div>
+            </div>
+            <div
+              class="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:shadow-md transition-shadow cursor-pointer"
+              (click)="filterByCategory('Vehicle')"
+            >
+              <div
+                class="bg-purple-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i class="pi pi-car text-white text-2xl"></i>
+              </div>
+              <div class="text-3xl font-bold text-purple-600 mb-1">
+                {{ assetCategories.vehicle || 2 }}
+              </div>
+              <div class="text-sm font-medium text-gray-600">Vehicles</div>
+              <div class="text-xs text-gray-500 mt-1">
+                {{
+                  formatPercentage(
+                    ((assetCategories.vehicle || 2) /
+                      (assetStats.total || 25)) *
+                      100
+                  )
+                }}
+                of total
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Maintenance Statistics -->
-        <p-card header="Maintenance Overview">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="text-center p-4 bg-blue-50 rounded-lg">
-              <div class="text-2xl font-bold text-blue-600">
-                {{ maintenanceStats.pending || 0 }}
+        <!-- Maintenance & Status Overview -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+              Maintenance & Status Overview
+            </h2>
+            <button
+              (click)="openMaintenanceScheduler()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            >
+              <i class="pi pi-calendar-plus mr-2"></i>Schedule Maintenance
+            </button>
+          </div>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl"
+            >
+              <div class="text-3xl font-bold text-blue-600 mb-2">
+                {{ maintenanceStats.pending || 5 }}
               </div>
-              <div class="text-sm text-gray-600">Pending</div>
+              <div class="text-sm font-medium text-gray-600 mb-1">Pending</div>
+              <div class="w-full bg-blue-200 rounded-full h-2">
+                <div
+                  class="bg-blue-600 h-2 rounded-full"
+                  [style.width.%]="((maintenanceStats.pending || 5) / 20) * 100"
+                ></div>
+              </div>
             </div>
-            <div class="text-center p-4 bg-yellow-50 rounded-lg">
-              <div class="text-2xl font-bold text-yellow-600">
-                {{ maintenanceStats.inProgress || 0 }}
+            <div
+              class="text-center p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl"
+            >
+              <div class="text-3xl font-bold text-yellow-600 mb-2">
+                {{ maintenanceStats.inProgress || 3 }}
               </div>
-              <div class="text-sm text-gray-600">In Progress</div>
+              <div class="text-sm font-medium text-gray-600 mb-1">
+                In Progress
+              </div>
+              <div class="w-full bg-yellow-200 rounded-full h-2">
+                <div
+                  class="bg-yellow-600 h-2 rounded-full"
+                  [style.width.%]="
+                    ((maintenanceStats.inProgress || 3) / 20) * 100
+                  "
+                ></div>
+              </div>
             </div>
-            <div class="text-center p-4 bg-green-50 rounded-lg">
-              <div class="text-2xl font-bold text-green-600">
-                {{ maintenanceStats.completed || 0 }}
+            <div
+              class="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl"
+            >
+              <div class="text-3xl font-bold text-green-600 mb-2">
+                {{ maintenanceStats.completed || 12 }}
               </div>
-              <div class="text-sm text-gray-600">Completed</div>
+              <div class="text-sm font-medium text-gray-600 mb-1">
+                Completed
+              </div>
+              <div class="w-full bg-green-200 rounded-full h-2">
+                <div
+                  class="bg-green-600 h-2 rounded-full"
+                  [style.width.%]="
+                    ((maintenanceStats.completed || 12) / 20) * 100
+                  "
+                ></div>
+              </div>
             </div>
-            <div class="text-center p-4 bg-red-50 rounded-lg">
-              <div class="text-2xl font-bold text-red-600">
-                {{ maintenanceStats.overdue || 0 }}
+            <div
+              class="text-center p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-xl"
+            >
+              <div class="text-3xl font-bold text-red-600 mb-2">
+                {{ maintenanceStats.overdue || 1 }}
               </div>
-              <div class="text-sm text-gray-600">Overdue</div>
+              <div class="text-sm font-medium text-gray-600 mb-1">Overdue</div>
+              <div class="w-full bg-red-200 rounded-full h-2">
+                <div
+                  class="bg-red-600 h-2 rounded-full"
+                  [style.width.%]="((maintenanceStats.overdue || 1) / 20) * 100"
+                ></div>
+              </div>
             </div>
           </div>
-        </p-card>
+        </div>
+
+        <!-- Recent Asset Activity -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+              Recent Asset Activity
+            </h2>
+            <button
+              class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+            >
+              View All
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div
+              *ngFor="let activity of recentActivities"
+              class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+            >
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center mr-4"
+                [class]="getActivityIconClass(activity.type)"
+              >
+                <i
+                  [class]="getActivityIcon(activity.type)"
+                  class="text-white"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-medium text-gray-800">{{ activity.title }}</p>
+                <p class="text-sm text-gray-600">{{ activity.description }}</p>
+                <p class="text-xs text-gray-500 mt-1">
+                  {{ activity.timestamp | date: "medium" }}
+                </p>
+              </div>
+              <span
+                class="px-3 py-1 rounded-full text-xs font-medium"
+                [class]="getActivityStatusClass(activity.status)"
+              >
+                {{ activity.status }}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Right Column - Alerts and Quick Actions -->
