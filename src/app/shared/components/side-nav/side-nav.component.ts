@@ -392,4 +392,53 @@ export class SideNavComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.onHide();
   }
+
+  // Helper methods for dynamic content
+  private getDashboardLabel(): string {
+    if (!this.currentUser) return "Dashboard";
+
+    const roleLabels: { [key in UserRole]: string } = {
+      [UserRole.ADMIN]: "Admin Dashboard",
+      [UserRole.FACULTY]: "Faculty Dashboard",
+      [UserRole.HOD]: "HOD Dashboard",
+      [UserRole.STUDENT]: "Student Dashboard",
+      [UserRole.ADMISSION_OFFICER]: "Admission Dashboard",
+      [UserRole.LIBRARIAN]: "Library Dashboard",
+      [UserRole.ASSET_MANAGER]: "Asset Dashboard",
+    };
+
+    return roleLabels[this.currentUser.role as UserRole] || "Dashboard";
+  }
+
+  private getDashboardRoute(): string {
+    if (!this.currentUser) return "/dashboard";
+
+    const roleRoutes: { [key in UserRole]: string } = {
+      [UserRole.ADMIN]: "/admin",
+      [UserRole.FACULTY]: "/faculty",
+      [UserRole.HOD]: "/faculty",
+      [UserRole.STUDENT]: "/dashboard",
+      [UserRole.ADMISSION_OFFICER]: "/admission-officer",
+      [UserRole.LIBRARIAN]: "/library",
+      [UserRole.ASSET_MANAGER]: "/asset-management",
+    };
+
+    return roleRoutes[this.currentUser.role as UserRole] || "/dashboard";
+  }
+
+  getUserRoleDisplayName(): string {
+    if (!this.currentUser) return "Guest";
+
+    const roleDisplayNames: { [key in UserRole]: string } = {
+      [UserRole.ADMIN]: "Administrator",
+      [UserRole.FACULTY]: "Faculty Member",
+      [UserRole.HOD]: "Head of Department",
+      [UserRole.STUDENT]: "Student",
+      [UserRole.ADMISSION_OFFICER]: "Admission Officer",
+      [UserRole.LIBRARIAN]: "Librarian",
+      [UserRole.ASSET_MANAGER]: "Asset Manager",
+    };
+
+    return roleDisplayNames[this.currentUser.role as UserRole] || "User";
+  }
 }
