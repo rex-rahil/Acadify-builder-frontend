@@ -742,53 +742,80 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
         event.currentIndex,
       );
     } else {
-      // Different container - transfer
-      const draggedSlot = event.item.data as LectureSlot;
+      const draggedItem = event.item.data;
       const targetData = event.container.data;
 
-      if (
-        targetData &&
-        typeof targetData === "object" &&
-        "dayIndex" in targetData &&
-        "timeSlotId" in targetData
-      ) {
-        // Moving to a time slot
-        const { dayIndex, timeSlotId } = targetData;
-        const targetSlot = this.getSlotForDayAndTime(dayIndex, timeSlotId);
+      // Check if dragging a subject
+      if (draggedItem && "code" in draggedItem && "name" in draggedItem) {
+        const subject = draggedItem as Subject;
 
-        if (targetSlot && !targetSlot.isAssigned) {
-          // Clear the original slot
-          const originalSlot = this.lectureSlots.find(
-            (s) =>
-              s.dayOfWeek === draggedSlot.dayOfWeek &&
-              s.timeSlotId === draggedSlot.timeSlotId &&
-              s.id !== draggedSlot.id,
-          );
-          if (originalSlot) {
-            originalSlot.isAssigned = false;
-            originalSlot.subjectId = undefined;
-            originalSlot.facultyId = undefined;
+        if (
+          targetData &&
+          typeof targetData === "object" &&
+          "dayIndex" in targetData &&
+          "timeSlotId" in targetData
+        ) {
+          const { dayIndex, timeSlotId } = targetData;
+          const targetSlot = this.getSlotForDayAndTime(dayIndex, timeSlotId);
+
+          if (targetSlot && !targetSlot.isAssigned) {
+            this.assignSubjectToSlot(subject, targetSlot);
+          } else {
+            this.messageService.add({
+              severity: "warn",
+              summary: "Warning",
+              detail: "Cannot assign to occupied slot",
+            });
           }
+        }
+      }
+      // Check if dragging a lecture slot
+      else if (draggedItem && "timeSlotId" in draggedItem) {
+        const draggedSlot = draggedItem as LectureSlot;
 
-          // Assign to new slot
-          targetSlot.isAssigned = true;
-          targetSlot.subjectId = draggedSlot.subjectId;
-          targetSlot.facultyId = draggedSlot.facultyId;
-          targetSlot.type = draggedSlot.type;
+        if (
+          targetData &&
+          typeof targetData === "object" &&
+          "dayIndex" in targetData &&
+          "timeSlotId" in targetData
+        ) {
+          const { dayIndex, timeSlotId } = targetData;
+          const targetSlot = this.getSlotForDayAndTime(dayIndex, timeSlotId);
 
-          this.messageService.add({
-            severity: "success",
-            summary: "Success",
-            detail: "Lecture moved successfully",
-          });
+          if (targetSlot && !targetSlot.isAssigned) {
+            // Clear the original slot
+            const originalSlot = this.lectureSlots.find(
+              (s) =>
+                s.dayOfWeek === draggedSlot.dayOfWeek &&
+                s.timeSlotId === draggedSlot.timeSlotId &&
+                s.id !== draggedSlot.id,
+            );
+            if (originalSlot) {
+              originalSlot.isAssigned = false;
+              originalSlot.subjectId = undefined;
+              originalSlot.facultyId = undefined;
+            }
 
-          this.detectConflicts();
-        } else {
-          this.messageService.add({
-            severity: "warn",
-            summary: "Warning",
-            detail: "Cannot move to occupied slot",
-          });
+            // Assign to new slot
+            targetSlot.isAssigned = true;
+            targetSlot.subjectId = draggedSlot.subjectId;
+            targetSlot.facultyId = draggedSlot.facultyId;
+            targetSlot.type = draggedSlot.type;
+
+            this.messageService.add({
+              severity: "success",
+              summary: "Success",
+              detail: "Lecture moved successfully",
+            });
+
+            this.detectConflicts();
+          } else {
+            this.messageService.add({
+              severity: "warn",
+              summary: "Warning",
+              detail: "Cannot move to occupied slot",
+            });
+          }
         }
       }
     }
