@@ -16,9 +16,9 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-/* Sky-Blue Theme Overrides for PrimeNG */
+/* Blue Theme Overrides for PrimeNG - Primary Color: #1d4ed8 */
 :root {
-  --primary-color: #87ceeb;
+  --primary-color: #1d4ed8;
   --primary-color-text: #ffffff;
   --surface-ground: #ffffff;
   --surface-section: #f8f9fa;
@@ -26,10 +26,10 @@ body {
   --surface-overlay: #ffffff;
   --surface-border: #dee2e6;
   --surface-hover: #f8f9fa;
-  --focus-ring: 0 0 0 0.2rem rgba(135, 206, 235, 0.2);
+  --focus-ring: 0 0 0 0.2rem rgba(29, 78, 216, 0.2);
   --maskbg: rgba(0, 0, 0, 0.4);
-  --highlight-bg: rgba(135, 206, 235, 0.12);
-  --highlight-text-color: rgba(135, 206, 235, 0.87);
+  --highlight-bg: rgba(29, 78, 216, 0.12);
+  --highlight-text-color: rgba(29, 78, 216, 0.87);
   --text-color: #495057;
   --text-color-secondary: #6c757d;
   --border-radius: 6px;
@@ -45,8 +45,8 @@ body {
   border: 1px solid var(--primary-color);
 
   &:enabled:hover {
-    background: #6bb6e0;
-    border-color: #6bb6e0;
+    background: #1e40af;
+    border-color: #1e40af;
   }
 
   &:enabled:focus {
@@ -128,8 +128,9 @@ body {
     0 1px 3px 0 rgba(0, 0, 0, 0.12);
 }
 
+/* Enhanced form styling */
 .form-field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-field label {
@@ -137,6 +138,7 @@ body {
   margin-bottom: 0.5rem;
   font-weight: 500;
   color: var(--text-color);
+  font-size: 0.875rem;
 }
 
 .form-field .p-invalid {
@@ -147,6 +149,85 @@ body {
   color: #e24c4c;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+  display: block;
+}
+
+/* Global input improvements */
+.p-inputtext,
+.p-dropdown,
+.p-calendar .p-inputtext {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
+  }
+
+  &.p-invalid {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.12);
+  }
+}
+
+/* Dropdown specific improvements */
+.p-dropdown {
+  .p-dropdown-label {
+    padding: 0.75rem 1rem;
+    line-height: 1.5;
+
+    &.p-placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  .p-dropdown-trigger {
+    width: 2.5rem;
+    background: transparent;
+    border-left: none;
+
+    .p-dropdown-trigger-icon {
+      color: #6b7280;
+    }
+  }
+
+  &:not(.p-disabled).p-focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
+  }
+}
+
+/* Button improvements */
+.p-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+
+  &:enabled:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+  }
+
+  &:enabled:active {
+    transform: translateY(0);
+  }
+
+  &:enabled:focus {
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.3);
+  }
 }
 
 .step-actions {

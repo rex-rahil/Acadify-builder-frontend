@@ -412,6 +412,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "Admission Dashboard",
       [UserRole.LIBRARIAN]: "Library Dashboard",
       [UserRole.ASSET_MANAGER]: "Asset Dashboard",
+      [UserRole.ACCOUNTANT]: "Accounting Dashboard",
       [UserRole.GUEST]: "Guest Portal",
     };
 
@@ -429,6 +430,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "/admission-officer",
       [UserRole.LIBRARIAN]: "/library",
       [UserRole.ASSET_MANAGER]: "/asset-management",
+      [UserRole.ACCOUNTANT]: "/fees",
       [UserRole.GUEST]: "/admission",
     };
 
@@ -446,6 +448,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "Admission Officer",
       [UserRole.LIBRARIAN]: "Librarian",
       [UserRole.ASSET_MANAGER]: "Asset Manager",
+      [UserRole.ACCOUNTANT]: "Accountant",
       [UserRole.GUEST]: "Guest",
     };
 
