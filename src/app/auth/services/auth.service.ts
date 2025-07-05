@@ -46,6 +46,7 @@ export class AuthService {
       id: "1",
       firstName: "John",
       lastName: "Doe",
+      name: "John Doe",
       email: "admin@college.edu",
       role: "admin",
       employeeId: "EMP001",
