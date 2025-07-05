@@ -336,11 +336,14 @@
                       "
                       [class.border-red-300]="getConflictsCount() > 0"
                       [class.bg-red-50]="getConflictsCount() > 0"
-                      cdkDropList
+                      cdkDropList="timetableSlot-{{ dayIndex }}-{{
+                        timeSlot.id
+                      }}"
                       [cdkDropListData]="{
                         dayIndex: dayIndex,
                         timeSlotId: timeSlot.id,
                       }"
+                      [cdkDropListConnectedTo]="['subjectsList']"
                       (cdkDropListDropped)="onDrop($event)"
                       (cdkDropListEntered)="onDragEntered()"
                       (cdkDropListExited)="onDragExited()"
