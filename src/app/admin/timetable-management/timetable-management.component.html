@@ -441,6 +441,17 @@
                         </div>
                       </div>
 
+                      <!-- Drop zone indicator -->
+                      <div
+                        class="absolute inset-0 border-2 border-blue-400 bg-blue-50 bg-opacity-75 rounded-xl opacity-0 transition-opacity pointer-events-none flex items-center justify-center"
+                        [class.opacity-100]="isDragOver"
+                      >
+                        <div class="text-blue-600 font-medium text-sm">
+                          <i class="pi pi-download mr-2"></i>
+                          Drop here
+                        </div>
+                      </div>
+
                       <!-- Conflict Indicator -->
                       <div
                         *ngIf="
