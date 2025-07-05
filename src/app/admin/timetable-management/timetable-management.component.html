@@ -85,127 +85,35 @@
     </div>
 
     <!-- Main Timetable Area -->
-    <div>
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-800">Available Subjects</h3>
-          <div class="flex items-center gap-2">
-            <span
-              class="bg-blue-100 text-blue-600 text-xs font-medium px-3 py-1 rounded-full"
-            >
-              {{ subjects.length }} subjects
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <!-- Timetable Header -->
+      <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-gray-800">
+            Weekly Schedule
+            <span *ngIf="selectedClass" class="text-blue-600">
+              - {{ selectedClass.name }} {{ selectedClass.section }}
             </span>
-            <button
-              (click)="toggleSubjectPanel()"
-              class="w-8 h-8 bg-red-100 hover:bg-red-200 rounded-full flex items-center justify-center transition-colors"
-            >
-              <i class="pi pi-times text-red-600 text-sm"></i>
-            </button>
-          </div>
-        </div>
-
-        <div
-          class="space-y-3 max-h-96 overflow-y-auto custom-scroll"
-          cdkDropList="subjectsList"
-          [cdkDropListData]="subjects"
-          [cdkDropListConnectedTo]="['timetableSlot']"
-        >
-          <div
-            *ngFor="let subject of subjects"
-            class="p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 cursor-move group"
-            [style.border-color]="subject.color"
-            cdkDrag
-            [cdkDragData]="subject"
-            (cdkDragStarted)="onSubjectDragStarted(subject)"
-            (cdkDragEnded)="onSubjectDragEnded()"
+          </h3>
+          <button
+            (click)="printTimetable()"
+            class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
           >
-            <div class="flex items-center gap-3">
-              <div
-                class="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md"
-                [style.background-color]="subject.color"
-              >
-                {{ subject.code.substring(0, 2) }}
-              </div>
-              <div class="flex-1">
-                <div
-                  class="font-semibold text-gray-800 group-hover:text-blue-600"
-                >
-                  {{ subject.name }}
-                </div>
-                <div class="text-xs text-gray-500 mb-1">
-                  {{ subject.code }} • {{ subject.credits }} credits •
-                  {{ subject.type }}
-                </div>
-                <div class="text-xs text-green-600">
-                  {{ getQualifiedFaculties(subject.id).length }} qualified
-                  faculty
-                </div>
-              </div>
-              <div class="text-gray-400 group-hover:text-blue-600">
-                <i class="pi pi-arrows-alt text-lg" cdkDragHandle></i>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-6 p-4 bg-blue-50 rounded-xl">
-          <div
-            class="flex items-center gap-2 text-blue-600 text-sm font-medium mb-2"
-          >
-            <i class="pi pi-info-circle"></i>
-            How to use
-          </div>
-          <p class="text-xs text-blue-600">
-            Use the "Auto Generate" button to automatically create timetables,
-            or manually assign subjects using the assignment dialog.
-          </p>
+            <i class="pi pi-print mr-2"></i>
+            Print
+          </button>
         </div>
       </div>
 
-      <!-- Timetable Grid -->
-      <div
-        [class]="
-          showSubjectPanel && showFacultyPanel
-            ? 'col-span-12 lg:col-span-6'
-            : showSubjectPanel || showFacultyPanel
-              ? 'col-span-12 lg:col-span-9'
-              : 'col-span-12'
-        "
-      >
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <!-- Timetable Header -->
-          <div
-            class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200"
-          >
-            <div class="flex items-center justify-between">
-              <h3 class="text-xl font-bold text-gray-800">
-                Weekly Schedule
-                <span *ngIf="selectedClass" class="text-blue-600">
-                  - {{ selectedClass.name }} {{ selectedClass.section }}
-                </span>
-              </h3>
-              <button
-                (click)="printTimetable()"
-                class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                <i class="pi pi-print mr-2"></i>
-                Print
-              </button>
-            </div>
-          </div>
-
-          <!-- Loading State -->
-          <div *ngIf="loading" class="flex items-center justify-center h-96">
-            <div class="text-center">
-              <div
-                class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"
-              ></div>
-              <p class="text-gray-600 font-medium">
-                {{
-                  selectedClass ? "Generating timetable..." : "Loading data..."
-                }}
-              </p>
-            </div>
-          </div>
+      <!-- Loading State -->
+      <div *ngIf="loading" class="flex items-center justify-center h-96">
+        <div class="text-center">
+          <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p class="text-gray-600 font-medium">
+            {{ selectedClass ? "Generating timetable..." : "Loading data..." }}
+          </p>
+        </div>
+      </div>
 
           <!-- Enhanced Timetable Grid -->
           <div
