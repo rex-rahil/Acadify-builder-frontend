@@ -6,6 +6,7 @@ export enum UserRole {
   STUDENT = "student",
   LIBRARIAN = "librarian",
   ASSET_MANAGER = "asset_manager",
+  ACCOUNTANT = "accountant",
   GUEST = "guest",
 }
 
