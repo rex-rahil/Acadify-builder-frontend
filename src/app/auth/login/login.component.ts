@@ -191,6 +191,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  private redirectToUserDashboard(role: string): void {
+    const roleRoutes: { [key: string]: string } = {
+      admin: "/admin",
+      faculty: "/faculty",
+      hod: "/faculty",
+      student: "/dashboard",
+      admission_officer: "/admission-officer",
+      librarian: "/library",
+      asset_manager: "/asset-management",
+      guest: "/admission",
+    };
+
+    const route = roleRoutes[role] || "/dashboard";
+    this.router.navigate([route]);
+  }
+
   private markFormGroupTouched() {
     Object.keys(this.loginForm.controls).forEach((key) => {
       const control = this.loginForm.get(key);
