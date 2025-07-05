@@ -575,4 +575,10 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       detail: message,
     });
   }
+
+  // New methods for the updated dashboard
+  generateReport() {
+    this.showSuccess("Report generation started");
+    // Implement report generation logic
+  }
 }
