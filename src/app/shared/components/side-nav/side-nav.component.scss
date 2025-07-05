@@ -46,7 +46,13 @@
   // Sidebar Header
   .sidebar-header {
     padding: 1.5rem 1.5rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(248, 250, 252, 0.9) 100%
+    );
+    backdrop-filter: blur(10px);
     position: relative;
     z-index: 1;
 
