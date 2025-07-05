@@ -66,6 +66,7 @@ import { CourseService } from "./services/course.service";
     ReactiveFormsModule,
     FormsModule,
     AdminRoutingModule,
+    DragDropModule,
 
     // PrimeNG
     ButtonModule,
