@@ -76,7 +76,7 @@ const routes: Routes = [
     path: "accounting/cash-payments",
     component: CashPaymentsComponent,
     canActivate: [RoleGuard],
-    data: { roles: [UserRole.ADMIN] },
+    data: { roles: [UserRole.ADMIN, UserRole.ACCOUNTANT] },
   },
 
   // Default redirect
