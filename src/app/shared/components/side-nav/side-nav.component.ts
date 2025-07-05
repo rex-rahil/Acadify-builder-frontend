@@ -174,35 +174,33 @@ export class SideNavComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Student sections
-    if (
-      this.hasRole([
-        UserRole.STUDENT,
-        UserRole.FACULTY,
-        UserRole.HOD,
-        UserRole.ADMIN,
-      ])
-    ) {
+    // Student sections (only for students)
+    if (this.hasRole([UserRole.STUDENT])) {
       this.menuSections.push({
         label: "Student Portal",
         items: [
           {
-            label: "Student Dashboard",
-            icon: "pi pi-home",
-            route: "/dashboard",
-          },
-          {
-            label: "Timetable",
+            label: "My Timetable",
             icon: "pi pi-calendar",
             route: "/dashboard/timetable",
           },
           {
-            label: "Attendance",
+            label: "My Attendance",
             icon: "pi pi-check-circle",
             route: "/dashboard/attendance",
           },
           {
-            label: "Profile",
+            label: "My Grades",
+            icon: "pi pi-star",
+            route: "/dashboard/grades",
+          },
+          {
+            label: "Assignments",
+            icon: "pi pi-file",
+            route: "/dashboard/assignments",
+          },
+          {
+            label: "My Profile",
             icon: "pi pi-user",
             route: "/dashboard/profile",
           },
