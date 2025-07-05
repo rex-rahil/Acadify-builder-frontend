@@ -248,24 +248,30 @@
             </div>
           </div>
 
-          <!-- Timetable Grid -->
-          <div *ngIf="!loading && selectedClass" class="overflow-x-auto">
+          <!-- Enhanced Timetable Grid -->
+          <div
+            *ngIf="!loading && selectedClass"
+            class="overflow-x-auto bg-white rounded-xl shadow-sm border"
+          >
             <table class="w-full min-w-max">
-              <!-- Header with time slots -->
+              <!-- Enhanced Header with better styling -->
               <thead>
-                <tr class="bg-gray-50">
+                <tr class="bg-gradient-to-r from-blue-50 to-indigo-50">
                   <th
-                    class="p-4 text-left font-semibold text-gray-700 border-r border-gray-200 min-w-32"
+                    class="p-6 text-left font-bold text-gray-800 border-r border-gray-300 min-w-40 bg-white"
                   >
-                    Time / Day
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-clock text-blue-600 text-lg"></i>
+                      <span class="text-base">Time / Day</span>
+                    </div>
                   </th>
                   <th
                     *ngFor="let day of daysOfWeek"
-                    class="p-4 text-center font-semibold text-gray-700 border-r border-gray-200 min-w-48"
+                    class="p-6 text-center font-bold text-gray-800 border-r border-gray-300 min-w-56"
                   >
-                    <div class="flex items-center justify-center gap-2">
-                      <i class="pi pi-calendar text-blue-600"></i>
-                      {{ day }}
+                    <div class="flex items-center justify-center gap-3">
+                      <i class="pi pi-calendar text-blue-600 text-lg"></i>
+                      <span class="text-base">{{ day }}</span>
                     </div>
                   </th>
                 </tr>
