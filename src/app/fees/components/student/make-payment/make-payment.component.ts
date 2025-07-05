@@ -227,10 +227,9 @@ export class MakePaymentComponent implements OnInit {
           balanceAmount:
             this.selectedFee.balanceAmount - paymentResponse.amount,
           lastPaymentDate: new Date().toISOString().split("T")[0],
-          status:
-            this.selectedFee.balanceAmount - paymentResponse.amount <= 0
-              ? "paid"
-              : "partial",
+          status: (this.selectedFee.balanceAmount - paymentResponse.amount <= 0
+            ? "paid"
+            : "partial") as "paid" | "partial" | "pending" | "overdue",
         };
 
         await this.feeService
