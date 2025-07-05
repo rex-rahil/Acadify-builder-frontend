@@ -347,11 +347,6 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.detectConflicts();
   }
 
-  // Subject assignment methods
-  onSubjectClick(subject: Subject, slot: LectureSlot) {
-    this.assignSubjectToSlot(subject, slot);
-  }
-
   // Faculty assignment
   assignFaculty(facultyId: string) {
     if (!this.selectedSlot) return;
