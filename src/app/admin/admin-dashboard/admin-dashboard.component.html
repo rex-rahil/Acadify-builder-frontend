@@ -1,162 +1,366 @@
 <div class="admin-dashboard">
-  <!-- Header Section -->
+  <!-- Enhanced Header Section -->
   <div class="dashboard-header">
     <div class="header-content">
       <div class="welcome-section">
-        <h1>
-          <i class="pi pi-shield gradient-icon"></i>
-          Admin Dashboard
-        </h1>
-        <p>Welcome back! Here's what's happening at Oriental College today.</p>
+        <div class="admin-avatar">
+          <i class="pi pi-user"></i>
+        </div>
+        <div class="welcome-text">
+          <h1>
+            Welcome back, Administrator
+            <span class="wave">👋</span>
+          </h1>
+          <p>
+            Here's your Oriental College overview for {{ getCurrentDate() }}
+          </p>
+          <div class="status-indicator">
+            <div class="status-dot active"></div>
+            <span>All systems operational</span>
+          </div>
+        </div>
       </div>
       <div class="header-actions">
-        <div class="date-info">
-          <i class="pi pi-calendar"></i>
-          <span>{{ getCurrentDate() }}</span>
+        <div class="action-cards">
+          <div class="action-card notifications" (click)="showNotifications()">
+            <i class="pi pi-bell"></i>
+            <div class="action-info">
+              <span class="count">5</span>
+              <span class="label">New</span>
+            </div>
+            <div class="notification-badge">5</div>
+          </div>
+
+          <div class="action-card quick-stats">
+            <i class="pi pi-chart-line"></i>
+            <div class="action-info">
+              <span class="count">{{ stats.activeUsers }}</span>
+              <span class="label">Online</span>
+            </div>
+          </div>
+
+          <p-button
+            label="Generate Report"
+            icon="pi pi-download"
+            styleClass="report-btn"
+            [loading]="loading"
+          ></p-button>
         </div>
-        <p-button
-          label="Generate Report"
-          icon="pi pi-download"
-          styleClass="p-button-outlined header-btn"
-        ></p-button>
       </div>
     </div>
   </div>
 
-  <!-- Stats Cards -->
+  <!-- Enhanced Stats Section -->
   <div class="stats-section">
+    <div class="section-header">
+      <h2>
+        <i class="pi pi-chart-pie"></i>
+        Key Metrics
+      </h2>
+      <div class="period-selector">
+        <p-dropdown
+          [options]="timePeriods"
+          [(ngModel)]="selectedPeriod"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="period-dropdown"
+        ></p-dropdown>
+      </div>
+    </div>
+
     <div class="stats-grid" *ngIf="!loading">
       <div
-        class="stat-card"
+        class="stat-card modern"
         *ngFor="let stat of getStatCards(); trackBy: trackByStatId"
+        [ngClass]="stat.cardClass"
       >
         <div class="stat-header">
           <div class="stat-icon" [ngClass]="stat.iconClass">
             <i [class]="stat.icon"></i>
           </div>
-          <div class="stat-trend" [ngClass]="stat.trendClass">
-            <i [class]="stat.trendIcon"></i>
-            <span>{{ stat.trend }}</span>
+          <div class="stat-menu">
+            <p-button
+              icon="pi pi-ellipsis-v"
+              styleClass="p-button-text p-button-sm menu-btn"
+              (click)="openStatMenu($event, stat)"
+            ></p-button>
           </div>
         </div>
+
         <div class="stat-content">
-          <h3>{{ stat.value }}</h3>
-          <p>{{ stat.label }}</p>
+          <div class="stat-value">
+            <h3>{{ formatNumber(stat.value) }}</h3>
+            <div class="stat-trend" [ngClass]="stat.trendClass">
+              <i [class]="stat.trendIcon"></i>
+              <span>{{ stat.trend }}</span>
+            </div>
+          </div>
+          <p class="stat-label">{{ stat.label }}</p>
           <div class="stat-detail">
             <span>{{ stat.detail }}</span>
           </div>
         </div>
+
         <div class="stat-footer">
-          <div class="progress-bar">
-            <div
-              class="progress-fill"
-              [style.width.%]="stat.progress"
-              [ngClass]="stat.progressClass"
-            ></div>
+          <div class="stat-progress">
+            <div class="progress-info">
+              <span class="progress-label">{{ stat.progressText }}</span>
+              <span class="progress-value">{{ stat.progress }}%</span>
+            </div>
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                [style.width.%]="stat.progress"
+                [ngClass]="stat.progressClass"
+              ></div>
+            </div>
           </div>
-          <span class="progress-text">{{ stat.progressText }}</span>
+
+          <div class="stat-actions">
+            <p-button
+              icon="pi pi-eye"
+              styleClass="p-button-text p-button-sm view-btn"
+              [routerLink]="stat.detailRoute"
+              pTooltip="View Details"
+            ></p-button>
+          </div>
+        </div>
+
+        <div class="stat-chart">
+          <canvas #chart width="100" height="40" class="mini-chart"></canvas>
         </div>
       </div>
     </div>
 
     <!-- Enhanced Loading State -->
     <div class="stats-grid loading-grid" *ngIf="loading">
-      <div class="stat-card loading" *ngFor="let item of [1, 2, 3, 4]">
+      <div
+        class="stat-card modern loading"
+        *ngFor="let item of [1, 2, 3, 4, 5, 6]"
+      >
         <div class="loading-content">
           <div class="loading-header">
             <div class="loading-circle shimmer"></div>
-            <div class="loading-trend shimmer"></div>
+            <div class="loading-menu shimmer"></div>
           </div>
           <div class="loading-body">
             <div class="loading-number shimmer"></div>
+            <div class="loading-trend shimmer"></div>
             <div class="loading-text shimmer"></div>
             <div class="loading-detail shimmer"></div>
           </div>
-          <div class="loading-footer shimmer"></div>
+          <div class="loading-footer">
+            <div class="loading-progress shimmer"></div>
+            <div class="loading-action shimmer"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Content Grid -->
+  <!-- Modern Content Grid -->
   <div class="content-grid">
-    <!-- Recent Activities -->
-    <div class="activity-section">
-      <p-card styleClass="activity-card">
-        <ng-template pTemplate="header">
-          <div class="card-header">
-            <div class="header-title">
-              <i class="pi pi-clock"></i>
-              <h3>Recent Activities</h3>
-            </div>
-            <p-button
-              icon="pi pi-refresh"
-              styleClass="p-button-text p-button-sm"
-              (onClick)="loadDashboardData()"
-              [loading]="loading"
-              pTooltip="Refresh"
-            ></p-button>
+    <!-- Main Dashboard Content -->
+    <div class="main-content">
+      <!-- Analytics Overview -->
+      <div class="analytics-section">
+        <div class="analytics-header">
+          <h3>
+            <i class="pi pi-chart-line"></i>
+            Analytics Overview
+          </h3>
+          <div class="view-toggles">
+            <p-toggleButton
+              [(ngModel)]="showCharts"
+              onLabel="Charts"
+              offLabel="Tables"
+              styleClass="view-toggle"
+            ></p-toggleButton>
           </div>
-        </ng-template>
+        </div>
 
-        <div class="activities-container">
-          <div class="activity-timeline">
-            <div
-              class="activity-item"
-              *ngFor="
-                let activity of recentActivities;
-                trackBy: trackByActivityId;
-                let first = first
-              "
-              [class.first]="first"
-            >
-              <div class="activity-indicator">
-                <div class="activity-dot" [ngClass]="activity.severity"></div>
-                <div class="activity-line" *ngIf="!last"></div>
-              </div>
-              <div class="activity-card-inner">
-                <div class="activity-header">
-                  <div class="activity-icon" [ngClass]="activity.severity">
-                    <i [class]="getActivityIcon(activity.type)"></i>
-                  </div>
-                  <div class="activity-meta">
-                    <span class="activity-time">{{
-                      formatTimeAgo(activity.timestamp)
-                    }}</span>
-                    <p-tag
-                      [value]="formatActivityType(activity.type)"
-                      [severity]="activity.severity"
-                      styleClass="activity-tag"
-                    ></p-tag>
-                  </div>
-                </div>
-                <div class="activity-content">
-                  <p>{{ activity.message }}</p>
-                </div>
-              </div>
+        <div class="analytics-grid" *ngIf="showCharts">
+          <!-- User Activity Chart -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h4>User Activity</h4>
+              <p-dropdown
+                [options]="chartPeriods"
+                [(ngModel)]="selectedChartPeriod"
+                optionLabel="label"
+                styleClass="chart-period"
+              ></p-dropdown>
+            </div>
+            <div class="chart-container">
+              <canvas #userActivityChart width="400" height="200"></canvas>
             </div>
           </div>
 
-          <div
-            class="no-activities"
-            *ngIf="recentActivities.length === 0 && !loading"
-          >
-            <div class="empty-state">
-              <i class="pi pi-info-circle"></i>
-              <h4>No Recent Activities</h4>
-              <p>System activities will appear here</p>
+          <!-- Revenue Chart -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h4>Admission Trends</h4>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <div class="legend-color approved"></div>
+                  <span>Approved</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color pending"></div>
+                  <span>Pending</span>
+                </div>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas #admissionChart width="400" height="200"></canvas>
             </div>
           </div>
         </div>
-      </p-card>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="activity-section">
+        <div class="activity-card modern">
+          <div class="card-header">
+            <div class="header-title">
+              <i class="pi pi-history"></i>
+              <h3>Recent Activities</h3>
+              <div class="activity-count">{{ recentActivities.length }}</div>
+            </div>
+            <div class="header-actions">
+              <p-button
+                icon="pi pi-filter"
+                styleClass="p-button-text p-button-sm filter-btn"
+                (click)="showActivityFilter()"
+                pTooltip="Filter Activities"
+              ></p-button>
+              <p-button
+                icon="pi pi-refresh"
+                styleClass="p-button-text p-button-sm refresh-btn"
+                (onClick)="loadDashboardData()"
+                [loading]="loading"
+                pTooltip="Refresh"
+              ></p-button>
+            </div>
+          </div>
+
+          <div class="activities-container">
+            <div class="activity-timeline">
+              <div
+                class="activity-item modern"
+                *ngFor="
+                  let activity of recentActivities;
+                  trackBy: trackByActivityId;
+                  let last = last
+                "
+                (click)="viewActivityDetails(activity)"
+              >
+                <div class="activity-indicator">
+                  <div class="activity-dot" [ngClass]="activity.severity">
+                    <i [class]="getActivityIcon(activity.type)"></i>
+                  </div>
+                  <div class="activity-line" *ngIf="!last"></div>
+                </div>
+
+                <div class="activity-card-inner">
+                  <div class="activity-header">
+                    <div class="activity-meta">
+                      <div class="activity-type">
+                        <p-tag
+                          [value]="formatActivityType(activity.type)"
+                          [severity]="activity.severity"
+                          styleClass="activity-tag"
+                        ></p-tag>
+                      </div>
+                      <span class="activity-time">
+                        {{ formatTimeAgo(activity.timestamp) }}
+                      </span>
+                    </div>
+                    <div class="activity-actions">
+                      <p-button
+                        icon="pi pi-ellipsis-h"
+                        styleClass="p-button-text p-button-sm activity-menu"
+                        (click)="openActivityMenu($event, activity)"
+                      ></p-button>
+                    </div>
+                  </div>
+
+                  <div class="activity-content">
+                    <p>{{ activity.message }}</p>
+                    <div class="activity-details" *ngIf="activity.details">
+                      <span
+                        class="detail-item"
+                        *ngFor="let detail of activity.details"
+                      >
+                        {{ detail }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="activity-footer">
+                    <div class="activity-user" *ngIf="activity.user">
+                      <div class="user-avatar">
+                        <i class="pi pi-user"></i>
+                      </div>
+                      <span>{{ activity.user }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="no-activities"
+              *ngIf="recentActivities.length === 0 && !loading"
+            >
+              <div class="empty-state modern">
+                <div class="empty-icon">
+                  <i class="pi pi-clock"></i>
+                </div>
+                <h4>No Recent Activities</h4>
+                <p>System activities will appear here as they happen</p>
+                <p-button
+                  label="Refresh"
+                  icon="pi pi-refresh"
+                  styleClass="p-button-outlined refresh-empty"
+                  (click)="loadDashboardData()"
+                ></p-button>
+              </div>
+            </div>
+
+            <div class="activity-footer" *ngIf="recentActivities.length > 0">
+              <p-button
+                label="View All Activities"
+                icon="pi pi-external-link"
+                styleClass="p-button-link view-all"
+                routerLink="/admin/activities"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- System Overview -->
-    <div class="overview-section">
+    <!-- Enhanced Sidebar -->
+    <div class="sidebar-content">
       <!-- System Health -->
-      <p-card header="System Health" styleClass="health-card">
+      <div class="system-health-card">
+        <div class="card-header">
+          <h3>
+            <i class="pi pi-shield"></i>
+            System Health
+          </h3>
+          <div class="overall-status healthy">
+            <div class="status-dot"></div>
+            <span>All Systems Operational</span>
+          </div>
+        </div>
+
         <div class="health-grid">
-          <div class="health-item" *ngFor="let item of systemHealth | keyvalue">
+          <div
+            class="health-item modern"
+            *ngFor="let item of systemHealth | keyvalue"
+          >
             <div class="health-card-inner">
               <div class="health-header">
                 <div
@@ -173,69 +377,123 @@
                     styleClass="health-tag"
                   ></p-tag>
                 </div>
+                <div class="health-actions">
+                  <p-button
+                    icon="pi pi-cog"
+                    styleClass="p-button-text p-button-sm config-btn"
+                    pTooltip="Configure"
+                  ></p-button>
+                </div>
               </div>
-              <div class="health-details">
-                <div class="health-metrics">
-                  <span *ngIf="item.value.responseTime" class="metric">
-                    <i class="pi pi-clock"></i>
-                    {{ item.value.responseTime }}
-                  </span>
-                  <span *ngIf="item.value.uptime" class="metric">
-                    <i class="pi pi-chart-line"></i>
-                    {{ item.value.uptime }}
-                  </span>
-                  <span *ngIf="item.value.usage" class="metric">
-                    <i class="pi pi-server"></i>
-                    {{ item.value.usage }}
-                  </span>
-                  <span *ngIf="item.value.lastBackup" class="metric">
-                    <i class="pi pi-save"></i>
-                    {{ item.value.lastBackup }}
-                  </span>
+
+              <div class="health-metrics">
+                <div class="metric" *ngIf="item.value.responseTime">
+                  <span class="metric-label">Response</span>
+                  <span class="metric-value">{{
+                    item.value.responseTime
+                  }}</span>
+                </div>
+                <div class="metric" *ngIf="item.value.uptime">
+                  <span class="metric-label">Uptime</span>
+                  <span class="metric-value">{{ item.value.uptime }}</span>
+                </div>
+                <div class="metric" *ngIf="item.value.usage">
+                  <span class="metric-label">Usage</span>
+                  <span class="metric-value">{{ item.value.usage }}</span>
+                </div>
+                <div class="metric" *ngIf="item.value.lastBackup">
+                  <span class="metric-label">Backup</span>
+                  <span class="metric-value">{{ item.value.lastBackup }}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </p-card>
+      </div>
 
-      <!-- Quick Actions Grid -->
+      <!-- Quick Actions -->
       <div class="quick-actions-section">
-        <h3 class="section-title">
-          <i class="pi pi-bolt"></i>
-          Quick Actions
-        </h3>
-        <div class="actions-grid">
+        <div class="section-header">
+          <h3>
+            <i class="pi pi-bolt"></i>
+            Quick Actions
+          </h3>
+          <p-button
+            icon="pi pi-plus"
+            styleClass="p-button-text p-button-sm add-action"
+            pTooltip="Add Custom Action"
+          ></p-button>
+        </div>
+
+        <div class="actions-grid modern">
           <div
-            class="action-card"
+            class="action-card modern"
             *ngFor="let action of quickActions; trackBy: trackByActionId"
             [routerLink]="action.route"
             [ngClass]="action.cardClass"
           >
-            <div class="action-icon">
-              <i [class]="action.icon"></i>
+            <div class="action-header">
+              <div class="action-icon">
+                <i [class]="action.icon"></i>
+              </div>
+              <div class="action-menu">
+                <p-button
+                  icon="pi pi-ellipsis-v"
+                  styleClass="p-button-text p-button-sm"
+                  (click)="openActionMenu($event, action)"
+                ></p-button>
+              </div>
             </div>
+
             <div class="action-content">
               <h4>{{ action.label }}</h4>
               <p>{{ action.description }}</p>
             </div>
-            <div class="action-arrow">
-              <i class="pi pi-arrow-right"></i>
+
+            <div class="action-footer">
+              <div class="action-stats">
+                <span class="stat-item">{{ getActionStat(action.id) }}</span>
+              </div>
+              <div class="action-arrow">
+                <i class="pi pi-arrow-right"></i>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Performance Metrics -->
-      <p-card header="Performance Overview" styleClass="metrics-card">
-        <div class="metrics-grid">
-          <div class="metric-item" *ngFor="let metric of performanceMetrics">
+      <div class="performance-section">
+        <div class="section-header">
+          <h3>
+            <i class="pi pi-chart-bar"></i>
+            Performance
+          </h3>
+          <p-button
+            icon="pi pi-refresh"
+            styleClass="p-button-text p-button-sm"
+            (click)="refreshMetrics()"
+            pTooltip="Refresh Metrics"
+          ></p-button>
+        </div>
+
+        <div class="metrics-grid modern">
+          <div
+            class="metric-item modern"
+            *ngFor="let metric of performanceMetrics"
+          >
             <div class="metric-header">
-              <span class="metric-label">{{ metric.label }}</span>
-              <span class="metric-value" [ngClass]="metric.status">{{
-                metric.value
-              }}</span>
+              <div class="metric-info">
+                <span class="metric-label">{{ metric.label }}</span>
+                <span class="metric-value" [ngClass]="metric.status">
+                  {{ metric.value }}
+                </span>
+              </div>
+              <div class="metric-trend" [ngClass]="metric.status">
+                <i class="pi pi-arrow-up"></i>
+              </div>
             </div>
+
             <div class="metric-bar">
               <div
                 class="metric-fill"
@@ -243,10 +501,56 @@
                 [ngClass]="metric.status"
               ></div>
             </div>
+
             <div class="metric-description">{{ metric.description }}</div>
           </div>
         </div>
-      </p-card>
+      </div>
+
+      <!-- System Alerts -->
+      <div class="alerts-section">
+        <div class="section-header">
+          <h3>
+            <i class="pi pi-exclamation-triangle"></i>
+            Alerts
+          </h3>
+          <div class="alerts-count">{{ getActiveAlertsCount() }}</div>
+        </div>
+
+        <div
+          class="alerts-list"
+          *ngIf="getActiveAlertsCount() > 0; else noAlerts"
+        >
+          <div class="alert-item" *ngFor="let alert of getActiveAlerts()">
+            <div class="alert-icon" [ngClass]="alert.severity">
+              <i [class]="alert.icon"></i>
+            </div>
+            <div class="alert-content">
+              <p>{{ alert.message }}</p>
+              <span class="alert-time">{{
+                formatTimeAgo(alert.timestamp)
+              }}</span>
+            </div>
+            <div class="alert-actions">
+              <p-button
+                icon="pi pi-times"
+                styleClass="p-button-text p-button-sm dismiss-alert"
+                (click)="dismissAlert(alert)"
+                pTooltip="Dismiss"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noAlerts>
+          <div class="no-alerts">
+            <div class="empty-icon">
+              <i class="pi pi-check-circle"></i>
+            </div>
+            <p>No active alerts</p>
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>
