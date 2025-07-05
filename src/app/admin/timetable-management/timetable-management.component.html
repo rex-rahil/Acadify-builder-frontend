@@ -595,7 +595,7 @@
       <div class="text-blue-700">
         <div>{{ daysOfWeek[selectedSlot.dayOfWeek] }}</div>
         <div>
-          {{ timeSlots.find(t => t.id === selectedSlot.timeSlotId)?.time }}
+          {{ timeSlots.find(t => t.id == selectedSlot.timeSlotId)?.time }}
         </div>
       </div>
     </div>
