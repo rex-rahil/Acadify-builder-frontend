@@ -289,17 +289,20 @@
                     </div>
                   </td>
 
-                  <!-- Day columns -->
+                  <!-- Day columns with improved spacing -->
                   <td
                     *ngFor="let day of daysOfWeek; let dayIndex = index"
-                    class="p-2 border-r border-gray-200 relative"
+                    class="p-4 border-r border-gray-200 relative"
                   >
                     <div
-                      class="min-h-20 p-2 rounded-lg border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 cursor-pointer"
-                      [class.border-green-300]="
+                      class="min-h-32 p-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 cursor-pointer"
+                      [class.border-green-400]="
                         getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
                       "
                       [class.bg-green-50]="
+                        getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
+                      "
+                      [class.shadow-sm]="
                         getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
                       "
                       [class.border-red-300]="getConflictsCount() > 0"
