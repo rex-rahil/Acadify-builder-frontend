@@ -696,4 +696,20 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     if (!this.selectedSubjectId) return [];
     return this.getQualifiedFaculties(this.selectedSubjectId);
   }
+
+  // Helper method to get lecture count for a specific day
+  getDayLectureCount(dayIndex: number): number {
+    return this.lectureSlots.filter(
+      (slot) => slot.dayOfWeek === dayIndex && slot.isAssigned,
+    ).length;
+  }
+
+  // Track by functions for performance optimization
+  trackByClassId(index: number, classItem: Class): string {
+    return classItem.id;
+  }
+
+  trackByTimeSlot(index: number, timeSlot: TimeSlot): string {
+    return timeSlot.id;
+  }
 }
