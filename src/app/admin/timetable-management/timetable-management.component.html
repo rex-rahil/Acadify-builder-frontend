@@ -700,7 +700,7 @@
 
       <!-- No Qualified Faculty -->
       <div
-        *ngIf="getQualifiedFaculties(selectedSlot.subjectId).length == 0"
+        *ngIf="hasNoQualifiedFaculties(selectedSlot.subjectId)"
         class="text-center py-8"
       >
         <div
