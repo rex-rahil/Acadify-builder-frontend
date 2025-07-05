@@ -149,8 +149,11 @@ export const ROLE_PERMISSIONS: RolePermissions[] = [
       Permission.VIEW_GRADES,
       Permission.VIEW_ATTENDANCE,
       Permission.SUBMIT_ASSIGNMENTS,
+      Permission.VIEW_FEE_BALANCE,
+      Permission.MAKE_PAYMENTS,
+      Permission.VIEW_PAYMENT_HISTORY,
     ],
-    routes: ["/dashboard", "/admission"],
+    routes: ["/dashboard", "/admission", "/fees"],
     description: "Student portal access and academic information",
   },
   {
