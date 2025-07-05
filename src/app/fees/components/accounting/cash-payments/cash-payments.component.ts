@@ -207,10 +207,9 @@ export class CashPaymentsComponent implements OnInit {
               balanceAmount:
                 this.selectedStudent.balanceAmount - formData.amount,
               lastPaymentDate: new Date().toISOString().split("T")[0],
-              status:
-                this.selectedStudent.balanceAmount - formData.amount <= 0
-                  ? "paid"
-                  : "partial",
+              status: (this.selectedStudent.balanceAmount - formData.amount <= 0
+                ? "paid"
+                : "partial") as "paid" | "partial" | "pending" | "overdue",
             };
 
             this.feeService
