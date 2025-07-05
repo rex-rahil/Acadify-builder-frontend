@@ -386,13 +386,13 @@
                         </div>
                       </div>
 
-                      <!-- Empty Slot -->
+                      <!-- Empty Slot with better visual cues -->
                       <div
                         *ngIf="
                           !getSlotForDayAndTime(dayIndex, timeSlot.id)
                             ?.isAssigned
                         "
-                        class="flex items-center justify-center h-full text-gray-400"
+                        class="flex items-center justify-center h-full text-gray-400 hover:text-blue-500 transition-colors group"
                         (click)="
                           openSlotAssignment(
                             getSlotForDayAndTime(dayIndex, timeSlot.id)!
@@ -400,8 +400,13 @@
                         "
                       >
                         <div class="text-center">
-                          <i class="pi pi-plus text-2xl mb-1"></i>
-                          <div class="text-xs">Click to assign</div>
+                          <i
+                            class="pi pi-plus-circle text-3xl mb-2 group-hover:scale-110 transition-transform"
+                          ></i>
+                          <div class="text-sm font-medium">Add Lecture</div>
+                          <div class="text-xs mt-1 opacity-75">
+                            Click to assign
+                          </div>
                         </div>
                       </div>
 
