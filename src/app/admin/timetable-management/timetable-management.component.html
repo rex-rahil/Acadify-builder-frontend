@@ -344,17 +344,26 @@
                         (cdkDragStarted)="onDragStarted($event)"
                         (cdkDragEnded)="onDragEnded($event)"
                       >
-                        <!-- Remove button in top right -->
-                        <button
-                          (click)="
-                            removeAssignment(
-                              getSlotForDayAndTime(dayIndex, timeSlot.id)!
-                            )
-                          "
-                          class="absolute top-2 right-2 w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all"
-                        >
-                          <i class="pi pi-times text-xs"></i>
-                        </button>
+                        <!-- Control buttons in top right -->
+                        <div class="absolute top-2 right-2 flex gap-1">
+                          <button
+                            (click)="
+                              removeAssignment(
+                                getSlotForDayAndTime(dayIndex, timeSlot.id)!
+                              )
+                            "
+                            class="w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all"
+                          >
+                            <i class="pi pi-times text-xs"></i>
+                          </button>
+                          <div
+                            class="w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center cursor-move"
+                            cdkDragHandle
+                            title="Drag to move"
+                          >
+                            <i class="pi pi-arrows-alt text-xs"></i>
+                          </div>
+                        </div>
 
                         <!-- Subject code with larger font -->
                         <div class="font-bold text-sm mb-2 pr-8">
