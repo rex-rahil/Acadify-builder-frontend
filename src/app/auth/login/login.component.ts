@@ -82,13 +82,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                 severity: "success",
                 summary: "Login Successful",
                 detail: `Welcome back, ${response.user?.firstName}!`,
-                life: 3000,
+                life: 2000,
               });
 
-              // Redirect based on user role
-              setTimeout(() => {
-                this.redirectBasedOnRole(response.user || null);
-              }, 1000);
+              // AuthService handles redirect automatically
             }
           },
           error: (error) => {
