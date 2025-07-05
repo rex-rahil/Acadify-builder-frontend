@@ -652,6 +652,10 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.selectedSlot = null;
   }
 
+  closeFacultyAssignmentDialog() {
+    this.showFacultyAssignmentDialog = false;
+  }
+
   // Toggle panels
   toggleSubjectPanel() {
     this.showSubjectPanel = !this.showSubjectPanel;
