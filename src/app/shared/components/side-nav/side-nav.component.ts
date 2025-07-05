@@ -430,6 +430,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "/admission-officer",
       [UserRole.LIBRARIAN]: "/library",
       [UserRole.ASSET_MANAGER]: "/asset-management",
+      [UserRole.ACCOUNTANT]: "/fees",
       [UserRole.GUEST]: "/admission",
     };
 
