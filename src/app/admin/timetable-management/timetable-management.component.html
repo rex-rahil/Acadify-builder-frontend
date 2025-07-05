@@ -315,6 +315,14 @@
                       "
                       [class.border-red-300]="getConflictsCount() > 0"
                       [class.bg-red-50]="getConflictsCount() > 0"
+                      cdkDropList
+                      [cdkDropListData]="{
+                        dayIndex: dayIndex,
+                        timeSlotId: timeSlot.id,
+                      }"
+                      (cdkDropListDropped)="onDrop($event)"
+                      (cdkDropListEntered)="onDragEntered()"
+                      (cdkDropListExited)="onDragExited()"
                     >
                       <!-- Assigned Lecture Display with drag and drop -->
                       <div
