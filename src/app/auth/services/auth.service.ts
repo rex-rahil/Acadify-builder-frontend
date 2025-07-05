@@ -204,6 +204,25 @@ export class AuthService {
     localStorage.setItem("current_user", JSON.stringify(user));
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
+
+    // Role-based redirect after login
+    this.redirectToRoleDashboard(user.role);
+  }
+
+  private redirectToRoleDashboard(role: string): void {
+    const roleRoutes: { [key: string]: string } = {
+      admin: "/admin",
+      faculty: "/faculty",
+      hod: "/faculty",
+      student: "/dashboard",
+      admission_officer: "/admission-officer",
+      librarian: "/library",
+      asset_manager: "/asset-management",
+      guest: "/admission",
+    };
+
+    const route = roleRoutes[role] || "/dashboard";
+    this.router.navigate([route]);
   }
 
   private checkAuthState(): void {
