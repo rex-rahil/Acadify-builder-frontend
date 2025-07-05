@@ -164,39 +164,66 @@
           ></app-documents-declaration>
         </div>
 
-        <!-- Navigation Actions -->
-        <div class="step-actions">
-          <p-button
-            label="Previous"
-            icon="pi pi-angle-left"
-            [disabled]="isFirstStep()"
-            (onClick)="previousStep()"
-            styleClass="p-button-outlined"
-          ></p-button>
+        <!-- Enhanced Navigation Actions -->
+        <div class="step-actions mt-8 pt-6 border-t border-gray-200">
+          <div class="flex justify-between items-center">
+            <button
+              *ngIf="!isFirstStep()"
+              (click)="previousStep()"
+              class="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 font-medium border border-gray-200 flex items-center gap-2"
+            >
+              <i class="pi pi-arrow-left text-sm"></i>
+              <span>Previous</span>
+            </button>
 
-          <div class="next-actions">
-            <p-button
-              *ngIf="!isLastStep()"
-              label="Next"
-              icon="pi pi-angle-right"
-              iconPos="right"
-              [disabled]="!canProceed()"
-              (onClick)="nextStep()"
-            ></p-button>
+            <div *ngIf="isFirstStep()" class="w-24"></div>
 
-            <p-button
-              *ngIf="isLastStep()"
-              label="Submit Application"
-              icon="pi pi-check"
-              iconPos="right"
-              [disabled]="!canProceed() || isSubmitting"
-              [loading]="isSubmitting"
-              (onClick)="submitApplication()"
-              styleClass="p-button-success"
-            ></p-button>
+            <div class="flex items-center gap-4">
+              <!-- Step Indicator -->
+              <div class="hidden sm:flex items-center gap-2 text-sm text-gray-600">
+                <span class="font-medium">{{ activeIndex + 1 }}</span>
+                <span>of</span>
+                <span class="font-medium">{{ steps.length }}</span>
+                <span>steps</span>
+              </div>
+
+              <!-- Form Validation Status -->
+              <div class="flex items-center gap-2" *ngIf="!canProceed() && getCurrentForm().touched">
+                <i class="pi pi-exclamation-triangle text-amber-500"></i>
+                <span class="text-sm text-amber-600 font-medium">Please complete required fields</span>
+              </div>
+
+              <div class="flex items-center gap-2" *ngIf="canProceed() && getCurrentForm().touched">
+                <i class="pi pi-check-circle text-emerald-500"></i>
+                <span class="text-sm text-emerald-600 font-medium">Step completed</span>
+              </div>
+            </div>
+
+            <div class="next-actions">
+              <button
+                *ngIf="!isLastStep()"
+                (click)="nextStep()"
+                [disabled]="!canProceed()"
+                class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg transform hover:scale-105 active:scale-95 flex items-center gap-2"
+              >
+                <span>Continue</span>
+                <i class="pi pi-arrow-right text-sm"></i>
+              </button>
+
+              <button
+                *ngIf="isLastStep()"
+                (click)="submitApplication()"
+                [disabled]="!canProceed() || isSubmitting"
+                class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg transform hover:scale-105 active:scale-95 flex items-center gap-2"
+              >
+                <i class="pi pi-{{ isSubmitting ? 'spin pi-spinner' : 'send' }} text-sm"></i>
+                <span>{{ isEditMode ? 'Resubmit Application' : 'Submit Application' }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
