@@ -761,4 +761,10 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   hasNoQualifiedFaculties(subjectId: string): boolean {
     return this.getQualifiedFaculties(subjectId).length === 0;
   }
+
+  // Get qualified faculties for form dropdown
+  getQualifiedFacultiesForSelectedSubject(): Faculty[] {
+    if (!this.selectedSubjectId) return [];
+    return this.getQualifiedFaculties(this.selectedSubjectId);
+  }
 }
