@@ -501,82 +501,140 @@
   [closable]="true"
   [draggable]="false"
   [resizable]="false"
-  header="Add Lecture"
-  styleClass="custom-confirm-dialog"
+  header="Add New Lecture"
+  styleClass="lecture-dialog"
+  [style]="{ width: '480px' }"
   (onHide)="closeAssignmentDialog()"
 >
   <div class="space-y-6" *ngIf="selectedSlot">
     <!-- Time Slot Info -->
-    <div class="bg-blue-50 rounded-xl p-4">
-      <div class="text-sm font-medium text-blue-800 mb-2">Schedule Details</div>
-      <div class="text-blue-700">
-        <div class="font-semibold">
-          {{ daysOfWeek[selectedSlot.dayOfWeek] }}
+    <div
+      class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100"
+    >
+      <div class="flex items-center gap-3 mb-3">
+        <div
+          class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white"
+        >
+          <i class="pi pi-calendar text-sm"></i>
         </div>
-        <div>{{ getTimeSlotTime(selectedSlot.timeSlotId) }}</div>
+        <div>
+          <div class="text-sm font-medium text-blue-800">Schedule Details</div>
+          <div class="text-xs text-blue-600">Assign lecture to this slot</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white/60 rounded-xl p-3">
+          <div class="text-xs text-gray-600 mb-1">Day</div>
+          <div class="font-semibold text-blue-700">
+            {{ daysOfWeek[selectedSlot.dayOfWeek] }}
+          </div>
+        </div>
+        <div class="bg-white/60 rounded-xl p-3">
+          <div class="text-xs text-gray-600 mb-1">Time</div>
+          <div class="font-semibold text-blue-700 font-mono text-sm">
+            {{ getTimeSlotTime(selectedSlot.timeSlotId) }}
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Subject Selection -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2"
-        >Select Subject</label
+    <div class="space-y-3">
+      <label
+        class="flex items-center gap-2 text-sm font-semibold text-gray-800"
       >
+        <div
+          class="w-6 h-6 bg-emerald-100 rounded-lg flex items-center justify-center"
+        >
+          <i class="pi pi-book text-emerald-600 text-xs"></i>
+        </div>
+        Select Subject
+      </label>
       <p-dropdown
         [(ngModel)]="selectedSubjectId"
         [options]="subjects"
         optionLabel="name"
         optionValue="id"
         placeholder="Choose a subject"
-        class="w-full"
+        class="w-full modern-dropdown"
         [showClear]="true"
       >
         <ng-template pTemplate="item" let-subject>
-          <div class="flex items-center gap-3 p-2">
+          <div class="flex items-center gap-3 p-3">
             <div
-              class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-xs"
+              class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-md"
+              [style.background]="
+                'linear-gradient(135deg, ' +
+                subject.color +
+                ', ' +
+                subject.color +
+                '80)'
+              "
+            >
+              {{ subject.code.substring(0, 2) }}
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-gray-800">{{ subject.name }}</div>
+              <div class="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                <span class="bg-gray-100 px-2 py-1 rounded">{{
+                  subject.code
+                }}</span>
+                <span class="capitalize">{{ subject.type }}</span>
+                <span>{{ subject.credits }} credits</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="selectedItem" let-subject>
+          <div class="flex items-center gap-2" *ngIf="subject">
+            <div
+              class="w-6 h-6 rounded-lg flex items-center justify-center text-white font-bold text-xs"
               [style.background-color]="subject.color"
             >
               {{ subject.code.substring(0, 2) }}
             </div>
-            <div>
-              <div class="font-semibold">{{ subject.name }}</div>
-              <div class="text-xs text-gray-500">
-                {{ subject.code }} • {{ subject.type }}
-              </div>
-            </div>
+            <span class="font-medium">{{ subject.name }}</span>
           </div>
         </ng-template>
       </p-dropdown>
     </div>
 
     <!-- Faculty Selection -->
-    <div *ngIf="selectedSubjectId">
-      <label class="block text-sm font-medium text-gray-700 mb-2"
-        >Select Faculty</label
+    <div *ngIf="selectedSubjectId" class="space-y-3">
+      <label
+        class="flex items-center gap-2 text-sm font-semibold text-gray-800"
       >
+        <div
+          class="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center"
+        >
+          <i class="pi pi-user text-purple-600 text-xs"></i>
+        </div>
+        Select Faculty
+      </label>
       <p-dropdown
         [(ngModel)]="selectedFacultyId"
         [options]="getQualifiedFacultiesForSelectedSubject()"
         optionLabel="name"
         optionValue="id"
         placeholder="Choose a faculty member"
-        class="w-full"
+        class="w-full modern-dropdown"
         [showClear]="true"
       >
         <ng-template pTemplate="item" let-faculty>
-          <div class="flex items-center gap-3 p-2">
+          <div class="flex items-center gap-3 p-3">
             <div
-              class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
+              class="w-10 h-10 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center shadow-sm"
             >
-              <i class="pi pi-user text-gray-600 text-xs"></i>
+              <i class="pi pi-user text-gray-600"></i>
             </div>
-            <div>
-              <div class="font-semibold flex items-center gap-2">
-                {{ faculty.name }}
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-semibold text-gray-800">{{
+                  faculty.name
+                }}</span>
                 <span
                   *ngIf="faculty.isHOD"
-                  class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full"
+                  class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs px-2 py-1 rounded-full font-medium shadow-sm"
                 >
                   HOD
                 </span>
@@ -585,32 +643,85 @@
             </div>
           </div>
         </ng-template>
+        <ng-template pTemplate="selectedItem" let-faculty>
+          <div class="flex items-center gap-2" *ngIf="faculty">
+            <div
+              class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center"
+            >
+              <i class="pi pi-user text-gray-600 text-xs"></i>
+            </div>
+            <span class="font-medium">{{ faculty.name }}</span>
+            <span
+              *ngIf="faculty.isHOD"
+              class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full"
+              >HOD</span
+            >
+          </div>
+        </ng-template>
       </p-dropdown>
 
       <div
-        *ngIf="getQualifiedFacultiesForSelectedSubject().length === 0"
-        class="text-sm text-red-600 mt-2"
+        *ngIf="
+          selectedSubjectId &&
+          getQualifiedFacultiesForSelectedSubject().length === 0
+        "
+        class="bg-red-50 border border-red-200 rounded-xl p-4"
       >
-        <i class="pi pi-exclamation-triangle mr-1"></i>
-        No qualified faculty available for this subject
+        <div class="flex items-center gap-3">
+          <div
+            class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center"
+          >
+            <i class="pi pi-exclamation-triangle text-red-600 text-sm"></i>
+          </div>
+          <div>
+            <div class="text-sm font-medium text-red-800">
+              No Qualified Faculty
+            </div>
+            <div class="text-xs text-red-600 mt-1">
+              No faculty members are qualified to teach this subject
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assignment Preview -->
+    <div
+      *ngIf="selectedSubjectId && selectedFacultyId"
+      class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-4 border border-green-200"
+    >
+      <div class="flex items-center gap-3 mb-3">
+        <div
+          class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white"
+        >
+          <i class="pi pi-check text-sm"></i>
+        </div>
+        <div class="text-sm font-medium text-green-800">Assignment Preview</div>
+      </div>
+      <div class="text-sm text-green-700">
+        <strong>{{ getSubjectById(selectedSubjectId)?.name }}</strong> will be
+        assigned to
+        <strong>{{ getFacultyById(selectedFacultyId)?.name }}</strong> on
+        <strong>{{ daysOfWeek[selectedSlot.dayOfWeek] }}</strong> at
+        <strong>{{ getTimeSlotTime(selectedSlot.timeSlotId) }}</strong>
       </div>
     </div>
 
     <!-- Form Actions -->
-    <div class="flex justify-end gap-3 pt-4">
+    <div class="flex justify-end gap-3 pt-2">
       <button
         (click)="closeAssignmentDialog()"
-        class="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+        class="px-5 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 font-medium border border-gray-200"
       >
         Cancel
       </button>
       <button
         (click)="assignLecture()"
         [disabled]="!selectedSubjectId || !selectedFacultyId"
-        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg transform hover:scale-105 active:scale-95 flex items-center gap-2"
       >
-        <i class="pi pi-check mr-2"></i>
-        Assign Lecture
+        <i class="pi pi-check text-sm"></i>
+        <span>Assign Lecture</span>
       </button>
     </div>
   </div>
