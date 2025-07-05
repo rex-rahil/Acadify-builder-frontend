@@ -1,18 +1,18 @@
-<div class="min-h-screen bg-gray-50">
+<div class="beautiful-page">
   <!-- Header Section -->
-  <div class="bg-blue-600 text-white relative">
-    <div class="px-6 py-8">
-      <div class="flex justify-between items-center">
-        <div>
-          <h1 class="text-3xl font-bold mb-2">Fee Balance</h1>
-          <p class="text-blue-100 text-lg">
-            View your outstanding fees and payment status
-          </p>
-        </div>
-        <div class="hidden md:flex items-center space-x-4">
-          <div class="bg-white/10 rounded-2xl p-4">
-            <i class="pi pi-wallet text-2xl"></i>
-          </div>
+  <div class="beautiful-header">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Fee Balance</h1>
+        <p class="text-gray-600 text-lg">
+          View your outstanding fees and payment status
+        </p>
+      </div>
+      <div class="hidden md:flex items-center space-x-4">
+        <div
+          class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+        >
+          <i class="pi pi-wallet text-blue-600 text-xl"></i>
         </div>
       </div>
     </div>
@@ -21,15 +21,13 @@
   <!-- Main Content -->
   <div class="px-6 py-8">
     <!-- Student Info Card -->
-    <div
-      class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6 mb-8"
-    >
+    <div class="beautiful-container">
       <div
-        class="flex flex-col md:flex-row justify-between items-start md:items-center"
+        class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4"
       >
-        <div class="flex items-center space-x-4 mb-4 md:mb-0">
+        <div class="flex items-center space-x-4">
           <div
-            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xl font-bold"
+            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg"
           >
             {{ studentInfo.name.charAt(0) }}
           </div>
@@ -41,6 +39,7 @@
               {{ studentInfo.rollNumber }} | {{ studentInfo.course }} - Semester
               {{ studentInfo.semester }}
             </p>
+            <p class="text-sm text-gray-500">{{ studentInfo.email }}</p>
           </div>
         </div>
         <button
@@ -48,7 +47,7 @@
           type="button"
           label="Payment History"
           icon="pi pi-history"
-          class="p-button-outlined p-button-primary"
+          class="p-button-outlined"
           (click)="viewPaymentHistory()"
         ></button>
       </div>
@@ -58,17 +57,22 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <!-- Total Outstanding -->
       <div
-        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6"
+        class="beautiful-container bg-gradient-to-br from-red-50 to-red-100 border-red-200"
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-600 text-sm font-medium">Total Outstanding</p>
-            <p class="text-3xl font-bold text-red-600">
+            <p class="text-red-600 text-sm font-medium mb-1">
+              Total Outstanding
+            </p>
+            <p class="text-3xl font-bold text-red-700">
               {{ formatCurrency(totalOutstanding) }}
+            </p>
+            <p class="text-xs text-red-500 mt-1" *ngIf="totalOutstanding > 0">
+              Payment required
             </p>
           </div>
           <div
-            class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"
+            class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center"
           >
             <i class="pi pi-exclamation-triangle text-red-600 text-xl"></i>
           </div>
@@ -77,17 +81,20 @@
 
       <!-- Total Paid -->
       <div
-        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6"
+        class="beautiful-container bg-gradient-to-br from-green-50 to-green-100 border-green-200"
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-600 text-sm font-medium">Total Paid</p>
-            <p class="text-3xl font-bold text-green-600">
+            <p class="text-green-600 text-sm font-medium mb-1">Total Paid</p>
+            <p class="text-3xl font-bold text-green-700">
               {{ formatCurrency(totalPaid) }}
+            </p>
+            <p class="text-xs text-green-500 mt-1" *ngIf="totalPaid > 0">
+              Successfully processed
             </p>
           </div>
           <div
-            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
+            class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"
           >
             <i class="pi pi-check-circle text-green-600 text-xl"></i>
           </div>
@@ -96,26 +103,36 @@
 
       <!-- Next Due -->
       <div
-        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6"
+        class="beautiful-container bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200"
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-600 text-sm font-medium">Next Due Date</p>
+            <p class="text-blue-600 text-sm font-medium mb-1">Next Due Date</p>
             <p
-              class="text-lg font-bold text-gray-800"
+              class="text-lg font-bold text-blue-700"
               *ngIf="studentFees.length > 0"
             >
               {{ studentFees[0]?.dueDate | date: "dd MMM yyyy" }}
             </p>
             <p
-              class="text-lg font-bold text-gray-800"
+              class="text-lg font-bold text-blue-700"
               *ngIf="studentFees.length === 0"
             >
               No pending fees
             </p>
+            <p
+              class="text-xs text-blue-500 mt-1"
+              *ngIf="studentFees.length > 0"
+            >
+              {{
+                getDaysUntilDue(studentFees[0]?.dueDate) > 0
+                  ? getDaysUntilDue(studentFees[0]?.dueDate) + " days remaining"
+                  : "Overdue"
+              }}
+            </p>
           </div>
           <div
-            class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
+            class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
           >
             <i class="pi pi-calendar text-blue-600 text-xl"></i>
           </div>
@@ -124,35 +141,53 @@
     </div>
 
     <!-- Fee Details -->
-    <div
-      class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 overflow-hidden"
-    >
-      <div class="p-6 border-b border-gray-200">
-        <h2 class="text-2xl font-semibold text-gray-800">Fee Details</h2>
+    <div class="beautiful-container">
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-1">Fee Details</h2>
+        <p class="text-gray-600 text-sm">
+          Detailed breakdown of your fee structure and payment status
+        </p>
       </div>
 
-      <div *ngIf="loading" class="p-8 text-center">
-        <p-progressSpinner></p-progressSpinner>
-        <p class="text-gray-600 mt-4">Loading fee information...</p>
-      </div>
-
-      <div *ngIf="!loading && studentFees.length === 0" class="p-8 text-center">
-        <i class="pi pi-check-circle text-6xl text-green-500 mb-4"></i>
-        <h3 class="text-xl font-semibold text-gray-800 mb-2">All Fees Paid!</h3>
-        <p class="text-gray-600">You have no outstanding fees at the moment.</p>
+      <div *ngIf="loading" class="flex justify-center items-center py-12">
+        <div class="text-center">
+          <p-progressSpinner styleClass="w-12 h-12"></p-progressSpinner>
+          <p class="text-gray-600 mt-4 text-sm">Loading fee information...</p>
+        </div>
       </div>
 
       <div
-        *ngIf="!loading && studentFees.length > 0"
-        class="divide-y divide-gray-200"
+        *ngIf="!loading && studentFees.length === 0"
+        class="text-center py-12"
       >
-        <div *ngFor="let fee of studentFees" class="p-6">
+        <div
+          class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <i class="pi pi-check-circle text-green-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">All Fees Paid!</h3>
+        <p class="text-gray-600">You have no outstanding fees at the moment.</p>
+        <button
+          pButton
+          type="button"
+          label="View Payment History"
+          icon="pi pi-history"
+          class="p-button-outlined mt-4"
+          (click)="viewPaymentHistory()"
+        ></button>
+      </div>
+
+      <div *ngIf="!loading && studentFees.length > 0" class="space-y-6">
+        <div
+          *ngFor="let fee of studentFees"
+          class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+        >
           <div
-            class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0"
+            class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6"
           >
             <!-- Fee Info -->
             <div class="flex-1">
-              <div class="flex items-center space-x-3 mb-2">
+              <div class="flex items-center space-x-3 mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">
                   {{ fee.course }} - Semester {{ fee.semester }}
                 </h3>
@@ -163,107 +198,116 @@
                 </p-tag>
                 <span
                   *ngIf="isOverdue(fee.dueDate)"
-                  class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"
                 >
+                  <i class="pi pi-exclamation-triangle mr-1"></i>
                   Overdue
                 </span>
               </div>
 
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <p class="text-gray-600">Total Amount</p>
-                  <p class="font-semibold">
+              <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div class="bg-gray-50 p-3 rounded-lg">
+                  <p class="text-gray-600 text-xs font-medium">Total Amount</p>
+                  <p class="font-semibold text-lg">
                     {{ formatCurrency(fee.totalAmount) }}
                   </p>
                 </div>
-                <div>
-                  <p class="text-gray-600">Paid Amount</p>
-                  <p class="font-semibold text-green-600">
+                <div class="bg-green-50 p-3 rounded-lg">
+                  <p class="text-green-600 text-xs font-medium">Paid Amount</p>
+                  <p class="font-semibold text-lg text-green-700">
                     {{ formatCurrency(fee.paidAmount) }}
                   </p>
                 </div>
-                <div>
-                  <p class="text-gray-600">Balance</p>
-                  <p class="font-semibold text-red-600">
+                <div class="bg-red-50 p-3 rounded-lg">
+                  <p class="text-red-600 text-xs font-medium">Balance</p>
+                  <p class="font-semibold text-lg text-red-700">
                     {{ formatCurrency(fee.balanceAmount) }}
                   </p>
                 </div>
-                <div>
-                  <p class="text-gray-600">Due Date</p>
-                  <p class="font-semibold">
-                    {{ fee.dueDate | date: "dd MMM yyyy" }}
+                <div class="bg-blue-50 p-3 rounded-lg">
+                  <p class="text-blue-600 text-xs font-medium">Due Date</p>
+                  <p class="font-semibold text-lg text-blue-700">
+                    {{ fee.dueDate | date: "dd MMM" }}
                   </p>
                 </div>
               </div>
 
               <!-- Payment Progress -->
-              <div class="mt-4">
-                <div class="flex justify-between text-sm mb-1">
-                  <span>Payment Progress</span>
-                  <span>{{ getPaymentProgress(fee) }}%</span>
-                </div>
-                <p-progressBar
-                  [value]="getPaymentProgress(fee)"
-                  [style]="{ height: '8px' }"
-                  [styleClass]="
-                    fee.status === 'paid'
-                      ? 'progress-success'
-                      : 'progress-warning'
-                  "
-                >
-                </p-progressBar>
-              </div>
-
-              <!-- Fine Information -->
-              <div
-                *ngIf="fee.fineAmount > 0"
-                class="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg"
-              >
-                <div class="flex items-center space-x-2">
-                  <i class="pi pi-exclamation-triangle text-red-600"></i>
-                  <span class="text-red-800 font-medium">
-                    Late Fine: {{ formatCurrency(fee.fineAmount) }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Scholarship/Discount Information -->
-              <div
-                *ngIf="fee.scholarshipAmount > 0 || fee.discountAmount > 0"
-                class="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg"
-              >
-                <div class="flex items-center space-x-4">
-                  <div
-                    *ngIf="fee.scholarshipAmount > 0"
-                    class="flex items-center space-x-2"
+              <div class="mb-4">
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="font-medium text-gray-700"
+                    >Payment Progress</span
                   >
-                    <i class="pi pi-star text-green-600"></i>
-                    <span class="text-green-800 font-medium">
-                      Scholarship: {{ formatCurrency(fee.scholarshipAmount) }}
+                  <span class="font-semibold text-gray-700"
+                    >{{ getPaymentProgress(fee) }}%</span
+                  >
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    class="h-2 rounded-full transition-all duration-300"
+                    [class.bg-green-500]="fee.status === 'paid'"
+                    [class.bg-yellow-500]="fee.status === 'partial'"
+                    [class.bg-gray-400]="fee.status === 'pending'"
+                    [style.width.%]="getPaymentProgress(fee)"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Additional Information -->
+              <div class="space-y-3">
+                <!-- Fine Information -->
+                <div
+                  *ngIf="fee.fineAmount > 0"
+                  class="p-3 bg-red-50 border border-red-200 rounded-lg"
+                >
+                  <div class="flex items-center space-x-2">
+                    <i class="pi pi-exclamation-triangle text-red-600"></i>
+                    <span class="text-red-800 font-medium text-sm">
+                      Late Fine: {{ formatCurrency(fee.fineAmount) }}
                     </span>
                   </div>
-                  <div
-                    *ngIf="fee.discountAmount > 0"
-                    class="flex items-center space-x-2"
-                  >
-                    <i class="pi pi-percentage text-green-600"></i>
-                    <span class="text-green-800 font-medium">
-                      Discount: {{ formatCurrency(fee.discountAmount) }}
-                    </span>
+                </div>
+
+                <!-- Scholarship/Discount Information -->
+                <div
+                  *ngIf="fee.scholarshipAmount > 0 || fee.discountAmount > 0"
+                  class="p-3 bg-green-50 border border-green-200 rounded-lg"
+                >
+                  <div class="flex flex-wrap items-center gap-4">
+                    <div
+                      *ngIf="fee.scholarshipAmount > 0"
+                      class="flex items-center space-x-2"
+                    >
+                      <i class="pi pi-star text-green-600"></i>
+                      <span class="text-green-800 font-medium text-sm">
+                        Scholarship: {{ formatCurrency(fee.scholarshipAmount) }}
+                      </span>
+                    </div>
+                    <div
+                      *ngIf="fee.discountAmount > 0"
+                      class="flex items-center space-x-2"
+                    >
+                      <i class="pi pi-percentage text-green-600"></i>
+                      <span class="text-green-800 font-medium text-sm">
+                        Discount: {{ formatCurrency(fee.discountAmount) }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Actions -->
-            <div class="flex flex-col space-y-2 w-full lg:w-auto">
+            <div
+              class="flex flex-col space-y-3 w-full lg:w-auto lg:min-w-[200px]"
+            >
               <button
                 *ngIf="fee.balanceAmount > 0"
                 pButton
                 type="button"
                 label="Pay Now"
                 icon="pi pi-credit-card"
-                class="p-button-primary p-button-raised"
+                class="p-button-primary"
                 (click)="makePayment(fee)"
               ></button>
 
@@ -272,44 +316,63 @@
                 type="button"
                 label="Download Receipt"
                 icon="pi pi-download"
-                class="p-button-outlined p-button-secondary"
+                class="p-button-outlined"
                 *ngIf="fee.paidAmount > 0"
                 (click)="downloadFeeStructure(fee)"
+              ></button>
+
+              <button
+                pButton
+                type="button"
+                label="View Details"
+                icon="pi pi-eye"
+                class="p-button-text"
+                (click)="editFeeStructure && editFeeStructure(fee)"
               ></button>
             </div>
           </div>
 
           <!-- Fee Breakdown (Expandable) -->
-          <p-accordion class="mt-4" *ngIf="fee.balanceAmount > 0">
-            <p-accordionTab header="View Fee Breakdown">
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                  <p class="text-gray-600 text-sm">Tuition Fee</p>
-                  <p class="font-semibold">
-                    {{ formatCurrency(getFeeBreakdown(fee).tuitionFee) }}
-                  </p>
+          <div class="mt-6" *ngIf="fee.balanceAmount > 0">
+            <p-accordion>
+              <p-accordionTab header="View Fee Breakdown">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="pi pi-book text-blue-600 text-xl mb-2"></i>
+                    <p class="text-gray-600 text-sm font-medium">Tuition Fee</p>
+                    <p class="font-semibold text-lg">
+                      {{ formatCurrency(getFeeBreakdown(fee).tuitionFee) }}
+                    </p>
+                  </div>
+                  <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="pi pi-bookmark text-green-600 text-xl mb-2"></i>
+                    <p class="text-gray-600 text-sm font-medium">Library Fee</p>
+                    <p class="font-semibold text-lg">
+                      {{ formatCurrency(getFeeBreakdown(fee).libraryFee) }}
+                    </p>
+                  </div>
+                  <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="pi pi-cog text-purple-600 text-xl mb-2"></i>
+                    <p class="text-gray-600 text-sm font-medium">
+                      Laboratory Fee
+                    </p>
+                    <p class="font-semibold text-lg">
+                      {{ formatCurrency(getFeeBreakdown(fee).laboratoryFee) }}
+                    </p>
+                  </div>
+                  <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="pi pi-building text-orange-600 text-xl mb-2"></i>
+                    <p class="text-gray-600 text-sm font-medium">
+                      Development Fee
+                    </p>
+                    <p class="font-semibold text-lg">
+                      {{ formatCurrency(getFeeBreakdown(fee).developmentFee) }}
+                    </p>
+                  </div>
                 </div>
-                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                  <p class="text-gray-600 text-sm">Library Fee</p>
-                  <p class="font-semibold">
-                    {{ formatCurrency(getFeeBreakdown(fee).libraryFee) }}
-                  </p>
-                </div>
-                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                  <p class="text-gray-600 text-sm">Laboratory Fee</p>
-                  <p class="font-semibold">
-                    {{ formatCurrency(getFeeBreakdown(fee).laboratoryFee) }}
-                  </p>
-                </div>
-                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                  <p class="text-gray-600 text-sm">Development Fee</p>
-                  <p class="font-semibold">
-                    {{ formatCurrency(getFeeBreakdown(fee).developmentFee) }}
-                  </p>
-                </div>
-              </div>
-            </p-accordionTab>
-          </p-accordion>
+              </p-accordionTab>
+            </p-accordion>
+          </div>
         </div>
       </div>
     </div>
