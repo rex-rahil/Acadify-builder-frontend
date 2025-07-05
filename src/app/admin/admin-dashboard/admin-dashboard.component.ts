@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ViewChild,
   ElementRef,
   AfterViewInit,
@@ -61,7 +62,9 @@ interface Alert {
   templateUrl: "./admin-dashboard.component.html",
   styleUrls: ["./admin-dashboard.component.scss"],
 })
-export class AdminDashboardComponent implements OnInit, AfterViewInit {
+export class AdminDashboardComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild("userActivityChart")
   userActivityChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild("admissionChart") admissionChart!: ElementRef<HTMLCanvasElement>;
@@ -81,6 +84,10 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   systemHealth: any = {};
   loading = true;
   showCharts = true;
+
+  // Cache formatted times to prevent ExpressionChangedAfterItHasBeenCheckedError
+  private formattedTimes: Map<number, string> = new Map();
+  private timeUpdateInterval: any;
 
   // New properties for enhanced dashboard
   selectedPeriod = "7d";
@@ -178,6 +185,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.loadDashboardData();
     this.initializeAlerts();
+    this.startTimeUpdateInterval();
   }
 
   ngAfterViewInit() {
@@ -187,6 +195,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         this.initializeCharts();
       }
     }, 500);
+  }
+
+  ngOnDestroy() {
+    if (this.timeUpdateInterval) {
+      clearInterval(this.timeUpdateInterval);
+    }
   }
 
   loadDashboardData() {
@@ -214,6 +228,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           user: "Admin User", // Add user info
           details: this.getActivityDetails(activity.type),
         }));
+        this.updateFormattedTimes();
       },
       error: (error) => {
         console.error("Error loading activities:", error);
@@ -261,6 +276,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
   formatTimeAgo(date: Date): string {
+    const activityId = date.getTime();
+    return this.formattedTimes.get(activityId) || this.calculateTimeAgo(date);
+  }
+
+  private calculateTimeAgo(date: Date): string {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / 60000);
@@ -580,5 +600,21 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   generateReport() {
     this.showSuccess("Report generation started");
     // Implement report generation logic
+  }
+
+  private startTimeUpdateInterval() {
+    // Update formatted times every minute to keep them current
+    this.timeUpdateInterval = setInterval(() => {
+      this.updateFormattedTimes();
+    }, 60000); // Update every minute
+  }
+
+  private updateFormattedTimes() {
+    this.formattedTimes.clear();
+    this.recentActivities.forEach((activity) => {
+      const activityId = activity.timestamp.getTime();
+      const formattedTime = this.calculateTimeAgo(activity.timestamp);
+      this.formattedTimes.set(activityId, formattedTime);
+    });
   }
 }
