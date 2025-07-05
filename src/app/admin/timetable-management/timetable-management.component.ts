@@ -88,6 +88,7 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   draggedSubject: Subject | null = null;
   selectedSlot: LectureSlot | null = null;
   showAssignmentDialog = false;
+  showFacultyAssignmentDialog = false;
 
   // Days of week
   daysOfWeek = [
