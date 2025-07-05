@@ -653,4 +653,90 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   getConflictsCount(): number {
     return this.conflicts.size;
   }
+
+  // Drag and Drop functionality
+  isDragOver = false;
+
+  onDrop(event: CdkDragDrop<any>) {
+    this.isDragOver = false;
+
+    if (event.previousContainer === event.container) {
+      // Same container - reorder
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    } else {
+      // Different container - transfer
+      const draggedSlot = event.item.data as LectureSlot;
+      const targetData = event.container.data;
+
+      if (
+        targetData &&
+        typeof targetData === "object" &&
+        "dayIndex" in targetData &&
+        "timeSlotId" in targetData
+      ) {
+        // Moving to a time slot
+        const { dayIndex, timeSlotId } = targetData;
+        const targetSlot = this.getSlotForDayAndTime(dayIndex, timeSlotId);
+
+        if (targetSlot && !targetSlot.isAssigned) {
+          // Update the dragged slot's position
+          draggedSlot.dayOfWeek = dayIndex;
+          draggedSlot.timeSlotId = timeSlotId;
+
+          // Clear the original slot
+          const originalSlot = this.lectureSlots.find(
+            (s) =>
+              s.dayOfWeek === draggedSlot.dayOfWeek &&
+              s.timeSlotId === draggedSlot.timeSlotId &&
+              s.id !== draggedSlot.id,
+          );
+          if (originalSlot) {
+            originalSlot.isAssigned = false;
+            originalSlot.subjectId = undefined;
+            originalSlot.facultyId = undefined;
+          }
+
+          // Assign to new slot
+          targetSlot.isAssigned = true;
+          targetSlot.subjectId = draggedSlot.subjectId;
+          targetSlot.facultyId = draggedSlot.facultyId;
+          targetSlot.type = draggedSlot.type;
+
+          this.messageService.add({
+            severity: "success",
+            summary: "Success",
+            detail: "Lecture moved successfully",
+          });
+
+          this.detectConflicts();
+        } else {
+          this.messageService.add({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Cannot move to occupied slot",
+          });
+        }
+      }
+    }
+  }
+
+  onDragEntered() {
+    this.isDragOver = true;
+  }
+
+  onDragExited() {
+    this.isDragOver = false;
+  }
+
+  onDragStarted(event: any) {
+    // Add visual feedback when drag starts
+  }
+
+  onDragEnded(event: any) {
+    this.isDragOver = false;
+  }
 }
