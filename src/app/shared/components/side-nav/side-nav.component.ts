@@ -405,6 +405,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "Admission Dashboard",
       [UserRole.LIBRARIAN]: "Library Dashboard",
       [UserRole.ASSET_MANAGER]: "Asset Dashboard",
+      [UserRole.GUEST]: "Guest Portal",
     };
 
     return roleLabels[this.currentUser.role as UserRole] || "Dashboard";
@@ -421,6 +422,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "/admission-officer",
       [UserRole.LIBRARIAN]: "/library",
       [UserRole.ASSET_MANAGER]: "/asset-management",
+      [UserRole.GUEST]: "/admission",
     };
 
     return roleRoutes[this.currentUser.role as UserRole] || "/dashboard";
@@ -437,6 +439,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "Admission Officer",
       [UserRole.LIBRARIAN]: "Librarian",
       [UserRole.ASSET_MANAGER]: "Asset Manager",
+      [UserRole.GUEST]: "Guest",
     };
 
     return roleDisplayNames[this.currentUser.role as UserRole] || "User";
