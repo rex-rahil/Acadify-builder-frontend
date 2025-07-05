@@ -809,4 +809,12 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   onDragEnded(event: any) {
     this.isDragOver = false;
   }
+
+  onSubjectDragStarted(subject: Subject) {
+    this.draggedSubject = subject;
+  }
+
+  onSubjectDragEnded() {
+    this.draggedSubject = null;
+  }
 }
