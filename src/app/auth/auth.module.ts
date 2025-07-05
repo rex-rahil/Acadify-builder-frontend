@@ -43,6 +43,6 @@ const routes = [
     MessageModule,
     MessagesModule,
   ],
-  providers: [AuthGuard, MessageService],
+  providers: [AuthGuard, RoleGuard, MessageService],
 })
 export class AuthModule {}
