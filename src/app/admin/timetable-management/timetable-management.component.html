@@ -8,8 +8,8 @@
       <div class="mb-6 lg:mb-0">
         <h1 class="text-4xl font-bold mb-3">Weekly Timetable Management</h1>
         <p class="text-indigo-100 text-lg mb-4">
-          Create and manage weekly lecture schedules with drag-and-drop
-          functionality
+          Create and manage weekly lecture schedules with simple form-based
+          assignment
         </p>
         <div class="flex flex-wrap gap-3">
           <span
@@ -85,9 +85,11 @@
     </div>
 
     <!-- Main Timetable Area -->
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
       <!-- Timetable Header -->
-      <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200">
+      <div
+        class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200"
+      >
         <div class="flex items-center justify-between">
           <h3 class="text-xl font-bold text-gray-800">
             Weekly Schedule
@@ -108,351 +110,179 @@
       <!-- Loading State -->
       <div *ngIf="loading" class="flex items-center justify-center h-96">
         <div class="text-center">
-          <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div
+            class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+          ></div>
           <p class="text-gray-600 font-medium">
             {{ selectedClass ? "Generating timetable..." : "Loading data..." }}
           </p>
         </div>
       </div>
 
-          <!-- Enhanced Timetable Grid -->
-          <div
-            *ngIf="!loading && selectedClass"
-            class="overflow-x-auto bg-white rounded-xl shadow-sm border"
-          >
-            <table class="w-full min-w-max">
-              <!-- Enhanced Header with better styling -->
-              <thead>
-                <tr class="bg-gradient-to-r from-blue-50 to-indigo-50">
-                  <th
-                    class="p-6 text-left font-bold text-gray-800 border-r border-gray-300 min-w-40 bg-white"
-                  >
-                    <div class="flex items-center gap-2">
-                      <i class="pi pi-clock text-blue-600 text-lg"></i>
-                      <span class="text-base">Time / Day</span>
-                    </div>
-                  </th>
-                  <th
-                    *ngFor="let day of daysOfWeek"
-                    class="p-6 text-center font-bold text-gray-800 border-r border-gray-300 min-w-56"
-                  >
-                    <div class="flex items-center justify-center gap-3">
-                      <i class="pi pi-calendar text-blue-600 text-lg"></i>
-                      <span class="text-base">{{ day }}</span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
+      <!-- Timetable Grid -->
+      <div *ngIf="!loading && selectedClass" class="overflow-x-auto">
+        <table class="w-full min-w-max">
+          <!-- Header -->
+          <thead>
+            <tr class="bg-gradient-to-r from-blue-50 to-indigo-50">
+              <th
+                class="p-4 text-left font-bold text-gray-800 border-r border-gray-300 min-w-32 bg-white"
+              >
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-clock text-blue-600 text-lg"></i>
+                  <span class="text-base">Time / Day</span>
+                </div>
+              </th>
+              <th
+                *ngFor="let day of daysOfWeek"
+                class="p-4 text-center font-bold text-gray-800 border-r border-gray-300 min-w-48"
+              >
+                <div class="flex items-center justify-center gap-3">
+                  <i class="pi pi-calendar text-blue-600 text-lg"></i>
+                  <span class="text-base">{{ day }}</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
 
-              <!-- Body with time slots and lecture slots -->
-              <tbody>
-                <tr
-                  *ngFor="let timeSlot of timeSlots; let timeIndex = index"
-                  class="border-b border-gray-100 hover:bg-gray-50"
+          <!-- Body -->
+          <tbody>
+            <tr
+              *ngFor="let timeSlot of timeSlots; let timeIndex = index"
+              class="border-b border-gray-200 hover:bg-gray-25 transition-colors"
+            >
+              <!-- Time column -->
+              <td
+                class="p-4 border-r border-gray-300 bg-gradient-to-r from-gray-50 to-white"
+              >
+                <div class="text-center">
+                  <div class="font-bold text-gray-900 text-sm mb-1">
+                    {{ timeSlot.time }}
+                  </div>
+                  <div class="text-xs text-gray-600 font-medium">
+                    {{ timeSlot.duration }} min
+                  </div>
+                </div>
+              </td>
+
+              <!-- Day columns -->
+              <td
+                *ngFor="let day of daysOfWeek; let dayIndex = index"
+                class="p-3 border-r border-gray-200 relative"
+              >
+                <div
+                  class="min-h-16 p-3 rounded-lg border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 cursor-pointer relative"
                 >
-                  <!-- Enhanced Time column -->
-                  <td
-                    class="p-6 border-r border-gray-300 bg-gradient-to-r from-gray-50 to-white"
+                  <!-- Assigned Lecture Display -->
+                  <div
+                    *ngIf="
+                      getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
+                    "
+                    class="p-3 rounded-lg text-white shadow-md relative overflow-hidden"
+                    [style.background-color]="
+                      getSubjectById(
+                        getSlotForDayAndTime(dayIndex, timeSlot.id)?.subjectId!
+                      )?.color
+                    "
                   >
-                    <div class="text-center">
-                      <div class="font-bold text-gray-900 text-base mb-1">
-                        {{ timeSlot.time }}
-                      </div>
-                      <div class="text-sm text-gray-600 font-medium">
-                        {{ timeSlot.duration }} minutes
-                      </div>
-                    </div>
-                  </td>
-
-                  <!-- Day columns with improved spacing -->
-                  <td
-                    *ngFor="let day of daysOfWeek; let dayIndex = index"
-                    class="p-4 border-r border-gray-200 relative"
-                  >
-                    <div
-                      class="min-h-32 p-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 cursor-pointer relative"
-                      [class.border-green-400]="
-                        getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
+                    <!-- Remove button -->
+                    <button
+                      (click)="
+                        removeAssignment(
+                          getSlotForDayAndTime(dayIndex, timeSlot.id)!
+                        )
                       "
-                      [class.bg-green-50]="
-                        getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
-                      "
-                      [class.shadow-sm]="
-                        getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
-                      "
-                      [class.border-red-300]="getConflictsCount() > 0"
-                      [class.bg-red-50]="getConflictsCount() > 0"
-                      cdkDropList="timetableSlot-{{ dayIndex }}-{{
-                        timeSlot.id
-                      }}"
-                      [cdkDropListData]="{
-                        dayIndex: dayIndex,
-                        timeSlotId: timeSlot.id,
-                      }"
-                      [cdkDropListConnectedTo]="['subjectsList']"
-                      (cdkDropListDropped)="onDrop($event)"
-                      (cdkDropListEntered)="onDragEntered()"
-                      (cdkDropListExited)="onDragExited()"
+                      class="absolute top-1 right-1 w-5 h-5 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all"
                     >
-                      <!-- Assigned Lecture Display with drag and drop -->
-                      <div
-                        *ngIf="
-                          getSlotForDayAndTime(dayIndex, timeSlot.id)
-                            ?.isAssigned
-                        "
-                        class="p-4 rounded-xl text-white shadow-md relative overflow-hidden cursor-move"
-                        [style.background-color]="
+                      <i class="pi pi-times text-xs"></i>
+                    </button>
+
+                    <!-- Subject info -->
+                    <div class="pr-6">
+                      <div class="font-bold text-sm mb-1">
+                        {{
                           getSubjectById(
                             getSlotForDayAndTime(dayIndex, timeSlot.id)
                               ?.subjectId!
-                          )?.color
-                        "
-                        cdkDrag
-                        [cdkDragData]="
-                          getSlotForDayAndTime(dayIndex, timeSlot.id)
-                        "
-                        (cdkDragStarted)="onDragStarted($event)"
-                        (cdkDragEnded)="onDragEnded($event)"
+                          )?.code
+                        }}
+                      </div>
+                      <div
+                        class="font-medium text-xs opacity-95 mb-2 leading-relaxed"
                       >
-                        <!-- Control buttons in top right -->
-                        <div class="absolute top-2 right-2 flex gap-1">
-                          <button
-                            (click)="
-                              removeAssignment(
-                                getSlotForDayAndTime(dayIndex, timeSlot.id)!
-                              )
-                            "
-                            class="w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all"
-                          >
-                            <i class="pi pi-times text-xs"></i>
-                          </button>
-                          <div
-                            class="w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center cursor-move"
-                            title="Drag to move"
-                            cdkDragHandle
-                          >
-                            <i class="pi pi-arrows-alt text-xs"></i>
-                          </div>
-                        </div>
-
-                        <!-- Subject code with larger font -->
-                        <div class="font-bold text-sm mb-2 pr-8">
-                          {{
-                            getSubjectById(
-                              getSlotForDayAndTime(dayIndex, timeSlot.id)
-                                ?.subjectId!
-                            )?.code
-                          }}
-                        </div>
-
-                        <!-- Subject name with better spacing -->
-                        <div
-                          class="font-medium text-xs opacity-95 mb-3 leading-relaxed"
-                        >
-                          {{
-                            getSubjectById(
-                              getSlotForDayAndTime(dayIndex, timeSlot.id)
-                                ?.subjectId!
-                            )?.name
-                          }}
-                        </div>
-
-                        <!-- Faculty info with icon -->
-                        <div
-                          class="text-xs opacity-90 mb-2 flex items-center gap-1"
-                          *ngIf="
+                        {{
+                          getSubjectById(
                             getSlotForDayAndTime(dayIndex, timeSlot.id)
-                              ?.facultyId
-                          "
-                        >
-                          <i class="pi pi-user"></i>
-                          <span class="font-medium">
-                            {{
-                              getFacultyById(
-                                getSlotForDayAndTime(dayIndex, timeSlot.id)
-                                  ?.facultyId!
-                              )?.name
-                            }}
-                          </span>
-                        </div>
-
-                        <!-- Type badge -->
-                        <div
-                          class="inline-flex items-center gap-1 bg-white bg-opacity-25 px-2 py-1 rounded-full text-xs font-medium"
-                        >
-                          <i class="pi pi-tag"></i>
-                          <span>{{
-                            getSlotForDayAndTime(dayIndex, timeSlot.id)?.type
-                          }}</span>
-                        </div>
+                              ?.subjectId!
+                          )?.name
+                        }}
                       </div>
-
-                      <!-- Empty Slot with better visual cues -->
                       <div
+                        class="text-xs opacity-90"
                         *ngIf="
-                          !getSlotForDayAndTime(dayIndex, timeSlot.id)
-                            ?.isAssigned
-                        "
-                        class="flex items-center justify-center h-full text-gray-400 hover:text-blue-500 transition-colors group"
-                        (click)="
-                          openSlotAssignment(
-                            getSlotForDayAndTime(dayIndex, timeSlot.id)!
-                          )
+                          getSlotForDayAndTime(dayIndex, timeSlot.id)?.facultyId
                         "
                       >
-                        <div class="text-center">
-                          <i
-                            class="pi pi-plus-circle text-3xl mb-2 group-hover:scale-110 transition-transform"
-                          ></i>
-                          <div class="text-sm font-medium">Add Lecture</div>
-                          <div class="text-xs mt-1 opacity-75">
-                            Click to assign
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Enhanced Drop zone indicator -->
-                      <div
-                        class="absolute inset-0 border-3 border-blue-400 bg-blue-100 bg-opacity-90 rounded-xl opacity-0 transition-opacity pointer-events-none flex items-center justify-center z-10"
-                        [class.opacity-100]="isDragOver"
-                      >
-                        <div
-                          class="text-blue-700 font-bold text-sm text-center"
-                        >
-                          <i class="pi pi-download text-2xl mb-2 block"></i>
-                          <div>Drop Subject Here</div>
-                        </div>
-                      </div>
-
-                      <!-- Conflict Indicator -->
-                      <div
-                        *ngIf="
-                          conflicts.has(
-                            getSlotForDayAndTime(dayIndex, timeSlot.id)?.id ||
-                              ''
-                          )
-                        "
-                        class="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center"
-                        [title]="
-                          conflicts.get(
-                            getSlotForDayAndTime(dayIndex, timeSlot.id)?.id ||
-                              ''
-                          )![0]?.message
-                        "
-                      >
-                        <i
-                          class="pi pi-exclamation-triangle text-white text-xs"
-                        ></i>
+                        <i class="pi pi-user mr-1"></i>
+                        {{
+                          getFacultyById(
+                            getSlotForDayAndTime(dayIndex, timeSlot.id)
+                              ?.facultyId!
+                          )?.name
+                        }}
                       </div>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                  </div>
 
-          <!-- Empty State -->
-          <div
-            *ngIf="!loading && !selectedClass"
-            class="flex items-center justify-center h-96"
-          >
-            <div class="text-center">
-              <div
-                class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <i class="pi pi-calendar text-3xl text-gray-400"></i>
-              </div>
-              <h3 class="text-lg font-semibold text-gray-600 mb-2">
-                No Class Selected
-              </h3>
-              <p class="text-gray-500">
-                Please select a class to view the timetable
-              </p>
-            </div>
-          </div>
-        </div>
+                  <!-- Empty Slot -->
+                  <div
+                    *ngIf="
+                      !getSlotForDayAndTime(dayIndex, timeSlot.id)?.isAssigned
+                    "
+                    class="flex items-center justify-center h-full text-gray-400 hover:text-blue-500 transition-colors group"
+                    (click)="
+                      openSlotAssignment(
+                        getSlotForDayAndTime(dayIndex, timeSlot.id)!
+                      )
+                    "
+                  >
+                    <div class="text-center">
+                      <i
+                        class="pi pi-plus-circle text-2xl mb-1 group-hover:scale-110 transition-transform"
+                      ></i>
+                      <div class="text-xs font-medium">Add Lecture</div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <!-- Faculty Panel Overlay -->
+      <!-- Empty State -->
       <div
-        *ngIf="showFacultyPanel"
-        class="fixed inset-0 bg-black bg-opacity-10 z-40"
-        (click)="toggleFacultyPanel()"
-      ></div>
-
-      <!-- Floating Faculty Panel -->
-      <div
-        *ngIf="showFacultyPanel"
-        class="fixed top-20 right-4 w-80 bg-white rounded-2xl shadow-2xl p-6 z-50 max-h-[80vh] overflow-hidden border-2 border-green-200"
+        *ngIf="!loading && !selectedClass"
+        class="flex items-center justify-center h-96"
       >
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-800">Faculty Members</h3>
-          <div class="flex items-center gap-2">
-            <span
-              class="bg-green-100 text-green-600 text-xs font-medium px-3 py-1 rounded-full"
-            >
-              {{ faculties.length }} members
-            </span>
-            <button
-              (click)="toggleFacultyPanel()"
-              class="w-8 h-8 bg-red-100 hover:bg-red-200 rounded-full flex items-center justify-center transition-colors"
-            >
-              <i class="pi pi-times text-red-600 text-sm"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="space-y-3 max-h-96 overflow-y-auto custom-scroll">
+        <div class="text-center">
           <div
-            *ngFor="let faculty of faculties"
-            class="p-4 rounded-xl border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-300"
+            class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
-            <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center"
-              >
-                <i class="pi pi-user text-gray-600"></i>
-              </div>
-              <div class="flex-1">
-                <div
-                  class="font-semibold text-gray-800 flex items-center gap-2"
-                >
-                  {{ faculty.name }}
-                  <span
-                    *ngIf="faculty.isHOD"
-                    class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full"
-                  >
-                    HOD
-                  </span>
-                </div>
-                <div class="text-xs text-gray-500">
-                  {{ faculty.department }}
-                </div>
-                <div class="text-xs text-gray-400 mt-1">
-                  Teaches {{ faculty.subjects.length }} subject(s)
-                </div>
-              </div>
-            </div>
+            <i class="pi pi-calendar text-3xl text-gray-400"></i>
           </div>
-        </div>
-
-        <div class="mt-6 p-4 bg-green-50 rounded-xl">
-          <div
-            class="flex items-center gap-2 text-green-600 text-sm font-medium mb-2"
-          >
-            <i class="pi pi-lightbulb"></i>
-            Faculty Assignment
-          </div>
-          <p class="text-xs text-green-600">
-            Faculty will be automatically suggested based on their subject
-            expertise when you assign lectures.
+          <h3 class="text-lg font-semibold text-gray-600 mb-2">
+            No Class Selected
+          </h3>
+          <p class="text-gray-500">
+            Select a class tab above to view its timetable
           </p>
         </div>
       </div>
     </div>
 
     <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
         <div
           class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4"
@@ -504,7 +334,7 @@
   </div>
 </div>
 
-<!-- Subject Selection Dialog -->
+<!-- Add Lecture Dialog -->
 <p-dialog
   [(visible)]="showAssignmentDialog"
   [modal]="true"
@@ -512,17 +342,12 @@
   [draggable]="false"
   [resizable]="false"
   header="Add Lecture"
-  [style]="{ width: '600px' }"
+  styleClass="custom-confirm-dialog"
   (onHide)="closeAssignmentDialog()"
 >
-  <div class="space-y-6">
-    <!-- Debug Info -->
-    <div *ngIf="!selectedSlot" class="text-red-600 p-4 bg-red-50 rounded-xl">
-      No slot selected! selectedSlot is: {{ selectedSlot | json }}
-    </div>
-
+  <div class="space-y-6" *ngIf="selectedSlot">
     <!-- Time Slot Info -->
-    <div *ngIf="selectedSlot" class="bg-blue-50 rounded-xl p-4">
+    <div class="bg-blue-50 rounded-xl p-4">
       <div class="text-sm font-medium text-blue-800 mb-2">Schedule Details</div>
       <div class="text-blue-700">
         <div class="font-semibold">
@@ -534,104 +359,60 @@
 
     <!-- Subject Selection -->
     <div>
-      <div class="text-sm font-medium text-gray-700 mb-3">Select Subject</div>
-      <div class="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto">
-        <div
-          *ngFor="let subject of subjects"
-          (click)="selectedSlot && assignSubjectToSlot(subject, selectedSlot)"
-          class="p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-300"
-        >
-          <div class="flex items-center gap-3">
+      <label class="block text-sm font-medium text-gray-700 mb-2"
+        >Select Subject</label
+      >
+      <p-dropdown
+        [(ngModel)]="selectedSubjectId"
+        [options]="subjects"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Choose a subject"
+        class="w-full"
+        [showClear]="true"
+      >
+        <ng-template pTemplate="item" let-subject>
+          <div class="flex items-center gap-3 p-2">
             <div
-              class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold"
+              class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-xs"
               [style.background-color]="subject.color"
             >
               {{ subject.code.substring(0, 2) }}
             </div>
-            <div class="flex-1">
-              <div class="font-semibold text-gray-800">{{ subject.name }}</div>
-              <div class="text-sm text-gray-600">
-                {{ subject.code }} • {{ subject.credits }} credits •
-                {{ subject.type }}
-              </div>
-              <div class="text-xs text-blue-600 mt-1">
-                {{ getQualifiedFaculties(subject.id).length }} qualified faculty
-                available
+            <div>
+              <div class="font-semibold">{{ subject.name }}</div>
+              <div class="text-xs text-gray-500">
+                {{ subject.code }} • {{ subject.type }}
               </div>
             </div>
-            <i class="pi pi-angle-right text-gray-400"></i>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</p-dialog>
-
-<!-- Faculty Assignment Dialog -->
-<p-dialog
-  [(visible)]="showFacultyAssignmentDialog"
-  [modal]="true"
-  [closable]="true"
-  [draggable]="false"
-  [resizable]="false"
-  header="Assign Faculty"
-  [style]="{ width: '500px' }"
-  (onHide)="closeFacultyAssignmentDialog()"
->
-  <div *ngIf="selectedSlot && selectedSlot.subjectId" class="space-y-6">
-    <!-- Subject Info -->
-    <div class="bg-gray-50 rounded-xl p-4">
-      <div class="flex items-center gap-3">
-        <div
-          class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold"
-          [style.background-color]="
-            getSubjectById(selectedSlot.subjectId)?.color
-          "
-        >
-          {{ getSubjectById(selectedSlot.subjectId)?.code?.substring(0, 2) }}
-        </div>
-        <div>
-          <div class="font-semibold text-gray-800">
-            {{ getSubjectById(selectedSlot.subjectId)?.name }}
-          </div>
-          <div class="text-sm text-gray-600">
-            {{ getSubjectById(selectedSlot.subjectId)?.code }} •
-            {{ getSubjectById(selectedSlot.subjectId)?.credits }} credits
-          </div>
-        </div>
-      </div>
+        </ng-template>
+      </p-dropdown>
     </div>
 
-    <!-- Time Slot Info -->
-    <div class="bg-blue-50 rounded-xl p-4">
-      <div class="text-sm font-medium text-blue-800 mb-2">Schedule Details</div>
-      <div class="text-blue-700">
-        <div>{{ daysOfWeek[selectedSlot.dayOfWeek] }}</div>
-        <div>
-          {{ getTimeSlotTime(selectedSlot.timeSlotId) }}
-        </div>
-      </div>
-    </div>
-
-    <!-- Qualified Faculty List -->
-    <div>
-      <div class="text-sm font-medium text-gray-700 mb-3">
-        Select Qualified Faculty
-      </div>
-      <div class="space-y-2 max-h-64 overflow-y-auto">
-        <div
-          *ngFor="let faculty of getQualifiedFaculties(selectedSlot.subjectId)"
-          (click)="assignFacultyToSelectedSlot(faculty.id)"
-          class="p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-300"
-        >
-          <div class="flex items-center gap-3">
+    <!-- Faculty Selection -->
+    <div *ngIf="selectedSubjectId">
+      <label class="block text-sm font-medium text-gray-700 mb-2"
+        >Select Faculty</label
+      >
+      <p-dropdown
+        [(ngModel)]="selectedFacultyId"
+        [options]="getQualifiedFacultiesForSelectedSubject()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Choose a faculty member"
+        class="w-full"
+        [showClear]="true"
+      >
+        <ng-template pTemplate="item" let-faculty>
+          <div class="flex items-center gap-3 p-2">
             <div
-              class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center"
+              class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
             >
-              <i class="pi pi-user text-gray-600"></i>
+              <i class="pi pi-user text-gray-600 text-xs"></i>
             </div>
-            <div class="flex-1">
-              <div class="font-semibold text-gray-800 flex items-center gap-2">
+            <div>
+              <div class="font-semibold flex items-center gap-2">
                 {{ faculty.name }}
                 <span
                   *ngIf="faculty.isHOD"
@@ -641,28 +422,36 @@
                 </span>
               </div>
               <div class="text-xs text-gray-500">{{ faculty.department }}</div>
-              <div class="text-xs text-gray-400">{{ faculty.email }}</div>
             </div>
-            <i class="pi pi-angle-right text-gray-400"></i>
           </div>
-        </div>
-      </div>
+        </ng-template>
+      </p-dropdown>
 
-      <!-- No Qualified Faculty -->
       <div
-        *ngIf="hasNoQualifiedFaculties(selectedSlot.subjectId)"
-        class="text-center py-8"
+        *ngIf="getQualifiedFacultiesForSelectedSubject().length === 0"
+        class="text-sm text-red-600 mt-2"
       >
-        <div
-          class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
-        >
-          <i class="pi pi-users text-2xl text-gray-400"></i>
-        </div>
-        <div class="text-gray-600 font-medium">No Qualified Faculty</div>
-        <div class="text-sm text-gray-500">
-          No faculty members are qualified to teach this subject
-        </div>
+        <i class="pi pi-exclamation-triangle mr-1"></i>
+        No qualified faculty available for this subject
       </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="flex justify-end gap-3 pt-4">
+      <button
+        (click)="closeAssignmentDialog()"
+        class="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="assignLecture()"
+        [disabled]="!selectedSubjectId || !selectedFacultyId"
+        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      >
+        <i class="pi pi-check mr-2"></i>
+        Assign Lecture
+      </button>
     </div>
   </div>
 </p-dialog>
