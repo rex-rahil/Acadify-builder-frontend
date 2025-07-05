@@ -461,14 +461,16 @@
                         </div>
                       </div>
 
-                      <!-- Drop zone indicator -->
+                      <!-- Enhanced Drop zone indicator -->
                       <div
-                        class="absolute inset-0 border-2 border-blue-400 bg-blue-50 bg-opacity-75 rounded-xl opacity-0 transition-opacity pointer-events-none flex items-center justify-center"
+                        class="absolute inset-0 border-3 border-blue-400 bg-blue-100 bg-opacity-90 rounded-xl opacity-0 transition-opacity pointer-events-none flex items-center justify-center z-10"
                         [class.opacity-100]="isDragOver"
                       >
-                        <div class="text-blue-600 font-medium text-sm">
-                          <i class="pi pi-download mr-2"></i>
-                          Drop here
+                        <div
+                          class="text-blue-700 font-bold text-sm text-center"
+                        >
+                          <i class="pi pi-download text-2xl mb-2 block"></i>
+                          <div>Drop Subject Here</div>
                         </div>
                       </div>
 
