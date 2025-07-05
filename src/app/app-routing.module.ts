@@ -1,15 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AuthGuard } from "./auth/guards/auth.guard";
-import {
-  RoleGuard,
-  AdminGuard,
-  FacultyGuard,
-  AdmissionOfficerGuard,
-  AssetManagerGuard,
-  LibrarianGuard,
-} from "./auth/guards/role.guard";
-import { UserRole, Permission } from "./auth/models/role.model";
 
 const routes: Routes = [
   {
