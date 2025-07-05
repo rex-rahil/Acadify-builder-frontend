@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
+import { HttpClientModule } from "@angular/common/http";
 
 // PrimeNG Modules
 import { ButtonModule } from "primeng/button";
@@ -14,20 +14,13 @@ import { ToastModule } from "primeng/toast";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { CardModule } from "primeng/card";
 import { TagModule } from "primeng/tag";
-import { ChipModule } from "primeng/chip";
 import { ProgressBarModule } from "primeng/progressbar";
 import { TooltipModule } from "primeng/tooltip";
 import { InputNumberModule } from "primeng/inputnumber";
-import { RadioButtonModule } from "primeng/radiobutton";
 import { CheckboxModule } from "primeng/checkbox";
-import { MultiSelectModule } from "primeng/multiselect";
-import { FileUploadModule } from "primeng/fileupload";
-import { DividerModule } from "primeng/divider";
-import { TabViewModule } from "primeng/tabview";
-import { PanelModule } from "primeng/panel";
-import { AccordionModule } from "primeng/accordion";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { InputTextareaModule } from "primeng/inputtextarea";
+import { AccordionModule } from "primeng/accordion";
 
 // Routing
 import { FeesRoutingModule } from "./fees-routing.module";
@@ -59,7 +52,7 @@ import { PaymentRemindersComponent } from "./components/admin/payment-reminders/
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
+    HttpClientModule,
     FeesRoutingModule,
 
     // PrimeNG
@@ -73,20 +66,13 @@ import { PaymentRemindersComponent } from "./components/admin/payment-reminders/
     ConfirmDialogModule,
     CardModule,
     TagModule,
-    ChipModule,
     ProgressBarModule,
     TooltipModule,
     InputNumberModule,
-    RadioButtonModule,
     CheckboxModule,
-    MultiSelectModule,
-    FileUploadModule,
-    DividerModule,
-    TabViewModule,
-    PanelModule,
-    AccordionModule,
     ProgressSpinnerModule,
     InputTextareaModule,
+    AccordionModule,
   ],
 })
 export class FeesModule {}
