@@ -85,6 +85,8 @@ import { PaymentRemindersComponent } from "./components/admin/payment-reminders/
     TabViewModule,
     PanelModule,
     AccordionModule,
+    ProgressSpinnerModule,
+    InputTextareaModule,
   ],
 })
 export class FeesModule {}
