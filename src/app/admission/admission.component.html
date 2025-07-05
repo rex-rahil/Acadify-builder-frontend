@@ -180,7 +180,9 @@
 
             <div class="flex items-center gap-4">
               <!-- Step Indicator -->
-              <div class="hidden sm:flex items-center gap-2 text-sm text-gray-600">
+              <div
+                class="hidden sm:flex items-center gap-2 text-sm text-gray-600"
+              >
                 <span class="font-medium">{{ activeIndex + 1 }}</span>
                 <span>of</span>
                 <span class="font-medium">{{ steps.length }}</span>
@@ -188,14 +190,24 @@
               </div>
 
               <!-- Form Validation Status -->
-              <div class="flex items-center gap-2" *ngIf="!canProceed() && getCurrentForm().touched">
+              <div
+                class="flex items-center gap-2"
+                *ngIf="!canProceed() && getCurrentForm().touched"
+              >
                 <i class="pi pi-exclamation-triangle text-amber-500"></i>
-                <span class="text-sm text-amber-600 font-medium">Please complete required fields</span>
+                <span class="text-sm text-amber-600 font-medium"
+                  >Please complete required fields</span
+                >
               </div>
 
-              <div class="flex items-center gap-2" *ngIf="canProceed() && getCurrentForm().touched">
+              <div
+                class="flex items-center gap-2"
+                *ngIf="canProceed() && getCurrentForm().touched"
+              >
                 <i class="pi pi-check-circle text-emerald-500"></i>
-                <span class="text-sm text-emerald-600 font-medium">Step completed</span>
+                <span class="text-sm text-emerald-600 font-medium"
+                  >Step completed</span
+                >
               </div>
             </div>
 
@@ -216,8 +228,14 @@
                 [disabled]="!canProceed() || isSubmitting"
                 class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg transform hover:scale-105 active:scale-95 flex items-center gap-2"
               >
-                <i class="pi pi-{{ isSubmitting ? 'spin pi-spinner' : 'send' }} text-sm"></i>
-                <span>{{ isEditMode ? 'Resubmit Application' : 'Submit Application' }}</span>
+                <i
+                  class="pi pi-{{
+                    isSubmitting ? 'spin pi-spinner' : 'send'
+                  }} text-sm"
+                ></i>
+                <span>{{
+                  isEditMode ? "Resubmit Application" : "Submit Application"
+                }}</span>
               </button>
             </div>
           </div>
@@ -225,5 +243,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>
