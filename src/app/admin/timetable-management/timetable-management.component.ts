@@ -625,21 +625,34 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     slot.type = subject.type;
     slot.isAssigned = true;
 
-    // Auto-assign first qualified faculty if available
     const qualifiedFaculties = this.getQualifiedFaculties(subject.id);
-    if (qualifiedFaculties.length > 0) {
+
+    if (qualifiedFaculties.length === 0) {
+      // No qualified faculty
+      this.messageService.add({
+        severity: "warn",
+        summary: "No Qualified Faculty",
+        detail: `No faculty available to teach ${subject.name}`,
+        life: 3000,
+      });
+    } else if (qualifiedFaculties.length === 1) {
+      // Auto-assign the only qualified faculty
       slot.facultyId = qualifiedFaculties[0].id;
+      this.closeAssignmentDialog();
+
+      this.messageService.add({
+        severity: "success",
+        summary: "Lecture Assigned",
+        detail: `${subject.name} assigned to ${qualifiedFaculties[0].name}`,
+        life: 3000,
+      });
+    } else {
+      // Multiple faculties - show faculty selection dialog
+      this.closeAssignmentDialog();
+      this.showFacultyAssignmentDialog = true;
     }
 
     this.detectConflicts();
-    this.closeAssignmentDialog();
-
-    this.messageService.add({
-      severity: "success",
-      summary: "Subject Assigned",
-      detail: `${subject.name} has been assigned successfully`,
-      life: 3000,
-    });
   }
 
   closeAssignmentDialog() {
