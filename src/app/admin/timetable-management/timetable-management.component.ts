@@ -359,11 +359,6 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.assignSubjectToSlot(subject, slot);
   }
 
-  private assignSubjectToSlot(subject: Subject, slot: LectureSlot) {
-    this.selectedSlot = { ...slot, subjectId: subject.id, type: subject.type };
-    this.showAssignmentDialog = true;
-  }
-
   // Faculty assignment
   assignFaculty(facultyId: string) {
     if (!this.selectedSlot) return;
