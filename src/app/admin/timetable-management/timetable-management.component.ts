@@ -664,6 +664,30 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.showFacultyAssignmentDialog = false;
   }
 
+  // Assign faculty to the currently selected slot
+  assignFacultyToSelectedSlot(facultyId: string) {
+    if (!this.selectedSlot || !this.selectedSlot.subjectId) return;
+
+    const faculty = this.faculties.find((f) => f.id === facultyId);
+    const subject = this.subjects.find(
+      (s) => s.id === this.selectedSlot?.subjectId,
+    );
+
+    if (!faculty || !subject) return;
+
+    this.selectedSlot.facultyId = facultyId;
+    this.closeFacultyAssignmentDialog();
+
+    this.messageService.add({
+      severity: "success",
+      summary: "Faculty Assigned",
+      detail: `${subject.name} assigned to ${faculty.name}`,
+      life: 3000,
+    });
+
+    this.detectConflicts();
+  }
+
   // Toggle panels
   toggleSubjectPanel() {
     this.showSubjectPanel = !this.showSubjectPanel;
