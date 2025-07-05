@@ -128,8 +128,9 @@ body {
     0 1px 3px 0 rgba(0, 0, 0, 0.12);
 }
 
+/* Enhanced form styling */
 .form-field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-field label {
@@ -137,6 +138,7 @@ body {
   margin-bottom: 0.5rem;
   font-weight: 500;
   color: var(--text-color);
+  font-size: 0.875rem;
 }
 
 .form-field .p-invalid {
@@ -147,6 +149,76 @@ body {
   color: #e24c4c;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+  display: block;
+}
+
+/* Global input improvements */
+.p-inputtext,
+.p-dropdown,
+.p-calendar .p-inputtext {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.12);
+  }
+
+  &.p-invalid {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.12);
+  }
+}
+
+/* Dropdown specific improvements */
+.p-dropdown {
+  .p-dropdown-label {
+    padding: 0.75rem 1rem;
+    line-height: 1.5;
+
+    &.p-placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  .p-dropdown-trigger {
+    width: 2.5rem;
+    background: transparent;
+    border-left: none;
+
+    .p-dropdown-trigger-icon {
+      color: #6b7280;
+    }
+  }
+}
+
+/* Button improvements */
+.p-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+
+  &:enabled:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:enabled:active {
+    transform: translateY(0);
+  }
 }
 
 .step-actions {
