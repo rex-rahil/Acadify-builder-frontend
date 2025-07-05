@@ -613,15 +613,8 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
 
   // Dialog methods
   openSlotAssignment(slot: LectureSlot) {
-    console.log("Opening slot assignment for:", slot);
     this.selectedSlot = { ...slot }; // Create a copy to ensure change detection
     this.showAssignmentDialog = true;
-    console.log(
-      "Dialog should show:",
-      this.showAssignmentDialog,
-      "Selected slot:",
-      this.selectedSlot,
-    );
   }
 
   // Add new method for assigning subject with dialog
