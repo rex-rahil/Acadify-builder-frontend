@@ -210,14 +210,38 @@ export class SideNavComponent implements OnInit, OnDestroy {
       });
     }
 
+    // Admission sections (for students and officers)
+    if (this.hasRole([UserRole.STUDENT]) || !this.currentUser.role) {
+      this.menuSections.push({
+        label: "Admission Portal",
+        items: [
+          {
+            label: "Apply for Admission",
+            icon: "pi pi-file-edit",
+            route: "/admission",
+          },
+          {
+            label: "Application Status",
+            icon: "pi pi-info-circle",
+            route: "/admission/status",
+          },
+          {
+            label: "Fee Payment",
+            icon: "pi pi-credit-card",
+            route: "/admission/payment",
+          },
+        ],
+      });
+    }
+
     // Admission Officer sections
     if (this.hasRole([UserRole.ADMISSION_OFFICER, UserRole.ADMIN])) {
       this.menuSections.push({
         label: "Admission Management",
         items: [
           {
-            label: "Admission Dashboard",
-            icon: "pi pi-file-check",
+            label: "Applications Overview",
+            icon: "pi pi-chart-bar",
             route: "/admission-officer",
           },
           {
@@ -226,9 +250,19 @@ export class SideNavComponent implements OnInit, OnDestroy {
             route: "/admission-officer/review",
           },
           {
+            label: "Admission Statistics",
+            icon: "pi pi-chart-pie",
+            route: "/admission-officer/statistics",
+          },
+          {
             label: "Payment Management",
             icon: "pi pi-credit-card",
             route: "/admission-officer/payment",
+          },
+          {
+            label: "Document Verification",
+            icon: "pi pi-verified",
+            route: "/admission-officer/verification",
           },
         ],
       });
