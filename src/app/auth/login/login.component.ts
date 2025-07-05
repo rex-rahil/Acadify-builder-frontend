@@ -37,11 +37,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Check if user is already authenticated
+    // Check if user is already authenticated and redirect if needed
     this.authService.isAuthenticated$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isAuthenticated) => {
         if (isAuthenticated) {
-          this.redirectAfterLogin();
+          // AuthService handles redirect automatically when user logs in
+          // If already authenticated, get current user and redirect to appropriate dashboard
+          const currentUser = this.authService.getCurrentUser();
+          if (currentUser) {
+            this.redirectToUserDashboard(currentUser.role);
+          }
         }
       });
 
