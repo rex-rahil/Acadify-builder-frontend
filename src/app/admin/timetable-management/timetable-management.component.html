@@ -316,19 +316,25 @@
                       [class.border-red-300]="getConflictsCount() > 0"
                       [class.bg-red-50]="getConflictsCount() > 0"
                     >
-                      <!-- Assigned Lecture Display with improved spacing -->
+                      <!-- Assigned Lecture Display with drag and drop -->
                       <div
                         *ngIf="
                           getSlotForDayAndTime(dayIndex, timeSlot.id)
                             ?.isAssigned
                         "
-                        class="p-4 rounded-xl text-white shadow-md relative overflow-hidden"
+                        class="p-4 rounded-xl text-white shadow-md relative overflow-hidden cursor-move"
                         [style.background-color]="
                           getSubjectById(
                             getSlotForDayAndTime(dayIndex, timeSlot.id)
                               ?.subjectId!
                           )?.color
                         "
+                        cdkDrag
+                        [cdkDragData]="
+                          getSlotForDayAndTime(dayIndex, timeSlot.id)
+                        "
+                        (cdkDragStarted)="onDragStarted($event)"
+                        (cdkDragEnded)="onDragEnded($event)"
                       >
                         <!-- Remove button in top right -->
                         <button
