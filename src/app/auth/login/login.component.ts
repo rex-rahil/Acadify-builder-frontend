@@ -185,49 +185,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  private redirectAfterLogin(): void {
-    const currentUser = this.authService.getCurrentUser();
-    this.redirectBasedOnRole(currentUser);
-  }
-
-  private redirectBasedOnRole(user: User | null) {
-    try {
-      if (this.returnUrl && this.returnUrl !== "") {
-        // If there's a specific return URL, use it
-        this.router.navigate([this.returnUrl]);
-        return;
-      }
-
-      // Default role-based routing using new UserRole enum
-      const userRole = user?.role as UserRole;
-      switch (userRole) {
-        case UserRole.ADMIN:
-          this.router.navigate(["/admin"]);
-          break;
-        case UserRole.FACULTY:
-        case UserRole.HOD:
-          this.router.navigate(["/faculty"]);
-          break;
-        case UserRole.ADMISSION_OFFICER:
-          this.router.navigate(["/admission-officer"]);
-          break;
-        case UserRole.LIBRARIAN:
-          this.router.navigate(["/library"]);
-          break;
-        case UserRole.ASSET_MANAGER:
-          this.router.navigate(["/asset-management"]);
-          break;
-        case UserRole.STUDENT:
-        default:
-          this.router.navigate(["/dashboard"]);
-      }
-    } catch (error) {
-      console.error("Navigation error:", error);
-      // Fallback navigation
-      this.router.navigate(["/dashboard"]);
-    }
-  }
-
   private markFormGroupTouched() {
     Object.keys(this.loginForm.controls).forEach((key) => {
       const control = this.loginForm.get(key);
