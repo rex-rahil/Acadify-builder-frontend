@@ -308,13 +308,13 @@
                       [class.border-red-300]="getConflictsCount() > 0"
                       [class.bg-red-50]="getConflictsCount() > 0"
                     >
-                      <!-- Assigned Lecture Display -->
+                      <!-- Assigned Lecture Display with improved spacing -->
                       <div
                         *ngIf="
                           getSlotForDayAndTime(dayIndex, timeSlot.id)
                             ?.isAssigned
                         "
-                        class="p-3 rounded-lg text-white text-xs"
+                        class="p-4 rounded-xl text-white shadow-md relative overflow-hidden"
                         [style.background-color]="
                           getSubjectById(
                             getSlotForDayAndTime(dayIndex, timeSlot.id)
@@ -322,27 +322,32 @@
                           )?.color
                         "
                       >
-                        <div class="flex items-center justify-between mb-1">
-                          <span class="font-semibold">
-                            {{
-                              getSubjectById(
-                                getSlotForDayAndTime(dayIndex, timeSlot.id)
-                                  ?.subjectId!
-                              )?.code
-                            }}
-                          </span>
-                          <button
-                            (click)="
-                              removeAssignment(
-                                getSlotForDayAndTime(dayIndex, timeSlot.id)!
-                              )
-                            "
-                            class="text-white hover:text-red-200 transition-colors"
-                          >
-                            <i class="pi pi-times text-xs"></i>
-                          </button>
+                        <!-- Remove button in top right -->
+                        <button
+                          (click)="
+                            removeAssignment(
+                              getSlotForDayAndTime(dayIndex, timeSlot.id)!
+                            )
+                          "
+                          class="absolute top-2 right-2 w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all"
+                        >
+                          <i class="pi pi-times text-xs"></i>
+                        </button>
+
+                        <!-- Subject code with larger font -->
+                        <div class="font-bold text-sm mb-2 pr-8">
+                          {{
+                            getSubjectById(
+                              getSlotForDayAndTime(dayIndex, timeSlot.id)
+                                ?.subjectId!
+                            )?.code
+                          }}
                         </div>
-                        <div class="font-medium text-xs opacity-90 mb-1">
+
+                        <!-- Subject name with better spacing -->
+                        <div
+                          class="font-medium text-xs opacity-95 mb-3 leading-relaxed"
+                        >
                           {{
                             getSubjectById(
                               getSlotForDayAndTime(dayIndex, timeSlot.id)
@@ -350,26 +355,34 @@
                             )?.name
                           }}
                         </div>
+
+                        <!-- Faculty info with icon -->
                         <div
-                          class="text-xs opacity-75"
+                          class="text-xs opacity-90 mb-2 flex items-center gap-1"
                           *ngIf="
                             getSlotForDayAndTime(dayIndex, timeSlot.id)
                               ?.facultyId
                           "
                         >
-                          <i class="pi pi-user mr-1"></i>
-                          {{
-                            getFacultyById(
-                              getSlotForDayAndTime(dayIndex, timeSlot.id)
-                                ?.facultyId!
-                            )?.name
-                          }}
+                          <i class="pi pi-user"></i>
+                          <span class="font-medium">
+                            {{
+                              getFacultyById(
+                                getSlotForDayAndTime(dayIndex, timeSlot.id)
+                                  ?.facultyId!
+                              )?.name
+                            }}
+                          </span>
                         </div>
-                        <div class="text-xs opacity-75 mt-1">
-                          <i class="pi pi-tag mr-1"></i>
-                          {{
+
+                        <!-- Type badge -->
+                        <div
+                          class="inline-flex items-center gap-1 bg-white bg-opacity-25 px-2 py-1 rounded-full text-xs font-medium"
+                        >
+                          <i class="pi pi-tag"></i>
+                          <span>{{
                             getSlotForDayAndTime(dayIndex, timeSlot.id)?.type
-                          }}
+                          }}</span>
                         </div>
                       </div>
 
