@@ -442,53 +442,75 @@
     </div>
 
     <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <div
+        class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 text-center hover-lift group"
+      >
         <div
-          class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+          class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
         >
-          <i class="pi pi-calendar text-blue-600 text-xl"></i>
+          <i class="pi pi-calendar text-white text-xl"></i>
         </div>
-        <div class="text-2xl font-bold text-gray-800">
+        <div class="text-3xl font-bold text-gray-800 mb-1">
           {{ getAssignedLecturesCount() }}
         </div>
-        <div class="text-sm text-gray-600">Assigned Lectures</div>
+        <div class="text-sm text-gray-600 font-medium">Assigned Lectures</div>
+        <div class="text-xs text-gray-500 mt-1">
+          out of {{ timeSlots.length * daysOfWeek.length }} total slots
+        </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+      <div
+        class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 text-center hover-lift group"
+      >
         <div
-          class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+          class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
         >
-          <i class="pi pi-users text-green-600 text-xl"></i>
+          <i class="pi pi-users text-white text-xl"></i>
         </div>
-        <div class="text-2xl font-bold text-gray-800">
+        <div class="text-3xl font-bold text-gray-800 mb-1">
           {{ getFacultiesCount() }}
         </div>
-        <div class="text-sm text-gray-600">Available Faculty</div>
+        <div class="text-sm text-gray-600 font-medium">Available Faculty</div>
+        <div class="text-xs text-gray-500 mt-1">across all departments</div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+      <div
+        class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 text-center hover-lift group"
+      >
         <div
-          class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+          class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
         >
-          <i class="pi pi-book text-yellow-600 text-xl"></i>
+          <i class="pi pi-book text-white text-xl"></i>
         </div>
-        <div class="text-2xl font-bold text-gray-800">
+        <div class="text-3xl font-bold text-gray-800 mb-1">
           {{ getSubjectsCount() }}
         </div>
-        <div class="text-sm text-gray-600">Total Subjects</div>
+        <div class="text-sm text-gray-600 font-medium">Total Subjects</div>
+        <div class="text-xs text-gray-500 mt-1">
+          theory, practical & lab courses
+        </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+      <div
+        class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 text-center hover-lift group"
+      >
         <div
-          class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+          class="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
         >
-          <i class="pi pi-exclamation-triangle text-red-600 text-xl"></i>
+          <i class="pi pi-exclamation-triangle text-white text-xl"></i>
         </div>
-        <div class="text-2xl font-bold text-gray-800">
+        <div class="text-3xl font-bold text-gray-800 mb-1">
           {{ getConflictsCount() }}
         </div>
-        <div class="text-sm text-gray-600">Conflicts</div>
+        <div class="text-sm text-gray-600 font-medium">
+          {{ getConflictsCount() === 0 ? "No Conflicts" : "Conflicts" }}
+        </div>
+        <div class="text-xs text-gray-500 mt-1">
+          {{
+            getConflictsCount() === 0 ? "schedule is clean" : "need attention"
+          }}
+        </div>
       </div>
     </div>
   </div>
