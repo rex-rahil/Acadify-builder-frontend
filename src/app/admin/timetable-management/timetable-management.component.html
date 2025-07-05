@@ -157,15 +157,23 @@
           </span>
         </div>
 
-        <div class="space-y-3 max-h-96 overflow-y-auto custom-scroll">
+        <div
+          class="space-y-3 max-h-96 overflow-y-auto custom-scroll"
+          cdkDropList
+          [cdkDropListData]="availableSubjects"
+        >
           <div
-            *ngFor="let subject of availableSubjects"
-            class="p-4 rounded-xl border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 cursor-pointer group"
+            *ngFor="let subject of subjects"
+            class="p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 cursor-move group"
             [style.border-color]="subject.color"
+            cdkDrag
+            [cdkDragData]="subject"
+            (cdkDragStarted)="onSubjectDragStarted(subject)"
+            (cdkDragEnded)="onSubjectDragEnded()"
           >
             <div class="flex items-center gap-3">
               <div
-                class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-semibold text-sm"
+                class="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md"
                 [style.background-color]="subject.color"
               >
                 {{ subject.code.substring(0, 2) }}
@@ -176,14 +184,18 @@
                 >
                   {{ subject.name }}
                 </div>
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 mb-1">
                   {{ subject.code }} • {{ subject.credits }} credits •
                   {{ subject.type }}
                 </div>
+                <div class="text-xs text-green-600">
+                  {{ getQualifiedFaculties(subject.id).length }} qualified
+                  faculty
+                </div>
               </div>
-              <i
-                class="pi pi-arrows-alt text-gray-400 group-hover:text-blue-600"
-              ></i>
+              <div class="text-gray-400 group-hover:text-blue-600">
+                <i class="pi pi-arrows-alt text-lg" cdkDragHandle></i>
+              </div>
             </div>
           </div>
         </div>
