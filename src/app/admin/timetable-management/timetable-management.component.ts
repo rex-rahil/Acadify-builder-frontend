@@ -654,6 +654,20 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     return this.conflicts.size;
   }
 
+  // Helper methods for template
+  getTimeSlotTime(timeSlotId: string): string {
+    const timeSlot = this.timeSlots.find((t) => t.id === timeSlotId);
+    return timeSlot ? timeSlot.time : "";
+  }
+
+  hasQualifiedFaculties(subjectId: string): boolean {
+    return this.getQualifiedFaculties(subjectId).length > 0;
+  }
+
+  hasNoQualifiedFaculties(subjectId: string): boolean {
+    return this.getQualifiedFaculties(subjectId).length === 0;
+  }
+
   // Drag and Drop functionality
   isDragOver = false;
 
