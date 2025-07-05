@@ -1,19 +1,21 @@
-<div class="min-h-screen bg-gray-50">
+<div class="beautiful-page">
   <!-- Header Section -->
-  <div class="bg-blue-600 text-white relative">
-    <div class="px-6 py-8">
-      <div class="flex justify-between items-center">
-        <div>
-          <h1 class="text-3xl font-bold mb-2">Fee Structure Management</h1>
-          <p class="text-blue-100 text-lg">
-            Configure and manage fee structures for different courses and
-            semesters
-          </p>
-        </div>
-        <div class="hidden md:flex items-center space-x-4">
-          <div class="bg-white/10 rounded-2xl p-4">
-            <i class="pi pi-dollar text-2xl"></i>
-          </div>
+  <div class="beautiful-header">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">
+          Fee Structure Management
+        </h1>
+        <p class="text-gray-600 text-lg">
+          Configure and manage fee structures for different courses and
+          semesters
+        </p>
+      </div>
+      <div class="hidden md:flex items-center space-x-4">
+        <div
+          class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+        >
+          <i class="pi pi-dollar text-blue-600 text-xl"></i>
         </div>
       </div>
     </div>
@@ -22,26 +24,29 @@
   <!-- Main Content -->
   <div class="px-6 py-8">
     <!-- Action Bar -->
-    <div
-      class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6 mb-8"
-    >
-      <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-semibold text-gray-800">Fee Structures</h2>
+    <div class="beautiful-container">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+      >
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800">Fee Structures</h2>
+          <p class="text-gray-600 text-sm mt-1">
+            Manage fee structures for different academic programs
+          </p>
+        </div>
         <button
           pButton
           type="button"
           label="Add New Structure"
           icon="pi pi-plus"
-          class="p-button-primary p-button-raised"
+          class="p-button-primary"
           (click)="openNewDialog()"
         ></button>
       </div>
     </div>
 
     <!-- Fee Structures Table -->
-    <div
-      class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 overflow-hidden"
-    >
+    <div class="beautiful-container">
       <p-table
         [value]="feeStructures"
         [loading]="loading"
@@ -66,12 +71,12 @@
         <ng-template pTemplate="body" let-structure>
           <tr>
             <td class="font-semibold text-gray-800">{{ structure.course }}</td>
-            <td>Semester {{ structure.semester }}</td>
-            <td>{{ structure.academicYear }}</td>
+            <td class="text-gray-600">Semester {{ structure.semester }}</td>
+            <td class="text-gray-600">{{ structure.academicYear }}</td>
             <td class="text-right font-semibold text-green-600">
               {{ formatCurrency(structure.totalFee) }}
             </td>
-            <td class="text-center">
+            <td class="text-center text-gray-600">
               {{ structure.dueDate | date: "dd MMM yyyy" }}
             </td>
             <td class="text-center">
@@ -82,41 +87,43 @@
               </p-tag>
             </td>
             <td class="text-center">
-              <div class="flex justify-center space-x-2">
+              <div class="flex justify-center space-x-1">
                 <button
                   pButton
                   type="button"
                   icon="pi pi-eye"
-                  class="p-button-text p-button-rounded p-button-info"
+                  class="p-button-text p-button-rounded p-button-sm"
                   pTooltip="View Details"
+                  tooltipPosition="top"
                   (click)="editFeeStructure(structure)"
                 ></button>
                 <button
                   pButton
                   type="button"
                   icon="pi pi-pencil"
-                  class="p-button-text p-button-rounded p-button-success"
+                  class="p-button-text p-button-rounded p-button-sm"
                   pTooltip="Edit"
+                  tooltipPosition="top"
                   (click)="editFeeStructure(structure)"
                 ></button>
                 <button
                   pButton
                   type="button"
                   [icon]="structure.isActive ? 'pi pi-eye-slash' : 'pi pi-eye'"
-                  [class]="
-                    structure.isActive
-                      ? 'p-button-text p-button-rounded p-button-warning'
-                      : 'p-button-text p-button-rounded p-button-success'
-                  "
+                  class="p-button-text p-button-rounded p-button-sm"
+                  [class.p-button-warning]="structure.isActive"
+                  [class.p-button-success]="!structure.isActive"
                   [pTooltip]="structure.isActive ? 'Deactivate' : 'Activate'"
+                  tooltipPosition="top"
                   (click)="toggleStatus(structure)"
                 ></button>
                 <button
                   pButton
                   type="button"
                   icon="pi pi-trash"
-                  class="p-button-text p-button-rounded p-button-danger"
+                  class="p-button-text p-button-rounded p-button-sm p-button-danger"
                   pTooltip="Delete"
+                  tooltipPosition="top"
                   (click)="deleteFeeStructure(structure)"
                 ></button>
               </div>
@@ -126,13 +133,27 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="7" class="text-center py-8">
+            <td colspan="7" class="text-center py-12">
               <div class="flex flex-col items-center">
-                <i class="pi pi-dollar text-6xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500 text-lg">No fee structures found</p>
-                <p class="text-gray-400 text-sm">
-                  Click "Add New Structure" to create your first fee structure
+                <div
+                  class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+                >
+                  <i class="pi pi-dollar text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                  No fee structures found
+                </h3>
+                <p class="text-gray-500 text-sm mb-4">
+                  Get started by creating your first fee structure
                 </p>
+                <button
+                  pButton
+                  type="button"
+                  label="Add Fee Structure"
+                  icon="pi pi-plus"
+                  class="p-button-primary p-button-sm"
+                  (click)="openNewDialog()"
+                ></button>
               </div>
             </td>
           </tr>
@@ -150,18 +171,12 @@
   [modal]="true"
   [draggable]="false"
   [resizable]="false"
-  styleClass="p-dialog-header-primary"
 >
   <form [formGroup]="feeStructureForm" (ngSubmit)="saveFeeStructure()">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Course -->
-      <div class="form-group">
-        <label
-          for="course"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Course <span class="text-red-500">*</span>
-        </label>
+      <div class="form-field">
+        <label for="course"> Course <span class="required">*</span> </label>
         <p-dropdown
           id="course"
           formControlName="course"
@@ -173,13 +188,8 @@
       </div>
 
       <!-- Semester -->
-      <div class="form-group">
-        <label
-          for="semester"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Semester <span class="text-red-500">*</span>
-        </label>
+      <div class="form-field">
+        <label for="semester"> Semester <span class="required">*</span> </label>
         <p-dropdown
           id="semester"
           formControlName="semester"
@@ -191,12 +201,9 @@
       </div>
 
       <!-- Academic Year -->
-      <div class="form-group">
-        <label
-          for="academicYear"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Academic Year <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="academicYear">
+          Academic Year <span class="required">*</span>
         </label>
         <p-dropdown
           id="academicYear"
@@ -209,13 +216,8 @@
       </div>
 
       <!-- Due Date -->
-      <div class="form-group">
-        <label
-          for="dueDate"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Due Date <span class="text-red-500">*</span>
-        </label>
+      <div class="form-field">
+        <label for="dueDate"> Due Date <span class="required">*</span> </label>
         <p-calendar
           id="dueDate"
           formControlName="dueDate"
@@ -228,12 +230,9 @@
       </div>
 
       <!-- Tuition Fee -->
-      <div class="form-group">
-        <label
-          for="tuitionFee"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Tuition Fee <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="tuitionFee">
+          Tuition Fee <span class="required">*</span>
         </label>
         <p-inputNumber
           id="tuitionFee"
@@ -247,12 +246,9 @@
       </div>
 
       <!-- Library Fee -->
-      <div class="form-group">
-        <label
-          for="libraryFee"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Library Fee <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="libraryFee">
+          Library Fee <span class="required">*</span>
         </label>
         <p-inputNumber
           id="libraryFee"
@@ -266,12 +262,9 @@
       </div>
 
       <!-- Laboratory Fee -->
-      <div class="form-group">
-        <label
-          for="laboratoryFee"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Laboratory Fee <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="laboratoryFee">
+          Laboratory Fee <span class="required">*</span>
         </label>
         <p-inputNumber
           id="laboratoryFee"
@@ -285,12 +278,9 @@
       </div>
 
       <!-- Development Fee -->
-      <div class="form-group">
-        <label
-          for="developmentFee"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Development Fee <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="developmentFee">
+          Development Fee <span class="required">*</span>
         </label>
         <p-inputNumber
           id="developmentFee"
@@ -304,12 +294,9 @@
       </div>
 
       <!-- Miscellaneous Fee -->
-      <div class="form-group">
-        <label
-          for="miscellaneousFee"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Miscellaneous Fee <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="miscellaneousFee">
+          Miscellaneous Fee <span class="required">*</span>
         </label>
         <p-inputNumber
           id="miscellaneousFee"
@@ -323,12 +310,9 @@
       </div>
 
       <!-- Late Fine -->
-      <div class="form-group">
-        <label
-          for="lateFine"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Late Fine (per day) <span class="text-red-500">*</span>
+      <div class="form-field">
+        <label for="lateFine">
+          Late Fine (per day) <span class="required">*</span>
         </label>
         <p-inputNumber
           id="lateFine"
@@ -353,13 +337,11 @@
     </div>
 
     <!-- Active Status -->
-    <div class="mt-6">
+    <div class="form-field">
       <div class="flex items-center">
         <p-checkbox id="isActive" formControlName="isActive" [binary]="true">
         </p-checkbox>
-        <label for="isActive" class="ml-2 text-sm font-semibold text-gray-700">
-          Active Fee Structure
-        </label>
+        <label for="isActive" class="ml-2"> Active Fee Structure </label>
       </div>
     </div>
   </form>
