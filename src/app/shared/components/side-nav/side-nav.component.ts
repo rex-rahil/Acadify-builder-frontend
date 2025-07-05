@@ -389,6 +389,10 @@ export class SideNavComponent implements OnInit, OnDestroy {
       .includes(permission);
   }
 
+  private isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
   logout() {
     this.authService.logout();
     this.onHide();
