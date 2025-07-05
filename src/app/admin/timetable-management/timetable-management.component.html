@@ -167,8 +167,9 @@
 
         <div
           class="space-y-3 max-h-96 overflow-y-auto custom-scroll"
-          cdkDropList
-          [cdkDropListData]="availableSubjects"
+          cdkDropList="subjectsList"
+          [cdkDropListData]="subjects"
+          [cdkDropListConnectedTo]="['timetableSlot']"
         >
           <div
             *ngFor="let subject of subjects"
