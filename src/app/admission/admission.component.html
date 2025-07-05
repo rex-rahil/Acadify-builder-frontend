@@ -131,59 +131,49 @@
           ></app-documents-declaration>
         </div>
 
-        <!-- Enhanced Navigation Actions -->
-        <div class="step-actions mt-8 pt-6 border-t border-gray-200">
-          <div class="flex justify-between items-center">
+        <!-- Navigation Actions -->
+        <div class="step-actions mt-6 pt-4 border-t border-gray-200">
+          <div
+            class="flex flex-col sm:flex-row justify-between items-center gap-4"
+          >
             <button
               *ngIf="!isFirstStep()"
               (click)="previousStep()"
-              class="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 font-medium border border-gray-200 flex items-center gap-2"
+              class="w-full sm:w-auto px-4 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 font-medium border border-gray-200 flex items-center justify-center gap-2"
             >
               <i class="pi pi-arrow-left text-sm"></i>
               <span>Previous</span>
             </button>
 
-            <div *ngIf="isFirstStep()" class="w-24"></div>
+            <div *ngIf="isFirstStep()" class="hidden sm:block w-24"></div>
 
-            <div class="flex items-center gap-4">
-              <!-- Step Indicator -->
+            <!-- Form Validation Status -->
+            <div class="flex items-center justify-center">
               <div
-                class="hidden sm:flex items-center gap-2 text-sm text-gray-600"
-              >
-                <span class="font-medium">{{ activeIndex + 1 }}</span>
-                <span>of</span>
-                <span class="font-medium">{{ steps.length }}</span>
-                <span>steps</span>
-              </div>
-
-              <!-- Form Validation Status -->
-              <div
-                class="flex items-center gap-2"
+                class="flex items-center gap-2 text-sm"
                 *ngIf="!canProceed() && getCurrentForm().touched"
               >
                 <i class="pi pi-exclamation-triangle text-amber-500"></i>
-                <span class="text-sm text-amber-600 font-medium"
-                  >Please complete required fields</span
+                <span class="text-amber-600 font-medium"
+                  >Complete required fields</span
                 >
               </div>
 
               <div
-                class="flex items-center gap-2"
+                class="flex items-center gap-2 text-sm"
                 *ngIf="canProceed() && getCurrentForm().touched"
               >
                 <i class="pi pi-check-circle text-emerald-500"></i>
-                <span class="text-sm text-emerald-600 font-medium"
-                  >Step completed</span
-                >
+                <span class="text-emerald-600 font-medium">Step completed</span>
               </div>
             </div>
 
-            <div class="next-actions">
+            <div class="next-actions w-full sm:w-auto">
               <button
                 *ngIf="!isLastStep()"
                 (click)="nextStep()"
                 [disabled]="!canProceed()"
-                class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg transform hover:scale-105 active:scale-95 flex items-center gap-2"
+                class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-md flex items-center justify-center gap-2"
               >
                 <span>Continue</span>
                 <i class="pi pi-arrow-right text-sm"></i>
@@ -193,7 +183,7 @@
                 *ngIf="isLastStep()"
                 (click)="submitApplication()"
                 [disabled]="!canProceed() || isSubmitting"
-                class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg transform hover:scale-105 active:scale-95 flex items-center gap-2"
+                class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-md flex items-center justify-center gap-2"
               >
                 <i
                   class="pi pi-{{
