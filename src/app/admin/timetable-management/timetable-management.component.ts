@@ -651,6 +651,8 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
   closeAssignmentDialog() {
     this.showAssignmentDialog = false;
     this.selectedSlot = null;
+    this.selectedSubjectId = "";
+    this.selectedFacultyId = "";
   }
 
   closeFacultyAssignmentDialog() {
