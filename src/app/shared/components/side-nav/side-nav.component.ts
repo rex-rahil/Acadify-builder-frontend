@@ -412,6 +412,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
       [UserRole.ADMISSION_OFFICER]: "Admission Dashboard",
       [UserRole.LIBRARIAN]: "Library Dashboard",
       [UserRole.ASSET_MANAGER]: "Asset Dashboard",
+      [UserRole.ACCOUNTANT]: "Accounting Dashboard",
       [UserRole.GUEST]: "Guest Portal",
     };
 
