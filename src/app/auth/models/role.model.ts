@@ -174,6 +174,19 @@ export const ROLE_PERMISSIONS: RolePermissions[] = [
     description: "Asset and inventory management responsibilities",
   },
   {
+    role: UserRole.ACCOUNTANT,
+    permissions: [
+      Permission.RECORD_CASH_PAYMENTS,
+      Permission.GENERATE_FEE_REPORTS,
+      Permission.VIEW_PAYMENT_HISTORY,
+      Permission.MANAGE_REFUNDS,
+      Permission.SEND_PAYMENT_REMINDERS,
+      Permission.VIEW_PROFILE,
+    ],
+    routes: ["/fees", "/dashboard"],
+    description: "Fee collection and financial record management",
+  },
+  {
     role: UserRole.GUEST,
     permissions: [],
     routes: ["/admission"],
