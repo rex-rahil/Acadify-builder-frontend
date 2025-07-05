@@ -322,27 +322,29 @@ export class SideNavComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Account section (always visible for authenticated users)
-    this.menuSections.push({
-      label: "Account",
-      items: [
-        {
-          label: "Settings",
-          icon: "pi pi-cog",
-          route: "/settings",
-        },
-        {
-          label: "Help & Support",
-          icon: "pi pi-question-circle",
-          route: "/help",
-        },
-        {
-          label: "Logout",
-          icon: "pi pi-sign-out",
-          command: () => this.onLogout(),
-        },
-      ],
-    });
+    // Account section (only for authenticated users)
+    if (this.currentUser && this.isAuthenticated()) {
+      this.menuSections.push({
+        label: "Account",
+        items: [
+          {
+            label: "Settings",
+            icon: "pi pi-cog",
+            route: "/settings",
+          },
+          {
+            label: "Help & Support",
+            icon: "pi pi-question-circle",
+            route: "/help",
+          },
+          {
+            label: "Logout",
+            icon: "pi pi-sign-out",
+            command: () => this.onLogout(),
+          },
+        ],
+      });
+    }
   }
 
   onLogout() {
