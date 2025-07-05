@@ -2,6 +2,11 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subject as RxSubject, interval } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { MessageService, ConfirmationService } from "primeng/api";
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from "@angular/cdk/drag-drop";
 
 interface TimeSlot {
   id: string;
