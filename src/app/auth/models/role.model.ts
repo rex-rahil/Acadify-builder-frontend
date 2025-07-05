@@ -55,6 +55,17 @@ export enum Permission {
   ASSET_REPORTS = "asset_reports",
   PROCUREMENT = "procurement",
   INVENTORY_MANAGEMENT = "inventory_management",
+
+  // Fee Management permissions
+  MANAGE_FEE_STRUCTURE = "manage_fee_structure",
+  VIEW_FEE_BALANCE = "view_fee_balance",
+  MAKE_PAYMENTS = "make_payments",
+  VIEW_PAYMENT_HISTORY = "view_payment_history",
+  RECORD_CASH_PAYMENTS = "record_cash_payments",
+  MANAGE_SCHOLARSHIPS = "manage_scholarships",
+  MANAGE_REFUNDS = "manage_refunds",
+  GENERATE_FEE_REPORTS = "generate_fee_reports",
+  SEND_PAYMENT_REMINDERS = "send_payment_reminders",
 }
 
 export interface RolePermissions {
