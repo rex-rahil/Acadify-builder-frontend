@@ -26,6 +26,8 @@ import { DividerModule } from "primeng/divider";
 import { TabViewModule } from "primeng/tabview";
 import { PanelModule } from "primeng/panel";
 import { AccordionModule } from "primeng/accordion";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { InputTextareaModule } from "primeng/inputtextarea";
 
 // Routing
 import { FeesRoutingModule } from "./fees-routing.module";
