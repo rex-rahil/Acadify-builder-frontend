@@ -94,16 +94,23 @@ export class SideNavComponent implements OnInit, OnDestroy {
     const userRole = this.currentUser.role as UserRole;
     this.menuSections = [];
 
+    // Main Dashboard (always first)
+    this.menuSections.push({
+      label: "Dashboard",
+      items: [
+        {
+          label: this.getDashboardLabel(),
+          icon: "pi pi-home",
+          route: this.getDashboardRoute(),
+        },
+      ],
+    });
+
     // Admin sections
     if (this.hasRole([UserRole.ADMIN])) {
       this.menuSections.push({
         label: "Administration",
         items: [
-          {
-            label: "Admin Dashboard",
-            icon: "pi pi-shield",
-            route: "/admin",
-          },
           {
             label: "User Management",
             icon: "pi pi-users",
@@ -122,7 +129,12 @@ export class SideNavComponent implements OnInit, OnDestroy {
           {
             label: "Timetable Management",
             icon: "pi pi-calendar",
-            route: "/admin/timetable",
+            route: "/admin/timetable-management",
+          },
+          {
+            label: "System Settings",
+            icon: "pi pi-cog",
+            route: "/admin/settings",
           },
         ],
       });
