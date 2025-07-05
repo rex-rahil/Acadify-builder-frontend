@@ -210,8 +210,11 @@ export class SideNavComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Admission sections (for students and officers)
-    if (this.hasRole([UserRole.STUDENT]) || !this.currentUser.role) {
+    // Admission sections (only for students who haven't been admitted yet, or guests)
+    if (
+      this.hasRole([UserRole.GUEST]) ||
+      (!this.currentUser.role && !this.isAuthenticated())
+    ) {
       this.menuSections.push({
         label: "Admission Portal",
         items: [
