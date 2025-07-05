@@ -640,9 +640,8 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
         life: 3000,
       });
     } else {
-      // Multiple faculties - show faculty selection dialog
-      this.closeAssignmentDialog();
-      this.showFacultyAssignmentDialog = true;
+      // Multiple faculties - let user select in the dialog
+      // Dialog stays open for user to select faculty
     }
 
     this.detectConflicts();
