@@ -115,7 +115,7 @@
       <div class="border-b border-gray-200/60 mb-6">
         <nav class="-mb-px flex flex-wrap gap-2">
           <button
-            *ngFor="let class of classes; trackBy: trackByClassId"
+            *ngFor="let class of classes"
             (click)="onClassChange(class)"
             [class]="
               selectedClass?.id === class.id
