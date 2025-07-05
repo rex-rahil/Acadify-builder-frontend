@@ -610,43 +610,6 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.showAssignmentDialog = true;
   }
 
-  // Add new method for assigning subject with dialog
-  assignSubjectToSlot(subject: Subject, slot: LectureSlot) {
-    if (!slot) return;
-
-    slot.subjectId = subject.id;
-    slot.type = subject.type;
-    slot.isAssigned = true;
-
-    const qualifiedFaculties = this.getQualifiedFaculties(subject.id);
-
-    if (qualifiedFaculties.length === 0) {
-      // No qualified faculty
-      this.messageService.add({
-        severity: "warn",
-        summary: "No Qualified Faculty",
-        detail: `No faculty available to teach ${subject.name}`,
-        life: 3000,
-      });
-    } else if (qualifiedFaculties.length === 1) {
-      // Auto-assign the only qualified faculty
-      slot.facultyId = qualifiedFaculties[0].id;
-      this.closeAssignmentDialog();
-
-      this.messageService.add({
-        severity: "success",
-        summary: "Lecture Assigned",
-        detail: `${subject.name} assigned to ${qualifiedFaculties[0].name}`,
-        life: 3000,
-      });
-    } else {
-      // Multiple faculties - let user select in the dialog
-      // Dialog stays open for user to select faculty
-    }
-
-    this.detectConflicts();
-  }
-
   closeAssignmentDialog() {
     this.showAssignmentDialog = false;
     this.selectedSlot = null;
