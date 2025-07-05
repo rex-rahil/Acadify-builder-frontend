@@ -681,13 +681,52 @@ export class TimetableManagementComponent implements OnInit, OnDestroy {
     this.detectConflicts();
   }
 
-  // Toggle panels
-  toggleSubjectPanel() {
-    this.showSubjectPanel = !this.showSubjectPanel;
-  }
+  // Assign lecture with form data
+  assignLecture() {
+    if (
+      !this.selectedSlot ||
+      !this.selectedSubjectId ||
+      !this.selectedFacultyId
+    ) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Incomplete Information",
+        detail: "Please select both subject and faculty",
+        life: 3000,
+      });
+      return;
+    }
 
-  toggleFacultyPanel() {
-    this.showFacultyPanel = !this.showFacultyPanel;
+    const subject = this.subjects.find((s) => s.id === this.selectedSubjectId);
+    const faculty = this.faculties.find((f) => f.id === this.selectedFacultyId);
+
+    if (!subject || !faculty) return;
+
+    // Check if faculty can teach this subject
+    if (!faculty.subjects.includes(subject.id)) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Invalid Assignment",
+        detail: `${faculty.name} is not qualified to teach ${subject.name}`,
+        life: 3000,
+      });
+      return;
+    }
+
+    this.selectedSlot.subjectId = this.selectedSubjectId;
+    this.selectedSlot.facultyId = this.selectedFacultyId;
+    this.selectedSlot.type = subject.type;
+    this.selectedSlot.isAssigned = true;
+
+    this.closeAssignmentDialog();
+    this.detectConflicts();
+
+    this.messageService.add({
+      severity: "success",
+      summary: "Lecture Assigned",
+      detail: `${subject.name} assigned to ${faculty.name}`,
+      life: 3000,
+    });
   }
 
   // Helper methods for template calculations
